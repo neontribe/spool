@@ -13,6 +13,7 @@ Pulp Prototypes
   * Democratic
   * Concrete
 
+
   https://www.youtube.com/watch?v=PWbZJnuy4e4
   http://www.norfolktechjournal.com/wp-content/uploads/2014/05/Pulp-Prototype-Sketchnotes.jpg
 
@@ -27,10 +28,12 @@ Sprints and backlogs an' 'ting
   * Timeboxes
   * Lists
   * User Stories
+  
 
-    As Alex I'd like an obvious log out button because I worry about my privacy on shared computers.
 
-    As ... I'd like ... because/so that ...
+  As Alex I'd like an obvious log out button because I worry about my privacy on shared computers.
+
+  As ... I'd like ... because/so that ...
 
 
 Fractal Iterations

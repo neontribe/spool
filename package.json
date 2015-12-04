@@ -1,0 +1,20 @@
+{
+  "name": "spool",
+  "version": "1.0.0",
+  "description": "Helping folk with learning disabilities get involved in policy consultations",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neontribe/spool.git"
+  },
+  "author": "Rupert Redington <rupert@neontribe.co.uk>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neontribe/spool/issues"
+  },
+  "homepage": "https://github.com/neontribe/spool#readme"
+}
