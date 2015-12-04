@@ -33,13 +33,13 @@ Sprints and backlogs an' 'ting
     As ... I'd like ... because/so that ...
 
 
-  Fractal Iterations
-  ------------------
+Fractal Iterations
+------------------
 
-    * Prioritize
-    * Build
-    * Test
-    * Evaluate
+  * Prioritize
+  * Build
+  * Test
+  * Evaluate
 
 Sprint Zero
 -----------
@@ -67,5 +67,6 @@ Sprint Zero
 * Continuous Deployment
 
   http://travis-ci.org
+  
   http://heroku.com
 
