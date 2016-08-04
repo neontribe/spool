@@ -1,0 +1,16 @@
+{
+  "name": "spool",
+  "description": "Configuration for review apps",
+  "scripts": {
+  },
+  "env": {
+  },
+  "formation": {
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+
+  ]
+}
