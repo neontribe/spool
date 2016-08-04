@@ -8,7 +8,7 @@ http.createServer(function(request, response) {
         <html lang="en">
             <head/>
             <body>
-                <h1>SPOOL!</h1>
+                <h1>SPOOL BEGINS!</h1>
                 <p>Sprint Zero. No features to see yet.</p>
             </body>
         </html>
