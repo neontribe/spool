@@ -1,48 +1,11 @@
-SPOOL Technical Approach
-========================
+SPOOL
+=====
 
-Initial Assumptions
--------------------
-  Probably whatever we make it'll be presented primarily as a website/webapp, and we'll build it with web technologies.
+Hipster BadgeZone
+-----------------
 
-Pulp Prototypes
----------------
-
-  * Fast
-  * Testable
-  * Democratic
-  * Concrete
-
-
-  https://www.youtube.com/watch?v=PWbZJnuy4e4
-  http://www.norfolktechjournal.com/wp-content/uploads/2014/05/Pulp-Prototype-Sketchnotes.jpg
-
-Priorities
-----------
-  * Shippable
-  * Flexible
-  * Maintainable
-
-Sprints and backlogs an' 'ting
-------------------------------
-  * Timeboxes
-  * Lists
-  * User Stories
-  
-
-
-  As Alex I'd like an obvious log out button because I worry about my privacy on shared computers.
-
-  As ... I'd like ... because/so that ...
-
-
-Fractal Iterations
-------------------
-
-  * Prioritize
-  * Build
-  * Test
-  * Evaluate
+[![Build Status](https://travis-ci.org/neontribe/spool.svg?branch=master)](https://travis-ci.org/neontribe/spool)
+[![Coverage Status](https://coveralls.io/repos/github/neontribe/spool/badge.svg?branch=develop)](https://coveralls.io/github/neontribe/spool?branch=develop)
 
 Sprint Zero
 -----------
@@ -69,7 +32,4 @@ Sprint Zero
 
 * Continuous Deployment
 
-  http://travis-ci.org
-  
   http://heroku.com
-

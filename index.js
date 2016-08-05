@@ -1,5 +1,5 @@
 var http = require('http');
-http.createServer(function(request, response) {
+var app = http.createServer(function(request, response) {
     response.writeHead(200, {
         'Content-Type': 'text/html',
         'X-Powered-By': 'hope'
@@ -13,4 +13,10 @@ http.createServer(function(request, response) {
             </body>
         </html>
     `);
-}).listen(process.env.PORT || 3000);
+});
+
+module.exports = app;
+
+if (!module.parent) {
+    app.listen(process.env.PORT || 3000);
+}
