@@ -3,33 +3,37 @@ SPOOL
 
 Hipster BadgeZone
 -----------------
-
 [![Build Status](https://travis-ci.org/neontribe/spool.svg?branch=master)](https://travis-ci.org/neontribe/spool)
-[![Coverage Status](https://coveralls.io/repos/github/neontribe/spool/badge.svg?branch=develop)](https://coveralls.io/github/neontribe/spool?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/neontribe/spool/badge.svg?branch=develop)](https://coveralls.io/github/neontribe/spool?branch=master)
 
 Sprint Zero
 -----------
 
 * Communications
 
-  http://www.slack.com
+  https://spoolhq.slack.com
 
 * Story control
 
-  http://www.trello.com
+  https://trello.com/b/ILmFhpGH
 
 * Issue control
 
-  http://github.com
+  https://github.com/neontribe/spool/issues
 
 * Version Control
 
-  http://github.com
+  http://github.com/neontribe/spool
 
 * Continuous Integration
 
-  http:travis-ci.org
+  http://travis-ci.org/neontribe/spool
 
 * Continuous Deployment
 
-  http://heroku.com
+  Heroku pipeline: https://dashboard.heroku.com/pipelines/63256697-cf93-44e2-83a0-1b6467fe609e
+  Staging app: https://spool-staging.herokuapp.com
+  Production app: https://spool-production.herokuapp.com
+
+  Review apps:
+    For each Pull Request listed at https://github.com/neontribe/spool/pulls there will be a review app at https://spool-staging-pr-{Pull_Request_Number}
