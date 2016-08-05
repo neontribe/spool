@@ -4,7 +4,9 @@
   "description": "Helping folk with learning disabilities get involved in policy consultations",
   "main": "index.js",
   "scripts": {
-    "test": "snyk test",
+    "test": "mocha",
+    "coverage": "istanbul cover _mocha",
+    "ci": "istanbul cover _mocha --report text-lcov | node ./node_modules/coveralls/bin/coveralls.js && snyk test",
     "start": "node index.js"
   },
   "repository": {
@@ -18,6 +20,10 @@
   },
   "homepage": "https://github.com/neontribe/spool#readme",
   "devDependencies": {
-    "snyk": "^1.17.5"
+    "coveralls": "^2.11.12",
+    "istanbul": "^0.4.4",
+    "mocha": "^3.0.1",
+    "snyk": "^1.17.5",
+    "supertest": "^2.0.0"
   }
 }
