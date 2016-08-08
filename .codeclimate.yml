@@ -2,3 +2,10 @@ engines:
   eslint:
     enabled: true
     channel: "eslint-2"
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+  fixme:
+    enabled: true
