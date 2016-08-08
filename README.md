@@ -3,6 +3,7 @@ SPOOL
 
 Hipster BadgeZone
 -----------------
+[![Code Climate](https://codeclimate.com/github/neontribe/spool/badges/gpa.svg)](https://codeclimate.com/github/neontribe/spool)
 [![Build Status](https://travis-ci.org/neontribe/spool.svg?branch=master)](https://travis-ci.org/neontribe/spool)
 [![Coverage Status](https://coveralls.io/repos/github/neontribe/spool/badge.svg?branch=develop)](https://coveralls.io/github/neontribe/spool?branch=master)
 
@@ -37,3 +38,10 @@ Sprint Zero
 
   Review apps:
     For each Pull Request listed at https://github.com/neontribe/spool/pulls there will be a review app at https://spool-staging-pr-{Pull_Request_Number}
+
+* Fancy integrations
+
+    * SNYK
+    * dependencies.io
+    * Code Climate
+    * Coveralls
