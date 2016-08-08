@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha",
     "coverage": "istanbul cover _mocha",
-    "ci": "istanbul cover _mocha --report text-lcov | node ./node_modules/coveralls/bin/coveralls.js && snyk test",
+    "lint": "eslint",
+    "ci": "npm run lint && istanbul cover _mocha --report text-lcov | node ./node_modules/coveralls/bin/coveralls.js && snyk test",
     "start": "node index.js"
   },
   "repository": {
@@ -21,6 +22,8 @@
   "homepage": "https://github.com/neontribe/spool#readme",
   "devDependencies": {
     "coveralls": "^2.11.12",
+    "eslint": "^3.2.2",
+    "eslint-plugin-react": "^6.0.0",
     "istanbul": "^0.4.4",
     "mocha": "^3.0.1",
     "snyk": "^1.17.5",

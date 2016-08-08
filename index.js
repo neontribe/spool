@@ -17,6 +17,7 @@ var app = http.createServer(function(request, response) {
 
 module.exports = app;
 
+/* istanbul ignore if */
 if (!module.parent) {
     app.listen(process.env.PORT || 3000);
 }
