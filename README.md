@@ -38,3 +38,10 @@ Sprint Zero
 
   Review apps:
     For each Pull Request listed at https://github.com/neontribe/spool/pulls there will be a review app at https://spool-staging-pr-{Pull_Request_Number}
+
+* Fancy integrations
+
+    * SNYK
+    * dependencies.io
+    * Code Climate
+    * Coveralls
