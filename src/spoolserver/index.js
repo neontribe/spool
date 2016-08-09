@@ -19,5 +19,5 @@ module.exports = app;
 
 /* istanbul ignore if */
 if (!module.parent) {
-    app.listen(process.env.PORT || 3000);
+    app.listen(process.env.PORT || 3001);
 }
