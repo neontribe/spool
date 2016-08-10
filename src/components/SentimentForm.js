@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
+import { Grid, Row, Col, ButtonGroup, Button } from 'react-bootstrap';
 
 class SentimentForm extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            sentiment: props.sentiment
+            value: props.initialValue
         };
 
         this.continue = this.continue.bind(this);
@@ -15,40 +15,52 @@ class SentimentForm extends Component {
 
     continue(event) {
         event.preventDefault();
-        this.props.save(this.state);
+        this.props.save(this.state.value);
     }
 
     handleChange(event) {
         this.setState({
-            sentiment: event.target.value
+            value: event.target.value
         })
     }
 
     render() {
         return (
-            <FormGroup controlId="sentiment">
-              <ControlLabel>Sentiment</ControlLabel>
-              <FormControl componentClass="select"
-                  placeholder="select"
-                  value={this.state.sentiment}
-                  onChange={this.handleChange}>
-                  <option value="happy">happy</option>
-                  <option value="sad">sad</option>
-              </FormControl>
-              <Button bsStyle="primary"
-                  onClick={this.continue}>Next</Button>
-            </FormGroup>
+            <Grid>
+                <Row>
+                    <Col>
+                        <ButtonGroup bsSize="large">
+                              <Button value="happy"
+                                  bsStyle="success"
+                                  active={this.state.value === 'happy'}
+                                  onClick={this.handleChange}>Happy</Button>
+                              <Button value="sad"
+                                  bsStyle="danger"
+                                  active={this.state.value === 'sad'}
+                                  onClick={this.handleChange}>Sad</Button>
+                        </ButtonGroup>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Button bsStyle="primary" bsSize="large"
+                            onClick={this.continue}
+                            disabled={!this.state.value}>Next</Button>
+                    </Col>
+                </Row>
+            </Grid>
+
         );
     }
 }
 
 SentimentForm.propTypes = {
-    sentiment: React.PropTypes.string,
+    initialValue: React.PropTypes.string,
     save: React.PropTypes.func.isRequired
 };
 
 SentimentForm.defaultProps = {
-    senitment: ''
+    initialValue: ''
 };
 
 export default SentimentForm;

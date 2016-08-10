@@ -6,7 +6,7 @@ class MediaForm extends Component {
         super(props);
 
         this.state = {
-            media: props.media
+            value: props.initialValue
         };
 
         this.continue = this.continue.bind(this);
@@ -15,12 +15,12 @@ class MediaForm extends Component {
 
     continue(event) {
         event.preventDefault();
-        this.props.save(this.state);
+        this.props.save(this.state.value);
     }
 
     handleChange(event) {
         this.setState({
-            media: event.target.value
+            value: event.target.value
         })
     }
 
@@ -31,22 +31,23 @@ class MediaForm extends Component {
                 <FormControl
                     componentClass="textarea"
                     placeholder=""
-                    value={this.state.media}
+                    value={this.state.value}
                     onChange={this.handleChange} />
-                <Button bsStyle="primary"
-                    onClick={this.continue}>Next</Button>
+                <Button bsStyle="primary" bsSize="large"
+                    onClick={this.continue}
+                    disabled={!this.state.value}>Next</Button>
             </FormGroup>
         );
     }
 }
 
 MediaForm.propTypes = {
-    media: React.PropTypes.string,
+    initialValue: React.PropTypes.string,
     save: React.PropTypes.func.isRequired
 };
 
 MediaForm.defaultProps = {
-    media: ''
+    initialValue: ''
 };
 
 export default MediaForm;

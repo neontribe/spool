@@ -12,4 +12,13 @@ storiesOf('SentimentForm', module)
             </Col>
         </Row>
     </Grid>
+  ))
+  .add('Edit View', () => (
+    <Grid>
+        <Row>
+            <Col>
+                <SentimentForm initialValue="happy" save={action('Save Value')}/>
+            </Col>
+        </Row>
+    </Grid>
   ));

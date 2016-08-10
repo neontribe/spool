@@ -6,7 +6,7 @@ class TopicForm extends Component {
         super(props);
 
         this.state = {
-            topic: props.topic
+            value: props.initialValue
         };
 
         this.continue = this.continue.bind(this);
@@ -15,12 +15,12 @@ class TopicForm extends Component {
 
     continue(event) {
         event.preventDefault();
-        this.props.save(this.state);
+        this.props.save(this.state.value);
     }
 
     handleChange(event) {
         this.setState({
-            topic: event.target.value
+            value: event.target.value
         })
     }
 
@@ -30,25 +30,26 @@ class TopicForm extends Component {
               <ControlLabel>Topic</ControlLabel>
               <FormControl componentClass="select"
                   placeholder="select"
-                  value={this.state.topic}
+                  value={this.state.value}
                   onChange={this.handleChange}>
                   <option value="public_transport">Public Transport</option>
                   <option value="sport">Sport</option>
               </FormControl>
-              <Button bsStyle="primary"
-                  onClick={this.continue}>Next</Button>
+              <Button bsStyle="primary" bsSize="large"
+                  onClick={this.continue}
+                  disabled={!this.state.value}>Next</Button>
             </FormGroup>
         );
     }
 }
 
 TopicForm.propTypes = {
-    topic: React.PropTypes.string,
+    initialValue: React.PropTypes.string,
     save: React.PropTypes.func.isRequired
 };
 
 TopicForm.defaultProps = {
-    topic: ''
+    initialValue: ''
 };
 
 export default TopicForm;

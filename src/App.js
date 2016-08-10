@@ -14,7 +14,7 @@ class App extends Component {
             </Row>
             <Row>
                 <Col md={12}>
-                    <EntryForm/>
+                    <EntryForm done={console.log.bind(console)}/>
                 </Col>
             </Row>
         </Grid>
