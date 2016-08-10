@@ -1,14 +1,14 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import EntryForm from '../EntryForm';
+import MediaForm from '../MediaForm';
 import { Grid, Row, Col } from 'react-bootstrap';
 
-storiesOf('EntryForm', module)
+storiesOf('MediaForm', module)
   .add('Initial View', () => (
     <Grid>
         <Row>
             <Col>
-                <EntryForm done={action('Done')}/>
+                <MediaForm save={action('Save Value')}/>
             </Col>
         </Row>
     </Grid>
