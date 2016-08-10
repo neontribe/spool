@@ -1,2 +1,12 @@
+# dependencies
 node_modules
+
+# production
+build
+
+#coverage
 coverage
+
+# misc
+.DS_Store
+npm-debug.log

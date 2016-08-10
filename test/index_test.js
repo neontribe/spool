@@ -1,4 +1,4 @@
-var app = require('../index.js');
+var app = require('../src/server/index.js');
 var request = require('supertest');
 
 describe('Placeholder app', function() {
