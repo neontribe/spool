@@ -2,7 +2,7 @@
   "name": "spool",
   "version": "1.0.0",
   "description": "Helping folk with learning disabilities get involved in policy consultations",
-  "main": "src/spoolserver/index.js",
+  "main": "src/server/index.js",
   "private": true,
   "scripts": {
     "test": "mocha",
