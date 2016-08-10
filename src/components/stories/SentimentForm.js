@@ -1,14 +1,14 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import EntryForm from '../EntryForm';
+import SentimentForm from '../SentimentForm';
 import { Grid, Row, Col } from 'react-bootstrap';
 
-storiesOf('EntryForm', module)
+storiesOf('SentimentForm', module)
   .add('Initial View', () => (
     <Grid>
         <Row>
             <Col>
-                <EntryForm done={action('Done')}/>
+                <SentimentForm save={action('Save Value')}/>
             </Col>
         </Row>
     </Grid>
