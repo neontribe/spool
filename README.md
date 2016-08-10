@@ -7,6 +7,17 @@ Hipster BadgeZone
 [![Build Status](https://travis-ci.org/neontribe/spool.svg?branch=master)](https://travis-ci.org/neontribe/spool)
 [![Coverage Status](https://coveralls.io/repos/github/neontribe/spool/badge.svg?branch=develop)](https://coveralls.io/github/neontribe/spool?branch=master)
 
+Installation
+============
+
+Cloning the repo and running `npm install` should currently do it.
+
+If your editor throws warnings about missing linter plugins you'll need to do
+
+`npm install -g eslint babel-eslint eslint-plugin-react eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-flowtype`
+
+the react/eslint teams hope to make this go away soon...
+
 Sprint Zero
 -----------
 
