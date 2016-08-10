@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, PageHeader, Jumbotron } from 'react-bootstrap';
+import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
 import EntryForm from './components/EntryForm';
 
 class App extends Component {
@@ -14,9 +14,7 @@ class App extends Component {
             </Row>
             <Row>
                 <Col md={12}>
-                    <Jumbotron>
-                        <EntryForm/>
-                    </Jumbotron>
+                    <EntryForm/>
                 </Col>
             </Row>
         </Grid>
