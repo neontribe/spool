@@ -12,4 +12,17 @@ storiesOf('EntryForm', module)
             </Col>
         </Row>
     </Grid>
+  ))
+  .add('Edit View', () => (
+    <Grid>
+        <Row>
+            <Col>
+                <EntryForm entry={{
+                        media: 'test',
+                        sentiment: 'happy',
+                        topic: 'sport'}}
+                        done={action('Done')}/>
+            </Col>
+        </Row>
+    </Grid>
   ));

@@ -12,4 +12,13 @@ storiesOf('TopicForm', module)
             </Col>
         </Row>
     </Grid>
+  ))
+  .add('Edit View', () => (
+    <Grid>
+        <Row>
+            <Col>
+                <TopicForm initialValue="sport" save={action('Save Value')}/>
+            </Col>
+        </Row>
+    </Grid>
   ));
