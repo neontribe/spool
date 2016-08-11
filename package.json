@@ -5,7 +5,7 @@
   "main": "src/server/index.js",
   "private": true,
   "scripts": {
-    "test": "mocha .mocha_setup.js src/**/*-test.js --require babel-register",
+    "test": "NODE_ENV=test nyc _mocha .mocha_setup.js src/**/*-test.js --require babel-register",
     "coverage": "babel-node ./node_modules/istanbul/lib/cli cover _mocha -- .mocha_setup.js src/**/*-test.js -require babel-register ",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "vulnerabilities": "snyk test",
@@ -29,13 +29,14 @@
   "devDependencies": {
     "@kadira/storybook": "^2.0.0",
     "babel-cli": "^6.11.4",
+    "babel-plugin-istanbul": "^1.0.3",
     "chai": "^3.5.0",
     "coveralls": "^2.11.12",
     "enzyme": "^2.4.1",
     "eslint": "^3.2.2",
-    "istanbul": "^1.1.0-alpha.1",
     "jsdom": "^9.4.1",
     "mocha": "^3.0.1",
+    "nyc": "^7.1.0",
     "react-addons-test-utils": "^15.3.0",
     "react-scripts": "0.2.1",
     "snyk": "^1.17.5",
@@ -51,7 +52,18 @@
   "eslintConfig": {
     "extends": "./node_modules/react-scripts/config/eslint.js",
     "env": {
-        "mocha": true
+      "mocha": true
     }
+ },
+ "nyc": {
+    "include": [
+      "src/*.js"
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "sourceMap": false,
+    "instrument": false
   }
+
 }
