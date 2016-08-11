@@ -35,7 +35,7 @@ class TopicForm extends Component {
                   <option value="public_transport">Public Transport</option>
                   <option value="sport">Sport</option>
               </FormControl>
-              <Button bsStyle="primary" bsSize="large"
+              <Button bsStyle="primary" bsSize="large" block
                   onClick={this.continue}
                   disabled={!this.state.value}>Next</Button>
             </FormGroup>

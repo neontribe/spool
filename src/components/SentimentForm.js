@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, ButtonGroup, Button } from 'react-bootstrap';
+import { Grid, Row, Col, Jumbotron, ButtonGroup, Button } from 'react-bootstrap';
 
 class SentimentForm extends Component {
     constructor(props) {
@@ -43,7 +43,7 @@ class SentimentForm extends Component {
                 </Row>
                 <Row>
                     <Col>
-                        <Button bsStyle="primary" bsSize="large"
+                        <Button bsStyle="primary" bsSize="large" block
                             onClick={this.continue}
                             disabled={!this.state.value}>Next</Button>
                     </Col>
