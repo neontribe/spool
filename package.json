@@ -5,9 +5,8 @@
   "main": "src/server/index.js",
   "private": true,
   "scripts": {
-    "test": "NODE_ENV=test nyc _mocha .mocha_setup.js src/**/*-test.js --require babel-register",
-    "coverage": "babel-node ./node_modules/istanbul/lib/cli cover _mocha -- .mocha_setup.js src/**/*-test.js -require babel-register ",
-    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "test": "NODE_ENV=test nyc mocha .mocha_setup.js src/**/*-test.js",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "vulnerabilities": "snyk test",
     "start-ui": "react-scripts start",
     "build": "react-scripts build",
@@ -61,12 +60,24 @@
   },
   "nyc": {
     "include": [
-      "src/*.js"
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "**/*-test.js"
     ],
     "require": [
       "babel-register"
     ],
     "sourceMap": false,
-    "instrument": false
+    "instrument": false,
+    "cache": true
+  },
+  "babel": {
+    "presets": ["es2015", "react"],
+    "env": {
+        "test": {
+            "plugins": ["istanbul"]
+        }
+    }
   }
 }
