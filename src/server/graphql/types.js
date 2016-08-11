@@ -1,5 +1,4 @@
 const ql = require('graphql');
-const db = require('./database.js');
 
 const VideoMediaType = new ql.GraphQLObjectType({
     name: 'VideoMedia',
@@ -59,17 +58,6 @@ const EntryType = new ql.GraphQLObjectType({
     }
 });
 
-module.exports = new ql.GraphQLSchema({
-    query: new ql.GraphQLObjectType({
-        name: 'Query',
-        fields: {
-            entriesByOwner: {
-                type: new ql.GraphQLList(EntryType),
-                args: {
-                    id: { type: ql.GraphQLInt }
-                },
-                resolve: (_, {id}) => db.Entry.findByOwnerId(db.connect(), id)
-            }
-        }
-    })
-});
+module.exports = {
+    EntryType
+}
