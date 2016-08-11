@@ -18,7 +18,7 @@ const ImageMediaType = new ql.GraphQLObjectType({
 const TextMediaType = new ql.GraphQLObjectType({
     name: 'TextMedia',
     fields: {
-        text: { type: ql.GraphQLString, resolve: (data) => data.text }
+        text: { type: ql.GraphQLString, resolve: (media) => media.text }
     }
 });
 
@@ -46,15 +46,15 @@ const EntryType = new ql.GraphQLObjectType({
         id: { type: ql.GraphQLInt },
         media: { 
             type: MediaType,
-            resolve: (diary) =>  diary.media
+            resolve: (entry) =>  entry.media
         },
         author: { 
             type: UserType,
-            resolve: (diary) => diary.author
+            resolve: (entry) => entry.author
         },
         owner: { 
             type: UserType,
-            resolve: (diary) => diary.owner
+            resolve: (entry) => entry.owner
         }
     }
 });
