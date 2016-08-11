@@ -44,18 +44,22 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "express": "^4.14.0",
+    "express-graphql": "^0.5.3",
+    "graphql": "^0.6.2",
     "lodash": "^4.14.2",
     "react": "^15.2.1",
     "react-bootstrap": "^0.30.2",
-    "react-dom": "^15.2.1"
+    "react-dom": "^15.2.1",
+    "sqlite3": "^3.1.4"
   },
   "eslintConfig": {
     "extends": "./node_modules/react-scripts/config/eslint.js",
     "env": {
       "mocha": true
     }
- },
- "nyc": {
+  },
+  "nyc": {
     "include": [
       "src/*.js"
     ],
@@ -65,5 +69,4 @@
     "sourceMap": false,
     "instrument": false
   }
-
 }
