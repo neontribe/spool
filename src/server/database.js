@@ -112,7 +112,7 @@ class Entry {
         p = p.then(function (rows) {
             return rows.map((row) =>  Entry.inflate(row));
         }).catch(function(rejection) {
-            // todo error handling
+            throw rejection;
         });
 
         return p;
@@ -123,7 +123,11 @@ var db;
 module.exports = {
     connect: function() {
         if (!db) {
-            db = new sqlite3.Database(DATABASE_FILE);
+            db = new sqlite3.Database(DATABASE_FILE, function (err) {
+                if (err) {
+                    throw err;
+                }
+            });
         }
         return db;
     },

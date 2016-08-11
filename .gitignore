@@ -11,3 +11,7 @@ coverage
 # misc
 .DS_Store
 npm-debug.log
+
+# anthony
+.vim.project
+todo
