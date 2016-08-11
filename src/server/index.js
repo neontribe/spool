@@ -4,6 +4,8 @@ const schema = require('./graphql/schema.js');
 
 var app = express();
 
+app.use(express.static('build'));
+
 app.use('/graphql', graphqlHTTP({
     schema: schema,
     pretty: true,
