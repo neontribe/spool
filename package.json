@@ -13,7 +13,8 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009",
     "build-storybook": "build-storybook",
-    "start": "node src/server/index.js"
+    "start": "node src/server/index.js",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,6 @@
   "bugs": {
     "url": "https://github.com/neontribe/spool/issues"
   },
-  "homepage": "https://github.com/neontribe/spool#readme",
   "devDependencies": {
     "@kadira/storybook": "^2.0.0",
     "babel-cli": "^6.11.4",
