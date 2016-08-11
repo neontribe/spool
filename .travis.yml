@@ -1,6 +1,6 @@
 language: node_js
 sudo: false
-script: npm test && npm run vulnerabilities
+script: npm test
 after_success:
 - npm run coverage
 - snyk auth $SNYK_TOKEN
