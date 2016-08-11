@@ -6,8 +6,9 @@
   "private": true,
   "scripts": {
     "test": "mocha .mocha_setup.js src/**/*-test.js --require babel-register",
-    "coverage": "babel-node ./node_modules/istanbul/lib/cli cover _mocha -- .mocha_setup.js src/**/*-test.js --require babel-register",
-    "ci": "babel-node ./node_modules/istanbul/lib/cli cover _mocha -- .mocha_setup.js src/**/*-test.js --require babel-register --report text-lcov | node ./node_modules/coveralls/bin/coveralls.js && snyk test",
+    "coverage": "babel-node ./node_modules/istanbul/lib/cli cover _mocha -- .mocha_setup.js src/**/*-test.js -require babel-register ",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "vulnerabilities": "snyk test",
     "start-ui": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
