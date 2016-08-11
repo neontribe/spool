@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, ButtonGroup, Button } from 'react-bootstrap';
+import { Grid, Row, Col, ButtonGroup, Button, Image } from 'react-bootstrap';
+import happy from './assets/emoji/happy.svg';
+import sad from './assets/emoji/sad.svg';
+import './SentimentForm.css';
+import _ from 'lodash';
 
 class SentimentForm extends Component {
     constructor(props) {
@@ -18,9 +22,9 @@ class SentimentForm extends Component {
         this.props.save(this.state.value);
     }
 
-    handleChange(event) {
+    handleChange(value) {
         this.setState({
-            value: event.target.value
+            value: value
         })
     }
 
@@ -28,17 +32,15 @@ class SentimentForm extends Component {
         return (
             <Grid>
                 <Row>
-                    <Col>
-                        <ButtonGroup bsSize="large">
-                              <Button value="happy"
-                                  bsStyle="success"
-                                  active={this.state.value === 'happy'}
-                                  onClick={this.handleChange}>Happy</Button>
-                              <Button value="sad"
-                                  bsStyle="danger"
-                                  active={this.state.value === 'sad'}
-                                  onClick={this.handleChange}>Sad</Button>
-                        </ButtonGroup>
+                    <Col xs={6}>
+                        <Image src={happy} responsive className={this.state.value === 'happy' ? 'selected' : ''}
+                            alt="Happy"
+                            onClick={_.partial(this.handleChange, 'happy')}/>
+                    </Col>
+                    <Col xs={6}>
+                        <Image src={sad} responsive className={this.state.value === 'sad' ? 'selected' : ''}
+                            alt="Sad"
+                            onClick={_.partial(this.handleChange, 'sad')}/>
                     </Col>
                 </Row>
                 <Row>
