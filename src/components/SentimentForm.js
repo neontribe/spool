@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Jumbotron, ButtonGroup, Button } from 'react-bootstrap';
+import { Grid, Row, Col, ButtonGroup, Button } from 'react-bootstrap';
 
 class SentimentForm extends Component {
     constructor(props) {
