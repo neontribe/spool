@@ -1,5 +1,18 @@
 const queries = require('./queries');
 
+class Sentiment {
+    constructor(type) {
+        this.type = type;
+    }
+
+    static inflate(row, prefix = '') {
+        var p = (name) => prefix + name;
+
+        var type = row[p('type')];
+        return new Sentiment(type);
+    }
+}
+
 class Media {
     constructor(id) {}
 }
@@ -31,8 +44,8 @@ class User {
         var p = (name) => prefix + name;
 
         var id = row[p('id')];
-        var firstName = row[p('firstName')];
-        var lastName = row[p('lastName')];
+        var firstName = row[p('first_name')];
+        var lastName = row[p('last_name')];
         var email = row[p('email')];
 
         return new User(id, firstName, lastName, email);
@@ -40,11 +53,12 @@ class User {
 }
 
 class Entry {
-    constructor(id, owner, author, media) {
+    constructor(id, owner, author, media, sentiment) {
         this.id = id;
         this.owner = owner;
         this.author = author;
         this.media = media;
+        this.sentiment = sentiment;
     }
 
     /*
@@ -60,7 +74,9 @@ class Entry {
         var media = TextMedia.inflate(row, 'media_');
         var author = User.inflate(row, 'author_');
         var owner = User.inflate(row, 'owner_');
-        return new Entry(id, owner, author, media);
+        var sentiment = Sentiment.inflate(row, 'sentiment_');
+
+        return new Entry(id, owner, author, media, sentiment);
     }
 
     /*
@@ -69,8 +85,8 @@ class Entry {
      */
     static findByOwnerId(db, id) {
         var p = new Promise(function (resolve, reject) {
-            db.all(queries.entries.findByUser, {
-                $owner: id
+            db.all(queries.entry.byOwner, {
+                $ownerId: id
             }, (error, rows) => { error ? reject(error) : resolve(rows) });
         });
 
@@ -84,6 +100,36 @@ class Entry {
     }
 }
 
+class Topic {
+    constructor(type) {
+        this.type = type;
+    }
+
+    static inflate(row, prefix = '') {
+        var p = (name) => prefix + name;
+
+        var type = row[p('type')];
+        return new Topic(type);
+    }
+
+    static findByEntryId(db, id) {
+        var p = new Promise(function (resolve, reject) {
+            db.all(queries.topic.byEntry, {
+                $entryId: id
+            }, (error, rows) => { error ? reject(error) : resolve(rows) });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map((row) => Topic.inflate(row, 'topic_'));
+        }).catch(function(rejection) {
+            throw rejection;
+        });
+
+        return p;
+    }
+}
+
 module.exports = {
-    Entry
+    Entry,
+    Topic
 }

@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3');
 const lib = require('./lib');
 
 var db;
-const DATABASE_FILE = './experiment.db';
+const DATABASE_FILE = './database.sqlite3';
 module.exports = {
     connect: function() {
         if (!db) {
