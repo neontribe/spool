@@ -83,6 +83,37 @@ const EntryType = new ql.GraphQLObjectType({
     }
 });
 
+
+/*
+ * GraphQL does not support union input types
+ * So the resolution of union types can be done run-time
+ * https://github.com/graphql/graphql-js/issues/207
+ */
+const MediaInputType = new ql.GraphQLInputObjectType({
+    name: 'MediaInput',
+    fields: {
+        text: { type: ql.GraphQLString }
+    }
+});
+
+const TopicInputType = new ql.GraphQLInputObjectType({
+    name: 'TopicInput',
+    fields: {
+        type: { type: ql.GraphQLString }
+    }
+});
+
+const EntryInputType = new ql.GraphQLInputObjectType({
+    name: 'EntryInput',
+    fields: {
+        media: { type: MediaInputType },
+        author: { type: ql.GraphQLInt },
+        owner: { type: ql.GraphQLInt },
+        sentiment: { type: ql.GraphQLString },
+        topic: { type: new ql.GraphQLList(TopicInputType) }
+    }
+});
+
 const QueryType = new ql.GraphQLObjectType({
     name: 'Query',
     fields: {
@@ -96,6 +127,20 @@ const QueryType = new ql.GraphQLObjectType({
     }
 })
 
+const MutationType = new ql.GraphQLObjectType({
+    name: 'Mutations',
+    fields: {
+        createEntry: {
+            type: EntryType,
+            args: {
+                entry: { type: EntryInputType }
+            },
+            resolve: (_, {entry}) => db.lib.Entry.create(db.connect(), entry)
+        }
+    }
+});
+
 module.exports = {
-    QueryType
+    QueryType,
+    MutationType
 }
