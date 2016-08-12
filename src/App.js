@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
-import EntryForm from './components/EntryForm';
 
 class App extends Component {
 
@@ -14,7 +13,7 @@ class App extends Component {
             </Row>
             <Row>
                 <Col md={12}>
-                    <EntryForm done={console.log.bind(console)}/>
+                    { this.props.children }
                 </Col>
             </Row>
         </Grid>

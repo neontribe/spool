@@ -51,7 +51,7 @@ class EntryForm extends Component {
 EntryForm.propTypes = {
     step: React.PropTypes.string,
     steps: React.PropTypes.array,
-    done: React.PropTypes.func.isRequired,
+    done: React.PropTypes.func,
     entry: React.PropTypes.object
 }
 
