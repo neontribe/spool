@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, ButtonGroup, Button, Image } from 'react-bootstrap';
+import { Grid, Row, Col, Button, Image } from 'react-bootstrap';
 import happy from './assets/emoji/happy.svg';
 import sad from './assets/emoji/sad.svg';
 import './SentimentForm.css';
