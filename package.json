@@ -14,7 +14,7 @@
     "vulnerabilities": "snyk test",
     "lint": "node_modules/react-scripts/node_modules/.bin/eslint .",
     "start-ui": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && cp -r ./static/* ./build/static/",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009",
     "build-storybook": "build-storybook",
@@ -33,7 +33,7 @@
   "devDependencies": {
     "@kadira/storybook": "^2.0.0",
     "babel-cli": "^6.11.4",
-    "babel-plugin-istanbul": "^1.0.3",
+    "babel-plugin-istanbul": "^1.1.0",
     "chai": "^3.5.0",
     "coveralls": "^2.11.12",
     "enzyme": "^2.4.1",
@@ -78,11 +78,16 @@
     "cache": true
   },
   "babel": {
-    "presets": ["es2015", "react"],
+    "presets": [
+      "es2015",
+      "react"
+    ],
     "env": {
-        "test": {
-            "plugins": ["istanbul"]
-        }
+      "test": {
+        "plugins": [
+          "istanbul"
+        ]
+      }
     }
   }
 }
