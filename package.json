@@ -12,6 +12,7 @@
     "test": "NODE_ENV=test nyc mocha .mocha_setup.js src/**/*-test.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "vulnerabilities": "snyk test",
+    "lint": "eslint .",
     "start-ui": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
