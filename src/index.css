@@ -3,3 +3,7 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.selected-emoji {
+     filter: drop-shadow(12px 12px 12px green);
+}
