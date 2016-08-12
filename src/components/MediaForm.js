@@ -33,7 +33,7 @@ class MediaForm extends Component {
                     placeholder=""
                     value={this.state.value}
                     onChange={this.handleChange} />
-                <Button bsStyle="primary" bsSize="large"
+                <Button bsStyle="primary" bsSize="large" block
                     onClick={this.continue}
                     disabled={!this.state.value}>Next</Button>
             </FormGroup>

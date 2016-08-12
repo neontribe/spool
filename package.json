@@ -1,6 +1,10 @@
 {
   "name": "spool",
   "version": "1.0.0",
+  "engines": {
+    "node": "6.2.1",
+    "npm": "3.9.3"
+  },
   "description": "Helping folk with learning disabilities get involved in policy consultations",
   "main": "src/server/index.js",
   "private": true,
@@ -13,7 +17,8 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009",
     "build-storybook": "build-storybook",
-    "start": "node src/server/index.js"
+    "start": "node src/server/index.js",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -24,7 +29,6 @@
   "bugs": {
     "url": "https://github.com/neontribe/spool/issues"
   },
-  "homepage": "https://github.com/neontribe/spool#readme",
   "devDependencies": {
     "@kadira/storybook": "^2.0.0",
     "babel-cli": "^6.11.4",
@@ -37,11 +41,11 @@
     "mocha": "^3.0.1",
     "nyc": "^7.1.0",
     "react-addons-test-utils": "^15.3.0",
-    "react-scripts": "0.2.1",
     "snyk": "^1.17.5",
     "supertest": "^2.0.0"
   },
   "dependencies": {
+    "react-scripts": "0.2.1",
     "bootstrap": "^3.3.7",
     "express": "^4.14.0",
     "express-graphql": "^0.5.3",
