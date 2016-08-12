@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, Button, Image } from 'react-bootstrap';
-import happy from './assets/emoji/happy.svg';
-import sad from './assets/emoji/sad.svg';
-import './SentimentForm.css';
 import _ from 'lodash';
 
 class SentimentForm extends Component {
@@ -33,12 +30,14 @@ class SentimentForm extends Component {
             <Grid>
                 <Row>
                     <Col xs={6}>
-                        <Image src={happy} responsive className={this.state.value === 'happy' ? 'selected' : ''}
+                        <Image src="/static/emoji/happy.svg" responsive
+                            className={this.state.value === 'happy' ? 'selected-emoji' : ''}
                             alt="Happy"
                             onClick={_.partial(this.handleChange, 'happy')}/>
                     </Col>
                     <Col xs={6}>
-                        <Image src={sad} responsive className={this.state.value === 'sad' ? 'selected' : ''}
+                        <Image src="/static/emoji/sad.svg" responsive
+                            className={this.state.value === 'sad' ? 'selected-emoji' : ''}
                             alt="Sad"
                             onClick={_.partial(this.handleChange, 'sad')}/>
                     </Col>
