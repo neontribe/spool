@@ -110,6 +110,7 @@ class Topic {
 class Entry {
     constructor(id, owner, author, media, sentiment) {
         this.id = id;
+        this._id = id;
         this.owner = owner;
         this.author = author;
         this.media = media;
