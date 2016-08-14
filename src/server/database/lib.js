@@ -14,7 +14,6 @@ class Sentiment {
 }
 
 class Media {
-    constructor(id) {}
     static create(db, media) {
         var p = new Promise(function (resolve, reject) {
             db.run(queries.media.create, {
@@ -82,7 +81,7 @@ class Topic {
         var p = new Promise(function (resolve, reject) {
             db.all(queries.topic.byEntry, {
                 $entryId: id
-            }, (error, rows) => { error ? reject(error) : resolve(rows) });
+            }, (error, rows) => error ? reject(error) : resolve(rows));
         });
 
         p = p.then(function (rows) {
@@ -143,7 +142,7 @@ class Entry {
         var p = new Promise(function (resolve, reject) {
             db.all(queries.entry.byOwner, {
                 $ownerId: id
-            }, (error, rows) => { error ? reject(error) : resolve(rows) });
+            }, (error, rows) => error ? reject(error) : resolve(rows));
         });
 
         p = p.then(function (rows) {
@@ -157,7 +156,7 @@ class Entry {
         var p = new Promise(function (resolve, reject) {
             db.all(queries.entry.byId, {
                 $entryId: id
-            }, (error, rows) => { error ? reject(error) : resolve(rows) });
+            }, (error, rows) => error ? reject(error) : resolve(rows));
         });
 
         p = p.then(function (rows) {
