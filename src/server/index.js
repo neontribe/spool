@@ -1,16 +1,24 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const schema = require('./graphql/schema.js');
+const path = require('path');
 
 var app = express();
 
-app.use(express.static('build'));
-
+/* GRAPHQL Endpoint */
 app.use('/graphql', graphqlHTTP({
     schema: schema,
     pretty: true,
     graphiql: true
 }));
+
+/* Static Resouces */
+app.use(express.static('build'));
+
+/* Drop all routes through to index.html to support browserHistory routing in react */
+app.get('*', function (request, response){
+  response.sendFile(path.resolve('build', 'index.html'))
+})
 
 module.exports = app;
 

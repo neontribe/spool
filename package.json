@@ -13,12 +13,13 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "vulnerabilities": "snyk test",
     "lint": "node_modules/react-scripts/node_modules/.bin/eslint .",
-    "start-ui": "react-scripts start",
-    "build": "react-scripts build && cp -r ./static/* ./build/static/",
+    "start-ui": "export $(cat .env | xargs) && react-scripts start",
+    "build": "export $(cat .env | xargs) && react-scripts build && cp -r ./static/* ./build/static/",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s ./",
     "build-storybook": "build-storybook",
     "start": "node src/server/index.js",
+    "start-dev": "export $(cat .env | xargs) && npm start",
     "postinstall": "npm run build"
   },
   "repository": {
@@ -36,6 +37,7 @@
     "babel-plugin-istanbul": "^1.1.0",
     "chai": "^3.5.0",
     "coveralls": "^2.11.12",
+    "dotenv": "^2.0.0",
     "enzyme": "^2.4.1",
     "eslint": "^3.2.2",
     "jsdom": "^9.4.1",
@@ -46,17 +48,19 @@
     "supertest": "^2.0.0"
   },
   "dependencies": {
+    "auth0-js": "^7.1.0",
     "bootstrap": "^3.3.7",
     "express": "^4.14.0",
     "express-graphql": "^0.5.3",
     "graphql": "^0.6.2",
     "graphql-relay": "^0.4.2",
+    "jwt-decode": "^2.1.0",
     "lodash": "^4.14.2",
     "react": "^15.2.1",
     "react-bootstrap": "^0.30.2",
     "react-dom": "^15.2.1",
     "react-router": "^2.6.1",
-    "react-scripts": "0.2.1",
+    "react-scripts": "git+https://github.com/facebookincubator/create-react-app.git",
     "sqlite3": "^3.1.4"
   },
   "eslintConfig": {

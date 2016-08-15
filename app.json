@@ -1,16 +1,13 @@
 {
-  "name": "spool",
-  "description": "Configuration for review apps",
-  "scripts": {
-  },
-  "env": {
-  },
-  "formation": {
-  },
-  "addons": [
-
-  ],
-  "buildpacks": [
-
-  ]
+    "name": "SPOOL",
+    "description": "Helping folk with learning disabilities get heard by policy-makers",
+    "repository": "https://github.com/neontribe/spool.git",
+    "env": {
+        "REACT_APP_AUTH0_DOMAIN": {
+            "required": true
+        },
+        "REACT_APP_AUTH0_CLIENT_ID": {
+            "required": true
+        }
+    }
 }
