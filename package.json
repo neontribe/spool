@@ -16,7 +16,7 @@
     "start-ui": "react-scripts start",
     "build": "react-scripts build && cp -r ./static/* ./build/static/",
     "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 9009",
+    "storybook": "start-storybook -p 9009 -s ./",
     "build-storybook": "build-storybook",
     "start": "node src/server/index.js",
     "postinstall": "npm run build"
