@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import Relay from 'react-relay';
 import { Jumbotron } from 'react-bootstrap';
 import _ from 'lodash';
 import MediaForm from './MediaForm';
 import SentimentForm from './SentimentForm';
 import TopicForm from './TopicForm';
+import CreateEntryMutation from '../relay/mutations/createEntryMutation.js';
 
 class EntryForm extends Component {
 
@@ -26,7 +28,10 @@ class EntryForm extends Component {
       if (next) {
           this.setState({step: next});
       } else {
-          this.props.done(entry);
+          this.props.relay.commitUpdate(
+              new CreateEntryMutation(entry)
+          );
+          this.props.done();
       }
   }
 
@@ -52,7 +57,8 @@ EntryForm.propTypes = {
     step: React.PropTypes.string,
     steps: React.PropTypes.array,
     done: React.PropTypes.func,
-    entry: React.PropTypes.object
+    entry: React.PropTypes.object,
+    savedEntry: React.PropTypes.object
 }
 
 EntryForm.defaultProps = {
@@ -61,4 +67,13 @@ EntryForm.defaultProps = {
     entry: {}
 }
 
-export default EntryForm;
+
+export default Relay.createContainer(EntryForm, {
+    fragments: {
+        savedEntry: Relay.QL`
+            fragment on Entry {
+                id
+                _id
+            }`
+    }
+});
