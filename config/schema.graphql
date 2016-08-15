@@ -1,0 +1,82 @@
+schema {
+  query: Query
+  mutation: Mutations
+}
+
+input CreateEntryInput {
+  entry: EntryInput
+  clientMutationId: String!
+}
+
+type CreateEntryPayload {
+  entry: Entry
+  clientMutationId: String!
+}
+
+type Entry implements Node {
+  id: ID!
+  _id: Int
+  media: Media
+  author: User
+  owner: User
+  sentiment: Sentiment
+  topic: Topic
+}
+
+input EntryInput {
+  media: MediaInput
+  author: Int
+  owner: Int
+  sentiment: String
+  topic: [TopicInput]
+}
+
+type ImageMedia {
+  text: String
+}
+
+union Media = VideoMedia | ImageMedia | TextMedia
+
+input MediaInput {
+  text: String
+}
+
+type Mutations {
+  createEntry(input: CreateEntryInput!): CreateEntryPayload
+}
+
+interface Node {
+  id: ID!
+}
+
+type Query {
+  node(id: ID!): Node
+  entryByOwner(id: Int): [Entry]
+}
+
+type Sentiment {
+  type: String
+}
+
+type TextMedia {
+  text: String
+}
+
+type Topic {
+  type: String
+}
+
+input TopicInput {
+  type: String
+}
+
+type User {
+  id: Int
+  firstName: String
+  lastName: String
+  email: String
+}
+
+type VideoMedia {
+  text: String
+}
