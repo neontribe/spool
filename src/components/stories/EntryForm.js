@@ -2,6 +2,7 @@ import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import EntryForm from '../EntryForm';
 import { Grid, Row, Col } from 'react-bootstrap';
+import { textEntry } from './fixtures';
 
 storiesOf('EntryForm', module)
   .add('Initial View', () => (
@@ -13,14 +14,11 @@ storiesOf('EntryForm', module)
         </Row>
     </Grid>
   ))
-  .add('Edit View', () => (
+  .add('Edit Test entry View', () => (
     <Grid>
         <Row>
             <Col>
-                <EntryForm entry={{
-                        media: 'test',
-                        sentiment: 'happy',
-                        topic: 'sport'}}
+                <EntryForm entry={textEntry}
                         done={action('Done')}/>
             </Col>
         </Row>
