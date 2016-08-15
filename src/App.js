@@ -1,9 +1,29 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
+import { withRouter } from 'react-router';
+import { Grid, Row, Col, PageHeader, Button } from 'react-bootstrap';
 
 class App extends Component {
 
+  constructor(...args) {
+      super(...args);
+
+      this.logout = this.logout.bind(this);
+  }
+
+  logout(){
+    // destroys the session data
+    this.props.route.auth.logout();
+    // redirects to login page
+    this.props.router.push('/login');
+  }
+
   render() {
+    let children = null;
+    if (this.props.children) {
+        children = React.cloneElement(this.props.children, {
+            auth: this.props.route.auth
+        });
+    }
     return (
         <Grid>
             <Row>
@@ -13,7 +33,12 @@ class App extends Component {
             </Row>
             <Row>
                 <Col md={12}>
-                    { this.props.children }
+                    { children }
+                </Col>
+            </Row>
+            <Row>
+                <Col md={12}>
+                    {this.props.route.auth.loggedIn() && <Button bsStyle="link" onClick={this.logout}>Log out</Button>}
                 </Col>
             </Row>
         </Grid>
@@ -21,4 +46,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);
