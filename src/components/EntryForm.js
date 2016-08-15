@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Jumbotron } from 'react-bootstrap';
+
 import _ from 'lodash';
 import MediaForm from './MediaForm';
 import SentimentForm from './SentimentForm';
@@ -32,7 +32,6 @@ class EntryForm extends Component {
 
   render() {
     return (
-        <Jumbotron>
           <form>
             {{
                 media: (<MediaForm initialValue={this.state.entry.media}
@@ -43,7 +42,6 @@ class EntryForm extends Component {
                                     save={_.partial(this.saveEntry, 'topic')}/>)
             }[this.state.step]}
           </form>
-         </Jumbotron>
     );
   }
 }
