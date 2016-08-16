@@ -62,7 +62,7 @@ class Login extends Component {
       <div>
         <h2>Login</h2>
         <Form onSubmit={this.handleSubmit}>
-          <FormGroup controlId="email">
+          <FormGroup controlId="email" bsSize="large">
             <ControlLabel>E-mail</ControlLabel>
             <FormControl type="email"
                 placeholder="yours@example.com"
@@ -71,7 +71,7 @@ class Login extends Component {
                 onChange={this.handleChange} />
           </FormGroup>
 
-          <FormGroup controlId="password">
+          <FormGroup controlId="password" bsSize="large">
             <ControlLabel>Password</ControlLabel>
             <FormControl type="text"
                 name="password"
@@ -82,8 +82,8 @@ class Login extends Component {
           </FormGroup>
 
           <ButtonToolbar>
-            <Button type="submit" bsStyle="primary">Sign In</Button>
-            <Button onClick={this.signUp}>Sign Up</Button>
+            <Button type="submit" bsStyle="primary" bsSize="large">Sign In</Button>
+            <Button onClick={this.signUp} bsSize="large">Sign Up</Button>
             <Button bsStyle="link" onClick={this.googleLogin}>Login with Google</Button>
           </ButtonToolbar>
         </Form>
