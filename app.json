@@ -8,6 +8,7 @@
         },
         "REACT_APP_AUTH0_CLIENT_ID": {
             "required": true
-        }
+        },
+        "NODE_ENV": "development"
     }
 }
