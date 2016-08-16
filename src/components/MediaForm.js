@@ -1,53 +1,50 @@
 import React, { Component } from 'react';
-import { FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
+import { Grid, Row, Col, Button } from 'react-bootstrap';
 
 class MediaForm extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            value: props.initialValue
-        };
-
-        this.continue = this.continue.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    continue(event) {
-        event.preventDefault();
-        this.props.save(this.state.value);
-    }
-
-    handleChange(event) {
-        this.setState({
-            value: event.target.value
-        });
+        this.state = this.props.media;
     }
 
     render() {
         return (
-            <FormGroup controlId="media">
-                <ControlLabel>Entry Text</ControlLabel>
-                <FormControl
-                    componentClass="textarea"
-                    placeholder=""
-                    value={this.state.value}
-                    onChange={this.handleChange} />
-                <Button bsStyle="primary" bsSize="large" block
-                    onClick={this.continue}
-                    disabled={!this.state.value}>Next</Button>
-            </FormGroup>
+            <Grid>
+                <Row>
+                    <Col xs={6}>
+                        <Button>Video</Button>
+                    </Col>
+                    <Col xs={6}>
+                        <Button>Image</Button>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={3}>
+                    </Col>
+                    <Col xs={6}>
+                        <Button>Text</Button>
+                    </Col>
+                    <Col xs={3}>
+                    </Col>
+                </Row>
+            </Grid>
         );
     }
 }
 
 MediaForm.propTypes = {
-    initialValue: React.PropTypes.string,
-    save: React.PropTypes.func.isRequired
+    media: React.PropTypes.object
 };
 
 MediaForm.defaultProps = {
-    initialValue: ''
-};
+    media: {
+        text: null,
+        image: null,
+        video: null,
+        type: null,
+        thumbnail: null
+    }
+}
 
 export default MediaForm;
