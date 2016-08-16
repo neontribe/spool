@@ -30,6 +30,7 @@ export default class AuthService extends EventEmitter {
     // Clear user token and profile data from localStorage
     localStorage.removeItem('id_token');
     localStorage.removeItem('profile');
+    this.emit('profile_updated', null);
   }
 
   loggedIn(){
@@ -71,7 +72,7 @@ export default class AuthService extends EventEmitter {
   getProfile(){
     // Retrieves the profile data from localStorage
     const profile = localStorage.getItem('profile');
-    return profile ? JSON.parse(localStorage.profile) : {};
+    return profile ? JSON.parse(localStorage.profile) : null;
   }
 
 
