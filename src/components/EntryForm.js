@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import _ from 'lodash';
 import MediaTypeChooser from './MediaTypeChooser';
 import TextForm from './TextForm';
