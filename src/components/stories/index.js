@@ -5,5 +5,6 @@ require('./Home.js');
 require('./ProfileLink');
 require('./EntryForm');
 require('./MediaForm');
+require('./TextForm');
 require('./SentimentForm');
 require('./TopicForm');
