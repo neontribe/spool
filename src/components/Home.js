@@ -26,7 +26,7 @@ export class Home extends Component {
 export const HomeContainer = Relay.createContainer(Home, {
     fragments: {
         viewer: () => Relay.QL`
-        fragment on viewer {
+        fragment on Viewer {
            id
         }`,
     }
