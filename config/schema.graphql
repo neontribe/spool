@@ -68,7 +68,7 @@ type PageInfo {
 
 type Query {
   node(id: ID!): Node
-  entries(after: String, first: Int, before: String, last: Int): EntryConnection
+  viewer: Viewer
 }
 
 type Sentiment {
@@ -96,4 +96,9 @@ type User {
 
 type VideoMedia {
   text: String
+}
+
+type Viewer implements Node {
+  id: ID!
+  entries: EntryConnection
 }
