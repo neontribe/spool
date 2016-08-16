@@ -23,6 +23,16 @@ type Entry implements Node {
   topic: Topic
 }
 
+type EntryConnection {
+  pageInfo: PageInfo!
+  edges: [EntryEdge]
+}
+
+type EntryEdge {
+  node: Entry
+  cursor: String!
+}
+
 input EntryInput {
   media: MediaInput
   author: Int
@@ -49,9 +59,16 @@ interface Node {
   id: ID!
 }
 
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
 type Query {
   node(id: ID!): Node
-  entryByOwner(id: Int): [Entry]
+  entries(after: String, first: Int, before: String, last: Int): EntryConnection
 }
 
 type Sentiment {

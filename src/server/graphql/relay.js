@@ -45,6 +45,16 @@ const EntryType = new ql.GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
+var entryConnectionDefinition = 
+    relayql.connectionDefinitions({nodeType: EntryType});
+
+const entriesField = {
+    name: 'Entries',
+    type: entryConnectionDefinition.connectionType,
+    args: relayql.connectionArgs,
+    resolve: (entries, args) => relayql.connectionFromPromisedArray(db.lib.Entry.findByOwnerId(db.connect(), 2), args)
+};
+
 const createEntry = relayql.mutationWithClientMutationId({
     name: 'CreateEntry',
     inputFields: {
@@ -65,18 +75,10 @@ const createEntry = relayql.mutationWithClientMutationId({
     }
 });
 
-const entryByOwnerField = {
-    type: new ql.GraphQLList(EntryType),
-    args: {
-        id: { type: ql.GraphQLInt }
-    },
-    resolve: (_, {id}) => db.lib.Entry.findByOwnerId(db.connect(), id)
-} ;
-
 module.exports = {
     fields: {
         nodeField,
-        entryByOwnerField
+        entriesField 
     },
     mutations: {
         createEntry
