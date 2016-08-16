@@ -4,7 +4,7 @@ require('./AddEntryForm.js');
 require('./Home.js');
 require('./ProfileLink');
 require('./EntryForm');
-require('./MediaForm');
+require('./MediaTypeChooser');
 require('./TextForm');
 require('./SentimentForm');
 require('./TopicForm');
