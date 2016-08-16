@@ -48,12 +48,22 @@ const EntryType = new ql.GraphQLObjectType({
 var entryConnectionDefinition = 
     relayql.connectionDefinitions({nodeType: EntryType});
 
-const entriesField = {
-    name: 'Entries',
-    type: entryConnectionDefinition.connectionType,
-    args: relayql.connectionArgs,
-    resolve: (entries, args) => relayql.connectionFromPromisedArray(db.lib.Entry.findByOwnerId(db.connect(), 2), args)
-};
+const ViewerType = new ql.GraphQLObjectType({
+    name: 'Viewer',
+    fields: {
+        id: relayql.globalIdField(),
+        entries: {
+            type: entryConnectionDefinition.connectionType,
+            resolve: (viewer, args) => relayql.connectionFromPromisedArray(db.lib.Entry.findByOwnerId(db.connect(), 2), args)
+        }
+    },
+    interfaces: [nodeInterface]
+});
+
+const viewerField = {
+    type: ViewerType,
+    resolve: () => { return { id: 2} } 
+}
 
 const createEntry = relayql.mutationWithClientMutationId({
     name: 'CreateEntry',
@@ -78,7 +88,7 @@ const createEntry = relayql.mutationWithClientMutationId({
 module.exports = {
     fields: {
         nodeField,
-        entriesField 
+        viewerField
     },
     mutations: {
         createEntry
