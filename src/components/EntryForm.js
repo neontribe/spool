@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import _ from 'lodash';
-import MediaForm from './MediaForm';
+import TextForm from './TextForm';
 import SentimentForm from './SentimentForm';
 import TopicForm from './TopicForm';
 
@@ -34,7 +34,7 @@ class EntryForm extends Component {
     return (
           <form>
             {{
-                media: (<MediaForm initialValue={this.state.entry.media}
+                media: (<TextForm initialValue={this.state.entry.media}
                                 save={_.partial(this.saveEntry, 'media')}/>),
                 sentiment: (<SentimentForm initialValue={this.state.entry.sentiment}
                                     save={_.partial(this.saveEntry, 'sentiment')}/>),

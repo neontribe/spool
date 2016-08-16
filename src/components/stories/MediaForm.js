@@ -12,13 +12,4 @@ storiesOf('MediaForm', module)
             </Col>
         </Row>
     </Grid>
-  ))
-  .add('Edit View', () => (
-    <Grid>
-        <Row>
-            <Col>
-                <MediaForm initialValue="I enjoy playing with computers" save={action('Save Value')}/>
-            </Col>
-        </Row>
-    </Grid>
   ));
