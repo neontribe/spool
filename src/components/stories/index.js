@@ -2,6 +2,7 @@ require('./Entry.js');
 require('./Timeline.js');
 require('./AddEntryForm.js');
 require('./Home.js');
+require('./ProfileLink');
 require('./EntryForm');
 require('./MediaForm');
 require('./SentimentForm');
