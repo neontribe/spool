@@ -85,6 +85,7 @@
   },
   "babel": {
     "presets": [
+      {"plugins": ["./scripts/babelRelayPlugin.js"]},
       "es2015",
       "react"
     ],
