@@ -5,7 +5,7 @@ import { Router, Route, IndexRedirect, hashHistory, applyRouterMiddleware } from
 import useRelay from 'react-router-relay';
 import AuthService from './auth/AuthService';
 import App from './App';
-import Home from './components/Home';
+import { HomeContainer } from './components/Home';
 import Login from './components/Login';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -25,13 +25,19 @@ const parseAuthHash = (nextState, replace) => {
   replace('/home');
 }
 
+const HomeQueries = {
+    viewer: () => Relay.QL`query { viewer }`,
+};
+
+Relay.injectNetworkLayer(new Relay.DefaultNetworkLayer('http://localhost:3001/graphql'));
+
 ReactDOM.render(
   // TODO: Shift to browserHistory only blocked by auth0 access_token handling
   // see: https://auth0.com/forum/t/having-trouble-with-login-following-the-react-guide/3084
   <Router history={hashHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
     <Route path="/" component={App} auth={auth}>
         <IndexRedirect to="/home" />
-        <Route path="home" component={Home} onEnter={requireAuth} />
+        <Route path="home" component={HomeContainer} queries={HomeQueries} onEnter={requireAuth} />
         <Route path="login" component={Login} />
         <Route path="access_token=:token" onEnter={parseAuthHash} />
     </Route>
