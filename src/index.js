@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRedirect, hashHistory } from 'react-router';
+import Relay from 'react-relay';
+import { Router, Route, IndexRedirect, hashHistory, applyRouterMiddleware } from 'react-router';
+import useRelay from 'react-router-relay';
 import AuthService from './auth/AuthService';
 import App from './App';
 import Home from './components/Home';
@@ -26,7 +28,7 @@ const parseAuthHash = (nextState, replace) => {
 ReactDOM.render(
   // TODO: Shift to browserHistory only blocked by auth0 access_token handling
   // see: https://auth0.com/forum/t/having-trouble-with-login-following-the-react-guide/3084
-  <Router history={hashHistory}>
+  <Router history={hashHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
     <Route path="/" component={App} auth={auth}>
         <IndexRedirect to="/home" />
         <Route path="home" component={Home} onEnter={requireAuth} />
