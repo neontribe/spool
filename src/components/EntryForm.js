@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import _ from 'lodash';
+import MediaTypeChooser from './MediaTypeChooser';
 import TextForm from './TextForm';
 import SentimentForm from './SentimentForm';
 import TopicForm from './TopicForm';
@@ -28,18 +29,22 @@ class EntryForm extends Component {
       } else {
           this.props.done(entry);
       }
+      console.log(entry);
   }
 
   render() {
+
     return (
           <form>
             {{
-                media: (<TextForm initialValue={this.state.entry.media}
-                                save={_.partial(this.saveEntry, 'media')}/>),
-                sentiment: (<SentimentForm initialValue={this.state.entry.sentiment}
-                                    save={_.partial(this.saveEntry, 'sentiment')}/>),
-                topic: (<TopicForm initialValue={this.state.entry.topic}
-                                    save={_.partial(this.saveEntry, 'topic')}/>)
+                mediachoice: (<MediaTypeChooser save={_.partial(this.saveEntry, 'type')} />),
+                media: ({
+                    text: (<TextForm save={_.partial(this.saveEntry, 'text')}/>),
+                    video: (<TextForm save={_.partial(this.saveEntry, 'video')}/>),
+                    image: (<TextForm save={_.partial(this.saveEntry, 'image')}/>)
+                }[this.state.entry.type]),
+                sentiment: (<SentimentForm save={_.partial(this.saveEntry, 'sentiment')}/>),
+                topic: (<TopicForm save={_.partial(this.saveEntry, 'topic')}/>)
             }[this.state.step]}
           </form>
     );
@@ -54,8 +59,8 @@ EntryForm.propTypes = {
 }
 
 EntryForm.defaultProps = {
-    step: 'media',
-    steps: ['media', 'sentiment', 'topic'],
+    step: 'mediachoice',
+    steps: ['mediachoice', 'media', 'sentiment', 'topic'],
     entry: {}
 }
 
