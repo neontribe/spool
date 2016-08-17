@@ -1,22 +1,24 @@
 import React, { Component } from 'react';
+import Relay from 'react-relay';
 import { Grid, Row, Col, Image } from 'react-bootstrap';
 
-class Entry extends Component {
+export class Entry extends Component {
+    static propTypes = {
+        entry: React.PropTypes.object.isRequired
+    }
     render() {
         return (
             <Grid>
                 <Row>
                     <Col xs={6}>
-                        <blockquote>{this.props.media.content}</blockquote>
+                        <blockquote>{this.props.entry.media.text}</blockquote>
                     </Col>
                     <Col xs={1}>
-                        {this.props.topic.map((topic, i) => {
-                            return (<span key={i}>{topic}</span>);
-                        })}
+                        <span>{this.props.entry.topic.type}</span>
                     </Col>
                     <Col xs={1}>
-                        <Image src={'/static/emoji/' + this.props.sentiment + '.svg'} responsive
-                                alt={this.props.sentiment}/>
+                        <Image src={'/static/emoji/' + this.props.entry.sentiment.type + '.svg'} responsive
+                                alt={this.props.entry.sentiment.type}/>
                     </Col>
                 </Row>
             </Grid>
@@ -24,12 +26,23 @@ class Entry extends Component {
     }
 }
 
-Entry.propTypes = {
-    media: React.PropTypes.object.isRequired,
-    author: React.PropTypes.string,
-    owner: React.PropTypes.string,
-    sentiment: React.PropTypes.string,
-    topic: React.PropTypes.array,
-};
-
-export default Entry
+export const EntryContainer = Relay.createContainer(Entry, {
+    fragments: {
+        entry: () => Relay.QL`
+        fragment on Entry {
+            id
+            _id
+            media {
+                ... on TextMedia {
+                    text
+                }
+            }
+            topic {
+                type
+            }
+            sentiment {
+                type
+            }
+        }`,
+    }
+});
