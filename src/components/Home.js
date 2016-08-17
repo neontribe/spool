@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import Relay from 'react-relay';
 import { Grid, Row, Col } from 'react-bootstrap';
 import AddEntryForm from './AddEntryForm';
-import Timeline from './Timeline';
 
-class Home extends Component {
+export class Home extends Component {
     render() {
         return (
             <Grid>
@@ -14,7 +14,7 @@ class Home extends Component {
                 </Row>
                 <Row>
                     <Col>
-                        <Timeline entries={[]} />
+                        {this.props.children}
                     </Col>
                 </Row>
             </Grid>
@@ -22,4 +22,11 @@ class Home extends Component {
     }
 };
 
-export default Home;
+export const HomeContainer = Relay.createContainer(Home, {
+    fragments: {
+        viewer: () => Relay.QL`
+        fragment on Viewer {
+            id
+        }`,
+    }
+});

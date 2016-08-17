@@ -5,7 +5,7 @@ const QueryType = new ql.GraphQLObjectType({
     name: 'Query',
     fields: {
         node: relay.fields.nodeField,
-        entryByOwner: relay.fields.entryByOwnerField
+        viewer: relay.fields.viewerField
     },
 })
 
