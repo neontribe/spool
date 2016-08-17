@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import _ from 'lodash';
 import MediaTypeChooser from './MediaTypeChooser';
+import VideoForm from './VideoForm';
 import TextForm from './TextForm';
 import SentimentForm from './SentimentForm';
 import TopicForm from './TopicForm';
@@ -40,7 +41,7 @@ class EntryForm extends Component {
                 mediachoice: (<MediaTypeChooser save={_.partial(this.saveEntry, 'type')} />),
                 media: ({
                     text: (<TextForm save={_.partial(this.saveEntry, 'text')}/>),
-                    video: (<TextForm save={_.partial(this.saveEntry, 'video')}/>),
+                    video: (<VideoForm save={_.partial(this.saveEntry, 'video')}/>),
                     image: (<TextForm save={_.partial(this.saveEntry, 'image')}/>)
                 }[this.state.entry.type]),
                 sentiment: (<SentimentForm save={_.partial(this.saveEntry, 'sentiment')}/>),
