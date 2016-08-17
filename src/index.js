@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Relay from 'react-relay';
-import { Router, Route, IndexRedirect, hashHistory, applyRouterMiddleware } from 'react-router';
+import { Router, Route, IndexRoute, IndexRedirect, hashHistory, applyRouterMiddleware } from 'react-router';
 import useRelay from 'react-router-relay';
 import AuthService from './auth/AuthService';
 import App from './App';
@@ -10,6 +10,9 @@ import Login from './components/Login';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
+
+
+import { TimelineContainer } from './components/Timeline';
 
 const auth = new AuthService(process.env.REACT_APP_AUTH0_CLIENT_ID, process.env.REACT_APP_AUTH0_DOMAIN);
 
@@ -25,9 +28,10 @@ const parseAuthHash = (nextState, replace) => {
   replace('/home');
 }
 
-const HomeQueries = {
+const ViewerQueries = {
     viewer: () => Relay.QL`query { viewer }`,
 };
+
 
 Relay.injectNetworkLayer(new Relay.DefaultNetworkLayer('http://localhost:3001/graphql'));
 
@@ -37,7 +41,9 @@ ReactDOM.render(
   <Router history={hashHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
     <Route path="/" component={App} auth={auth}>
         <IndexRedirect to="/home" />
-        <Route path="home" component={HomeContainer} queries={HomeQueries} onEnter={requireAuth} />
+        <Route path="home" component={HomeContainer} queries={ViewerQueries} onEnter={requireAuth}>
+            <IndexRoute component={TimelineContainer} queries={ViewerQueries} onEnter={requireAuth} />
+        </Route>
         <Route path="login" component={Login} />
         <Route path="access_token=:token" onEnter={parseAuthHash} />
     </Route>
