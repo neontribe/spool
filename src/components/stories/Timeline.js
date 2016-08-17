@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
-import Timeline from '../Timeline';
+import { Timeline } from '../Timeline';
 import { entries } from './fixtures';
 
 storiesOf('Timeline', module)
