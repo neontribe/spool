@@ -16,9 +16,9 @@ CREATE TABLE topic_type ( topic_type_id INTEGER PRIMARY KEY AUTOINCREMENT, type 
 -- index these
 CREATE TABLE x_entry_topics ( entry_id INTEGER, topic_type_id INTEGER );
 
-INSERT INTO topic_type (type) VALUES ("transport"), ("shopping"), ("health"), ("entertainment");
+INSERT INTO topic_type (type) VALUES ("transport"), ("shopping"), ("health"), ("entertainment"), ("sport"), ("public_transport");
 INSERT INTO media_type (type) VALUES ("text"), ("video"), ("image");
-INSERT INTO sentiment_type (type) VALUES ("good"), ("bad");
+INSERT INTO sentiment_type (type) VALUES ("happy"), ("sad");
 
 /*
 Fixture Data
