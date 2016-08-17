@@ -6,8 +6,13 @@ const cors = require('cors');
 
 var app = express();
 
+var useCors = function () { return (req, res, next) => next(); }
+if(process.env.NODE_ENV !== 'production') {
+    useCors = cors;
+}
+
 /* GRAPHQL Endpoint */
-app.use('/graphql', cors(), graphqlHTTP({
+app.use('/graphql', useCors(), graphqlHTTP({
     schema: schema,
     pretty: true,
     graphiql: true
