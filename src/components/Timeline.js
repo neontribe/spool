@@ -17,7 +17,7 @@ export class Timeline extends Component {
 
 export const TimelineContainer = Relay.createContainer(Timeline, {
     initialVariables: {
-        first: 10,
+        first: 100,
     },
     fragments: {
         viewer: () => Relay.QL`

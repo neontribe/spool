@@ -2,6 +2,7 @@ const ql = require('graphql');
 const relayql = require('graphql-relay');
 const types = require('./types.js');
 const db = require('../database/database.js');
+const _ = require('lodash');
 
 var {nodeInterface, nodeField} = relayql.nodeDefinitions(
     /* retrieve given an id and type */
@@ -84,11 +85,21 @@ const createEntry = relayql.mutationWithClientMutationId({
         }
     },
     outputFields: {
-        entry: {
-            type: EntryType,
+        viewer: {
+            type: ViewerType,
+            resolve: () => { return { id: 2 } }
+        },
+        entryEdge: {
+            type: entryConnectionDefinition.edgeType,
             resolve: (entry) => {
-                return entry;
-            }
+                return db.lib.Entry.findByOwnerId(db.connect(), 2).then(function(rows) {
+                    var indexOfEntry = _.findIndex(rows, { '_id': entry._id });
+                    return {
+                        cursor: relayql.offsetToCursor(indexOfEntry),
+                        node: entry,
+                    }
+                });
+           }
         }
     },
     mutateAndGetPayload: ({entry}) => { 
