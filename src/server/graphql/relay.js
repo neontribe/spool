@@ -84,11 +84,20 @@ const createEntry = relayql.mutationWithClientMutationId({
         }
     },
     outputFields: {
+        viewer: {
+            type: ViewerType,
+            resolve: () => { return { id: 2 } }
+        }
         entry: {
-            type: EntryType,
+            type: entryConnectionDefinition.edgeType,
             resolve: (entry) => {
-                return entry;
-            }
+                return db.lib.Entry.findByOwnerId(db.connect(), 2).then(function(rows) {
+                    return {
+                        cursor: relayql.cursorForObjectInConnection(rows, entry)
+                        node: entry,
+                    }
+                });
+           }
         }
     },
     mutateAndGetPayload: ({entry}) => { 

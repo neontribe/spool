@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { Grid, Row, Col } from 'react-bootstrap';
-import AddEntryForm from './AddEntryForm';
+import { AddEntryFormContainer } from './AddEntryForm';
 
 export class Home extends Component {
     render() {
@@ -9,7 +9,7 @@ export class Home extends Component {
             <Grid>
                 <Row>
                     <Col>
-                        <AddEntryForm />
+                        <AddEntryFormContainer />
                     </Col>
                 </Row>
                 <Row>
@@ -26,7 +26,8 @@ export const HomeContainer = Relay.createContainer(Home, {
     fragments: {
         viewer: () => Relay.QL`
         fragment on Viewer {
-            id
+            id,
+            ${AddEntryFormContainer.getFragment('viewer')}
         }`,
     }
 });

@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import Relay from 'react-relay';
 import { Button, Panel } from 'react-bootstrap';
 import EntryForm from './EntryForm';
 
-
-class AddEntryForm extends Component {
+export class AddEntryForm extends Component {
+    static propTypes = {
+        open: React.PropTypes.bool
+    }
+    static defaultProps = {
+        open: false
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -26,12 +32,12 @@ class AddEntryForm extends Component {
     }
 };
 
-AddEntryForm.propTypes = {
-    open: React.PropTypes.bool
-};
-
-AddEntryForm.defaultProps = {
-    open: false
-};
-
-export default AddEntryForm;
+export const AddEntryFormContainer extends Relay.createContainer(AddEntryForm, {
+    fragments: {
+        viewer: Relay.QL`
+            fragment on Viewer {
+                id
+            }
+        `,
+    }
+});
