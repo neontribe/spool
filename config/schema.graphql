@@ -9,7 +9,8 @@ input CreateEntryInput {
 }
 
 type CreateEntryPayload {
-  entry: Entry
+  viewer: Viewer
+  entryEdge: EntryEdge
   clientMutationId: String!
 }
 
@@ -38,7 +39,7 @@ input EntryInput {
   author: Int
   owner: Int
   sentiment: String
-  topic: [TopicInput]
+  topic: String
 }
 
 type ImageMedia {
@@ -80,10 +81,6 @@ type TextMedia {
 }
 
 type Topic {
-  type: String
-}
-
-input TopicInput {
   type: String
 }
 

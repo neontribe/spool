@@ -66,13 +66,6 @@ const MediaInputType = new ql.GraphQLInputObjectType({
     }
 });
 
-const TopicInputType = new ql.GraphQLInputObjectType({
-    name: 'TopicInput',
-    fields: {
-        type: { type: ql.GraphQLString }
-    }
-});
-
 const EntryInputType = new ql.GraphQLInputObjectType({
     name: 'EntryInput',
     fields: {
@@ -80,7 +73,7 @@ const EntryInputType = new ql.GraphQLInputObjectType({
         author: { type: ql.GraphQLInt },
         owner: { type: ql.GraphQLInt },
         sentiment: { type: ql.GraphQLString },
-        topic: { type: new ql.GraphQLList(TopicInputType) }
+        topic: { type: ql.GraphQLString }
     }
 });
 
@@ -93,6 +86,5 @@ module.exports = {
     SentimentType,
     TopicType,
     MediaInputType,
-    TopicInputType,
     EntryInputType
 };

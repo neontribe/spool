@@ -186,8 +186,7 @@ class Entry {
                     // insert the topics then resolve the main promise with the entry insert id
                     // we dont actually care about the IDs Topic.create will resolve...
                     // we control the execution purely to ensure no race conditions exist
-                    Promise.all(entry.topic.map((t) => Topic.create(db, id, t.type)))
-                        .then(() => resolve(id))
+                    Topic.create(db, id, entry.topic).then(() => resolve(id));
                 });
             });
         });
