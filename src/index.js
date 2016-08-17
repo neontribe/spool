@@ -33,7 +33,7 @@ const ViewerQueries = {
 };
 
 
-Relay.injectNetworkLayer(new Relay.DefaultNetworkLayer('http://localhost:3001/graphql'));
+Relay.injectNetworkLayer(new Relay.DefaultNetworkLayer(process.env.REACT_APP_GRAPHQL_ENDPOINT || window.location.origin+'/graphql'));
 
 ReactDOM.render(
   // TODO: Shift to browserHistory only blocked by auth0 access_token handling
