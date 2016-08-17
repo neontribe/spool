@@ -19,6 +19,7 @@
     "build-storybook": "build-storybook",
     "start": "node src/server/index.js",
     "start-dev": "export $(cat .env | xargs) && npm start",
+    "build-schema": "node ./scripts/updateSchema.js",
     "postinstall": "npm run build"
   },
   "repository": {

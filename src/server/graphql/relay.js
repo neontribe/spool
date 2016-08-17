@@ -9,11 +9,21 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
         // keeping unusde 'type' here since it is important later and easy to forget
         // eslint-disable-next-line no-unused-vars
         var {type, id} = relayql.fromGlobalId(globalId);
-        return db.lib.Entry.findById(db.connect(), id).then((entries) => entries.shift());
+        if (type === 'Entry') {
+            return db.lib.Entry.findById(db.connect(), id).then((entries) => entries.shift());
+        } else if (type === 'Viewer') {
+            return { id: 2 }
+        }
     },
     /* resolve given an object */
-    // eslint-disable-next-line no-use-before-define
-    (obj) => EntryType);
+    (obj) => {
+        if (obj.media) {
+            // eslint-disable-next-line no-use-before-define
+            return EntryType
+        } else {
+            return ViewerType
+        }
+    });
 
 const EntryType = new ql.GraphQLObjectType({
     name: 'Entry',
@@ -54,6 +64,7 @@ const ViewerType = new ql.GraphQLObjectType({
         id: relayql.globalIdField(),
         entries: {
             type: entryConnectionDefinition.connectionType,
+            args: relayql.connectionArgs,
             resolve: (viewer, args) => relayql.connectionFromPromisedArray(db.lib.Entry.findByOwnerId(db.connect(), 2), args)
         }
     },
