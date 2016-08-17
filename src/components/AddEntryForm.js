@@ -20,10 +20,15 @@ export class AddEntryForm extends Component {
         this.handleDone = this.handleDone.bind(this);
     }
 
-    handleDone(entry) {
+    handleDone(entry, cb) {
         var viewer = this.props.viewer;
+        var onSuccess = () => {
+            this.setState({open: false});
+            cb();
+        }
         this.props.relay.commitUpdate(
-            new AddEntryMutation({viewer, entry})
+            new AddEntryMutation({viewer, entry}),
+            {onSuccess}
         );
     }
 

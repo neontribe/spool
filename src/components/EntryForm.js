@@ -27,7 +27,7 @@ class EntryForm extends Component {
       if (next) {
           this.setState({step: next});
       } else {
-          this.props.done(entry);
+          this.props.done(entry, () => this.setState({step: this.props.steps[0]}));
       }
       console.log(entry);
   }
