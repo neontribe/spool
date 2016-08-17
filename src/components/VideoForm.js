@@ -106,6 +106,7 @@ class VideoForm extends Component {
     }
 
     save() {
+        this.state.mediaRecorder.stream.getTracks().map((track) => track.stop());
         this.props.save(this.state.lastTakeURL);
     }
 
