@@ -100,5 +100,5 @@ type VideoMedia {
 
 type Viewer implements Node {
   id: ID!
-  entries: EntryConnection
+  entries(after: String, first: Int, before: String, last: Int): EntryConnection
 }

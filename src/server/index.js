@@ -2,11 +2,12 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const schema = require('./graphql/schema.js');
 const path = require('path');
+const cors = require('cors');
 
 var app = express();
 
 /* GRAPHQL Endpoint */
-app.use('/graphql', graphqlHTTP({
+app.use('/graphql', cors(), graphqlHTTP({
     schema: schema,
     pretty: true,
     graphiql: true
