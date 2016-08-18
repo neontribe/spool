@@ -16,14 +16,15 @@ class Sentiment {
 class Media {
     static create(db, media) {
         var p = new Promise(function (resolve, reject) {
-            db.run(queries.media.create, {
-                $text: media.text,
-                $type: 'text'
-            }, function (error) {
-                if (error) {
-                    return reject(error);
-                }
-                return resolve(this.lastID);  
+            db.connect().then(function({client, done}) {
+                client.query(queries.media.create(media.text, 'text'), function (error, result) {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows[0].media_id);
+                    }
+                    done();
+                });
             });
         });
         return p;
@@ -79,9 +80,16 @@ class Topic {
 
     static findByEntryId(db, id) {
         var p = new Promise(function (resolve, reject) {
-            db.all(queries.topic.byEntry, {
-                $entryId: id
-            }, (error, rows) => error ? reject(error) : resolve(rows));
+            db.connect().then(function({client, done}) {
+                client.query(queries.topic.byEntry(id), function (error, result) {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows);
+                    }
+                    done();
+                });
+            });
         });
 
         p = p.then(function (rows) {
@@ -93,15 +101,17 @@ class Topic {
 
     static create(db, id, type) {
         var p = new Promise(function (resolve, reject) {
-            db.run(queries.topic.create, {
-                $entryId: id,
-                $type: type
-            }, function (error) {
-                if (error) {
-                    return reject(error);
-                }
-                resolve(this.lastID);
-            })
+            db.connect().then(function({client, done}) {
+                client.query(queries.topic.create(id, type), function (error, result) {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        //1:M, no ID
+                        resolve();
+                    }
+                    done();
+                });
+            });
         });
         return p;
     }
@@ -141,9 +151,16 @@ class Entry {
      */
     static findByOwnerId(db, id) {
         var p = new Promise(function (resolve, reject) {
-            db.all(queries.entry.byOwner, {
-                $ownerId: id
-            }, (error, rows) => error ? reject(error) : resolve(rows));
+            db.connect().then(function({client, done}) {
+                client.query(queries.entry.byOwner(id), function (error, result) {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows)
+                    }
+                    done();
+                });
+            });
         });
 
         p = p.then(function (rows) {
@@ -155,9 +172,16 @@ class Entry {
 
     static findById(db, id) {
         var p = new Promise(function (resolve, reject) {
-            db.all(queries.entry.byId, {
-                $entryId: id
-            }, (error, rows) => error ? reject(error) : resolve(rows));
+            db.connect().then(function({client, done}) {
+                client.query(queries.entry.byId(id), function (error, result) {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows)
+                    }
+                    done();
+                });
+            });
         });
 
         p = p.then(function (rows) {
@@ -171,22 +195,17 @@ class Entry {
         var p = new Promise(function (resolve, reject) {
             // sentiment is lookup during entry insert
             var mediaPromise = Media.create(db, entry.media);
-
             mediaPromise.then(function(mediaId) {
-                db.run(queries.entry.create, {
-                    $ownerId: entry.owner,
-                    $authorId: entry.author,
-                    $mediaId: mediaId,
-                    $sentimentType: entry.sentiment,
-                }, function (error) {
-                    if (error) {
-                        return reject(error);
-                    }
-                    var id = this.lastID;
-                    // insert the topics then resolve the main promise with the entry insert id
-                    // we dont actually care about the IDs Topic.create will resolve...
-                    // we control the execution purely to ensure no race conditions exist
-                    Topic.create(db, id, entry.topic).then(() => resolve(id));
+                db.connect().then(function({client, done}) {
+                    client.query(queries.entry.create(entry.author, entry.owner, mediaId, entry.sentiment), function (error, result) {
+                        if (error) {
+                            reject(error);
+                        } else {
+                            let id = result.rows[0].entry_id;
+                            Topic.create(db, id, entry.topic).then(() => resolve(id));
+                        }
+                        done();
+                    });
                 });
             });
         });
