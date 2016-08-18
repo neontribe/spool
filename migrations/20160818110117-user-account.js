@@ -26,6 +26,6 @@ exports.up = function(db, cb) {
 };
 
 exports.down = function(db, cb) {
-    db.dropTable('user', cb);
+    db.dropTable('user_account', cb);
     return null;
 };

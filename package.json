@@ -20,6 +20,9 @@
     "start": "node src/server/index.js",
     "start-dev": "export $(cat .env | xargs) && npm start",
     "build-schema": "node ./scripts/updateSchema.js",
+    "seed-database": "psql spool < seed.sql",
+    "build-database": "db-migrate up",
+    "reset-database": "db-migrate reset",
     "postinstall": "npm run build"
   },
   "repository": {
