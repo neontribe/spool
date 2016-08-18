@@ -2,6 +2,7 @@ const ql = require('graphql');
 const relayql = require('graphql-relay');
 const types = require('./types.js');
 const db = require('../database/database.js');
+const models = require('../database/models.js');
 const _ = require('lodash');
 
 var {nodeInterface, nodeField} = relayql.nodeDefinitions(
@@ -11,7 +12,7 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
         // eslint-disable-next-line no-unused-vars
         var {type, id} = relayql.fromGlobalId(globalId);
         if (type === 'Entry') {
-            return db.lib.Entry.findById(db.connect(), id).then((entries) => entries.shift());
+            return models.Entry.findById(db, id).then((entries) => entries.shift());
         } else if (type === 'Viewer') {
             return { id: 2 }
         }
@@ -50,7 +51,7 @@ const EntryType = new ql.GraphQLObjectType({
         topic: {
             type: types.TopicType,
             // we are popping a single type off the list since we are only supporting a single topic for now
-            resolve: (entry) => db.lib.Topic.findByEntryId(db.connect(), entry.id).then((topics) => topics.shift())
+            resolve: (entry) => models.Topic.findByEntryId(db, entry.id).then((topics) => topics.shift())
         }
     },
     interfaces: [nodeInterface]
@@ -66,7 +67,7 @@ const ViewerType = new ql.GraphQLObjectType({
         entries: {
             type: entryConnectionDefinition.connectionType,
             args: relayql.connectionArgs,
-            resolve: (viewer, args) => relayql.connectionFromPromisedArray(db.lib.Entry.findByOwnerId(db.connect(), 2), args)
+            resolve: (viewer, args) => relayql.connectionFromPromisedArray(models.Entry.findByOwnerId(db, 2), args)
         }
     },
     interfaces: [nodeInterface]
@@ -92,7 +93,7 @@ const createEntry = relayql.mutationWithClientMutationId({
         entryEdge: {
             type: entryConnectionDefinition.edgeType,
             resolve: (entry) => {
-                return db.lib.Entry.findByOwnerId(db.connect(), 2).then(function(rows) {
+                return models.Entry.findByOwnerId(db, 2).then(function(rows) {
                     var indexOfEntry = _.findIndex(rows, { '_id': entry._id });
                     return {
                         cursor: relayql.offsetToCursor(indexOfEntry),
@@ -103,7 +104,7 @@ const createEntry = relayql.mutationWithClientMutationId({
         }
     },
     mutateAndGetPayload: ({entry}) => { 
-        return db.lib.Entry.create(db.connect(), entry);
+        return models.Entry.create(db, entry);
     }
 });
 
