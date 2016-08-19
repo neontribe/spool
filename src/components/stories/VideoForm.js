@@ -8,7 +8,7 @@ storiesOf('VideoForm', module)
     <Grid>
         <Row>
             <Col>
-                <VideoForm save={action('Save Video')}/>
+                <VideoForm save={action('Save Video')} back={action('Back')}/>
             </Col>
         </Row>
     </Grid>

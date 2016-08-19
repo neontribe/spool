@@ -18,6 +18,7 @@ class EntryForm extends Component {
       };
 
       this.saveEntry = this.saveEntry.bind(this);
+      this.back = this.back.bind(this);
   }
 
   saveEntry(key, value) {
@@ -33,6 +34,13 @@ class EntryForm extends Component {
       console.log(entry);
   }
 
+  back() {
+      var prev = this.props.steps[this.props.steps.indexOf(this.state.step) - 1];
+      if (prev) {
+          this.setState({step: prev});
+      }
+  }
+
   render() {
 
     return (
@@ -41,7 +49,7 @@ class EntryForm extends Component {
                 mediachoice: (<MediaTypeChooser save={_.partial(this.saveEntry, 'type')} />),
                 media: ({
                     text: (<TextForm save={_.partial(this.saveEntry, 'text')}/>),
-                    video: (<VideoForm save={_.partial(this.saveEntry, 'video')}/>),
+                    video: (<VideoForm save={_.partial(this.saveEntry, 'video')} back={this.back}/>),
                     image: (<TextForm save={_.partial(this.saveEntry, 'image')}/>)
                 }[this.state.entry.type]),
                 sentiment: (<SentimentForm save={_.partial(this.saveEntry, 'sentiment')}/>),

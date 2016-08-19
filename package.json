@@ -22,6 +22,7 @@
     "build-schema": "node ./scripts/updateSchema.js",
     "postinstall": "npm run build"
   },
+  "proxy": "http://localhost:3001",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/neontribe/spool.git"
@@ -101,6 +102,8 @@
   },
   "dependencies": {
     "auth0-js": "^7.1.0",
+    "aws-sdk": "^2.5.1",
+    "body-parser": "^1.15.2",
     "bootstrap": "^3.3.7",
     "cors": "^2.7.1",
     "express": "^4.14.0",
