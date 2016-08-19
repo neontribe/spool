@@ -22,8 +22,8 @@
     "start-dev": "export $(cat .env | xargs) && npm start",
     "build-schema": "export $(cat .env | xargs) && node ./scripts/updateSchema.js",
     "seed-database": "psql spool < seed.sql",
-    "build-database": "db-migrate up",
-    "reset-database": "db-migrate reset",
+    "build-database": "db-migrate --config config/database.json up",
+    "reset-database": "db-migrate --config config/database.json reset",
     "postinstall": "npm run build && npm run build-database"
   },
   "repository": {
