@@ -3,17 +3,20 @@
     "description": "Helping folk with learning disabilities get heard by policy-makers",
     "repository": "https://github.com/neontribe/spool.git",
     "env": {
-        "REACT_APP_AUTH0_DOMAIN": {
+        "AUTH0_DOMAIN": {
             "required": true
         },
-        "REACT_APP_AUTH0_CLIENT_ID": {
+        "AUTH0_CLIENT_ID": {
+            "required": true
+        },
+        "PGSSLMODE": {
             "required": true
         },
         "NODE_ENV": "production"
     },
     "addons": [
         {
-          "plan": "heroku-postgresql",
+          "plan": "heroku-postgresql:hobby-dev",
           "as": "DATABASE"
         }
     ]
