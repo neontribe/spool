@@ -22,7 +22,7 @@
     "start-dev": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && npm start",
     "build-schema": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && node ./scripts/updateSchema.js",
     "seed-database": "psql spool < seed.sql",
-    "build-database": "db-migrate up",
+    "build-database": "export DATABASE_URL='$DATABASE_URL&native=true' && db-migrate up",
     "reset-database": "db-migrate reset",
     "postinstall": "npm run build && npm run build-database"
   },
