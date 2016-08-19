@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Alert, ResponsiveEmbed, Button, Glyphicon } from 'react-bootstrap';
-import MediaStreamRecorder from 'msr';
+import { Grid, Row, Col, Button, Alert } from 'react-bootstrap';
+import VideoRecorder from './VideoRecorder';
+
+const errorMap = {
+    PermissionDeniedError: 'You\'ve sensibly blocked access to your camera and microphone.',
+    getUserMediaUnsupported: 'We\'re unable to record video on this device.'
+};
 
 class VideoForm extends Component {
 
@@ -8,171 +13,130 @@ class VideoForm extends Component {
         super(props);
 
         this.state = {
-            playing: false,
-            recording: false,
-            mediaRecorder: null,
-            streamURL: null,
-            lastTakeURL: null,
-            playURL: null,
-            mediaConstraints: {
-                audio: true,
-                video: true
-            }
-        }
+            mode: props.mode,
+            recorderError: props.recorderError
+        };
 
-        this.startMediaStream = this.startMediaStream.bind(this);
-        this.startRecording = this.startRecording.bind(this);
-        this.stopRecording = this.stopRecording.bind(this);
-        this.onMediaSuccess = this.onMediaSuccess.bind(this);
-        this.onMediaFailure = this.onMediaFailure.bind(this);
-        this.onRecordingFinished = this.onRecordingFinished.bind(this);
-        this.replayLastTake = this.replayLastTake.bind(this);
-        this.discardLastTake = this.discardLastTake.bind(this);
+        this.back = this.back.bind(this);
         this.save = this.save.bind(this);
+        this.requestUploadMode = this.requestUploadMode.bind(this);
+        this.onMediaFailure = this.onMediaFailure.bind(this);
+        this.doS3Upload = this.doS3Upload.bind(this);
     }
 
     componentDidMount() {
-        this.startMediaStream();
+        VideoRecorder.mediaCheck()
+            .then(() => {
+                this.setState({mode: 'record'});
+            })
+            .catch((error) => {
+                this.setState({
+                    recorderError: error.name,
+                    mode: 'fallbackPrompt'
+                });
+            });
     }
 
-    startMediaStream(){
-        // First get ahold of getUserMedia, if present
-		const getUserMedia = (navigator.getUserMedia ||
-				navigator.webkitGetUserMedia ||
-				navigator.mozGetUserMedia ||
-				navigator.msGetUserMedia);
+    back() {
+        this.props.back();
+    }
 
-        if (!getUserMedia) {
-            this.setState({ mediaFailure: 'We can\'t record video on this device'});
-            return;
+    save(data) {
+        this.setState({ uploading: true });
+        this.doS3Upload(data).then((s3info) => {
+            this.setState({ uploading: false, uploaded: true });
+            this.props.save(s3info);
+        });
+    }
+
+    doS3Upload(data) {
+        let params = {
+            type: data.blob.type,
+            data: data.blob,
+            id: Math.floor(Math.random()*9000) + 10000
+        };
+
+        function getSignedUrl(fileinfo) {
+            let queryString = '?objectName=' + fileinfo.id + '&contentType=' + encodeURIComponent(fileinfo.type);
+            return fetch('/s3/sign' + queryString)
+                .then((response) => {
+                    return response.json();
+                })
+                .catch((err) => {
+                    console.log('error: ', err);
+                });
         }
 
-        getUserMedia.call(navigator, this.state.mediaConstraints, this.onMediaSuccess, this.onMediaFailure);
+        function createCORSRequest(method, url) {
+            var xhr = new XMLHttpRequest();
+
+            if (xhr.withCredentials != null) {
+                xhr.open(method, url, true);
+            } else if (typeof XDomainRequest !== "undefined") {
+                xhr = new XDomainRequest();
+                xhr.open(method, url);
+            } else {
+                xhr = null;
+            }
+
+            return xhr;
+        };
+
+        return new Promise(function(reject, resolve){
+            getSignedUrl(params)
+            .then((s3Info) => {
+                var xhr = createCORSRequest('PUT', s3Info.signedUrl);
+                xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            debugger;
+                            resolve(xhr.body);
+                        } else {
+                            reject(xhr.status);
+                        }
+                };
+
+                xhr.setRequestHeader('Content-Type', params.type);
+                xhr.setRequestHeader('x-amz-acl', 'public-read');
+                return xhr.send(params.data);
+            });
+
+        });
+
     }
 
-    onMediaSuccess(stream) {
-        const mediaRecorder = new MediaStreamRecorder(stream);
-        mediaRecorder.stream = stream;
-        mediaRecorder.ondataavailable = this.onRecordingFinished;
-
-        this.setState({
-            streaming: true,
-            streamURL: URL.createObjectURL(stream),
-            mediaRecorder: mediaRecorder
-        });
+    requestUploadMode() {
+        this.setState({mode: 'upload'});
     }
 
     onMediaFailure(error) {
-        this.setState({mediaFailure: error});
-    }
-
-    startRecording() {
-        console.log('start recording');
-        this.state.mediaRecorder.start();
         this.setState({
-            recording: true,
-            lastTakeURL: null
+            recorderError: error.name,
+            mode: 'fallbackPrompt'
         });
-    }
-
-    stopRecording() {
-        console.log('stop recording');
-        this.state.mediaRecorder.stop();
-        //this.state.mediaRecorder.stream.stop();
-        this.setState({
-            recording: false
-        });
-    }
-
-    onRecordingFinished(blob) {
-        this.setState({
-            lastTakeURL: URL.createObjectURL(blob)
-        });
-    }
-
-    replayLastTake() {
-        this.setState({
-            streaming: false,
-            playing: true
-        });
-    }
-
-    discardLastTake() {
-        this.setState({
-            streaming: true,
-            playing: false,
-            lastTakeURL: null
-        });
-    }
-
-    save() {
-        this.state.mediaRecorder.stream.getTracks().map((track) => track.stop());
-        this.props.save(this.state.lastTakeURL);
     }
 
     render() {
         return (
             <Grid>
                 <Row>
-                    <Col xs={3}/>
-                    <Col xs={6}>
-                        { this.state.mediaFailure && <Alert bsStyle="danger">{this.state.mediaFailure}</Alert>}
+                    <Col xs={12}>
+                        {(
+                            {
+                                loading: <h2>Loading</h2>,
+                                record: <VideoRecorder save={this.save} onFailure={this.onMediaFailure}/>,
+                                fallbackPrompt: <Alert bsStyle="danger">
+                                                    <h4>Oh Snap. We can&apos;t make a video</h4>
+                                                    <p>{errorMap[this.state.recorderError]}</p>
+                                                    <p>
+                                                        <Button onClick={this.requestUploadMode}>Try uploading</Button>
+                                                        <span> or </span>
+                                                        <Button onClick={this.back}>Go back</Button>
+                                                    </p>
+                                                </Alert>,
+                                upload: <h2>Uploader</h2>
+                            }
+                        )[this.state.mode]}
                     </Col>
-                    <Col xs={3}/>
-                </Row>
-                <Row>
-                    <Col xs={3}/>
-                    <Col xs={6}>
-                        { this.state.streaming &&
-                            <ResponsiveEmbed a4by3>
-                                <video
-                                    src={this.state.streamURL}
-                                    muted
-                                    autoPlay
-                                    />
-                            </ResponsiveEmbed>
-                        }
-                        { this.state.playing &&
-                            <ResponsiveEmbed a4by3>
-                                <video
-                                    src={this.state.lastTakeURL}
-                                    controls
-                                    autoPlay
-                                    />
-                            </ResponsiveEmbed>
-                        }
-                    </Col>
-                    <Col xs={3}/>
-                </Row>
-                <Row>
-                    <Col xs={3}/>
-                    <Col xs={6}>
-                        { (!this.state.recording && !this.state.playing) &&
-                            <Button bsStyle="primary" bsSize="large" block
-                              onClick={this.startRecording}>
-                              <Glyphicon glyph="record" /> Record
-                            </Button>
-                        }
-                        { this.state.recording &&
-                            <Button bsStyle="primary" bsSize="large" block
-                              onClick={this.stopRecording}>
-                              <Glyphicon glyph="stop" /> Stop Recording
-                            </Button>
-                        }
-                        { (this.state.lastTakeURL && !this.state.playing) &&
-                              <Button bsStyle="primary" bsSize="large" block
-                                onClick={this.replayLastTake}>
-                                <Glyphicon glyph="play"/> Replay
-                              </Button>
-                        }
-                        { this.state.playing &&
-                              <Button bsStyle="primary" bsSize="large" block
-                                onClick={this.discardLastTake}>
-                                <Glyphicon glyph="trash"/> Delete
-                              </Button>
-                        }
-                    </Col>
-                    <Col xs={3}/>
                 </Row>
                 <Row>
                     <Col>&nbsp;</Col>
@@ -192,9 +156,14 @@ class VideoForm extends Component {
 }
 
 VideoForm.propTypes = {
-    save: React.PropTypes.func.isRequired
+    save: React.PropTypes.func.isRequired,
+    back: React.PropTypes.func.isRequired,
+    mode: React.PropTypes.string
 };
 
-VideoForm.defaultProps = {};
+VideoForm.defaultProps = {
+    mode: 'loading',
+    recorderError: null
+};
 
 export default VideoForm;
