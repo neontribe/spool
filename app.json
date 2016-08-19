@@ -9,6 +9,12 @@
         "REACT_APP_AUTH0_CLIENT_ID": {
             "required": true
         },
-        "NODE_ENV": "development"
-    }
+        "NODE_ENV": "production"
+    },
+    "addons": [
+        {
+          "plan": "heroku-postgresql",
+          "as": "DATABASE"
+        }
+    ]
 }
