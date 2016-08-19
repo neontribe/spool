@@ -14,7 +14,7 @@ import 'bootstrap/dist/css/bootstrap-theme.css';
 
 import { TimelineContainer } from './components/Timeline';
 
-const auth = new AuthService(process.env.REACT_APP_AUTH0_CLIENT_ID, process.env.REACT_APP_AUTH0_DOMAIN);
+const auth = new AuthService(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN);
 
 // onEnter callback to validate authentication in private routes
 const requireAuth = (nextState, replace) => {
