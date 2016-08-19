@@ -3,6 +3,8 @@ const graphqlHTTP = require('express-graphql');
 const schema = require('./graphql/schema.js');
 const path = require('path');
 const cors = require('cors');
+const s3Router = require('./s3');
+const bodyParser = require('body-parser');
 
 var app = express();
 
@@ -16,6 +18,11 @@ app.use('/graphql', useCors(), graphqlHTTP({
     schema: schema,
     pretty: true,
     graphiql: true
+}));
+
+app.use('/s3', bodyParser.json(), s3Router({
+  bucket: process.env.S3_BUCKET,
+  ACL: 'private'
 }));
 
 /* Static Resouces */
