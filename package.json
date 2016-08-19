@@ -24,7 +24,7 @@
     "seed-database": "psql spool < seed.sql",
     "build-database": "db-migrate --config config/database.json up",
     "reset-database": "db-migrate --config config/database.json reset",
-    "postinstall": "npm run build && npm run build-database"
+    "postinstall": "echo $DATABASE_URL && npm run build && npm run build-database"
   },
   "repository": {
     "type": "git",
