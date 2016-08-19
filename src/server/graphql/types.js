@@ -32,10 +32,7 @@ const MediaType = new ql.GraphQLUnionType({
 const UserType = new ql.GraphQLObjectType({
     name: 'User',
     fields: {
-        id: { type: ql.GraphQLInt },
-        firstName: { type: ql.GraphQLString },
-        lastName: { type: ql.GraphQLString },
-        email: { type: ql.GraphQLString }
+        id: { type: ql.GraphQLInt }
     }
 });
 

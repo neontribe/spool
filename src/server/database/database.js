@@ -3,7 +3,6 @@ const pg = require('pg');
 const url = require('url')
 
 if (!process.env.DATABASE_URL) {
-    console.log(process.env);
     throw new Error('Cannot find DATABASE_URL in environment variables');
 }
 
@@ -22,7 +21,7 @@ const config = {
 var connectionPool = new pg.Pool(config);
 connectionPool.on('error', function (err, client) {
     //todo
-   throw err;
+    console.error('idle client error', err.message, err.stack);
 });
 
 module.exports = {

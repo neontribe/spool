@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Relay from 'react-relay';
+import { RelayNetworkLayer, urlMiddleware, authMiddleware } from 'react-relay-network-layer';
 import { Router, Route, IndexRoute, IndexRedirect, hashHistory, applyRouterMiddleware } from 'react-router';
 import useRelay from 'react-router-relay';
 import AuthService from './auth/AuthService';
@@ -16,6 +17,17 @@ import { TimelineContainer } from './components/Timeline';
 
 const auth = new AuthService(process.env.REACT_APP_AUTH0_CLIENT_ID, process.env.REACT_APP_AUTH0_DOMAIN);
 
+function setupRelayNetworkLayer() {
+    Relay.injectNetworkLayer(new RelayNetworkLayer([
+        urlMiddleware({
+            url: process.env.REACT_APP_GRAPHQL_ENDPOINT || '/graphql'
+        }),
+        authMiddleware({
+            token: () => auth.getToken()
+        })
+    ], { disableBatchQuery:  true }));
+}
+
 // onEnter callback to validate authentication in private routes
 const requireAuth = (nextState, replace) => {
   if (!auth.loggedIn()) {
@@ -24,17 +36,15 @@ const requireAuth = (nextState, replace) => {
 };
 // OnEnter for callback url to parse access_token
 const parseAuthHash = (nextState, replace) => {
-  auth.parseHash(nextState.location.hash);
-  replace('/home');
+    auth.parseHash(nextState.location.hash);
+    replace('/home');
 }
 
 const ViewerQueries = {
     viewer: () => Relay.QL`query { viewer }`,
 };
 
-
-Relay.injectNetworkLayer(new Relay.DefaultNetworkLayer(process.env.REACT_APP_GRAPHQL_ENDPOINT || window.location.origin+'/graphql'));
-
+setupRelayNetworkLayer();
 ReactDOM.render(
   // TODO: Shift to browserHistory only blocked by auth0 access_token handling
   // see: https://auth0.com/forum/t/having-trouble-with-login-following-the-react-guide/3084
