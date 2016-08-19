@@ -1,5 +1,10 @@
 language: node_js
 sudo: false
+services:
+- postgresql
+before_script:
+- psql -c 'create database spool;' -U postgres
+- export DATABASE_URL='postgresql://postgres@localhost/spool'
 script: npm test
 after_success:
 - npm run coverage
