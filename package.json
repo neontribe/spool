@@ -8,6 +8,7 @@
   "description": "Helping folk with learning disabilities get involved in policy consultations",
   "main": "src/server/index.js",
   "private": true,
+  "proxy": "http://localhost:3001",
   "scripts": {
     "test": "NODE_ENV=test nyc mocha .mocha_setup.js src/**/*-test.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
@@ -23,7 +24,7 @@
     "seed-database": "psql spool < seed.sql",
     "build-database": "db-migrate up",
     "reset-database": "db-migrate reset",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build && npm run build-database"
   },
   "repository": {
     "type": "git",
