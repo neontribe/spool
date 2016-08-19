@@ -1,0 +1,5 @@
+{
+  "defaultEnv": {"ENV": "NODE_ENV"},
+  "development": { "ENV": "DATABASE_URL" },
+  "production": { "ENV": "DATABASE_URL" }
+}

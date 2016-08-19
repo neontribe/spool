@@ -1,2 +1,20 @@
+# envs and credentials
+.env
+
+# dependencies
 node_modules
+
+# production
+build
+
+#coverage
 coverage
+.nyc_output
+
+# misc
+.DS_Store
+npm-debug.log
+
+# anthony
+.vim.project
+todo
