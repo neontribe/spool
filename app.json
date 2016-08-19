@@ -2,6 +2,7 @@
     "name": "SPOOL",
     "description": "Helping folk with learning disabilities get heard by policy-makers",
     "repository": "https://github.com/neontribe/spool.git",
+    "postdeploy": "npm run reset-database && npm run build-database && npm run seed-database",
     "env": {
         "AUTH0_DOMAIN": {
             "required": true
