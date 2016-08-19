@@ -9,6 +9,9 @@
         "AUTH0_CLIENT_ID": {
             "required": true
         },
+        "PGSSLMODE": {
+            "required": true
+        },
         "NODE_ENV": "production"
     },
     "addons": [
