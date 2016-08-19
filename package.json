@@ -21,7 +21,7 @@
     "start": "node src/server/index.js",
     "start-dev": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && npm start",
     "build-schema": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && node ./scripts/updateSchema.js",
-    "seed-database": "psql spool < seed.sql",
+    "seed-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && psql -d $DATABASE_URL < seed.sql",
     "build-database": "db-migrate up",
     "reset-database": "db-migrate reset",
     "postinstall": "npm run build && npm run build-database && npm run seed-database"
