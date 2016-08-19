@@ -1,11 +1,15 @@
-const entryCreate = `
+const SQL = require('sql-template-strings');
+
+const entryCreate = (authorId, ownerId, mediaId, sentimentType) => SQL`
 INSERT INTO
     entry (author_id, owner_id, media_id, sentiment_type_id)
 VALUES
-    ($authorId, $ownerId, $mediaId,
-        (SELECT sentiment_type_id FROM sentiment_type WHERE sentiment_type.type = $sentimentType))`;
+    (${authorId}, ${ownerId}, ${mediaId},
+        (SELECT sentiment_type_id FROM sentiment_type WHERE sentiment_type.type = ${sentimentType}))
+RETURNING
+    entry_id`.setName('entry_create');
 
-const entryByOwner = `
+const entryByOwner = (ownerId) => SQL`
 SELECT
     entry.entry_id AS id,
 
@@ -25,23 +29,23 @@ SELECT
     media.media_id AS media_id,
     media.text AS media_text
 
-FROM 
+FROM
     entry
-JOIN 
-    user AS author ON author.user_id = entry.author_id
 JOIN
-    user AS owner ON owner.user_id = entry.owner_id
+    user_account AS author ON author.user_id = entry.author_id
+JOIN
+    user_account AS owner ON owner.user_id = entry.owner_id
 JOIN
     media ON media.media_id = entry.media_id
-JOIN 
+JOIN
     media_type ON media_type.media_type_id = media.type_id
 JOIN
     sentiment_type ON sentiment_type.sentiment_type_id = entry.sentiment_type_id
 WHERE
-    entry.owner_id = $ownerId`;
+    entry.owner_id = ${ownerId}`.setName('entry_by_owner_id');
 
 /* some DRY concerns here */
-const entryById = `
+const entryById = (entryId) => SQL`
 SELECT
     entry.entry_id AS id,
 
@@ -61,23 +65,22 @@ SELECT
     media.media_id AS media_id,
     media.text AS media_text
 
-FROM 
+FROM
     entry
-JOIN 
-    user AS author ON author.user_id = entry.author_id
 JOIN
-    user AS owner ON owner.user_id = entry.owner_id
+    user_account AS author ON author.user_id = entry.author_id
+JOIN
+    user_account AS owner ON owner.user_id = entry.owner_id
 JOIN
     media ON media.media_id = entry.media_id
-JOIN 
+JOIN
     media_type ON media_type.media_type_id = media.type_id
 JOIN
     sentiment_type ON sentiment_type.sentiment_type_id = entry.sentiment_type_id
 WHERE
-    entry.entry_id = $entryId`;
+    entry.entry_id = ${entryId}`.setName('entry_by_entry_id');
 
-
-const topicByEntry = `
+const topicByEntry = (entryId) => SQL`
 SELECT
     topic_type.type AS topic_type
 FROM
@@ -85,19 +88,21 @@ FROM
 JOIN
     topic_type ON topic_type.topic_type_id = x_entry_topics.topic_type_id
 WHERE
-    x_entry_topics.entry_id = $entryId`;
+    x_entry_topics.entry_id = ${entryId}`.setName('topic_by_entry_id');
 
-const topicCreate = `
+const topicCreate = (entryId, type) => SQL`
 INSERT INTO
     x_entry_topics (entry_id, topic_type_id)
 VALUES
-    ($entryId, (SELECT topic_type_id FROM topic_type WHERE topic_type.type = $type))`;
+    (${entryId}, (SELECT topic_type_id FROM topic_type WHERE topic_type.type = ${type}))`.setName('topic_create');
 
-const mediaCreate = `
+const mediaCreate = (text, type) => SQL`
 INSERT INTO
     media (text, type_id)
 VALUES
-    ($text, (SELECT media_type_id FROM media_type WHERE media_type.type = $type))`;
+    (${text}, (SELECT media_type_id FROM media_type WHERE media_type.type = ${type}))
+RETURNING
+    media_id`.setName('media_create');
 
 
 module.exports = {
