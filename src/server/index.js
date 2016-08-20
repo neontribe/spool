@@ -4,9 +4,9 @@ const schema = require('./graphql/schema.js');
 const path = require('path');
 const cors = require('cors');
 const jwt = require('express-jwt');
-const sha256 = require('sha256');
 const db = require('./database/database.js');
 const models = require('./database/models.js');
+const createHash = require('sha.js')
 
 var app = express();
 
@@ -33,7 +33,8 @@ function reconcileUser() {
     var userCreateCache = {}
     return function reconcileUserMiddleware (req, res, next) {
         var userId = req.user.sub;
-        var hash = sha256.x2(userId);
+        var sha256 = createHash('sha256')
+        var hash = sha256.update(userId).digest('hex');
         var p = new Promise(function findUserPromise(resolve, reject) {
             models.User.findByAuthHash(db, hash).then(function handleFindUser(rows) {
                 if (rows.length > 0) {
