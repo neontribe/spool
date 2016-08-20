@@ -24,7 +24,9 @@
     "seed-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && psql -d $DATABASE_URL < seed.sql",
     "build-database": "db-migrate up",
     "reset-database": "db-migrate reset",
-    "postinstall": "npm run build && npm run build-database && npm run seed-database"
+    "postinstall": "npm run build && npm run build-database && npm run seed-database",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -49,7 +51,6 @@
     "mocha": "^3.0.1",
     "nyc": "^7.1.0",
     "react-addons-test-utils": "^15.3.0",
-    "snyk": "^1.17.5",
     "supertest": "^2.0.0",
     "webpack-dev-server": "1.14.1"
   },
@@ -123,7 +124,8 @@
     "sync-request": "^3.0.1",
     "url-loader": "0.5.7",
     "webpack": "^1.13.1",
-    "whatwg-fetch": "1.0.0"
+    "whatwg-fetch": "1.0.0",
+    "snyk": "^1.18.0"
   },
   "eslintConfig": {
     "extends": "./config/eslint.js"
@@ -174,5 +176,6 @@
     "testRegex": "(__tests__/.*|\\.(test|spec))\\.js$",
     "testEnvironment": "node",
     "verbose": true
-  }
+  },
+  "snyk": true
 }
