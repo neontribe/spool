@@ -16,10 +16,8 @@ SELECT
     sentiment_type.type AS sentiment_type,
 
     author.user_id AS author_id,
-    author.email AS author_email,
 
     owner.user_id AS owner_id,
-    owner.email AS owner_email,
 
     media_type.type AS media_type_type,
     media.media_id AS media_id,
@@ -48,14 +46,8 @@ SELECT
     sentiment_type.type AS sentiment_type,
 
     author.user_id AS author_id,
-    author.first_name AS author_first_name,
-    author.last_name AS author_last_name,
-    author.email AS author_email,
 
     owner.user_id AS owner_id,
-    owner.first_name AS owner_first_name,
-    owner.last_name AS owner_last_name,
-    owner.email AS owner_email,
 
     media_type.type AS media_type_type,
     media.media_id AS media_id,

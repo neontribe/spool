@@ -261,7 +261,9 @@ class Entry {
                         } else {
                             let id = result.rows[0].entry_id;
                             //once topics are created then resolve a promise to retrieve the inserted entry
-                            Topic.create(db, id, entry.topic).then(() => resolve(Entry.findById(db, id).then((entries) => entries.shift())));
+                            Topic.create(db, id, entry.topic).then(function() {
+                                resolve(Entry.findById(db, id).then((entries) => entries.shift()))
+                            });
                         }
                     });
                 });

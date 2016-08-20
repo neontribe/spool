@@ -67,8 +67,6 @@ const EntryInputType = new ql.GraphQLInputObjectType({
     name: 'EntryInput',
     fields: {
         media: { type: MediaInputType },
-        author: { type: ql.GraphQLInt },
-        owner: { type: ql.GraphQLInt },
         sentiment: { type: ql.GraphQLString },
         topic: { type: ql.GraphQLString }
     }
