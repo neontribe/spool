@@ -26,7 +26,7 @@ if(process.env.NODE_ENV !== 'production') {
  *
  * This middleware checks the authenticated user in req.user
  * and confirms that user exists in the database
- * If the user does not, it is a new auth0 signup... we should then create 
+ * If the user does not, it is a new auth0 signup... we should then create
  * their entry in the database
  */
 function reconcileUser() {
@@ -57,11 +57,11 @@ function reconcileUser() {
 
 /* GRAPHQL Endpoint */
 app.use(
-    '/graphql', 
+    '/graphql',
     useCors(),
     jwt({
         secret: new Buffer(process.env.AUTH0_CLIENT_SECRET, 'base64'),
-        audience: process.env.REACT_APP_AUTH0_CLIENT_ID
+        audience: process.env.AUTH0_CLIENT_ID
     }),
     reconcileUser(),
     graphqlHTTP(request => ({
