@@ -18,12 +18,12 @@ class Media {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
                 client.query(queries.media.create(media.text, 'text'), function (error, result) {
+                    done();
                     if (error) {
                         reject(error);
                     } else {
                         resolve(result.rows[0].media_id);
                     }
-                    done();
                 });
             });
         });
@@ -47,22 +47,79 @@ class TextMedia extends Media {
 }
 
 class User {
-    constructor(id, firstName, lastName, email) {
+    constructor(id, authHash) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+        this.authHash = authHash
     }
 
     static inflate(row, prefix = '') {
         var p = (name) => prefix + name;
 
         var id = row[p('id')];
-        var firstName = row[p('first_name')];
-        var lastName = row[p('last_name')];
-        var email = row[p('email')];
+        var authHash = row[p('auth_hash')];
 
-        return new User(id, firstName, lastName, email);
+        return new User(id, authHash);
+    }
+
+    static create(db, authHash) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.user.create(authHash), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        var id = result.rows[0].id;
+                        resolve(User.findById(db, id).then((users) => users.shift()));
+                    }
+                });
+            });
+        });
+
+        return p;
+
+    }
+
+    static findById(db, id) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.user.byId(id), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows)
+                    }
+                });
+            });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map((row) => User.inflate(row));
+        });
+
+        return p;
+    }
+
+    static findByAuthHash(db, authHash) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.user.byAuthHash(authHash), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows);
+                    }
+                });
+            });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map((row) => User.inflate(row));
+        });
+
+        return p;
     }
 }
 
@@ -82,12 +139,12 @@ class Topic {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
                 client.query(queries.topic.byEntry(id), function (error, result) {
+                    done();
                     if (error) {
                         reject(error);
                     } else {
                         resolve(result.rows);
                     }
-                    done();
                 });
             });
         });
@@ -103,13 +160,13 @@ class Topic {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
                 client.query(queries.topic.create(id, type), function (error, result) {
+                    done();
                     if (error) {
                         reject(error);
                     } else {
                         //1:M, no ID
                         resolve();
                     }
-                    done();
                 });
             });
         });
@@ -153,12 +210,12 @@ class Entry {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
                 client.query(queries.entry.byOwner(id), function (error, result) {
+                    done();
                     if (error) {
                         reject(error);
                     } else {
                         resolve(result.rows)
                     }
-                    done();
                 });
             });
         });
@@ -174,12 +231,12 @@ class Entry {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
                 client.query(queries.entry.byId(id), function (error, result) {
+                    done();
                     if (error) {
                         reject(error);
                     } else {
                         resolve(result.rows)
                     }
-                    done();
                 });
             });
         });
@@ -198,21 +255,19 @@ class Entry {
             mediaPromise.then(function(mediaId) {
                 db.connect().then(function({client, done}) {
                     client.query(queries.entry.create(entry.author, entry.owner, mediaId, entry.sentiment), function (error, result) {
+                        done();
                         if (error) {
                             reject(error);
                         } else {
                             let id = result.rows[0].entry_id;
-                            Topic.create(db, id, entry.topic).then(() => resolve(id));
+                            //once topics are created then resolve a promise to retrieve the inserted entry
+                            Topic.create(db, id, entry.topic).then(function() {
+                                resolve(Entry.findById(db, id).then((entries) => entries.shift()))
+                            });
                         }
-                        done();
                     });
                 });
             });
-        });
-
-        p = p.then(function(id) {
-            //take the entryId, grab the entry record (1 row, array) and return the result
-            return Entry.findById(db, id).then((entries) => entries.shift());
         });
 
         return p;
@@ -221,5 +276,6 @@ class Entry {
 
 module.exports = {
     Entry,
-    Topic
+    Topic,
+    User
 }

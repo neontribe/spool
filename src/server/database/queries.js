@@ -16,14 +16,8 @@ SELECT
     sentiment_type.type AS sentiment_type,
 
     author.user_id AS author_id,
-    author.first_name AS author_first_name,
-    author.last_name AS author_last_name,
-    author.email AS author_email,
 
     owner.user_id AS owner_id,
-    owner.first_name AS owner_first_name,
-    owner.last_name AS owner_last_name,
-    owner.email AS owner_email,
 
     media_type.type AS media_type_type,
     media.media_id AS media_id,
@@ -52,14 +46,8 @@ SELECT
     sentiment_type.type AS sentiment_type,
 
     author.user_id AS author_id,
-    author.first_name AS author_first_name,
-    author.last_name AS author_last_name,
-    author.email AS author_email,
 
     owner.user_id AS owner_id,
-    owner.first_name AS owner_first_name,
-    owner.last_name AS owner_last_name,
-    owner.email AS owner_email,
 
     media_type.type AS media_type_type,
     media.media_id AS media_id,
@@ -105,18 +93,48 @@ VALUES
 RETURNING
     media_id`.setName('media_create');
 
+const userByAuthHash = (hash) => SQL`
+SELECT
+    user_id AS id,
+    auth_hash AS auth_hash
+FROM
+    user_account
+WHERE
+    user_account.auth_hash = ${hash}`.setName('user_by_auth_hash');
+
+const userById = (userId) => SQL`
+SELECT
+    user_id AS id,
+    auth_hash
+FROM
+    user_account
+WHERE
+    user_account.user_id = ${userId}`.setName('user_by_user_id');
+
+const userCreate = (hash) => SQL`
+INSERT INTO
+    user_account (auth_hash)
+VALUES
+    (${hash})
+RETURNING
+    user_id AS id`.setName('user_create');
 
 module.exports = {
     entry: {
         byId: entryById,
         byOwner: entryByOwner,
-        create: entryCreate
+        create: entryCreate,
     },
     topic: {
         byEntry: topicByEntry,
-        create: topicCreate
+        create: topicCreate,
     },
     media: {
-        create: mediaCreate
+        create: mediaCreate,
+    },
+    user: {
+        byAuthHash: userByAuthHash,
+        byId: userById,
+        create: userCreate,
     }
 }

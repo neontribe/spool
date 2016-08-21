@@ -18,8 +18,6 @@ export default class AddEntryMutation extends Relay.Mutation {
                 media: {
                     text: entry.text,
                 },
-                author: 2,
-                owner: 2,
                 sentiment: entry.sentiment,
                 topic: entry.topic
             }

@@ -2,8 +2,8 @@ INSERT INTO topic_type (type) VALUES ('transport'), ('shopping'), ('health'), ('
 INSERT INTO media_type (type) VALUES ('text'), ('video'), ('image');
 INSERT INTO sentiment_type (type) VALUES ('happy'), ('sad');
 
-insert into user_account (first_name, last_name, email) values ('Test', '1', 'test1@example.com');
-insert into user_account (first_name, last_name, email) values ('Test', '2', 'test2@example.com');
+insert into user_account (auth_hash) values ('NO_1_HASH');
+insert into user_account (auth_hash) values ('NO_2_HASH');
 
 insert into x_entry_topics (entry_id, topic_type_id) values (1, 1);
 insert into x_entry_topics (entry_id, topic_type_id) values (2, 2);
