@@ -6,9 +6,13 @@ const cors = require('cors');
 const jwt = require('express-jwt');
 const db = require('./database/database.js');
 const models = require('./database/models.js');
-const createHash = require('sha.js')
+const createHash = require('sha.js');
+const sslRedirect = require('heroku-ssl-redirect');
 
 var app = express();
+
+// enable ssl redirect when the NODE_ENV is production
+app.use(sslRedirect(['production']));
 
 var useCors = function () { return (req, res, next) => next(); }
 var formatErrors;

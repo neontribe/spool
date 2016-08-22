@@ -98,6 +98,7 @@
     "graphql": "^0.6.2",
     "graphql-relay": "^0.4.2",
     "gzip-size": "3.0.0",
+    "heroku-ssl-redirect": "0.0.3",
     "html-loader": "0.4.3",
     "html-webpack-plugin": "2.22.0",
     "json-loader": "0.5.4",
@@ -120,14 +121,14 @@
     "recursive-readdir": "2.0.0",
     "rimraf": "2.5.4",
     "sha.js": "^2.4.5",
+    "snyk": "^1.18.0",
     "sql-template-strings": "^2.2.0",
     "strip-ansi": "3.0.1",
     "style-loader": "0.13.1",
     "sync-request": "^3.0.1",
     "url-loader": "0.5.7",
     "webpack": "^1.13.1",
-    "whatwg-fetch": "1.0.0",
-    "snyk": "^1.18.0"
+    "whatwg-fetch": "1.0.0"
   },
   "eslintConfig": {
     "extends": "./config/eslint.js"
