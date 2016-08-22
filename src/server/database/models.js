@@ -1,3 +1,4 @@
+const moment = require('moment');
 const queries = require('./queries');
 
 class Sentiment {
@@ -175,13 +176,14 @@ class Topic {
 }
 
 class Entry {
-    constructor(id, owner, author, media, sentiment) {
+    constructor(id, owner, author, media, sentiment, timestamp) {
         this.id = id;
         this._id = id;
         this.owner = owner;
         this.author = author;
         this.media = media;
         this.sentiment = sentiment;
+        this.timestamp = moment(timestamp);
     }
 
     /*
@@ -198,8 +200,9 @@ class Entry {
         var author = User.inflate(row, 'author_');
         var owner = User.inflate(row, 'owner_');
         var sentiment = Sentiment.inflate(row, 'sentiment_');
+        var timestamp = row[p('timestamp')];
 
-        return new Entry(id, owner, author, media, sentiment);
+        return new Entry(id, owner, author, media, sentiment, timestamp);
     }
 
     /*

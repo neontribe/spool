@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { Grid, Row, Col, Image } from 'react-bootstrap';
+import moment from 'moment';
 
 export class Entry extends Component {
     static propTypes = {
         entry: React.PropTypes.object.isRequired
+    }
+    formatTimestamp() {
+        return moment(this.props.entry.timestamp).format('dddd, MMMM Do YYYY, h:mm:ss a');
     }
     render() {
         return (
@@ -19,6 +23,9 @@ export class Entry extends Component {
                     <Col xs={1}>
                         <Image src={'/static/emoji/' + this.props.entry.sentiment.type + '.svg'} responsive
                                 alt={this.props.entry.sentiment.type}/>
+                    </Col>
+                    <Col xs={4}>
+                        <span>{this.formatTimestamp()}</span>
                     </Col>
                 </Row>
             </Grid>
@@ -42,7 +49,8 @@ export const EntryContainer = Relay.createContainer(Entry, {
             }
             sentiment {
                 type
-            }
+            },
+            timestamp
         }`,
     }
 });
