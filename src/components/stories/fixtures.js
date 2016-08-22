@@ -12,6 +12,7 @@ export const textEntry = {
 
 export const entries =  [
     {
+        id: '1',
         media: {
             text: "Riding on the front seat at the top!"
         },
@@ -23,6 +24,7 @@ export const entries =  [
         }
     },
     {
+        id: '2',
         media: {
             text: "Queuing for a bus in the rain."
         },
@@ -34,6 +36,7 @@ export const entries =  [
         }
     },
     {
+        id: '3',
         media: {
             text: "Football training with friends"
         },

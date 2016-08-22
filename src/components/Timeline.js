@@ -1,15 +1,27 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { ListGroup } from 'react-bootstrap';
-import { EntryContainer } from './Entry';
+import { EntryContainer, Entry } from './Entry';
 
 export class Timeline extends Component {
+    static propTypes = {
+        viewer: React.PropTypes.object.isRequired,
+    }
+    renderEntries() {
+        if (this.props.relay) {
+            return this.props.viewer.entries.edges.map((entry) => {
+                return (<EntryContainer key={entry.node.id} entry={entry.node}/>);
+            })
+        } else {
+            return this.props.viewer.entries.edges.map((entry) => {
+                return (<Entry key={entry.node.id} entry={entry.node}/>);
+            })
+        }
+    }
     render() {
         return (
             <ListGroup componentClass="div">
-                {this.props.viewer.entries.edges.map((entry) => {
-                    return (<EntryContainer key={entry.node.id} entry={entry.node}/>);
-                })}
+                {this.renderEntries()}
             </ListGroup>
         );
     }
