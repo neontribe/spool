@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { Grid, Row, Col } from 'react-bootstrap';
-import { AddEntryFormContainer } from './AddEntryForm';
+import { AddEntryFormContainer, AddEntryForm } from './AddEntryForm';
 
 export class Home extends Component {
+    renderAddEntryForm() {
+        if(this.props.relay) {
+            return ( <AddEntryFormContainer viewer={this.props.viewer}/> );
+        } else {
+            return ( <AddEntryForm viewer={this.props.viewer}/> );
+        }
+    }
     render() {
         return (
             <Grid>
                 <Row>
                     <Col>
-                        <AddEntryFormContainer viewer={this.props.viewer}/>
+                        { this.renderAddEntryForm() } 
                     </Col>
                 </Row>
                 <Row>

@@ -5,5 +5,5 @@ import { textEntry } from './fixtures';
 
 storiesOf('Entry', module)
   .add('with text media', () => (
-    <Entry {...textEntry} />
+    <Entry entry={textEntry} />
   ));
