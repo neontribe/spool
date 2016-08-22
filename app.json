@@ -9,6 +9,9 @@
         "AUTH0_CLIENT_ID": {
             "required": true
         },
+        "AUTH0_CLIENT_SECRET": {
+            "required": true
+        },
         "PGSSLMODE": {
             "required": true
         },

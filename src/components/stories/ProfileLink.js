@@ -9,4 +9,7 @@ storiesOf('ProfileLink', module)
   ))
   .add('with null profile', () => (
     <ProfileLink profile={null} />
+  ))
+  .add('disabled with example profile', () => (
+    <ProfileLink profile={null} disabled={true}/>
   ));

@@ -36,8 +36,6 @@ type EntryEdge {
 
 input EntryInput {
   media: MediaInput
-  author: Int
-  owner: Int
   sentiment: String
   topic: String
 }
@@ -86,9 +84,6 @@ type Topic {
 
 type User {
   id: Int
-  firstName: String
-  lastName: String
-  email: String
 }
 
 type VideoMedia {

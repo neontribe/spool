@@ -14,7 +14,7 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
         if (type === 'Entry') {
             return models.Entry.findById(db, id).then((entries) => entries.shift());
         } else if (type === 'Viewer') {
-            return { id: 2 }
+            return models.User.findById(db, id).then((users) => users.shift());
         }
     },
     /* resolve given an object */
@@ -67,7 +67,7 @@ const ViewerType = new ql.GraphQLObjectType({
         entries: {
             type: entryConnectionDefinition.connectionType,
             args: relayql.connectionArgs,
-            resolve: (viewer, args) => relayql.connectionFromPromisedArray(models.Entry.findByOwnerId(db, 2), args)
+            resolve: (viewer, args, context) => relayql.connectionFromPromisedArray(models.Entry.findByOwnerId(db, context.id), args)
         }
     },
     interfaces: [nodeInterface]
@@ -75,7 +75,7 @@ const ViewerType = new ql.GraphQLObjectType({
 
 const viewerField = {
     type: ViewerType,
-    resolve: () => { return { id: 2} }
+    resolve: (root, args, context) =>  models.User.findById(db, context.id).then((users) => users.shift()),
 }
 
 const createEntry = relayql.mutationWithClientMutationId({
@@ -86,14 +86,11 @@ const createEntry = relayql.mutationWithClientMutationId({
         }
     },
     outputFields: {
-        viewer: {
-            type: ViewerType,
-            resolve: () => { return { id: 2 } }
-        },
+        viewer: viewerField,
         entryEdge: {
             type: entryConnectionDefinition.edgeType,
-            resolve: (entry) => {
-                return models.Entry.findByOwnerId(db, 2).then(function(rows) {
+            resolve: (entry, args, context) => {
+                return models.Entry.findByOwnerId(db, context.id).then(function(rows) {
                     var indexOfEntry = _.findIndex(rows, { '_id': entry._id });
                     return {
                         cursor: relayql.offsetToCursor(indexOfEntry),
@@ -103,7 +100,9 @@ const createEntry = relayql.mutationWithClientMutationId({
            }
         }
     },
-    mutateAndGetPayload: ({entry}) => {
+    mutateAndGetPayload: function mutateEntryPayload({entry}, context) {
+        entry.author = context.id;
+        entry.owner = context.id;
         return models.Entry.create(db, entry);
     }
 });
