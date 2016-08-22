@@ -52,6 +52,10 @@ const EntryType = new ql.GraphQLObjectType({
             type: types.TopicType,
             // we are popping a single type off the list since we are only supporting a single topic for now
             resolve: (entry) => models.Topic.findByEntryId(db, entry.id).then((topics) => topics.shift())
+        },
+        timestamp: {
+            type: ql.GraphQLString,
+            resolve: (entry) => entry.timestamp.format()
         }
     },
     interfaces: [nodeInterface]

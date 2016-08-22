@@ -13,6 +13,8 @@ const entryByOwner = (ownerId) => SQL`
 SELECT
     entry.entry_id AS id,
 
+    entry.timestamp,
+
     sentiment_type.type AS sentiment_type,
 
     author.user_id AS author_id,
@@ -42,6 +44,8 @@ WHERE
 const entryById = (entryId) => SQL`
 SELECT
     entry.entry_id AS id,
+
+    entry.timestamp,
 
     sentiment_type.type AS sentiment_type,
 
