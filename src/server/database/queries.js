@@ -23,15 +23,15 @@ SELECT
     media.media_id AS media_id,
     media.text AS media_text
 
-FROM 
+FROM
     entry
-JOIN 
+JOIN
     user_account AS author ON author.user_id = entry.author_id
 JOIN
     user_account AS owner ON owner.user_id = entry.owner_id
 JOIN
     media ON media.media_id = entry.media_id
-JOIN 
+JOIN
     media_type ON media_type.media_type_id = media.type_id
 JOIN
     sentiment_type ON sentiment_type.sentiment_type_id = entry.sentiment_type_id
@@ -53,21 +53,20 @@ SELECT
     media.media_id AS media_id,
     media.text AS media_text
 
-FROM 
+FROM
     entry
-JOIN 
+JOIN
     user_account AS author ON author.user_id = entry.author_id
 JOIN
     user_account AS owner ON owner.user_id = entry.owner_id
 JOIN
     media ON media.media_id = entry.media_id
-JOIN 
+JOIN
     media_type ON media_type.media_type_id = media.type_id
 JOIN
     sentiment_type ON sentiment_type.sentiment_type_id = entry.sentiment_type_id
 WHERE
     entry.entry_id = ${entryId}`.setName('entry_by_entry_id');
-
 
 const topicByEntry = (entryId) => SQL`
 SELECT

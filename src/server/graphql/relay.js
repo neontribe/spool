@@ -23,7 +23,7 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
             // eslint-disable-next-line no-use-before-define
             return EntryType
         } else {
-            return ViewerType 
+            return ViewerType
         }
     });
 
@@ -32,15 +32,15 @@ const EntryType = new ql.GraphQLObjectType({
     fields: {
         id: relayql.globalIdField(),
         _id: { type: ql.GraphQLInt },
-        media: { 
+        media: {
             type: types.MediaType,
             resolve: (entry) =>  entry.media
         },
-        author: { 
+        author: {
             type: types.UserType,
             resolve: (entry) => entry.author
         },
-        owner: { 
+        owner: {
             type: types.UserType,
             resolve: (entry) => entry.owner
         },
@@ -57,7 +57,7 @@ const EntryType = new ql.GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
-var entryConnectionDefinition = 
+var entryConnectionDefinition =
     relayql.connectionDefinitions({nodeType: EntryType});
 
 const ViewerType = new ql.GraphQLObjectType({
@@ -100,7 +100,7 @@ const createEntry = relayql.mutationWithClientMutationId({
            }
         }
     },
-    mutateAndGetPayload: function mutateEntryPayload({entry}, context) { 
+    mutateAndGetPayload: function mutateEntryPayload({entry}, context) {
         entry.author = context.id;
         entry.owner = context.id;
         return models.Entry.create(db, entry);
