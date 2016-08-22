@@ -42,7 +42,7 @@ class App extends Component {
                     </PageHeader>
                 </Col>
                 <Col xs={2}>
-                    <ProfileLink profile={this.state.profile} />
+                    <ProfileLink profile={this.state.profile} disabled={!this.props.route.auth.loggedIn()}/>
                 </Col>
             </Row>
             <Row>
