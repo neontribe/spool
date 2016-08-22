@@ -16,7 +16,7 @@ export class Home extends Component {
             <Grid>
                 <Row>
                     <Col>
-                        { this.renderAddEntryForm() } 
+                        { this.renderAddEntryForm() }
                     </Col>
                 </Row>
                 <Row>

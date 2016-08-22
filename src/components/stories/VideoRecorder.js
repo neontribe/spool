@@ -1,14 +1,14 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import VideoForm from '../VideoForm';
+import VideoRecorder from '../VideoRecorder';
 import { Grid, Row, Col } from 'react-bootstrap';
 
-storiesOf('VideoForm', module)
+storiesOf('VideoRecorder', module)
   .add('Initial View', () => (
     <Grid>
         <Row>
             <Col>
-                <VideoForm save={action('Save Video')} back={action('Back')}/>
+                <VideoRecorder save={action('save')} onFailure={action('Media Fail')}/>
             </Col>
         </Row>
     </Grid>

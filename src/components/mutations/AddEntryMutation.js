@@ -16,9 +16,7 @@ export default class AddEntryMutation extends Relay.Mutation {
         var entry = this.props.entry;
         return {
             entry: {
-                media: {
-                    text: entry.text,
-                },
+                media: entry.media,
                 sentiment: entry.sentiment,
                 topic: entry.topic
             }
@@ -58,9 +56,7 @@ export default class AddEntryMutation extends Relay.Mutation {
           },
           entryEdge: {
               node: {
-                media: {
-                    text: entry.text
-                },
+                media: entry.media,
                 topic: {
                     type: entry.topic
                 },
