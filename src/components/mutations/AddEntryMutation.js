@@ -1,4 +1,5 @@
 import Relay from 'react-relay';
+import moment from 'moment';
 
 export default class AddEntryMutation extends Relay.Mutation {
     static fragments = {
@@ -65,7 +66,8 @@ export default class AddEntryMutation extends Relay.Mutation {
                 },
                 sentiment: {
                     type: entry.sentiment
-                }
+                },
+                timestamp: moment().format()
               }
           }
       }
