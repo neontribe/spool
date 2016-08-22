@@ -21,10 +21,10 @@
     "start": "node src/server/index.js",
     "start-dev": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && npm start",
     "build-schema": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && node ./scripts/updateSchema.js",
-    "seed-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && psql -d $DATABASE_URL < seed.sql",
-    "build-database": "db-migrate up",
+    "setup-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && psql -d $DATABASE_URL < setup.sql",
+    "build-database": "db-migrate up && npm run setup-database",
     "reset-database": "db-migrate reset",
-    "postinstall": "npm run snyk-protect && npm run build && npm run build-database && npm run seed-database",
+    "postinstall": "npm run snyk-protect && npm run build && npm run build-database",
     "snyk-protect": "snyk protect"
   },
   "repository": {
