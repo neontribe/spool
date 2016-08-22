@@ -51,7 +51,7 @@
     "nyc": "^7.1.0",
     "react-addons-test-utils": "^15.3.0",
     "supertest": "^2.0.0",
-    "webpack-dev-server": "1.14.1"
+    "webpack-dev-server": "1.15.0"
   },
   "dependencies": {
     "auth0-js": "^7.1.0",
