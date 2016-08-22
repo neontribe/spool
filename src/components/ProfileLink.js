@@ -3,6 +3,11 @@ import { Image, Modal, Button } from 'react-bootstrap';
 
 class ProfileLink extends Component {
 
+    static propTypes = {
+        profile: React.PropTypes.object,
+        disabled: React.PropTypes.bool
+    }
+
     constructor(...args) {
         super(...args);
 
@@ -23,7 +28,7 @@ class ProfileLink extends Component {
     }
 
     render() {
-        if (!this.props.profile) {
+        if (this.props.disabled || !this.props.profile) {
             return (<div></div>);
         }
         return (
@@ -49,10 +54,6 @@ class ProfileLink extends Component {
             </div>
         );
     }
-}
-
-ProfileLink.propTypes = {
-    profile: React.PropTypes.object
 }
 
 export default ProfileLink;
