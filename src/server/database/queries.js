@@ -2,10 +2,10 @@ const SQL = require('sql-template-strings');
 
 const entryCreate = (authorId, ownerId, mediaId, sentimentType) => SQL`
 INSERT INTO
-    entry (author_id, owner_id, media_id, sentiment_type_id)
+    entry (author_id, owner_id, media_id, sentiment_type_id, timestamp)
 VALUES
     (${authorId}, ${ownerId}, ${mediaId},
-        (SELECT sentiment_type_id FROM sentiment_type WHERE sentiment_type.type = ${sentimentType}))
+        (SELECT sentiment_type_id FROM sentiment_type WHERE sentiment_type.type = ${sentimentType}), now())
 RETURNING
     entry_id`.setName('entry_create');
 
@@ -38,7 +38,9 @@ JOIN
 JOIN
     sentiment_type ON sentiment_type.sentiment_type_id = entry.sentiment_type_id
 WHERE
-    entry.owner_id = ${ownerId}`.setName('entry_by_owner_id');
+    entry.owner_id = ${ownerId}
+ORDER BY
+    timestamp DESC`.setName('entry_by_owner_id');
 
 /* some DRY concerns here */
 const entryById = (entryId) => SQL`

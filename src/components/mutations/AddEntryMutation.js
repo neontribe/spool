@@ -44,7 +44,7 @@ export default class AddEntryMutation extends Relay.Mutation {
       connectionName: 'entries',
       edgeName: 'entryEdge',
       rangeBehaviors: ({ status }) => (
-        status === 'completed' ? 'ignore' : 'append'
+        status === 'completed' ? 'ignore' : 'prepend'
       ),
     }];
   }
