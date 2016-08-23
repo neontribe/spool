@@ -8,7 +8,7 @@ storiesOf('SentimentForm', module)
     <Grid>
         <Row>
             <Col>
-                <SentimentForm save={action('Save Value')}/>
+                <SentimentForm save={action('Save Value')} />
             </Col>
         </Row>
     </Grid>
@@ -17,7 +17,7 @@ storiesOf('SentimentForm', module)
     <Grid>
         <Row>
             <Col>
-                <SentimentForm initialValue="happy" save={action('Save Value')}/>
+                <SentimentForm initialValue="happy" save={action('Save Value')} />
             </Col>
         </Row>
     </Grid>

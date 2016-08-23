@@ -60,10 +60,6 @@ class VideoForm extends Component {
             });
             this.props.save(info);
         }).catch((e) => console.log('Error during file save: ', e));
-        // uploadToS3(data).then((s3Info) => {
-        //     this.setState({ uploading: false, uploaded: true, s3Info: s3Info });
-        //     this.props.save(s3Info);
-        // }).catch((e)=>console.log('Error during file save', e));
     }
 
     requestUploadMode() {

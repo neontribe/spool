@@ -1,9 +1,12 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import { Entry } from '../Entry';
-import { textEntry } from './fixtures';
+import { entries } from './fixtures';
 
 storiesOf('Entry', module)
   .add('with text media', () => (
-    <Entry entry={textEntry} />
+  	<div>
+    	<Entry entry={entries[0]} />
+    	<Entry entry={entries[1]} />
+    </div>
   ));
