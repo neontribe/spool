@@ -1,42 +1,17 @@
 const ql = require('graphql');
 const models = require('../database/models');
 
-const VideoMediaType = new ql.GraphQLObjectType({
-    name: 'VideoMedia',
+const MediaType = new ql.GraphQLObjectType({
+    name: 'Media',
     fields: {
+        text: { type: ql.GraphQLString },
         video: { 
             type: ql.GraphQLString,
-            resolve: (media) => '/s3/assets/'+media.video
+            resolve: (media) => media.video ? '/s3/assets/'+media.video : null
         },
         thumbnail: { 
             type: ql.GraphQLString,
-            resolve: (media) => '/s3/assets/'+media.thumbnail
-        }
-    }
-});
-
-const ImageMediaType = new ql.GraphQLObjectType({
-    name: 'ImageMedia',
-    fields: {
-        text: { type: ql.GraphQLString }
-    }
-});
-
-const TextMediaType = new ql.GraphQLObjectType({
-    name: 'TextMedia',
-    fields: {
-        text: { type: ql.GraphQLString, resolve: (media) => media.text }
-    }
-});
-
-const MediaType = new ql.GraphQLUnionType({
-    name: 'Media',
-    types: [ VideoMediaType, ImageMediaType, TextMediaType ],
-    resolveType(value) {
-        if(value instanceof models.TextMedia) {
-            return TextMediaType;
-        } else if (value instanceof models.VideoMedia) {
-            return VideoMediaType;
+            resolve: (media) => media.thumbnail ? '/s3/assets/'+media.thumbnail : null
         }
     }
 });
@@ -91,9 +66,6 @@ const EntryInputType = new ql.GraphQLInputObjectType({
 });
 
 module.exports = {
-    VideoMediaType,
-    ImageMediaType,
-    TextMediaType,
     MediaType,
     UserType,
     SentimentType,

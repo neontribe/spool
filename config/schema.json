@@ -426,7 +426,7 @@
               "description": null,
               "args": [],
               "type": {
-                "kind": "UNION",
+                "kind": "OBJECT",
                 "name": "Media",
                 "ofType": null
               },
@@ -510,36 +510,22 @@
           "possibleTypes": null
         },
         {
-          "kind": "UNION",
+          "kind": "OBJECT",
           "name": "Media",
           "description": null,
-          "fields": null,
-          "inputFields": null,
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": [
-            {
-              "kind": "OBJECT",
-              "name": "VideoMedia",
-              "ofType": null
-            },
-            {
-              "kind": "OBJECT",
-              "name": "ImageMedia",
-              "ofType": null
-            },
-            {
-              "kind": "OBJECT",
-              "name": "TextMedia",
-              "ofType": null
-            }
-          ]
-        },
-        {
-          "kind": "OBJECT",
-          "name": "VideoMedia",
-          "description": null,
           "fields": [
+            {
+              "name": "text",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
             {
               "name": "video",
               "description": null,
@@ -554,52 +540,6 @@
             },
             {
               "name": "thumbnail",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
-          "name": "ImageMedia",
-          "description": null,
-          "fields": [
-            {
-              "name": "text",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
-          "name": "TextMedia",
-          "description": null,
-          "fields": [
-            {
-              "name": "text",
               "description": null,
               "args": [],
               "type": {

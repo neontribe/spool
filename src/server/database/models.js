@@ -15,7 +15,24 @@ class Sentiment {
 }
 
 class Media {
-    static create(db, media) {
+    constructor(id, text, video, thumbnail) {
+        this.id = id;
+        this.text = text;
+        this.video = video;
+        this.thumbnail = thumbnail;
+    }
+
+    static inflate(row, prefix = '') {
+        var p = (name) => prefix + name;
+        var id = row[p('id')];
+        var text = row[p('text')];
+        var video = row[p('video')];
+        var thumbnail = row[p('thumbnail')];
+        
+        return new Media(id, text, video, thumbnail);
+    }
+
+    static create(db, userId, media) {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
                 var type = 'default';
@@ -24,7 +41,7 @@ class Media {
                 } else if(media.video && media.thumbnail) {
                     type = 'video';
                 }
-                client.query(queries.media.create(media.text, media.video, media.thumbnail, type), function (error, result) {
+                client.query(queries.media.create(media.text, media.video, media.thumbnail), function (error, result) {
                     done();
                     if (error) {
                         reject(error);
@@ -35,38 +52,6 @@ class Media {
             });
         });
         return p;
-    }
-}
-class TextMedia extends Media {
-    constructor(id, text) {
-        super();
-        this.id = id;
-        this.text = text;
-    }
-
-    static inflate(row, prefix = '') {
-        var p = (name) => prefix + name;
-
-        var id = row[p('id')];
-        var text = row[p('text')];
-        return new TextMedia(id, text);
-    }
-}
-class VideoMedia extends Media {
-    constructor(id, video, thumbnail) {
-        super();
-        this.id = id;
-        this.video = video;
-        this.thumbnail = thumbnail;
-    }
-
-    static inflate(row, prefix = '') {
-        var p = (name) => prefix + name;
-
-        var id = row[p('id')];
-        var video = row[p('video')];
-        var thumbnail = row[p('thumbnail')];
-        return new VideoMedia(id, video, thumbnail);
     }
 }
 
@@ -242,16 +227,7 @@ class Entry {
         var p = (name) => prefix + name;
 
         var id = row[p('id')];
-        var media;
-        switch(row.media_type_type) {
-            case 'video':
-                media = VideoMedia.inflate(row, 'media_');
-                break;
-            case 'text':
-            default:
-                media = TextMedia.inflate(row, 'media_');
-                break;
-        }
+        var media = Media.inflate(row, 'media_');
         var author = User.inflate(row, 'author_');
         var owner = User.inflate(row, 'owner_');
         var sentiment = Sentiment.inflate(row, 'sentiment_');
@@ -309,7 +285,7 @@ class Entry {
     static create(db, entry) {
         var p = new Promise(function (resolve, reject) {
             // sentiment is lookup during entry insert
-            var mediaPromise = Media.create(db, entry.media);
+            var mediaPromise = Media.create(db, entry.owner, entry.media);
             mediaPromise.then(function(mediaId) {
                 db.connect().then(function({client, done}) {
                     client.query(queries.entry.create(entry.author, entry.owner, mediaId, entry.sentiment), function (error, result) {
@@ -335,6 +311,5 @@ module.exports = {
     Entry,
     Topic,
     User,
-    TextMedia,
-    VideoMedia
+    Media
 }
