@@ -59,7 +59,8 @@ const SentimentType = new ql.GraphQLObjectType({
 const TopicType = new ql.GraphQLObjectType({
     name: 'Topic',
     fields: {
-        type: { type: ql.GraphQLString, resolve: (topic) => topic.type }
+        type: { type: ql.GraphQLString, resolve: (topic) => topic.type },
+        name: { type: ql.GraphQLString, resolve: (topic) => topic.name }
     }
 });
 

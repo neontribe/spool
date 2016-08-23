@@ -148,15 +148,17 @@ class User {
 }
 
 class Topic {
-    constructor(type) {
+    constructor(type, name) {
         this.type = type;
+        this.name = name;
     }
 
     static inflate(row, prefix = '') {
         var p = (name) => prefix + name;
 
         var type = row[p('type')];
-        return new Topic(type);
+        var name = row[p('name')];
+        return new Topic(type, name);
     }
 
     static findByEntryId(db, id) {
@@ -175,7 +177,28 @@ class Topic {
 
         p = p.then(function (rows) {
             return rows.map((row) => Topic.inflate(row, 'topic_'));
-        })
+        });
+
+        return p;
+    }
+
+    static findAll(db) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.topic.all(), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows);
+                    }
+                });
+            });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map((row) => Topic.inflate(row, 'topic_'));
+        });
 
         return p;
     }
@@ -295,9 +318,8 @@ class Entry {
                             reject(error);
                         } else {
                             let id = result.rows[0].entry_id;
-                            //once topics are created then resolve a promise to retrieve the inserted entry
-                            Topic.create(db, id, entry.topic).then(function() {
-                                resolve(Entry.findById(db, id).then((entries) => entries.shift()))
+                            Promise.all(entry.topic.each((t) => Topic.create(db, id, t))).then(function() {
+                                resolve(Entry.findById(db, id).then((entries) => entries.shift()));
                             });
                         }
                     });
