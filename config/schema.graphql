@@ -41,11 +41,11 @@ input EntryInput {
   topic: [String]
 }
 
-type ImageMedia {
+type Media {
   text: String
+  video: String
+  thumbnail: String
 }
-
-union Media = VideoMedia | ImageMedia | TextMedia
 
 input MediaInput {
   text: String
@@ -78,10 +78,6 @@ type Sentiment {
   type: String
 }
 
-type TextMedia {
-  text: String
-}
-
 type Topic {
   type: String
   name: String
@@ -89,11 +85,6 @@ type Topic {
 
 type User {
   id: Int
-}
-
-type VideoMedia {
-  video: String
-  thumbnail: String
 }
 
 type Viewer implements Node {

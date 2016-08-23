@@ -16,16 +16,11 @@ export default class AddEntryMutation extends Relay.Mutation {
         var entry = this.props.entry;
         var media = this.props.entry.media;
         var mediaInput = {};
-        switch(this.props.entry.type) {
-            case 'video':
-                mediaInput.video = media.video.key;
-                mediaInput.thumbnail = media.thumbnail.key;
-                break;
-            case 'text':
-            default:
-                mediaInput.text = media.text;
-                break;
+        if(media.video) {
+            mediaInput.video = media.video.key;
+            mediaInput.thumbnail = media.thumbnail.key;
         }
+        mediaInput.text = media.text;
         return {
             entry: {
                 media: mediaInput,

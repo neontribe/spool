@@ -9,5 +9,4 @@ VALUES
     ('food', 'Food'),
     ('sport', 'Sport'),
     ('work', 'Work');
-INSERT INTO media_type (type) VALUES ('text'), ('video'), ('image');
 INSERT INTO sentiment_type (type) VALUES ('happy'), ('sad');
