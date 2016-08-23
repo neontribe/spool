@@ -1,6 +1,7 @@
 // middleware handler for getting s3 signed url
 var AWS = require('aws-sdk');
 var express = require('express');
+var uuid = require('node-uuid');
 
 function S3Router(options) {
   var S3_BUCKET = options.bucket;
@@ -17,7 +18,7 @@ function S3Router(options) {
   }
 
   router.get('/sign', function(req, res) {
-    var filename = req.query.objectName;
+    var filename = uuid.v4();
     var mimeType = req.query.contentType;
     var ext = '.' + findType(mimeType);
     var fileKey = filename + ext;
@@ -40,9 +41,7 @@ function S3Router(options) {
 
       res.json({
         uploadUrl: uploadUrl,
-        assetUrl: '/s3/assets/' + fileKey,
-        key: fileKey,
-        bucket: S3_BUCKET
+        key: fileKey
       });
     });
   });

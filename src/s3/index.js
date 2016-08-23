@@ -1,5 +1,5 @@
 function getSignedUrl(fileinfo) {
-    let queryString = '?objectName=' + fileinfo.id + '&contentType=' + encodeURIComponent(fileinfo.type);
+    let queryString = '?contentType=' + encodeURIComponent(fileinfo.type);
     return fetch('/s3/sign' + queryString)
         .then((response) => {
             return response.json();
@@ -16,8 +16,7 @@ function getSignedUrl(fileinfo) {
 export default function uploadToS3(blob) {
     let params = {
         type: blob.type,
-        data: blob,
-        id: Math.floor(Math.random()*9000) + 10000
+        data: blob
     };
 
     return new Promise(function(resolve, reject){
