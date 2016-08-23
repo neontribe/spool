@@ -4,38 +4,58 @@ import VideoForm from './VideoForm';
 import TextForm from './TextForm';
 import SentimentForm from './SentimentForm';
 import TopicForm from './TopicForm';
+import CaptionForm from './CaptionForm';
 
 class EntryForm extends Component {
 
   constructor(props) {
       super(props);
+      var steps = props.steps;
+      // omit caption step for text entries
+      if(props.entry.type === 'text') {
+          steps = _.without(steps, 'caption');
+      }
 
       this.state = {
+        steps: steps,
         step: props.step,
         entry: props.entry
       };
 
       this.saveEntry = this.saveEntry.bind(this);
       this.back = this.back.bind(this);
+      this.next = this.next.bind(this);
+      this.isFinished = this.isFinished.bind(this);
   }
 
   saveEntry(key, value) {
       var entry = Object.assign({}, this.state.entry);
       entry[key] = value;
       this.setState({entry});
-      var next = this.props.steps[this.props.steps.indexOf(this.state.step) + 1];
-      if (next) {
-          this.setState({step: next});
+
+      if (!this.isFinished()) {
+          this.next();
       } else {
-          this.props.done(entry, () => this.setState({step: this.props.steps[0]}));
+          this.props.done(entry, () => this.setState({step: this.state.steps[0]}));
       }
   }
 
   back() {
-      var prev = this.props.steps[this.props.steps.indexOf(this.state.step) - 1];
+      var prev = this.state.steps[this.state.steps.indexOf(this.state.step) - 1];
       if (prev) {
           this.setState({step: prev});
       }
+  }
+
+  next() {
+      var next = this.state.steps[this.state.steps.indexOf(this.state.step) + 1];
+      if (next) {
+          this.setState({step: next});
+      }
+  }
+
+  isFinished() {
+     return this.state.step === _.last(this.state.steps);
   }
 
   render() {
@@ -48,6 +68,7 @@ class EntryForm extends Component {
                     video: (<VideoForm save={_.partial(this.saveEntry, 'media')} back={this.back}/>),
                     image: (<TextForm save={_.partial(this.saveEntry, 'media')}/>)
                 }[this.state.entry.type]),
+                caption: (<CaptionForm save={_.partial(this.saveEntry, 'media')} />),
                 sentiment: (<SentimentForm save={_.partial(this.saveEntry, 'sentiment')} />),
                 topic: (<TopicForm topics={this.props.topics} save={_.partial(this.saveEntry, 'topic')} />)
             }[this.state.step]}
@@ -66,7 +87,7 @@ EntryForm.propTypes = {
 
 EntryForm.defaultProps = {
     step: 'media',
-    steps: ['media', 'sentiment', 'topic'],
+    steps: ['media', 'caption', 'sentiment', 'topic'],
     entry: {}
 }
 

@@ -53,10 +53,10 @@ export class AddEntryForm extends Component {
                                 bsStyle="primary" bsSize="large">
                                 <Glyphicon glyph="film"/> Video
                             </Button>
-                            <Button onClick={_.partial(this.showForm, 'image')}
+                            {/*<Button onClick={_.partial(this.showForm, 'image')}
                                 bsStyle="primary" bsSize="large">
                                 <Glyphicon glyph="camera"/> Image
-                            </Button>
+                            </Button>*/}
                             <Modal show={this.state.show}
                                 onHide={() => this.setState({ show: false })}
                                 backdrop={true}
