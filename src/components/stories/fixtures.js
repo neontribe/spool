@@ -13,6 +13,35 @@ export const textEntry = {
     timestamp: moment().format()
 };
 
+export const videoEntry = {
+    media: {
+        video: "/static/queue.webm",
+        thumbnail: "/static/queue.jpg",
+    },
+    sentiment: {
+        type: "sad",
+    },
+    topic: {
+        type: 'Public Transport',
+    },
+    timestamp: moment().format()
+};
+
+export const videoEntryWithText = {
+    media: {
+        video: "/static/queue.webm",
+        thumbnail: "/static/queue.jpg",
+        text: "Queuing for the bus sucks"
+    },
+    sentiment: {
+        type: "sad",
+    },
+    topic: {
+        type: 'Public Transport',
+    },
+    timestamp: moment().format()
+};
+
 export const entries =  [
     {
         id: '1',
