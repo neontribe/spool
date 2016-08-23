@@ -35,7 +35,9 @@ export class Entry extends Component {
                                 />
                                 <div>
                                     <div className="entry--time">{this.formatTimestamp()}</div>
-                                    <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
+                                    { this.props.entry.media.text &&
+                                        <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
+                                    }
                                     <div className="entry--tags">
                                         <span className="entry--tag">{this.props.entry.topic.type}</span>
                                     </div>
