@@ -74,7 +74,7 @@ const ViewerType = new ql.GraphQLObjectType({
         },
         topics: {
             type: new ql.GraphQLList(types.TopicType),
-            resolve: () => models.Topic.findAll()
+            resolve: () => models.Topic.findAll(db)
         }
     },
     interfaces: [nodeInterface]

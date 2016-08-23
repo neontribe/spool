@@ -40,7 +40,7 @@ export class AddEntryForm extends Component {
                     Add an entry
                 </Button>
                 <Panel collapsible expanded={this.state.open}>
-                    <EntryForm done={this.handleDone}/>
+                    <EntryForm topics={this.props.viewer.topics} done={this.handleDone}/>
                 </Panel>
             </div>
         );
@@ -52,6 +52,10 @@ export const AddEntryFormContainer = Relay.createContainer(AddEntryForm, {
         viewer: () => Relay.QL`
             fragment on Viewer {
                 id
+                topics {
+                    type,
+                    name
+                }
                 ${AddEntryMutation.getFragment('viewer')}
             }
         `,

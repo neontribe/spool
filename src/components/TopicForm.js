@@ -24,6 +24,10 @@ class TopicForm extends Component {
         })
     }
 
+    renderOptions() {
+        return this.props.topics.map((t, i) => <option key={i} value={t.type}>{t.name}</option>);
+    }
+
     render() {
         return (
             <FormGroup controlId="topic">
@@ -32,8 +36,7 @@ class TopicForm extends Component {
                   placeholder="select"
                   value={this.state.value}
                   onChange={this.handleChange}>
-                  <option value="public_transport">Public Transport</option>
-                  <option value="sport">Sport</option>
+                  {this.renderOptions()};
               </FormControl>
               <Button bsStyle="primary" bsSize="large" block
                   onClick={this.continue}
@@ -45,7 +48,8 @@ class TopicForm extends Component {
 
 TopicForm.propTypes = {
     initialValue: React.PropTypes.string,
-    save: React.PropTypes.func.isRequired
+    save: React.PropTypes.func.isRequired,
+    topics: React.PropTypes.array
 };
 
 TopicForm.defaultProps = {

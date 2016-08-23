@@ -37,7 +37,7 @@ export class Entry extends Component {
                                     <div className="entry--time">{this.formatTimestamp()}</div>
                                     <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
                                     <div className="entry--tags">
-                                        <span className="entry--tag">{this.props.entry.topic.type}</span>
+                                        <span className="entry--tag">{this.props.entry.topic.map((t) => t.name).join(' ')}</span>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@ export const EntryContainer = Relay.createContainer(Entry, {
                 }
             }
             topic {
-                type
+                name
             }
             sentiment {
                 type

@@ -318,7 +318,7 @@ class Entry {
                             reject(error);
                         } else {
                             let id = result.rows[0].entry_id;
-                            Promise.all(entry.topic.each((t) => Topic.create(db, id, t))).then(function() {
+                            Promise.all(entry.topic.map((t) => Topic.create(db, id, t))).then(function() {
                                 resolve(Entry.findById(db, id).then((entries) => entries.shift()));
                             });
                         }
