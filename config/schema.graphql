@@ -49,6 +49,9 @@ union Media = VideoMedia | ImageMedia | TextMedia
 
 input MediaInput {
   text: String
+  video: String
+  thumbnail: String
+  image: String
 }
 
 type Mutations {
@@ -88,7 +91,8 @@ type User {
 }
 
 type VideoMedia {
-  text: String
+  video: String
+  thumbnail: String
 }
 
 type Viewer implements Node {

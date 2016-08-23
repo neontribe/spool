@@ -7,7 +7,7 @@ class MediaTypeChooser extends Component {
     render() {
         return (
             <Grid>
-                {/*<Row>
+                <Row>
                     <Col xs={3}></Col>
                     <Col xs={6}>
                         <Button bsSize="large" block
@@ -17,7 +17,7 @@ class MediaTypeChooser extends Component {
                     </Col>
                     <Col xs={3}></Col>
                 </Row>
-                <Row>
+                {/*<Row>
                     <Col xs={3}></Col>
                     <Col xs={6}>
                         <Button bsSize="large" block

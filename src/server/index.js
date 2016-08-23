@@ -3,6 +3,8 @@ const graphqlHTTP = require('express-graphql');
 const schema = require('./graphql/schema.js');
 const path = require('path');
 const cors = require('cors');
+const s3Router = require('./s3Router');
+const bodyParser = require('body-parser');
 const jwt = require('express-jwt');
 const db = require('./database/database.js');
 const models = require('./database/models.js');
@@ -77,13 +79,18 @@ app.use(
     }))
 );
 
+app.use('/s3', bodyParser.json(), s3Router({
+  bucket: process.env.S3_BUCKET,
+  ACL: 'private'
+}));
+
 /* Static Resouces */
 app.use(express.static('build'));
 
 /* Drop all routes through to index.html to support browserHistory routing in react */
-app.get('*', function (request, response){
-  response.sendFile(path.resolve('build', 'index.html'))
-})
+// app.get('*', function (request, response){
+//   response.sendFile(path.resolve('build', 'index.html'))
+// })
 
 module.exports = app;
 

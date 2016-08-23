@@ -40,8 +40,13 @@ export const EntryContainer = Relay.createContainer(Entry, {
             id
             _id
             media {
+                __typename
                 ... on TextMedia {
                     text
+                }
+                ... on VideoMedia {
+                    video
+                    thumbnail
                 }
             }
             topic {

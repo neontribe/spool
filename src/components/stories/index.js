@@ -7,5 +7,6 @@ require('./EntryForm');
 require('./MediaTypeChooser');
 require('./TextForm');
 require('./VideoForm');
+require('./VideoRecorder');
 require('./SentimentForm');
 require('./TopicForm');

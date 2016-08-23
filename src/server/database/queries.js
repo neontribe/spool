@@ -23,7 +23,9 @@ SELECT
 
     media_type.type AS media_type_type,
     media.media_id AS media_id,
-    media.text AS media_text
+    media.text AS media_text,
+    media.video AS media_video,
+    media.thumbnail AS media_thumbnail
 
 FROM 
     entry
@@ -57,7 +59,9 @@ SELECT
 
     media_type.type AS media_type_type,
     media.media_id AS media_id,
-    media.text AS media_text
+    media.text AS media_text,
+    media.video AS media_video,
+    media.thumbnail AS media_thumbnail
 
 FROM 
     entry
@@ -91,11 +95,11 @@ INSERT INTO
 VALUES
     (${entryId}, (SELECT topic_type_id FROM topic_type WHERE topic_type.type = ${type}))`.setName('topic_create');
 
-const mediaCreate = (text, type) => SQL`
+const mediaCreate = (text, video, thumbnail, type) => SQL`
 INSERT INTO
-    media (text, type_id)
+    media (text, video, thumbnail, type_id)
 VALUES
-    (${text}, (SELECT media_type_id FROM media_type WHERE media_type.type = ${type}))
+    (${text}, ${video}, ${thumbnail}, (SELECT media_type_id FROM media_type WHERE media_type.type = ${type}))
 RETURNING
     media_id`.setName('media_create');
 
