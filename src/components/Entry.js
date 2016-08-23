@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { Grid, Row, Col, Image } from 'react-bootstrap';
+import moment from 'moment';
 
 export class Entry extends Component {
     static propTypes = {
         entry: React.PropTypes.object.isRequired
+    }
+
+    formatTimestamp() {
+        return moment(this.props.entry.timestamp).format('dddd, MMMM Do YYYY, h:mm:ss a');
     }
 
     render() {
@@ -30,6 +35,9 @@ export class Entry extends Component {
                             </div>
                         </div>
                     </Col>
+                    <Col xs={4}>
+                        <span>{this.formatTimestamp()}</span>
+                    </Col>
                 </Row>
             </Grid>
         );
@@ -52,7 +60,8 @@ export const EntryContainer = Relay.createContainer(Entry, {
             }
             sentiment {
                 type
-            }
+            },
+            timestamp
         }`,
     }
 });

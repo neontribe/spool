@@ -22,6 +22,7 @@ type Entry implements Node {
   owner: User
   sentiment: Sentiment
   topic: Topic
+  timestamp: String
 }
 
 type EntryConnection {

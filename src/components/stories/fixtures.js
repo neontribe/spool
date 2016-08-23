@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const textEntry = {
     media: {
         text: "Riding on the front seat at the top!"
@@ -7,7 +9,8 @@ export const textEntry = {
     },
     topic: {
         type: 'Public Transport',
-    }
+    },
+    timestamp: moment().format()
 };
 
 export const entries =  [
@@ -21,7 +24,8 @@ export const entries =  [
         },
         topic: {
             type: 'Public Transport',
-        }
+        },
+        timestamp: moment().subtract(1, 'days').format()
     },
     {
         id: '2',
@@ -33,7 +37,8 @@ export const entries =  [
         },
         topic: {
             type: 'Public Transport'
-        }
+        },
+        timestamp: moment().subtract(2, 'days').format()
     },
     {
         id: '3',
@@ -45,7 +50,8 @@ export const entries =  [
         },
         topic: {
             type: 'Sport',
-        }
+        },
+        timestamp: moment().subtract(3, 'days').format()
     },
 ];
 

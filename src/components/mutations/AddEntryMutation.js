@@ -1,4 +1,5 @@
 import Relay from 'react-relay';
+import moment from 'moment';
 
 export default class AddEntryMutation extends Relay.Mutation {
     static fragments = {
@@ -43,7 +44,7 @@ export default class AddEntryMutation extends Relay.Mutation {
       connectionName: 'entries',
       edgeName: 'entryEdge',
       rangeBehaviors: ({ status }) => (
-        status === 'completed' ? 'ignore' : 'append'
+        status === 'completed' ? 'ignore' : 'prepend'
       ),
     }];
   }
@@ -65,7 +66,8 @@ export default class AddEntryMutation extends Relay.Mutation {
                 },
                 sentiment: {
                     type: entry.sentiment
-                }
+                },
+                timestamp: moment().format()
               }
           }
       }

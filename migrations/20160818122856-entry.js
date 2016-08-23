@@ -23,7 +23,7 @@ exports.up = function(db, cb) {
         author_id: { type: 'int' },
         owner_id: { type: 'int' },
         sentiment_type_id: { type: 'int' },
-        timestamp: { type: 'timestamp', defaultValue: 'now()'  }
+        timestamp: { type: 'timestamp' }
     }, cb)
     return null;
 };
