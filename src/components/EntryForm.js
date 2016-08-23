@@ -29,13 +29,13 @@ class EntryForm extends Component {
   }
 
   saveEntry(key, value) {
-      var entry = Object.assign({}, this.state.entry);
-      entry[key] = value;
+      var entry = _.merge({}, this.state.entry, {[key]: value});
       this.setState({entry});
 
       if (!this.isFinished()) {
           this.next();
       } else {
+          console.log(entry);
           this.props.done(entry, () => this.setState({step: this.state.steps[0]}));
       }
   }
