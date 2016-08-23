@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
-import Relay from 'react-relay';
-import { Grid, Row, Col, Image, Modal } from 'react-bootstrap';
-import EntryViewer from './EntryViewer';
+import { Grid, Row, Col, Image, ResponsiveEmbed } from 'react-bootstrap';
 import moment from 'moment';
 
-export class Entry extends Component {
+class EntryViewer extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
-
         this.getStyles = this.getStyles.bind(this);
-        this.showViewer = this.showViewer.bind(this);
-        this.hideViewer = this.hideViewer.bind(this);
     }
 
     formatTimestamp() {
@@ -25,23 +19,12 @@ export class Entry extends Component {
             : {};
     }
 
-    showViewer() {
-        if (this.props.withViewer) {
-            this.setState({showEntryViewer: true});
-        }
-    }
-
-    hideViewer() {
-        this.setState({showEntryViewer: false});
-    }
-
     render() {
         return (
             <Grid>
                 <Row>
                     <Col xs={12}>
-                        <div onClick={this.showViewer}
-                            className={'entry entry--' + this.props.entry.sentiment.type} style={this.getStyles()}>
+                        <div className={'entry entry--' + this.props.entry.sentiment.type} style={this.getStyles()}>
                             <div className='entry-overlay'></div>
                             <div className='entry-content'>
                                 <Image
@@ -62,46 +45,36 @@ export class Entry extends Component {
                         </div>
                     </Col>
                 </Row>
-                { this.props.withViewer &&
-                    <Modal show={this.state.showEntryViewer}
-                        bsSize="large"
-                        backdrop={true}
-                        onHide={this.hideViewer}>
-                        <EntryViewer entry={this.props.entry} />
-                    </Modal>
-                }
+                <Row>
+                    <Col xs={3} />
+                    <Col xs={6}>
+                        { this.props.entry.media.video &&
+                            <ResponsiveEmbed a4by3>
+                                <video
+                                    src={this.props.entry.media.video}
+                                    controls
+                                    autoPlay
+                                    />
+                            </ResponsiveEmbed>
+                        }
+                        { this.props.entry.media.image &&
+                            <ResponsiveEmbed a4by3>
+                                <Image
+                                    src={this.props.entry.media.image}
+                                    alt={this.props.entry.media.text || this.props.entry.topic.type}
+                                    />
+                            </ResponsiveEmbed>
+                        }
+                    </Col>
+                    <Col xs={3} />
+                </Row>
             </Grid>
         );
     }
 }
 
-Entry.propTypes = {
-    entry: React.PropTypes.object.isRequired,
-    withViewer: React.PropTypes.bool
+EntryViewer.propTypes = {
+    entry: React.PropTypes.object.isRequired
 }
 
-Entry.defaultProps = {
-    withViewer: true
-}
-
-export const EntryContainer = Relay.createContainer(Entry, {
-    fragments: {
-        entry: () => Relay.QL`
-        fragment on Entry {
-            id
-            _id
-            media {
-                text
-                video
-                thumbnail
-            }
-            topic {
-                name
-            }
-            sentiment {
-                type
-            },
-            timestamp
-        }`,
-    }
-});
+export default EntryViewer;

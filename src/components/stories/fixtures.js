@@ -15,30 +15,30 @@ export const textEntry = {
 
 export const videoEntry = {
     media: {
-        video: "/static/queue.webm",
+        video: "/static/example.webm",
         thumbnail: "/static/queue.jpg",
     },
     sentiment: {
         type: "sad",
     },
-    topic: {
-        type: 'Public Transport',
-    },
+    topic: [{
+        name: 'Public Transport',
+    }],
     timestamp: moment().format()
 };
 
 export const videoEntryWithText = {
     media: {
-        video: "/static/queue.webm",
+        video: "/static/example.webm",
         thumbnail: "/static/queue.jpg",
         text: "Queuing for the bus sucks"
     },
     sentiment: {
         type: "sad",
     },
-    topic: {
-        type: 'Public Transport',
-    },
+    topic: [{
+        name: 'Public Transport',
+    }],
     timestamp: moment().format()
 };
 
@@ -86,7 +86,7 @@ export const entries =  [
 
 export const topics = [
     { name: 'Transport', type: 'public_transport' },
-    { name: 'Foo Bar', type: 'foo_bar' } 
+    { name: 'Foo Bar', type: 'foo_bar' }
 ];
 
 export const googleProfile = {
