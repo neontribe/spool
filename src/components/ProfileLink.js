@@ -29,13 +29,21 @@ class ProfileLink extends Component {
 
     render() {
         if (this.props.disabled || !this.props.profile) {
-            return (<div></div>);
+            return false;
         }
+
         return (
             <div>
-                <div onClick={this.showProfile}>
-                    <Image src={this.props.profile.picture} circle responsive />
+                <div
+                    className="profile-img-container"
+                    onClick={this.showProfile}
+                >
                     <h3>{this.props.profile.nickname}</h3>
+                    <Image
+                        src={this.props.profile.picture}
+                        className="profile-img"
+                        circle
+                    />
                 </div>
 
                 <Modal show={this.state.showProfile} onHide={this.state.hideProfile} bsSize="large">

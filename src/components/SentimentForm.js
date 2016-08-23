@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Button, Image } from 'react-bootstrap';
+import { Grid, Row, Col, Button, ButtonToolbar, Image } from 'react-bootstrap';
 import _ from 'lodash';
 
 class SentimentForm extends Component {
@@ -30,23 +30,41 @@ class SentimentForm extends Component {
             <Grid>
                 <Row>
                     <Col xs={6}>
-                        <Image src="/static/emoji/happy.svg" responsive
-                            className={this.state.value === 'happy' ? 'selected-emoji' : ''}
-                            alt="Happy"
-                            onClick={_.partial(this.handleChange, 'happy')}/>
+                        <div
+                            className="happy-container"
+                            onClick={_.partial(this.handleChange, 'happy')}
+                        >
+                            <div className={this.state.value === 'happy' ? 'selected-emoji' : ''}>
+                                <Image
+                                    src="/static/happy.png"
+                                    alt="Happy"
+                                />
+                            </div>
+                        </div>
                     </Col>
                     <Col xs={6}>
-                        <Image src="/static/emoji/sad.svg" responsive
-                            className={this.state.value === 'sad' ? 'selected-emoji' : ''}
-                            alt="Sad"
-                            onClick={_.partial(this.handleChange, 'sad')}/>
+                        <div
+                            className="sad-container"
+                            onClick={_.partial(this.handleChange, 'sad')}
+                        >
+                            <div className={this.state.value === 'sad' ? 'selected-emoji' : ''}>
+                                <Image
+                                    src="/static/sad.png"
+                                    alt="Sad"
+                                />
+                            </div>
+                        </div>
                     </Col>
                 </Row>
                 <Row>
-                    <Col>
-                        <Button bsStyle="primary" bsSize="large" block
-                            onClick={this.continue}
-                            disabled={!this.state.value}>Next</Button>
+                    <Col xs={12}>
+                        <ButtonToolbar>
+                            <Button
+                                bsStyle="primary"
+                                bsSize="large"
+                                onClick={this.continue}
+                                disabled={!this.state.value}>Next</Button>
+                        </ButtonToolbar>
                     </Col>
                 </Row>
             </Grid>

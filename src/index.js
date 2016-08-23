@@ -8,9 +8,10 @@ import AuthService from './auth/AuthService';
 import App from './App';
 import { HomeContainer } from './components/Home';
 import Login from './components/Login';
-import './index.css';
+
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
+import './index.css';
 
 
 import { TimelineContainer } from './components/Timeline';

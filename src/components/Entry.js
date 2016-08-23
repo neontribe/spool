@@ -4,33 +4,53 @@ import { Grid, Row, Col, Image } from 'react-bootstrap';
 import moment from 'moment';
 
 export class Entry extends Component {
-    static propTypes = {
-        entry: React.PropTypes.object.isRequired
+    constructor(props) {
+        super(props);
+
+        this.getStyles = this.getStyles.bind(this);
     }
+
     formatTimestamp() {
-        return moment(this.props.entry.timestamp).format('dddd, MMMM Do YYYY, h:mm:ss a');
+        return moment(this.props.entry.timestamp).fromNow();
     }
+
+    getStyles() {
+        return this.props.entry.media.thumbnail
+            ? { backgroundImage: 'url('+this.props.entry.media.thumbnail+')' }
+            : {};
+    }
+
     render() {
         return (
             <Grid>
                 <Row>
-                    <Col xs={6}>
-                        <blockquote>{this.props.entry.media.text}</blockquote>
-                    </Col>
-                    <Col xs={1}>
-                        <span>{this.props.entry.topic.type}</span>
-                    </Col>
-                    <Col xs={1}>
-                        <Image src={'/static/emoji/' + this.props.entry.sentiment.type + '.svg'} responsive
-                                alt={this.props.entry.sentiment.type}/>
-                    </Col>
-                    <Col xs={4}>
-                        <span>{this.formatTimestamp()}</span>
+                    <Col xs={12}>
+                        <div className={'entry entry--' + this.props.entry.sentiment.type} style={this.getStyles()}>
+                            <div className='entry-overlay'></div>
+                            <div className='entry-content'>
+                                <Image
+                                    src={'/static/' + this.props.entry.sentiment.type + '.png'}
+                                    alt={this.props.entry.sentiment.type}
+                                    responsive
+                                />
+                                <div>
+                                    <div className="entry--time">{this.formatTimestamp()}</div>
+                                    <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
+                                    <div className="entry--tags">
+                                        <span className="entry--tag">{this.props.entry.topic.type}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </Col>
                 </Row>
             </Grid>
         );
     }
+}
+
+Entry.propTypes = {
+    entry: React.PropTypes.object.isRequired
 }
 
 export const EntryContainer = Relay.createContainer(Entry, {
