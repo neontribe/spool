@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Button, Glyphicon } from 'react-bootstrap';
+import { Grid, Row, Col, Button, ButtonGroup, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
 
 class MediaTypeChooser extends Component {
@@ -28,14 +28,14 @@ class MediaTypeChooser extends Component {
                     <Col xs={3}></Col>
                 </Row>*/}
                 <Row>
-                    <Col xs={3}></Col>
-                    <Col xs={6}>
-                        <Button bsSize="large" block
-                            onClick={_.partial(this.props.save, 'text')}>
-                            <Glyphicon glyph="pencil"/> Text
-                        </Button>
+                    <Col xs={12}>
+                        <ButtonGroup>
+                            <Button bsSize="large" block
+                                onClick={_.partial(this.props.save, 'text')}>
+                                <Glyphicon glyph="pencil"/> Text
+                            </Button>
+                        </ButtonGroup>
                     </Col>
-                    <Col xs={3}></Col>
                 </Row>
             </Grid>
         );

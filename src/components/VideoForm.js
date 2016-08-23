@@ -175,9 +175,6 @@ class VideoForm extends Component {
                     <Col xs={3}/>
                 </Row>
                 <Row>
-                    <Col>&nbsp;</Col>
-                </Row>
-                <Row>
                     <Col xs={3}></Col>
                     <Col xs={6}>
                         <Button bsStyle="primary" bsSize="large" block

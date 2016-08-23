@@ -39,12 +39,12 @@ class EntryForm extends Component {
             {{
                 mediachoice: (<MediaTypeChooser save={_.partial(this.saveEntry, 'type')} />),
                 media: ({
-                    text: (<TextForm save={_.partial(this.saveEntry, 'text')}/>),
-                    video: (<VideoForm save={_.partial(this.saveEntry, 'video')}/>),
-                    image: (<TextForm save={_.partial(this.saveEntry, 'image')}/>)
+                    text: (<TextForm save={_.partial(this.saveEntry, 'text')} />),
+                    video: (<VideoForm save={_.partial(this.saveEntry, 'video')} />),
+                    image: (<TextForm save={_.partial(this.saveEntry, 'image')} />)
                 }[this.state.entry.type]),
-                sentiment: (<SentimentForm save={_.partial(this.saveEntry, 'sentiment')}/>),
-                topic: (<TopicForm save={_.partial(this.saveEntry, 'topic')}/>)
+                sentiment: (<SentimentForm save={_.partial(this.saveEntry, 'sentiment')} />),
+                topic: (<TopicForm save={_.partial(this.saveEntry, 'topic')} />)
             }[this.state.step]}
           </form>
     );

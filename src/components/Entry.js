@@ -6,19 +6,29 @@ export class Entry extends Component {
     static propTypes = {
         entry: React.PropTypes.object.isRequired
     }
+
     render() {
         return (
             <Grid>
                 <Row>
-                    <Col xs={6}>
-                        <blockquote>{this.props.entry.media.text}</blockquote>
-                    </Col>
-                    <Col xs={1}>
-                        <span>{this.props.entry.topic.type}</span>
-                    </Col>
-                    <Col xs={1}>
-                        <Image src={'/static/emoji/' + this.props.entry.sentiment.type + '.svg'} responsive
-                                alt={this.props.entry.sentiment.type}/>
+                    <Col xs={12}>
+                        <div className={'entry entry--' + this.props.entry.sentiment.type}>
+                            <div className='entry-overlay'></div>
+                            <div className='entry-content'>
+                                <Image
+                                    src={'/static/' + this.props.entry.sentiment.type + '.png'}
+                                    alt={this.props.entry.sentiment.type}
+                                    responsive
+                                />
+                                <div>
+                                    <div className="entry--time">0 minutes ago</div>
+                                    <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
+                                    <div className="entry--tags">
+                                        <span className="entry--tag">{this.props.entry.topic.type}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </Col>
                 </Row>
             </Grid>
