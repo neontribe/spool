@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import MediaTypeChooser from './MediaTypeChooser';
 import VideoForm from './VideoForm';
 import TextForm from './TextForm';
 import SentimentForm from './SentimentForm';
@@ -44,7 +43,6 @@ class EntryForm extends Component {
     return (
           <form>
             {{
-                mediachoice: (<MediaTypeChooser save={_.partial(this.saveEntry, 'type')} />),
                 media: ({
                     text: (<TextForm save={_.partial(this.saveEntry, 'media')}/>),
                     video: (<VideoForm save={_.partial(this.saveEntry, 'media')} back={this.back}/>),
@@ -53,7 +51,7 @@ class EntryForm extends Component {
                 sentiment: (<SentimentForm save={_.partial(this.saveEntry, 'sentiment')} />),
                 topic: (<TopicForm save={_.partial(this.saveEntry, 'topic')} />)
             }[this.state.step]}
-          </form>
+        </form>
     );
   }
 }
@@ -66,8 +64,8 @@ EntryForm.propTypes = {
 }
 
 EntryForm.defaultProps = {
-    step: 'mediachoice',
-    steps: ['mediachoice', 'media', 'sentiment', 'topic'],
+    step: 'media',
+    steps: ['media', 'sentiment', 'topic'],
     entry: {}
 }
 
