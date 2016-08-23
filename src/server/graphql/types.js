@@ -1,9 +1,17 @@
 const ql = require('graphql');
+const models = require('../database/models');
 
 const VideoMediaType = new ql.GraphQLObjectType({
     name: 'VideoMedia',
     fields: {
-        text: { type: ql.GraphQLString }
+        video: { 
+            type: ql.GraphQLString,
+            resolve: (media) => '/s3/assets/'+media.video
+        },
+        thumbnail: { 
+            type: ql.GraphQLString,
+            resolve: (media) => '/s3/assets/'+media.thumbnail
+        }
     }
 });
 
@@ -25,7 +33,11 @@ const MediaType = new ql.GraphQLUnionType({
     name: 'Media',
     types: [ VideoMediaType, ImageMediaType, TextMediaType ],
     resolveType(value) {
-        return TextMediaType;
+        if(value instanceof models.TextMedia) {
+            return TextMediaType;
+        } else if (value instanceof models.VideoMedia) {
+            return VideoMediaType;
+        }
     }
 });
 
@@ -55,11 +67,16 @@ const TopicType = new ql.GraphQLObjectType({
  * GraphQL does not support union input types
  * So the resolution of union types can be done run-time
  * https://github.com/graphql/graphql-js/issues/207
+ *
+ * todo Union type for inputs
  */
 const MediaInputType = new ql.GraphQLInputObjectType({
     name: 'MediaInput',
     fields: {
-        text: { type: ql.GraphQLString }
+        text: { type: ql.GraphQLString },
+        video: { type: ql.GraphQLString },
+        thumbnail: { type: ql.GraphQLString },
+        image: { type: ql.GraphQLString }
     }
 });
 

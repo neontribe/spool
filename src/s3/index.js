@@ -14,7 +14,6 @@ function getSignedUrl(fileinfo) {
  * and upload it to s3
  */
 export default function uploadToS3(blob) {
-    debugger;
     let params = {
         type: blob.type,
         data: blob,

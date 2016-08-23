@@ -18,7 +18,13 @@ class Media {
     static create(db, media) {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
-                client.query(queries.media.create(media.text, 'text'), function (error, result) {
+                var type = 'default';
+                if(media.text) {
+                    type = 'text';
+                } else if(media.video && media.thumbnail) {
+                    type = 'video';
+                }
+                client.query(queries.media.create(media.text, media.video, media.thumbnail, type), function (error, result) {
                     done();
                     if (error) {
                         reject(error);
@@ -44,6 +50,23 @@ class TextMedia extends Media {
         var id = row[p('id')];
         var text = row[p('text')];
         return new TextMedia(id, text);
+    }
+}
+class VideoMedia extends Media {
+    constructor(id, video, thumbnail) {
+        super();
+        this.id = id;
+        this.video = video;
+        this.thumbnail = thumbnail;
+    }
+
+    static inflate(row, prefix = '') {
+        var p = (name) => prefix + name;
+
+        var id = row[p('id')];
+        var video = row[p('video')];
+        var thumbnail = row[p('thumbnail')];
+        return new VideoMedia(id, video, thumbnail);
     }
 }
 
@@ -196,7 +219,16 @@ class Entry {
         var p = (name) => prefix + name;
 
         var id = row[p('id')];
-        var media = TextMedia.inflate(row, 'media_');
+        var media;
+        switch(row.media_type_type) {
+            case 'video':
+                media = VideoMedia.inflate(row, 'media_');
+                break;
+            case 'text':
+            default:
+                media = TextMedia.inflate(row, 'media_');
+                break;
+        }
         var author = User.inflate(row, 'author_');
         var owner = User.inflate(row, 'owner_');
         var sentiment = Sentiment.inflate(row, 'sentiment_');
@@ -280,5 +312,7 @@ class Entry {
 module.exports = {
     Entry,
     Topic,
-    User
+    User,
+    TextMedia,
+    VideoMedia
 }

@@ -19,7 +19,9 @@ exports.up = function(db, cb) {
     db.createTable('media', {
         media_id: { type: 'int', primaryKey: true, autoIncrement: true },
         type_id: { type: 'int' },
-        text: { type: 'text' }
+        text: { type: 'text' },
+        video: { type: 'text' },
+        thumbnail: { type: 'text' }
     }, cb)
     return null;
 };
