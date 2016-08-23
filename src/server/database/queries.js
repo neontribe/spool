@@ -21,7 +21,6 @@ SELECT
 
     owner.user_id AS owner_id,
 
-    media_type.type AS media_type_type,
     media.media_id AS media_id,
     media.text AS media_text,
     media.video AS media_video,
@@ -35,8 +34,6 @@ JOIN
     user_account AS owner ON owner.user_id = entry.owner_id
 JOIN
     media ON media.media_id = entry.media_id
-JOIN 
-    media_type ON media_type.media_type_id = media.type_id
 JOIN
     sentiment_type ON sentiment_type.sentiment_type_id = entry.sentiment_type_id
 WHERE
@@ -57,7 +54,6 @@ SELECT
 
     owner.user_id AS owner_id,
 
-    media_type.type AS media_type_type,
     media.media_id AS media_id,
     media.text AS media_text,
     media.video AS media_video,
@@ -71,8 +67,6 @@ JOIN
     user_account AS owner ON owner.user_id = entry.owner_id
 JOIN
     media ON media.media_id = entry.media_id
-JOIN 
-    media_type ON media_type.media_type_id = media.type_id
 JOIN
     sentiment_type ON sentiment_type.sentiment_type_id = entry.sentiment_type_id
 WHERE
@@ -103,11 +97,11 @@ INSERT INTO
 VALUES
     (${entryId}, (SELECT topic_type_id FROM topic_type WHERE topic_type.type = ${type}))`.setName('topic_create');
 
-const mediaCreate = (text, video, thumbnail, type) => SQL`
+const mediaCreate = (text, video, thumbnail) => SQL`
 INSERT INTO
-    media (text, video, thumbnail, type_id)
+    media (text, video, thumbnail)
 VALUES
-    (${text}, ${video}, ${thumbnail}, (SELECT media_type_id FROM media_type WHERE media_type.type = ${type}))
+    (${text}, ${video}, ${thumbnail})
 RETURNING
     media_id`.setName('media_create');
 

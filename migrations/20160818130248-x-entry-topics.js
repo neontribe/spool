@@ -20,10 +20,10 @@ exports.up = function(db, cb) {
         entry_id: { type: 'int', unique: true },
         topic_type_id: { type: 'int' },
     }, cb)
-  return null;
+    return null;
 };
 
 exports.down = function(db, cb) {
     db.dropTable('x_entry_topics', cb);
-  return null;
+    return null;
 };

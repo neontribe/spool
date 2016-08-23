@@ -18,10 +18,10 @@ exports.setup = function(options, seedLink) {
 exports.up = function(db, cb) {
     db.createTable('media', {
         media_id: { type: 'int', primaryKey: true, autoIncrement: true },
-        type_id: { type: 'int' },
+        user_id: { type: 'int' },
         text: { type: 'text' },
-        video: { type: 'text' },
-        thumbnail: { type: 'text' }
+        video: { type: 'text', unique: true },
+        thumbnail: { type: 'text', unique: true }
     }, cb)
     return null;
 };
