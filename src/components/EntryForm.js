@@ -49,7 +49,7 @@ class EntryForm extends Component {
                     image: (<TextForm save={_.partial(this.saveEntry, 'media')}/>)
                 }[this.state.entry.type]),
                 sentiment: (<SentimentForm save={_.partial(this.saveEntry, 'sentiment')} />),
-                topic: (<TopicForm save={_.partial(this.saveEntry, 'topic')} />)
+                topic: (<TopicForm topics={this.props.topics} save={_.partial(this.saveEntry, 'topic')} />)
             }[this.state.step]}
         </form>
     );
@@ -60,7 +60,8 @@ EntryForm.propTypes = {
     step: React.PropTypes.string,
     steps: React.PropTypes.array,
     done: React.PropTypes.func,
-    entry: React.PropTypes.object
+    entry: React.PropTypes.object,
+    topics: React.PropTypes.array
 }
 
 EntryForm.defaultProps = {

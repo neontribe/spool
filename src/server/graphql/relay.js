@@ -49,9 +49,8 @@ const EntryType = new ql.GraphQLObjectType({
             resolve: (entry) => entry.sentiment
         },
         topic: {
-            type: types.TopicType,
-            // we are popping a single type off the list since we are only supporting a single topic for now
-            resolve: (entry) => models.Topic.findByEntryId(db, entry.id).then((topics) => topics.shift())
+            type: new ql.GraphQLList(types.TopicType),
+            resolve: (entry) => models.Topic.findByEntryId(db, entry.id)
         },
         timestamp: {
             type: ql.GraphQLString,
@@ -72,6 +71,10 @@ const ViewerType = new ql.GraphQLObjectType({
             type: entryConnectionDefinition.connectionType,
             args: relayql.connectionArgs,
             resolve: (viewer, args, context) => relayql.connectionFromPromisedArray(models.Entry.findByOwnerId(db, context.id), args)
+        },
+        topics: {
+            type: new ql.GraphQLList(types.TopicType),
+            resolve: () => models.Topic.findAll(db)
         }
     },
     interfaces: [nodeInterface]

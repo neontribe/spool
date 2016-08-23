@@ -21,7 +21,7 @@ type Entry implements Node {
   author: User
   owner: User
   sentiment: Sentiment
-  topic: Topic
+  topic: [Topic]
   timestamp: String
 }
 
@@ -38,7 +38,7 @@ type EntryEdge {
 input EntryInput {
   media: MediaInput
   sentiment: String
-  topic: String
+  topic: [String]
 }
 
 type ImageMedia {
@@ -84,6 +84,7 @@ type TextMedia {
 
 type Topic {
   type: String
+  name: String
 }
 
 type User {
@@ -98,4 +99,5 @@ type VideoMedia {
 type Viewer implements Node {
   id: ID!
   entries(after: String, first: Int, before: String, last: Int): EntryConnection
+  topics: [Topic]
 }

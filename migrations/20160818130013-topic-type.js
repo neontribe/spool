@@ -18,7 +18,8 @@ exports.setup = function(options, seedLink) {
 exports.up = function(db, cb) {
     db.createTable('topic_type', {
         topic_type_id: { type: 'int', primaryKey: true, autoIncrement: true },
-        type: { type: 'string', unique: true },
+        type: { type: 'string' },
+        name: { type: 'string' }
     }, cb)
     return null;
 };

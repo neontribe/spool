@@ -65,7 +65,7 @@ export class AddEntryForm extends Component {
                                     <Modal.Title>New Entry</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
-                                    <EntryForm done={this.handleDone} entry={this.state.entry}/>
+                                    <EntryForm topics={this.props.viewer.topics} done={this.handleDone} entry={this.state.entry}/>
                                 </Modal.Body>
                                 <Modal.Footer></Modal.Footer>
                             </Modal>
@@ -90,6 +90,10 @@ export const AddEntryFormContainer = Relay.createContainer(AddEntryForm, {
         viewer: () => Relay.QL`
             fragment on Viewer {
                 id
+                topics {
+                    type,
+                    name
+                }
                 ${AddEntryMutation.getFragment('viewer')}
             }
         `,

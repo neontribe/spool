@@ -81,13 +81,21 @@ WHERE
 
 const topicByEntry = (entryId) => SQL`
 SELECT
-    topic_type.type AS topic_type
+    topic_type.type AS topic_type,
+    topic_type.name AS topic_name
 FROM
     x_entry_topics
 JOIN
     topic_type ON topic_type.topic_type_id = x_entry_topics.topic_type_id
 WHERE
     x_entry_topics.entry_id = ${entryId}`.setName('topic_by_entry_id');
+
+const topicAll = () => SQL`
+SELECT
+    topic_type.type AS topic_type,
+    topic_type.name AS topic_name
+FROM
+    topic_type`.setName('topic_all');
 
 const topicCreate = (entryId, type) => SQL`
 INSERT INTO
@@ -138,6 +146,7 @@ module.exports = {
     topic: {
         byEntry: topicByEntry,
         create: topicCreate,
+        all: topicAll
     },
     media: {
         create: mediaCreate,
