@@ -7,9 +7,9 @@ export const textEntry = {
     sentiment: {
         type: "happy",
     },
-    topic: {
-        type: 'Public Transport',
-    },
+    topic: [{
+        name: 'Transport',
+    }],
     timestamp: moment().format()
 };
 
@@ -51,9 +51,9 @@ export const entries =  [
         sentiment: {
             type: "happy",
         },
-        topic: {
-            type: 'Public Transport',
-        },
+        topic: [{
+            name: 'Transport',
+        }],
         timestamp: moment().subtract(1, 'days').format()
     },
     {
@@ -64,9 +64,9 @@ export const entries =  [
         sentiment: {
             type: "sad"
         },
-        topic: {
-            type: 'Public Transport'
-        },
+        topic: [{
+            name: 'Transport',
+        }],
         timestamp: moment().subtract(2, 'days').format()
     },
     {
@@ -77,11 +77,16 @@ export const entries =  [
         sentiment: {
             type: "happy",
         },
-        topic: {
-            type: 'Sport',
-        },
+        topic: [{
+            name: 'Transport',
+        }],
         timestamp: moment().subtract(3, 'days').format()
     },
+];
+
+export const topics = [
+    { name: 'Transport', type: 'public_transport' },
+    { name: 'Foo Bar', type: 'foo_bar' } 
 ];
 
 export const googleProfile = {
