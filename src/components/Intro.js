@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { Well } from 'react-bootstrap';
+import { Jumbotron } from 'react-bootstrap';
 
 class Intro extends Component {
 
     render() {
         return (
-            <Well>
-                <h2>We need an introduction to the app to go in this space</h2>
-            </Well>
+            <Jumbotron>
+                <h1>Welcome!</h1>
+                <p>We would really like to know about the things you do.</p>
+                <p>What you like.  What you don't like.</p>
+                <p>Use this app to tell us about what you do.</p>
+            </Jumbotron>
         );
     }
 }
