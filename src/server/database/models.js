@@ -15,11 +15,13 @@ class Sentiment {
 }
 
 class Media {
-    constructor(id, text, video, thumbnail) {
+    constructor(id, text, video, videoThumbnail, image, imageThumbnail) {
         this.id = id;
         this.text = text;
         this.video = video;
-        this.thumbnail = thumbnail;
+        this.videoThumbnail = videoThumbnail;
+        this.image = image;
+        this.imageThumbnail = imageThumbnail;
     }
 
     static inflate(row, prefix = '') {
@@ -27,21 +29,18 @@ class Media {
         var id = row[p('id')];
         var text = row[p('text')];
         var video = row[p('video')];
-        var thumbnail = row[p('thumbnail')];
+        var videoThumbnail = row[p('video_thumbnail')];
+
+        var image = row[p('image')];
+        var imageThumbnail = row[p('image_thumbnail')];
         
-        return new Media(id, text, video, thumbnail);
+        return new Media(id, text, video, videoThumbnail, image, imageThumbnail);
     }
 
     static create(db, userId, media) {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
-                var type = 'default';
-                if(media.text) {
-                    type = 'text';
-                } else if(media.video && media.thumbnail) {
-                    type = 'video';
-                }
-                client.query(queries.media.create(media.text, media.video, media.thumbnail), function (error, result) {
+                client.query(queries.media.create(media.text, media.video, media.videoThumbnail, media.image, media.imageThumbnail), function (error, result) {
                     done();
                     if (error) {
                         reject(error);
