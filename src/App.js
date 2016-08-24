@@ -28,31 +28,29 @@ class App extends Component {
 
   render() {
     let children = null;
+
     if (this.props.children) {
         children = React.cloneElement(this.props.children, {
             auth: this.props.route.auth
         });
     }
+
     return (
         <Grid>
             <Row>
-                <Col xs={10}>
-                    <PageHeader>
-                        SPOOL
-                    </PageHeader>
-                </Col>
-                <Col xs={2}>
-                    <ProfileLink profile={this.state.profile} disabled={!this.props.route.auth.loggedIn()}/>
+                <Col xs={12}>
+                    <div className='page-header'>
+                      <h1>SPOOL</h1>
+                      <div className='profile'>
+                        <ProfileLink profile={this.state.profile} disabled={!this.props.route.auth.loggedIn()}/>
+                        {this.props.route.auth.loggedIn() && <a href="javascript:;" className='logout' onClick={this.logout}>Log out</a>}
+                      </div>
+                    </div>
                 </Col>
             </Row>
             <Row>
                 <Col xs={12}>
                     { children }
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={12}>
-                    {this.props.route.auth.loggedIn() && <Button bsStyle="link" onClick={this.logout}>Log out</Button>}
                 </Col>
             </Row>
         </Grid>
