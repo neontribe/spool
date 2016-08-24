@@ -10,3 +10,4 @@ require('./VideoForm');
 require('./VideoRecorder');
 require('./SentimentForm');
 require('./TopicForm');
+require('./Intro');
