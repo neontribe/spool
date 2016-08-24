@@ -1,4 +1,5 @@
 require('./Entry.js');
+require('./EntryViewer.js');
 require('./Timeline.js');
 require('./AddEntryForm.js');
 require('./Home.js');

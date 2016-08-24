@@ -9,7 +9,7 @@ storiesOf('TopicForm', module)
   .add('Initial View', () => (
     <Grid>
         <Row>
-            <Col>
+            <Col xs={12}>
                 <TopicForm topics={topics} save={action('Save Value')}/>
             </Col>
         </Row>
@@ -18,7 +18,7 @@ storiesOf('TopicForm', module)
   .add('Edit View', () => (
     <Grid>
         <Row>
-            <Col>
+            <Col xs={12}>
                 <TopicForm topics={topics} initialValue="sport" save={action('Save Value')}/>
             </Col>
         </Row>
