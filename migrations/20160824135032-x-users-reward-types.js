@@ -17,7 +17,7 @@ exports.setup = function(options, seedLink) {
 exports.up = function(db, cb) {
     db.createTable('x_users_reward_types', {
         user_id: { type: 'int' },
-        type_id: { type: 'int' }
+        reward_type_id: { type: 'int' }
     }, cb)
     return null;
 };

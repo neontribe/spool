@@ -73,12 +73,19 @@ class User {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
                 client.query(queries.user.create(authHash), function (error, result) {
-                    done();
                     if (error) {
+                        done();
                         reject(error);
                     } else {
                         var id = result.rows[0].id;
-                        resolve(User.findById(db, id).then((users) => users.shift()));
+                        client.query(queries.user.rewards.configure(id), function (error, result) {
+                            done();
+                            if (error) {
+                                reject(error);
+                            } else {
+                                resolve(User.findById(db, id).then((users) => users.shift()));
+                            }
+                        });
                     }
                 });
             });

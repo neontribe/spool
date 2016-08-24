@@ -135,6 +135,15 @@ VALUES
 RETURNING
     user_id AS id`.setName('user_create');
 
+const userRewardsConfigure = (id) => SQL`
+INSERT INTO
+    x_users_reward_types (user_id, reward_type_id)
+SELECT
+    ${id} AS user_id,
+    reward_type.reward_type_id
+FROM
+    reward_type`.setName('user_rewards_configure');
+
 module.exports = {
     entry: {
         byId: entryById,
@@ -153,5 +162,8 @@ module.exports = {
         byAuthHash: userByAuthHash,
         byId: userById,
         create: userCreate,
+        rewards: {
+            configure: userRewardsConfigure
+        }
     }
 }
