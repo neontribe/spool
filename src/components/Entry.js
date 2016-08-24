@@ -21,7 +21,7 @@ export class Entry extends Component {
 
     getStyles() {
         return this.props.entry.media.thumbnail
-            ? { backgroundImage: 'url('+this.props.entry.media.thumbnail+')' }
+            ? { backgroundImage: 'url('+this.props.entry.media.videoThumbnail || this.props.entry.media.imageThumbnail+')' }
             : {};
     }
 

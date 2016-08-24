@@ -80,7 +80,7 @@ class Camera extends Component {
     save() {
         this.props.save({
             image: this.state.image,
-            thumbnail: this.state.thumbnail
+            imageThumbnail: this.state.thumbnail
         });
     }
 
