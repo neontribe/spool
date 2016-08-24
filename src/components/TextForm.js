@@ -27,7 +27,7 @@ class TextForm extends Component {
     render() {
         return (
             <FormGroup controlId="media">
-                <ControlLabel>Entry Text</ControlLabel>
+                <ControlLabel>I just want to say...</ControlLabel>
                 <FormControl
                     componentClass="textarea"
                     placeholder=""
