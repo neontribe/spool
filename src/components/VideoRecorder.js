@@ -123,7 +123,7 @@ class VideoRecorder extends Component {
         const thumb = captureVideoFrame(this._player, 'png');
         this.props.save({
             video: this.state.lastTakeBlob,
-            thumbnail: thumb.blob
+            videoThumbnail: thumb.blob
         });
     }
 

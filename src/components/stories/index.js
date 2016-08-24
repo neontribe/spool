@@ -8,6 +8,8 @@ require('./EntryForm');
 require('./TextForm');
 require('./VideoForm');
 require('./VideoRecorder');
+require('./ImageForm');
+require('./Camera');
 require('./SentimentForm');
 require('./TopicForm');
 require('./Intro');

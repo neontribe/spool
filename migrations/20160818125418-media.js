@@ -21,7 +21,9 @@ exports.up = function(db, cb) {
         user_id: { type: 'int' },
         text: { type: 'text' },
         video: { type: 'text', unique: true },
-        thumbnail: { type: 'text', unique: true }
+        video_thumbnail: { type: 'text', unique: true },
+        image: { type: 'text', unique: true },
+        image_thumbnail: { type: 'text', unique: true }
     }, cb)
     return null;
 };
