@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Grid, Row, Col, PageHeader, Button } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import ProfileLink from './components/ProfileLink';
 
 class App extends Component {
@@ -43,7 +43,7 @@ class App extends Component {
                       <h1>SPOOL</h1>
                       <div className='profile'>
                         <ProfileLink profile={this.state.profile} disabled={!this.props.route.auth.loggedIn()}/>
-                        {this.props.route.auth.loggedIn() && <a href="javascript:;" className='logout' onClick={this.logout}>Log out</a>}
+                        {this.props.route.auth.loggedIn() && <a href="#" className='logout' onClick={this.logout}>Log out</a>}
                       </div>
                     </div>
                 </Col>
