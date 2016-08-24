@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormGroup, ControlLabel, Button, ButtonToolbar, Checkbox, Glyphicon } from 'react-bootstrap';
+import { FormGroup, ControlLabel, Button, ButtonToolbar, Checkbox, Glyphicon, Grid, Row, Col } from 'react-bootstrap';
 
 class TopicForm extends Component {
     constructor(props) {
@@ -35,15 +35,36 @@ class TopicForm extends Component {
     }
 
     renderCheckboxes() {
-        return this.props.topics.map((t, i) => <Checkbox key={i} onChange={this.handleChange} value={t.type}>{t.name}</Checkbox>);
+        return this.props.topics.map((t, i) => {
+            var className = 'visual-hidden topic topic-' + t.name.replace(/\s+/g, '-').toLowerCase();
+
+            return (
+                <Col xs={6} sm={3} key={i}>
+                    <label>
+                        <input
+                            type='checkbox'
+                            value={t.type}
+                            className={className}
+                            onChange={this.handleChange}
+                        />
+                        <span></span>
+                        <span>{t.name}</span>
+                    </label>
+                </Col>
+            );
+        });
     }
 
     render() {
         return (
-            <FormGroup controlId="topic">
+            <FormGroup controlId="topic" className='topics'>
                 <ControlLabel>Topic</ControlLabel>
 
-                {this.renderCheckboxes()}
+                <Grid>
+                    <Row>
+                        {this.renderCheckboxes()}
+                    </Row>
+                </Grid>
 
                 <ButtonToolbar>
                     <Button

@@ -86,6 +86,13 @@ export const entries =  [
 
 export const topics = [
     { name: 'Transport', type: 'public_transport' },
+    { name: 'Foo Bar', type: 'foo_bar' },
+    { name: 'Foo Bar', type: 'foo_bar' },
+    { name: 'Foo Bar', type: 'foo_bar' },
+    { name: 'Foo Bar', type: 'foo_bar' },
+    { name: 'Foo Bar', type: 'foo_bar' },
+    { name: 'Foo Bar', type: 'foo_bar' },
+    { name: 'Foo Bar', type: 'foo_bar' },
     { name: 'Foo Bar', type: 'foo_bar' }
 ];
 

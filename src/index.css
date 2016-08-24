@@ -82,6 +82,16 @@ ul {
   overflow: auto;
 }
 
+.visual-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px; width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+}
+
 /* -------------------------------
 
    Modal
@@ -359,6 +369,78 @@ ul {
 .entry-viewer .entry {
   min-height: 0;
 }
+
+/* -------------------------------
+
+   Topics
+
+-------------------------------- */
+
+.topics label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.topics [type="checkbox"] + span {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  margin-bottom: .25rem;
+  font-family: 'Glyphicons Halflings';
+  color: #fff;
+  background-color: #144959;
+  cursor: pointer;
+}
+
+.topics [type="checkbox"]:checked + span {
+  background-color: #2ecc71;
+}
+
+.topic + span:before {
+  content: "\E098";
+  font-size: 3rem;
+}
+
+.topic-transport + span:before {
+  content: "\E108";
+}
+
+.topic-education + span:before {
+  content: "\E223";
+}
+
+.topic-home + span:before {
+  content: "\E021";
+}
+
+.topic-leisure + span:before {
+  content: "\E199";
+}
+
+.topic-health + span:before {
+  content: "\E143";
+}
+
+.topic-food + span:before {
+  content: "\E179";
+}
+
+.topic-sport + span:before {
+  content: "\E221";
+}
+
+.topic-work + span:before {
+  content: "\E139";
+}
+
+
+
+
+
+
+
 
 
 
