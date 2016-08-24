@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import { Grid, Row, Col, Button, ButtonToolbar, Modal } from 'react-bootstrap';
+import { Grid, Row, Col, Button, ButtonToolbar, Modal, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
 import EntryForm from './EntryForm';
 import AddEntryMutation from './mutations/AddEntryMutation';
