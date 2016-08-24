@@ -37,40 +37,37 @@ export class Entry extends Component {
 
     render() {
         return (
-            <Grid>
-                <Row>
-                    <Col xs={12}>
-                        <div onClick={this.showViewer}
-                            className={'entry entry--' + this.props.entry.sentiment.type} style={this.getStyles()}>
-                            <div className='entry-overlay'></div>
-                            <div className='entry-content'>
-                                <Image
-                                    src={'/static/' + this.props.entry.sentiment.type + '.png'}
-                                    alt={this.props.entry.sentiment.type}
-                                    responsive
-                                />
-                                <div>
-                                    <div className="entry--time">{this.formatTimestamp()}</div>
-                                    { this.props.entry.media.text &&
-                                        <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
-                                    }
-                                    <div className="entry--tags">
-                                        <span className="entry--tag">{this.props.entry.topic.map((t) => t.name).join(' ')}</span>
-                                    </div>
-                                </div>
+            <a href="javascript:;" className={'entry entry--' + this.props.entry.sentiment.type}>
+                <div onClick={this.showViewer} style={this.getStyles()}>
+                    <div className='entry-overlay'></div>
+                    <div className='entry-content'>
+                        <Image
+                            src={'/static/' + this.props.entry.sentiment.type + '.png'}
+                            alt={this.props.entry.sentiment.type}
+                            responsive
+                        />
+                        <div>
+                            <div className="entry--time">{this.formatTimestamp()}</div>
+                            { this.props.entry.media.text &&
+                                <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
+                            }
+                            <div className="entry--tags">
+                                <span className="entry--tag">{this.props.entry.topic.map((t) => t.name).join(' ')}</span>
                             </div>
                         </div>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
                 { this.props.withViewer &&
-                    <Modal show={this.state.showEntryViewer}
+                    <Modal
+                        show={this.state.showEntryViewer}
                         bsSize="large"
                         backdrop={true}
-                        onHide={this.hideViewer}>
+                        onHide={this.hideViewer}
+                    >
                         <EntryViewer entry={this.props.entry} />
                     </Modal>
                 }
-            </Grid>
+            </a>
         );
     }
 }

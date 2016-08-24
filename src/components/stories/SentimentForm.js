@@ -7,7 +7,7 @@ storiesOf('SentimentForm', module)
   .add('Initial View', () => (
     <Grid>
         <Row>
-            <Col>
+            <Col xs={12}>
                 <SentimentForm save={action('Save Value')} />
             </Col>
         </Row>
@@ -16,7 +16,7 @@ storiesOf('SentimentForm', module)
   .add('Edit View', () => (
     <Grid>
         <Row>
-            <Col>
+            <Col xs={12}>
                 <SentimentForm initialValue="happy" save={action('Save Value')} />
             </Col>
         </Row>

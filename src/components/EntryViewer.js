@@ -21,54 +21,54 @@ class EntryViewer extends Component {
 
     render() {
         return (
-            <Grid>
-                <Row>
-                    <Col xs={12}>
-                        <div className={'entry entry--' + this.props.entry.sentiment.type} style={this.getStyles()}>
-                            <div className='entry-overlay'></div>
-                            <div className='entry-content'>
-                                <Image
-                                    src={'/static/' + this.props.entry.sentiment.type + '.png'}
-                                    alt={this.props.entry.sentiment.type}
-                                    responsive
-                                />
-                                <div>
-                                    <div className="entry--time">{this.formatTimestamp()}</div>
-                                    { this.props.entry.media.text &&
-                                        <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
-                                    }
-                                    <div className="entry--tags">
-                                        <span className="entry--tag">{this.props.entry.topic.map((t) => t.name).join(' ')}</span>
+            <div className='entry-viewer'>
+                <Grid>
+                    <Row>
+                        <Col xs={12}>
+                            <div className={'entry entry--' + this.props.entry.sentiment.type} style={this.getStyles()}>
+                                <div className='entry-overlay'></div>
+                                <div className='entry-content'>
+                                    <Image
+                                        src={'/static/' + this.props.entry.sentiment.type + '.png'}
+                                        alt={this.props.entry.sentiment.type}
+                                        responsive
+                                    />
+                                    <div>
+                                        <div className="entry--time">{this.formatTimestamp()}</div>
+                                        { this.props.entry.media.text &&
+                                            <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
+                                        }
+                                        <div className="entry--tags">
+                                            <span className="entry--tag">{this.props.entry.topic.map((t) => t.name).join(' ')}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={3} />
-                    <Col xs={6}>
-                        { this.props.entry.media.video &&
-                            <ResponsiveEmbed a4by3>
-                                <video
-                                    src={this.props.entry.media.video}
-                                    controls
-                                    autoPlay
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs={12}>
+                            { this.props.entry.media.video &&
+                                <ResponsiveEmbed a4by3>
+                                    <video
+                                        src={this.props.entry.media.video}
+                                        controls
+                                        autoPlay
                                     />
-                            </ResponsiveEmbed>
-                        }
-                        { this.props.entry.media.image &&
-                            <ResponsiveEmbed a4by3>
-                                <Image
-                                    src={this.props.entry.media.image}
-                                    alt={this.props.entry.media.text || this.props.entry.topic.type}
+                                </ResponsiveEmbed>
+                            }
+                            { this.props.entry.media.image &&
+                                <ResponsiveEmbed a4by3>
+                                    <Image
+                                        src={this.props.entry.media.image}
+                                        alt={this.props.entry.media.text || this.props.entry.topic.type}
                                     />
-                            </ResponsiveEmbed>
-                        }
-                    </Col>
-                    <Col xs={3} />
-                </Row>
-            </Grid>
+                                </ResponsiveEmbed>
+                            }
+                        </Col>
+                    </Row>
+                </Grid>
+            </div>
         );
     }
 }
