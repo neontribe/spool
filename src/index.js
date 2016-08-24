@@ -7,7 +7,7 @@ import useRelay from 'react-router-relay';
 import AuthService from './auth/AuthService';
 import App from './App';
 import { HomeContainer } from './components/Home';
-import Login from './components/Login';
+import SimpleLogin from './components/SimpleLogin';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
@@ -55,7 +55,7 @@ ReactDOM.render(
         <Route path="home" component={HomeContainer} queries={ViewerQueries} onEnter={requireAuth}>
             <IndexRoute component={TimelineContainer} queries={ViewerQueries} onEnter={requireAuth} />
         </Route>
-        <Route path="login" component={Login} />
+        <Route path="login" component={SimpleLogin} />
         <Route path="access_token=:token" onEnter={parseAuthHash} />
     </Route>
   </Router>,
