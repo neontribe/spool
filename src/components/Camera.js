@@ -14,6 +14,7 @@ class Camera extends Component {
 
         this.state = {
             streaming: false,
+            stream: null,
             streamURL: null,
             image: null,
             thumbnail: null
@@ -57,7 +58,8 @@ class Camera extends Component {
 
         this.setState({
             streaming: true,
-            streamURL: URL.createObjectURL(stream)
+            streamURL: URL.createObjectURL(stream),
+            stream: stream
         });
     }
 
@@ -66,7 +68,7 @@ class Camera extends Component {
     }
 
     stopMediaStream(){
-        this.state.mediaRecorder.stream.getTracks().map((track) => track.stop());
+        this.state.stream.getTracks().map((track) => track.stop());
     }
 
     shutter() {
