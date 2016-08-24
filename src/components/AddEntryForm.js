@@ -55,7 +55,7 @@ export class AddEntryForm extends Component {
                                 bsSize="large"
                             >
                                 <Modal.Header closeButton>
-                                    <Modal.Title>New Entry</Modal.Title>
+                                    <Modal.Title>My New Update</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
                                     <EntryForm topics={this.props.viewer.topics} done={this.handleDone} entry={this.state.entry} />
