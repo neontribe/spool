@@ -98,8 +98,7 @@ class Camera extends Component {
         return (
             <Grid>
                 <Row>
-                    <Col xs={3}/>
-                    <Col xs={6}>
+                    <Col xsOffset={3} xs={6}>
                         <div>
                             { this.state.streaming &&
                                 <ResponsiveEmbed a4by3>
@@ -141,7 +140,6 @@ class Camera extends Component {
                             }
                         </div>
                     </Col>
-                    <Col xs={3}/>
                 </Row>
                 <Row>
                     <Col xsOffset={3} xs={6}>
