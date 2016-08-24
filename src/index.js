@@ -10,9 +10,9 @@ import { HomeContainer } from './components/Home';
 import SimpleLogin from './components/SimpleLogin';
 
 import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
+// import 'bootstrap/dist/css/bootstrap-theme.css';
+import './override-bootstrap.css';
 import './index.css';
-
 
 import { TimelineContainer } from './components/Timeline';
 

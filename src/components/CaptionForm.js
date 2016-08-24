@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
+import { FormGroup, FormControl, ControlLabel, Button, Glyphicon } from 'react-bootstrap';
 
 class CaptionForm extends Component {
     constructor(props) {
@@ -33,8 +33,7 @@ class CaptionForm extends Component {
                     placeholder=""
                     value={this.state.value}
                     onChange={this.handleChange} />
-                <Button bsStyle="primary" bsSize="large" block
-                    onClick={this.continue}>Next</Button>
+                <Button onClick={this.continue}><Glyphicon glyph="chevron-right" />Next</Button>
             </FormGroup>
         );
     }

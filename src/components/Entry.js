@@ -26,7 +26,8 @@ export class Entry extends Component {
             : {};
     }
 
-    showViewer() {
+    showViewer(e) {
+        e.preventDefault();
         if (this.props.withViewer) {
             this.setState({showEntryViewer: true});
         }
@@ -37,38 +38,44 @@ export class Entry extends Component {
     }
 
     render() {
+        var hasMedia = this.props.entry.media.image || this.props.entry.media.video;
+        var className = 'entry entry--' + this.props.entry.sentiment.type;
+
+        if (hasMedia) {
+            className += ' entry--has-media';
+        }
+
         return (
-            <a href="#" className={'entry entry--' + this.props.entry.sentiment.type}>
-                <div onClick={this.showViewer} style={this.getStyles()}>
-                    <div className='entry-overlay'></div>
-                    <div className='entry-content'>
-                        <Image
-                            src={'/static/' + this.props.entry.sentiment.type + '.png'}
-                            alt={this.props.entry.sentiment.type}
-                            responsive
-                        />
-                        <div>
-                            <div className="entry--time">{this.formatTimestamp()}</div>
-                            { this.props.entry.media.text &&
-                                <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
-                            }
-                            <div className="entry--tags">
-                                <span className="entry--tag">{this.props.entry.topic.map((t) => t.name).join(' ')}</span>
-                            </div>
+            <div className={className} style={this.getStyles()}>
+                <a href="./view-full-entry" onClick={this.showViewer} className='entry-content'>
+                    { this.props.entry.media.text &&
+                        <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
+                    }
+
+                    <Image
+                        src={'/static/' + this.props.entry.sentiment.type + '.png'}
+                        alt={this.props.entry.sentiment.type}
+                    />
+
+                    <div className='entry--meta'>
+                        <div className="entry--time">{this.formatTimestamp()}</div>
+                        <div className="entry--tags">
+                            <span className="entry--tag">{this.props.entry.topic.map((t) => t.name).join(' ')}</span>
                         </div>
                     </div>
-                </div>
-                { this.props.withViewer &&
-                    <Modal
-                        show={this.state.showEntryViewer}
-                        bsSize="large"
-                        backdrop={true}
-                        onHide={this.hideViewer}
-                    >
-                        <EntryViewer entry={this.props.entry} />
-                    </Modal>
-                }
-            </a>
+
+                    { this.props.withViewer &&
+                        <Modal
+                            show={this.state.showEntryViewer}
+                            bsSize="large"
+                            backdrop={true}
+                            onHide={this.hideViewer}
+                        >
+                            <EntryViewer entry={this.props.entry} />
+                        </Modal>
+                    }
+                </a>
+            </div>
         );
     }
 }

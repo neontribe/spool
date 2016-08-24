@@ -19,7 +19,8 @@ class ProfileLink extends Component {
         this.hideProfile = this.hideProfile.bind(this);
     }
 
-    showProfile() {
+    showProfile(e) {
+        e.preventDefault();
         this.setState({ showProfile: true });
     }
 
@@ -33,20 +34,20 @@ class ProfileLink extends Component {
         }
 
         return (
-            <div>
-                <div
-                    className="profile-img-container"
-                    onClick={this.showProfile}
-                >
-                    <h3>{this.props.profile.nickname}</h3>
+            <div className='profile'>
+                <a href='./view-profile' className='profile-img-container' onClick={this.showProfile}>
                     <Image
                         src={this.props.profile.picture}
-                        className="profile-img"
+                        className='profile-img'
                         circle
                     />
-                </div>
+                </a>
+                <h3 className='welcome'>
+                    <span>Welcome</span>
+                    <span>{this.props.profile.nickname}</span>
+                </h3>
 
-                <Modal show={this.state.showProfile} onHide={this.state.hideProfile} bsSize="large">
+                <Modal show={this.state.showProfile} onHide={this.state.hideProfile} bsSize='large'>
                     <Modal.Header closeButton/>
                         <Modal.Title>My SPOOL Profile</Modal.Title>
                     <Modal.Header/>

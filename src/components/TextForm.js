@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
+import { FormGroup, FormControl, ControlLabel, ButtonToolbar, Button, Glyphicon } from 'react-bootstrap';
 
 class TextForm extends Component {
     constructor(props) {
@@ -33,9 +33,13 @@ class TextForm extends Component {
                     placeholder=""
                     value={this.state.value}
                     onChange={this.handleChange} />
-                <Button bsStyle="primary" bsSize="large" block
-                    onClick={this.continue}
-                    disabled={!this.state.value}>Next</Button>
+
+                <ButtonToolbar>
+                    <Button
+                        onClick={this.continue}
+                        disabled={!this.state.value}
+                    ><Glyphicon glyph="chevron-right" />Next</Button>
+                </ButtonToolbar>
             </FormGroup>
         );
     }

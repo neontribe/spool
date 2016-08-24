@@ -19,7 +19,8 @@ class App extends Component {
       this.logout = this.logout.bind(this);
   }
 
-  logout(){
+  logout(e){
+    e.preventDefault();
     // destroys the session data
     this.props.route.auth.logout();
     // redirects to login page
@@ -40,11 +41,13 @@ class App extends Component {
             <Row>
                 <Col xs={12}>
                     <div className='page-header'>
-                      <h1>SPOOL</h1>
-                      <div className='profile'>
-                        <ProfileLink profile={this.state.profile} disabled={!this.props.route.auth.loggedIn()}/>
-                        {this.props.route.auth.loggedIn() && <a href="#" className='logout' onClick={this.logout}>Log out</a>}
-                      </div>
+                      <h1>
+                        <img src='/static/logo.png' alt='Speak out on-line' className='logo'></img>
+                      </h1>
+
+                      <ProfileLink profile={this.state.profile} disabled={!this.props.route.auth.loggedIn()} />
+
+                      {this.props.route.auth.loggedIn() && <a href='/logout' role='button' className='logout' onClick={this.logout}>Log out</a>}
                     </div>
                 </Col>
             </Row>
