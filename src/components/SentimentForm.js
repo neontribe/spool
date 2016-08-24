@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Button, ButtonToolbar, Image } from 'react-bootstrap';
+import { Grid, Row, Col, Button, ButtonToolbar, Image, Glyphicon } from 'react-bootstrap';
 import _ from 'lodash';
 
 class SentimentForm extends Component {
@@ -60,10 +60,9 @@ class SentimentForm extends Component {
                     <Col xs={12}>
                         <ButtonToolbar>
                             <Button
-                                bsStyle="primary"
-                                bsSize="large"
                                 onClick={this.continue}
-                                disabled={!this.state.value}>Next</Button>
+                                disabled={!this.state.value}
+                            ><Glyphicon glyph="chevron-right" />Next</Button>
                         </ButtonToolbar>
                     </Col>
                 </Row>
