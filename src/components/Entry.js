@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import { Grid, Row, Col, Image, Modal } from 'react-bootstrap';
+import { Image, Modal } from 'react-bootstrap';
 import EntryViewer from './EntryViewer';
 import moment from 'moment';
 
@@ -37,7 +37,7 @@ export class Entry extends Component {
 
     render() {
         return (
-            <a href="javascript:;" className={'entry entry--' + this.props.entry.sentiment.type}>
+            <a href="#" className={'entry entry--' + this.props.entry.sentiment.type}>
                 <div onClick={this.showViewer} style={this.getStyles()}>
                     <div className='entry-overlay'></div>
                     <div className='entry-content'>
