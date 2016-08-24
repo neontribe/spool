@@ -131,7 +131,7 @@ class VideoRecorder extends Component {
         return (
             <Grid>
                 <Row>
-                    <Col xsOffset={3} xs={6}>
+                    <Col xs={12}>
                         { this.state.streaming &&
                             <ResponsiveEmbed a4by3>
                                 <video
@@ -155,7 +155,7 @@ class VideoRecorder extends Component {
                 </Row>
                 <Row>
                     <Col xs={12}>
-                        <ButtonToolbar>
+                        <ButtonToolbar className='toolbar-center'>
                             { (!this.state.recording && !this.state.playing) &&
                                 <Button onClick={this.startRecording}>
                                   <Glyphicon glyph="record" /> Record

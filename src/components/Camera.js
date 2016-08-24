@@ -98,7 +98,7 @@ class Camera extends Component {
         return (
             <Grid>
                 <Row>
-                    <Col xsOffset={3} xs={6}>
+                    <Col xs={12}>
                         <div style={{ position: 'relative' }}>
                             { this.state.streaming &&
                                 <ResponsiveEmbed a4by3>

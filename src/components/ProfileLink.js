@@ -19,7 +19,8 @@ class ProfileLink extends Component {
         this.hideProfile = this.hideProfile.bind(this);
     }
 
-    showProfile() {
+    showProfile(e) {
+        e.preventDefault();
         this.setState({ showProfile: true });
     }
 
@@ -34,7 +35,7 @@ class ProfileLink extends Component {
 
         return (
             <div className='profile'>
-                <a href='javascript:;' className='profile-img-container' onClick={this.showProfile}>
+                <a href='./view-profile' className='profile-img-container' onClick={this.showProfile}>
                     <Image
                         src={this.props.profile.picture}
                         className='profile-img'
