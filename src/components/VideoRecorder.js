@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Grid, Row, Col, ResponsiveEmbed, Button, ButtonToolbar, Glyphicon } from 'react-bootstrap';
 import MediaStreamRecorder from 'msr';
 import captureVideoFrame from 'capture-video-frame';
+import _ from 'lodash';
 
-const mediaConstraints = {
+var mediaConstraints = {
     audio: true,
     video: true
 };
@@ -20,7 +21,9 @@ class VideoRecorder extends Component {
             streamURL: null,
             lastTakeURL: null,
             lastTakeBlob: null,
-            thumbnailBlob: null
+            thumbnailBlob: null,
+            devices: [],
+            activeDevice: null
         }
 
         this.startMediaStream = this.startMediaStream.bind(this);
@@ -34,7 +37,8 @@ class VideoRecorder extends Component {
         this.discardLastTake = this.discardLastTake.bind(this);
         this.save = this.save.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
-
+        this.getVideoDevices = this.getVideoDevices.bind(this);
+        this.switchVideoDevices = this.switchVideoDevices.bind(this);
     }
 
     componentWillMount() {
@@ -57,7 +61,35 @@ class VideoRecorder extends Component {
             return;
         }
 
-        getUserMedia.call(navigator, mediaConstraints, this.onMediaSuccess, this.onMediaFailure);
+        this.getVideoDevices().then((devices) => {
+            var activeDevice = this.state.activeDevice || devices[0].deviceId;
+            mediaConstraints.video = {
+                optional: [{
+                    sourceId: activeDevice
+                }]
+            };
+            this.setState({
+                activeDevice: activeDevice,
+                devices: devices
+            });
+            getUserMedia.call(navigator, mediaConstraints, this.onMediaSuccess, this.onMediaFailure);
+        });
+    }
+
+    getVideoDevices() {
+        return navigator.mediaDevices.enumerateDevices().then((devices) => {
+            return _.filter(devices, {kind: 'videoinput'});
+        });
+    }
+
+    switchVideoDevices() {
+        var currentIndex = _.findIndex(this.state.devices, {deviceId: this.state.activeDevice});
+        var nextIndex = (currentIndex + 1) % this.state.devices.length;
+        var newDevice = this.state.devices[nextIndex].deviceId || this.state.activeDevice;
+        this.setState({activeDevice: newDevice}, () => {
+            this.stopMediaStream();
+            this.startMediaStream();
+        });
     }
 
     onMediaSuccess(stream) {
@@ -164,6 +196,12 @@ class VideoRecorder extends Component {
                             { this.state.recording &&
                                 <Button block onClick={this.stopRecording}>
                                   <Glyphicon glyph="stop" /> Stop Recording
+                                </Button>
+                            }
+                            { this.state.devices.length > 1 &&
+                                <Button bsStyle="primary" bsSize="large" block
+                                    onClick={this.switchVideoDevices}>
+                                    <Glyphicon glyph="refresh" /> Switch Cameras
                                 </Button>
                             }
                         </ButtonToolbar>

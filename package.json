@@ -24,7 +24,7 @@
     "setup-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && psql -d $DATABASE_URL < setup.sql",
     "build-database": "db-migrate up && npm run setup-database",
     "reset-database": "db-migrate reset",
-    "postinstall": "npm run snyk-protect && npm run build && npm run build-database",
+    "postinstall": "npm run build && npm run build-database",
     "snyk-protect": "snyk protect"
   },
   "repository": {
