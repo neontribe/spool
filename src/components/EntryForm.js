@@ -69,7 +69,7 @@ class EntryForm extends Component {
                     video: (<VideoForm save={_.partial(this.saveEntry, 'media')} back={this.back}/>),
                     image: (<ImageForm save={_.partial(this.saveEntry, 'media')} back={this.back}/>)
                 }[this.state.entry.type]),
-                caption: (<CaptionForm save={_.partial(this.saveEntry, 'media')} />),
+                caption: (<CaptionForm save={_.partial(this.saveEntry, 'media')} type={this.state.entry.type}/>),
                 sentiment: (<SentimentForm save={_.partial(this.saveEntry, 'sentiment')} />),
                 topic: (<TopicForm topics={this.props.topics} save={_.partial(this.saveEntry, 'topic')} />)
             }[this.state.step]}

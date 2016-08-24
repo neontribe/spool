@@ -27,7 +27,7 @@ class CaptionForm extends Component {
     render() {
         return (
             <FormGroup controlId="caption">
-                <ControlLabel>Caption (optional)</ControlLabel>
+                <ControlLabel>I&apos;m posting this {this.props.type} because...</ControlLabel>
                 <FormControl
                     componentClass="textarea"
                     placeholder=""
@@ -42,7 +42,8 @@ class CaptionForm extends Component {
 
 CaptionForm.propTypes = {
     initialValue: React.PropTypes.string,
-    save: React.PropTypes.func.isRequired
+    save: React.PropTypes.func.isRequired,
+    type: React.PropTypes.string.isRequired
 };
 
 CaptionForm.defaultProps = {
