@@ -331,6 +331,8 @@ ul {
   flex: 1;
   text-align: right;
   margin-right: 3rem;
+  max-height: 4rem;
+  overflow: hidden;
 }
 
 .entry--quote {
@@ -368,6 +370,15 @@ ul {
 
 .entry-viewer .entry {
   min-height: 0;
+}
+
+.entry-viewer .entry-content {
+  bottom: auto;
+  background: #000;
+}
+
+.entry-viewer .entry-quote-container {
+  max-height: none;
 }
 
 /* -------------------------------
