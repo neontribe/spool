@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, ResponsiveEmbed, Button, Glyphicon, Image } from 'react-bootstrap';
+import { Grid, Row, Col, ResponsiveEmbed, Button, ButtonToolbar, Glyphicon, Image } from 'react-bootstrap';
 import captureVideoFrame from 'capture-video-frame';
 
 const mediaConstraints = {
@@ -98,8 +98,8 @@ class Camera extends Component {
         return (
             <Grid>
                 <Row>
-                    <Col xsOffset={3} xs={6}>
-                        <div>
+                    <Col xs={12}>
+                        <div style={{ position: 'relative' }}>
                             { this.state.streaming &&
                                 <ResponsiveEmbed a4by3>
                                     <video
@@ -142,24 +142,30 @@ class Camera extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xsOffset={3} xs={6}>
-                        <Button bsStyle="primary" bsSize="large" block
-                          disabled={!this.state.streaming}
-                          onClick={this.shutter}>
-                          <Glyphicon glyph="record" /> Take Picture
-                        </Button>
+                    <Col xs={12}>
+                        <ButtonToolbar className="toolbar-center">
+                            <Button bsStyle="primary" bsSize="large" block
+                              disabled={!this.state.streaming}
+                              onClick={this.shutter}>
+                              <Glyphicon glyph="record" /> Take Picture
+                            </Button>
+                        </ButtonToolbar>
                     </Col>
-                    <Col xsOffset={3} xs={6}>
-                        <Button bsStyle="primary" bsSize="large" block
-                          disabled={!this.state.image}
-                          onClick={this.discard}>
-                          <Glyphicon glyph="trash"/> Delete
-                        </Button>
-                        <Button bsStyle="primary" bsSize="large" block
-                            disabled={!this.state.image}
-                            onClick={this.save}>
-                            <Glyphicon glyph="save"/> Save
-                        </Button>
+                </Row>
+                <Row>
+                    <Col xs={12}>
+                        <ButtonToolbar className="toolbar-center">
+                            <Button bsStyle="primary" bsSize="large" block
+                              disabled={!this.state.image}
+                              onClick={this.discard}>
+                              <Glyphicon glyph="trash"/> Delete
+                            </Button>
+                            <Button bsStyle="primary" bsSize="large" block
+                                disabled={!this.state.image}
+                                onClick={this.save}>
+                                <Glyphicon glyph="save"/> Save
+                            </Button>
+                        </ButtonToolbar>
                     </Col>
                 </Row>
             </Grid>

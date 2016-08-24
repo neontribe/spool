@@ -48,9 +48,11 @@ export class Entry extends Component {
         return (
             <div className={className} style={this.getStyles()}>
                 <a href="./view-full-entry" onClick={this.showViewer} className='entry-content'>
-                    { this.props.entry.media.text &&
-                        <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
-                    }
+                    <div className='entry-quote-container'>
+                        { this.props.entry.media.text &&
+                            <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
+                        }
+                    </div>
 
                     <Image
                         src={'/static/' + this.props.entry.sentiment.type + '.png'}
@@ -60,7 +62,7 @@ export class Entry extends Component {
                     <div className='entry--meta'>
                         <div className="entry--time">{this.formatTimestamp()}</div>
                         <div className="entry--tags">
-                            <span className="entry--tag">{this.props.entry.topic.map((t) => t.name).join(' ')}</span>
+                            {this.props.entry.topic.map((t) => t.name).join(', ')}
                         </div>
                     </div>
 

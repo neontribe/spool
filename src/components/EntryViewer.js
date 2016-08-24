@@ -45,12 +45,14 @@ class EntryViewer extends Component {
                                     </ResponsiveEmbed>
                                 }
 
-                                <div style={{ position: 'absolute', top: '52px', width: '100%' }}>
+                                <div style={{ position: 'relative' }}>
                                     <div className={'entry entry--' + this.props.entry.sentiment.type}>
                                         <div className='entry-content'>
-                                            { this.props.entry.media.text &&
-                                                <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
-                                            }
+                                            <div className='entry-quote-container'>
+                                                { this.props.entry.media.text &&
+                                                    <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
+                                                }
+                                            </div>
 
                                             <Image
                                                 src={'/static/' + this.props.entry.sentiment.type + '.png'}

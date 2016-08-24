@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, ResponsiveEmbed, Button, Glyphicon } from 'react-bootstrap';
+import { Grid, Row, Col, ResponsiveEmbed, Button, ButtonToolbar, Glyphicon } from 'react-bootstrap';
 import MediaStreamRecorder from 'msr';
 import captureVideoFrame from 'capture-video-frame';
 
@@ -131,7 +131,7 @@ class VideoRecorder extends Component {
         return (
             <Grid>
                 <Row>
-                    <Col xsOffset={3} xs={6}>
+                    <Col xs={12}>
                         { this.state.streaming &&
                             <ResponsiveEmbed a4by3>
                                 <video
@@ -154,19 +154,22 @@ class VideoRecorder extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xsOffset={3} xs={6}>
-                        { (!this.state.recording) &&
-                            <Button block onClick={this.startRecording}>
-                              <Glyphicon glyph="record" /> Record
-                            </Button>
-                        }
-                        { this.state.recording &&
-                            <Button block onClick={this.stopRecording}>
-                              <Glyphicon glyph="stop" /> Stop Recording
-                            </Button>
-                        }
+                    <Col xs={12}>
+                        <ButtonToolbar className="toolbar-center">
+                            { (!this.state.recording) &&
+                                <Button block onClick={this.startRecording}>
+                                  <Glyphicon glyph="record" /> Record
+                                </Button>
+                            }
+                            { this.state.recording &&
+                                <Button block onClick={this.stopRecording}>
+                                  <Glyphicon glyph="stop" /> Stop Recording
+                                </Button>
+                            }
+                        </ButtonToolbar>
                     </Col>
-                    <Col xsOffset={3} xs={6}>
+                    <Col xs={12}>
+                        <ButtonToolbar className="toolbar-center">
                           <Button disabled={!this.state.lastTakeURL && !this.state.playing}
                               onClick={this.replayLastTake}>
                             <Glyphicon glyph="play"/> Replay
@@ -181,6 +184,7 @@ class VideoRecorder extends Component {
                               onClick={this.save}>
                             <Glyphicon glyph="save"/> Save
                           </Button>
+                      </ButtonToolbar>
                     </Col>
                 </Row>
             </Grid>

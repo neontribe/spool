@@ -32,7 +32,8 @@ class CaptionForm extends Component {
                     componentClass="textarea"
                     placeholder=""
                     value={this.state.value}
-                    onChange={this.handleChange} />
+                    onChange={this.handleChange}
+                />
                 <Button onClick={this.continue}><Glyphicon glyph="chevron-right" />Next</Button>
             </FormGroup>
         );
