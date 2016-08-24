@@ -78,9 +78,10 @@ class Camera extends Component {
     }
 
     save() {
+        // Pass the blobs up
         this.props.save({
-            image: this.state.image,
-            imageThumbnail: this.state.thumbnail
+            image: this.state.image.blob,
+            imageThumbnail: this.state.thumbnail.blob
         });
     }
 
