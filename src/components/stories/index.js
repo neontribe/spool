@@ -12,3 +12,4 @@ require('./ImageForm');
 require('./Camera');
 require('./SentimentForm');
 require('./TopicForm');
+require('./Intro');

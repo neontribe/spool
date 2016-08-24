@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { ListGroup } from 'react-bootstrap';
 import { EntryContainer, Entry } from './Entry';
+import Intro from './Intro';
 
 export class Timeline extends Component {
     static propTypes = {
@@ -22,6 +23,9 @@ export class Timeline extends Component {
         return (
             <ListGroup componentClass="div">
                 {this.renderEntries()}
+                {!this.props.viewer.entries.edges.length &&
+                    <Intro />
+                }
             </ListGroup>
         );
     }
