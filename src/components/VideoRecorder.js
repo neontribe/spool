@@ -24,6 +24,7 @@ class VideoRecorder extends Component {
         }
 
         this.startMediaStream = this.startMediaStream.bind(this);
+        this.stopMediaStream = this.stopMediaStream.bind(this);
         this.startRecording = this.startRecording.bind(this);
         this.stopRecording = this.stopRecording.bind(this);
         this.onMediaSuccess = this.onMediaSuccess.bind(this);
@@ -38,6 +39,10 @@ class VideoRecorder extends Component {
 
     componentWillMount() {
         this.startMediaStream();
+    }
+
+    componentWillUnmount() {
+        this.stopMediaStream();
     }
 
     startMediaStream(){
@@ -110,9 +115,12 @@ class VideoRecorder extends Component {
         });
     }
 
+    stopMediaStream(){
+        this.state.mediaRecorder.stream.getTracks().map((track) => track.stop());
+    }
+
     save() {
         const thumb = captureVideoFrame(this._player, 'png');
-        this.state.mediaRecorder.stream.getTracks().map((track) => track.stop());
         this.props.save({
             video: this.state.lastTakeBlob,
             thumbnail: thumb.blob

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Button, Alert } from 'react-bootstrap';
+import { Button, Alert } from 'react-bootstrap';
 import uploadToS3 from '../s3';
 import VideoRecorder from './VideoRecorder';
 import _ from 'lodash';
@@ -75,28 +75,24 @@ class VideoForm extends Component {
 
     render() {
         return (
-            <Grid>
-                <Row>
-                    <Col xs={12}>
-                        {(
-                            {
-                                loading: <h2>Loading</h2>,
-                                record: <VideoRecorder save={this.save} onFailure={this.onMediaFailure}/>,
-                                fallbackPrompt: <Alert bsStyle="danger">
-                                                    <h4>Oh Snap. We can&apos;t make a video</h4>
-                                                    <p>{errorMap[this.state.recorderError]}</p>
-                                                    <p>
-                                                        <Button onClick={this.requestUploadMode}>Try uploading</Button>
-                                                        <span> or </span>
-                                                        <Button onClick={this.back}>Go back</Button>
-                                                    </p>
-                                                </Alert>,
-                                upload: <h2>Uploader</h2>
-                            }
-                        )[this.state.mode]}
-                    </Col>
-                </Row>
-            </Grid>
+            <div>
+            {(
+                {
+                    loading: <h2>Loading</h2>,
+                    record: <VideoRecorder save={this.save} onFailure={this.onMediaFailure}/>,
+                    fallbackPrompt: <Alert bsStyle="danger">
+                                        <h4>Oh Snap. We can&apos;t make a video</h4>
+                                        <p>{errorMap[this.state.recorderError]}</p>
+                                        <p>
+                                            <Button onClick={this.requestUploadMode}>Try uploading</Button>
+                                            <span> or </span>
+                                            <Button onClick={this.back}>Go back</Button>
+                                        </p>
+                                    </Alert>,
+                    upload: <h2>Uploader</h2>
+                }
+            )[this.state.mode]}
+            </div>
         );
     }
 }
