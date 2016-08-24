@@ -7,7 +7,7 @@ storiesOf('VideoRecorder', module)
   .add('Initial View', () => (
     <Grid>
         <Row>
-            <Col>
+            <Col xs={12}>
                 <VideoRecorder save={action('save')} onFailure={action('Media Fail')}/>
             </Col>
         </Row>

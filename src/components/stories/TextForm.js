@@ -7,7 +7,7 @@ storiesOf('TextForm', module)
   .add('Initial View', () => (
     <Grid>
         <Row>
-            <Col>
+            <Col xs={12}>
                 <TextForm save={action('Save Value')}/>
             </Col>
         </Row>
@@ -16,7 +16,7 @@ storiesOf('TextForm', module)
   .add('Edit View', () => (
     <Grid>
         <Row>
-            <Col>
+            <Col xs={12}>
                 <TextForm initialValue="I enjoy playing with computers" save={action('Save Value')}/>
             </Col>
         </Row>

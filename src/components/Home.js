@@ -15,12 +15,12 @@ export class Home extends Component {
         return (
             <Grid>
                 <Row>
-                    <Col>
+                    <Col xs={12}>
                         { this.renderAddEntryForm() }
                     </Col>
                 </Row>
                 <Row>
-                    <Col>
+                    <Col xs={12}>
                         {this.props.children}
                     </Col>
                 </Row>
