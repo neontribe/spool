@@ -14,8 +14,9 @@ class EntryViewer extends Component {
     }
 
     getStyles() {
-        return this.props.entry.media.thumbnail
-            ? { backgroundImage: 'url('+this.props.entry.media.videoThumbnail || this.props.entry.media.imageThumbnail+')' }
+        var thumb = this.props.entry.media.videoThumbnail || this.props.entry.media.imageThumbnail;
+        return (thumb)
+            ? { backgroundImage: 'url('+ thumb + ')' }
             : {};
     }
 
