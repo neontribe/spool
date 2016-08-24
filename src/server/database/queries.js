@@ -103,7 +103,7 @@ VALUES
 
 const mediaCreate = (text, video, videoThumbnail, image, imageThumbnail) => SQL`
 INSERT INTO
-    media (text, video, videoThumbnail, image, imageThumbnail)
+    media (text, video, video_thumbnail, image, image_thumbnail)
 VALUES
     (${text}, ${video}, ${videoThumbnail}, ${image}, ${imageThumbnail})
 RETURNING
