@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import { Grid, Row, Col, Image, Modal } from 'react-bootstrap';
+import { Image, Modal } from 'react-bootstrap';
 import EntryViewer from './EntryViewer';
 import moment from 'moment';
 
@@ -20,8 +20,9 @@ export class Entry extends Component {
     }
 
     getStyles() {
-        return this.props.entry.media.thumbnail
-            ? { backgroundImage: 'url('+this.props.entry.media.thumbnail+')' }
+        var thumb = this.props.entry.media.videoThumbnail || this.props.entry.media.imageThumbnail;
+        return (thumb)
+            ? { backgroundImage: 'url('+ thumb + ')' }
             : {};
     }
 
@@ -36,38 +37,44 @@ export class Entry extends Component {
     }
 
     render() {
+        var hasMedia = this.props.entry.media.image || this.props.entry.media.video;
+        var className = 'entry entry--' + this.props.entry.sentiment.type;
+
+        if (hasMedia) {
+            className += ' entry--has-media';
+        }
+
         return (
-            <a href="javascript:;" className={'entry entry--' + this.props.entry.sentiment.type}>
-                <div onClick={this.showViewer} style={this.getStyles()}>
-                    <div className='entry-overlay'></div>
-                    <div className='entry-content'>
-                        <Image
-                            src={'/static/' + this.props.entry.sentiment.type + '.png'}
-                            alt={this.props.entry.sentiment.type}
-                            responsive
-                        />
-                        <div>
-                            <div className="entry--time">{this.formatTimestamp()}</div>
-                            { this.props.entry.media.text &&
-                                <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
-                            }
-                            <div className="entry--tags">
-                                <span className="entry--tag">{this.props.entry.topic.map((t) => t.name).join(' ')}</span>
-                            </div>
+            <div className={className} style={this.getStyles()}>
+                <a href="javascript:;" onClick={this.showViewer} className='entry-content'>
+                    { this.props.entry.media.text &&
+                        <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
+                    }
+
+                    <Image
+                        src={'/static/' + this.props.entry.sentiment.type + '.png'}
+                        alt={this.props.entry.sentiment.type}
+                    />
+
+                    <div className='entry--meta'>
+                        <div className="entry--time">{this.formatTimestamp()}</div>
+                        <div className="entry--tags">
+                            <span className="entry--tag">{this.props.entry.topic.map((t) => t.name).join(' ')}</span>
                         </div>
                     </div>
-                </div>
-                { this.props.withViewer &&
-                    <Modal
-                        show={this.state.showEntryViewer}
-                        bsSize="large"
-                        backdrop={true}
-                        onHide={this.hideViewer}
-                    >
-                        <EntryViewer entry={this.props.entry} />
-                    </Modal>
-                }
-            </a>
+
+                    { this.props.withViewer &&
+                        <Modal
+                            show={this.state.showEntryViewer}
+                            bsSize="large"
+                            backdrop={true}
+                            onHide={this.hideViewer}
+                        >
+                            <EntryViewer entry={this.props.entry} />
+                        </Modal>
+                    }
+                </a>
+            </div>
         );
     }
 }
@@ -90,7 +97,9 @@ export const EntryContainer = Relay.createContainer(Entry, {
             media {
                 text
                 video
-                thumbnail
+                videoThumbnail
+                image
+                imageThumbnail
             }
             topic {
                 name

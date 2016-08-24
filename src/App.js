@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Grid, Row, Col, PageHeader, Button } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import ProfileLink from './components/ProfileLink';
 
 class App extends Component {

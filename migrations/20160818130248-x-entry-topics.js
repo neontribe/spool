@@ -17,7 +17,7 @@ exports.setup = function(options, seedLink) {
 /* CREATE TABLE x_entry_topics ( entry_id INTEGER, topic_type_id INTEGER ); */
 exports.up = function(db, cb) {
     db.createTable('x_entry_topics', {
-        entry_id: { type: 'int', unique: true },
+        entry_id: { type: 'int' },
         topic_type_id: { type: 'int' },
     }, cb)
     return null;

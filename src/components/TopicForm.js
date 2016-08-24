@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
+import { FormGroup, ControlLabel, Button, ButtonToolbar, Checkbox } from 'react-bootstrap';
 
 class TopicForm extends Component {
     constructor(props) {
@@ -19,41 +19,45 @@ class TopicForm extends Component {
     }
 
     handleChange(event) {
+        var valueExists = this.state.value.indexOf(event.target.value);
+        var values = this.state.value.slice(0);
+        if (valueExists === -1) {
+            values.push(event.target.value);
+        } else {
+            values.splice(valueExists, 1);
+        }
         this.setState({
-            value: event.target.value
+            value: values
         })
     }
 
-    renderOptions() {
-        return this.props.topics.map((t, i) => <option key={i} value={t.type}>{t.name}</option>);
+    renderCheckboxes() {
+        return this.props.topics.map((t, i) => <Checkbox key={i} onChange={this.handleChange} value={t.type}>{t.name}</Checkbox>);
     }
 
     render() {
         return (
             <FormGroup controlId="topic">
-              <ControlLabel>Topic</ControlLabel>
-              <FormControl componentClass="select"
-                  placeholder="select"
-                  value={this.state.value}
-                  onChange={this.handleChange}>
-                  {this.renderOptions()};
-              </FormControl>
-              <Button bsStyle="primary" bsSize="large" block
-                  onClick={this.continue}
-                  disabled={!this.state.value}>Next</Button>
+                <ControlLabel>Topic</ControlLabel>
+                {this.renderCheckboxes()}
+                <ButtonToolbar>
+                  <Button bsStyle="primary" bsSize="large" block
+                      onClick={this.continue}
+                      disabled={this.state.value.length === 0}>Next</Button>
+                </ButtonToolbar>
             </FormGroup>
         );
     }
 }
 
 TopicForm.propTypes = {
-    initialValue: React.PropTypes.string,
+    initialValue: React.PropTypes.array,
     save: React.PropTypes.func.isRequired,
     topics: React.PropTypes.array
 };
 
 TopicForm.defaultProps = {
-    initialValue: ''
+    initialValue: [] 
 };
 
 export default TopicForm;

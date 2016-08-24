@@ -44,25 +44,22 @@ export class AddEntryForm extends Component {
             <Grid>
                 <Row>
                     <Col xs={12}>
-                        <ButtonToolbar>
-                            <Button onClick={_.partial(this.showForm, 'text')}>Text</Button>
+                        <ButtonToolbar className='add-entry-form'>
+                            <Button onClick={_.partial(this.showForm, 'text')}>Words</Button>
                             <Button onClick={_.partial(this.showForm, 'video')}>Video</Button>
-                            {/*<Button onClick={_.partial(this.showForm, 'image')}
-                                bsStyle="primary" bsSize="large">
-                                <Glyphicon glyph="camera"/> Image
-                            </Button>*/}
+                            <Button onClick={_.partial(this.showForm, 'image')}>Photo</Button>
                             <Modal
                                 show={this.state.show}
                                 onHide={() => this.setState({ show: false })}
                                 backdrop={true}
-                                bsSize="large">
+                                bsSize="large"
+                            >
                                 <Modal.Header closeButton>
                                     <Modal.Title>New Entry</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
                                     <EntryForm topics={this.props.viewer.topics} done={this.handleDone} entry={this.state.entry}/>
                                 </Modal.Body>
-                                <Modal.Footer></Modal.Footer>
                             </Modal>
                         </ButtonToolbar>
                     </Col>

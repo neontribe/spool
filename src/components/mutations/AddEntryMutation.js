@@ -6,6 +6,8 @@ export default class AddEntryMutation extends Relay.Mutation {
         viewer: () => Relay.QL`
         fragment on Viewer {
             id
+            happyCount
+            sadCount
         }`
     }
     getMutation() {
@@ -18,14 +20,19 @@ export default class AddEntryMutation extends Relay.Mutation {
         var mediaInput = {};
         if(media.video) {
             mediaInput.video = media.video.key;
-            mediaInput.thumbnail = media.thumbnail.key;
+            mediaInput.videoThumbnail = media.videoThumbnail.key;
         }
+        if(media.image) {
+            mediaInput.image = media.image.key;
+            mediaInput.imageThumbnail = media.imageThumbnail.key;
+        }
+
         mediaInput.text = media.text;
         return {
             entry: {
                 media: mediaInput,
                 sentiment: entry.sentiment,
-                topic: [entry.topic]
+                topic: entry.topic
             }
         }
     }
@@ -35,6 +42,8 @@ export default class AddEntryMutation extends Relay.Mutation {
         fragment on CreateEntryPayload {
             viewer {
                 entries
+                happyCount
+                sadCount
             }
             entryEdge
         }`
@@ -57,16 +66,28 @@ export default class AddEntryMutation extends Relay.Mutation {
   getOptimisticResponse() {
       var viewer = this.props.viewer;
       var entry = this.props.entry;
+      var happyCount = this.props.viewer.happyCount;
+      var sadCount = this.props.viewer.sadCount;
+      switch (entry.sentiment) {
+          case 'happy':
+              happyCount++;
+              break;
+          case 'sad':
+              sadCount++;
+              break;
+          default:
+              break;
+      }
       return {
           viewer: {
-              id: viewer.id
+              id: viewer.id,
+              happyCount,
+              sadCount
           },
           entryEdge: {
               node: {
                 media: entry.media,
-                topic: [{
-                    type: entry.topic
-                }],
+                topic: entry.topic.map((t) => {return { name: t }}),
                 sentiment: {
                     type: entry.sentiment
                 },

@@ -79,12 +79,43 @@ h1, h2, h3, h4, h5, h6 {
 
 /* -------------------------------
 
+   Modal
+
+-------------------------------- */
+
+[role="dialog"] {
+  color: #222;
+}
+
+/* -------------------------------
+
+   Form elements
+
+-------------------------------- */
+
+.form-control {
+  border: 0;
+  border-radius: 0;
+  background-color: #eaeaea;
+}
+
+/* -------------------------------
+
    Buttons
 
 -------------------------------- */
 
+.btn-toolbar {
+  text-align: right;
+}
+
+.btn-toolbar .btn {
+  float: none;
+}
+
 .btn {
   position: relative;
+  display: inline-block;
   width: auto;
   border: 0;
   padding: .8rem 2rem;
@@ -134,6 +165,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn[disabled] {
+  background-color: #aaa;
+}
+
+.btn[disabled]:hover {
+  border-color: #0c3846;
   background-color: #aaa;
 }
 
@@ -200,51 +236,47 @@ h1, h2, h3, h4, h5, h6 {
 -------------------------------- */
 
 .entry {
+  min-height: 100px;
   position: relative;
   color: #fff;
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: top center;
   background-size: cover;
 }
 
-.entry img {
-  height: 5rem;
-  margin: 0 1.5rem;
+.entry--has-media {
+  min-height: 200px;
+}
+
+.entry:hover {
+  color: #fff;
 }
 
 .entry-content {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  position: relative;
-  top: 0;
-  left: 0;
-  padding: 1rem;
-}
-
-.entry-overlay {
-  content: '';
   position: absolute;
   left: 0;
   bottom: 0;
-  height: 100%;
   width: 100%;
-  background: url('/static/entry-overlay.png') repeat-x bottom;
+  padding: .5rem 1rem;
+  background-color: rgba(0, 0, 0, .7);
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.entry-content:hover {
+  background-color: rgba(0, 0, 0, .85);
+  transition: all .25s ease-in;
+}
+
+.entry img {
+  position: absolute;
+  width: 4rem;
 }
 
 .entry + .entry {
   margin-top: .5rem;
-}
-
-.entry:before {
-  content: '';
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  height: 1.5rem;
-  width: 1.5rem;
-  border-radius: 50%;
-  z-index: 10;
 }
 
 .happy-container,
@@ -275,7 +307,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .entry--quote {
+  flex: 1;
+  text-align: right;
   font-size: 1.5rem;
+  margin-right: 3rem;
+}
+
+.entry--meta {
+  flex: 1;
+  margin-left: 3rem;
 }
 
 .entry--time {
@@ -284,7 +324,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .entry--tags {
-  margin-top: .5rem;
   color: #ffdd67;
   font-size: .8rem;
   font-weight: bold;
@@ -293,4 +332,25 @@ h1, h2, h3, h4, h5, h6 {
 /* Indicate which emoji is selected on the sentiment form */
 .selected-emoji {
   background-color: #2ecc71;
+}
+
+/* -------------------------------
+
+   Entry Viewer
+
+-------------------------------- */
+
+.entry-viewer .entry {
+  min-height: 0;
+}
+
+
+
+
+
+.add-entry-form {
+  text-align: center;
+  padding: .25rem 1rem;
+  margin-bottom: .5rem;
+  background-color: rgba(0, 0, 0, .1);
 }

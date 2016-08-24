@@ -44,14 +44,17 @@ input EntryInput {
 type Media {
   text: String
   video: String
-  thumbnail: String
+  videoThumbnail: String
+  image: String
+  imageThumbnail: String
 }
 
 input MediaInput {
   text: String
   video: String
-  thumbnail: String
+  videoThumbnail: String
   image: String
+  imageThumbnail: String
 }
 
 type Mutations {
@@ -91,4 +94,6 @@ type Viewer implements Node {
   id: ID!
   entries(after: String, first: Int, before: String, last: Int): EntryConnection
   topics: [Topic]
+  happyCount: Int
+  sadCount: Int
 }
