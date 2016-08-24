@@ -27,7 +27,7 @@ export default class AddEntryMutation extends Relay.Mutation {
             entry: {
                 media: mediaInput,
                 sentiment: entry.sentiment,
-                topic: [entry.topic]
+                topic: entry.topic
             }
         }
     }
@@ -82,9 +82,7 @@ export default class AddEntryMutation extends Relay.Mutation {
           entryEdge: {
               node: {
                 media: entry.media,
-                topic: [{
-                    type: entry.topic
-                }],
+                topic: entry.topic.map((t) => {return { name: t }}),
                 sentiment: {
                     type: entry.sentiment
                 },
