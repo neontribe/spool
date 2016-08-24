@@ -26,7 +26,8 @@ export class Entry extends Component {
             : {};
     }
 
-    showViewer() {
+    showViewer(e) {
+        e.preventDefault();
         if (this.props.withViewer) {
             this.setState({showEntryViewer: true});
         }
@@ -46,7 +47,7 @@ export class Entry extends Component {
 
         return (
             <div className={className} style={this.getStyles()}>
-                <a href="javascript:;" onClick={this.showViewer} className='entry-content'>
+                <a href="./view-full-entry" onClick={this.showViewer} className='entry-content'>
                     { this.props.entry.media.text &&
                         <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
                     }
