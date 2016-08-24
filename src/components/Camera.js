@@ -144,28 +144,25 @@ class Camera extends Component {
                     <Col xs={3}/>
                 </Row>
                 <Row>
-                    <Col xs={3}/>
-                    <Col xs={6}>
-                        { (this.state.streaming) &&
-                            <Button bsStyle="primary" bsSize="large" block
-                              onClick={this.shutter}>
-                              <Glyphicon glyph="record" /> Take Picture
-                            </Button>
-                        }
-                        { (this.state.image) &&
-                              <Button bsStyle="primary" bsSize="large" block
-                                onClick={this.save}>
-                                <Glyphicon glyph="save"/> Save
-                              </Button>
-                        }
-                        { this.state.image &&
-                              <Button bsStyle="primary" bsSize="large" block
-                                onClick={this.discard}>
-                                <Glyphicon glyph="trash"/> Delete
-                              </Button>
-                        }
+                    <Col xsOffset={3} xs={6}>
+                        <Button bsStyle="primary" bsSize="large" block
+                          disabled={!this.state.streaming}
+                          onClick={this.shutter}>
+                          <Glyphicon glyph="record" /> Take Picture
+                        </Button>
                     </Col>
-                    <Col xs={3}/>
+                    <Col xsOffset={3} xs={6}>
+                        <Button bsStyle="primary" bsSize="large" block
+                          disabled={!this.state.image}
+                          onClick={this.discard}>
+                          <Glyphicon glyph="trash"/> Delete
+                        </Button>
+                        <Button bsStyle="primary" bsSize="large" block
+                            disabled={!this.state.image}
+                            onClick={this.save}>
+                            <Glyphicon glyph="save"/> Save
+                        </Button>
+                    </Col>
                 </Row>
             </Grid>
         );

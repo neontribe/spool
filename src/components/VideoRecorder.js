@@ -155,31 +155,32 @@ class VideoRecorder extends Component {
                 </Row>
                 <Row>
                     <Col xsOffset={3} xs={6}>
-                        { (!this.state.recording && !this.state.playing) &&
-                            <Button onClick={this.startRecording}>
+                        { (!this.state.recording) &&
+                            <Button block onClick={this.startRecording}>
                               <Glyphicon glyph="record" /> Record
                             </Button>
                         }
                         { this.state.recording &&
-                            <Button onClick={this.stopRecording}>
+                            <Button block onClick={this.stopRecording}>
                               <Glyphicon glyph="stop" /> Stop Recording
                             </Button>
                         }
-                        { (this.state.lastTakeURL && !this.state.playing) &&
-                              <Button onClick={this.replayLastTake}>
-                                <Glyphicon glyph="play"/> Replay
-                              </Button>
-                        }
-                        { (this.state.lastTakeURL && this.state.playing) &&
-                              <Button onClick={this.save}>
-                                <Glyphicon glyph="save"/> Save
-                              </Button>
-                        }
-                        { this.state.playing &&
-                              <Button onClick={this.discardLastTake}>
-                                <Glyphicon glyph="trash"/> Delete
-                              </Button>
-                        }
+                    </Col>
+                    <Col xsOffset={3} xs={6}>
+                          <Button disabled={!this.state.lastTakeURL && !this.state.playing}
+                              onClick={this.replayLastTake}>
+                            <Glyphicon glyph="play"/> Replay
+                          </Button>
+
+                          <Button disabled={!this.state.lastTakeURL && !this.state.playing}
+                              onClick={this.discardLastTake}>
+                            <Glyphicon glyph="trash"/> Delete
+                          </Button>
+
+                          <Button disabled={!this.state.lastTakeURL && !this.state.playing}
+                              onClick={this.save}>
+                            <Glyphicon glyph="save"/> Save
+                          </Button>
                     </Col>
                 </Row>
             </Grid>
