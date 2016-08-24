@@ -90,7 +90,9 @@ export const EntryContainer = Relay.createContainer(Entry, {
             media {
                 text
                 video
-                thumbnail
+                videoThumbnail
+                image
+                imageThumbnail
             }
             topic {
                 name

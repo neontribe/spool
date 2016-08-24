@@ -9,9 +9,17 @@ const MediaType = new ql.GraphQLObjectType({
             type: ql.GraphQLString,
             resolve: (media) => media.video ? '/s3/assets/'+media.video : null
         },
-        thumbnail: { 
+        videoThumbnail: { 
             type: ql.GraphQLString,
-            resolve: (media) => media.thumbnail ? '/s3/assets/'+media.thumbnail : null
+            resolve: (media) => media.videoThumbnail ? '/s3/assets/'+media.videoThumbnail : null
+        },
+        image: { 
+            type: ql.GraphQLString,
+            resolve: (media) => media.image ? '/s3/assets/'+media.image : null
+        },
+        imageThumbnail: { 
+            type: ql.GraphQLString,
+            resolve: (media) => media.imageThumbnail ? '/s3/assets/'+media.imageThumbnail : null
         }
     }
 });
@@ -51,8 +59,9 @@ const MediaInputType = new ql.GraphQLInputObjectType({
     fields: {
         text: { type: ql.GraphQLString },
         video: { type: ql.GraphQLString },
-        thumbnail: { type: ql.GraphQLString },
-        image: { type: ql.GraphQLString }
+        videoThumbnail: { type: ql.GraphQLString },
+        image: { type: ql.GraphQLString },
+        imageThumbnail: { type: ql.GraphQLString }
     }
 });
 

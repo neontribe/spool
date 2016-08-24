@@ -18,8 +18,13 @@ export default class AddEntryMutation extends Relay.Mutation {
         var mediaInput = {};
         if(media.video) {
             mediaInput.video = media.video.key;
-            mediaInput.thumbnail = media.thumbnail.key;
+            mediaInput.videoThumbnail = media.videoThumbnail.key;
         }
+        if(media.image) {
+            mediaInput.image = media.image.key;
+            mediaInput.imageThumbnail = media.imageThumbnail.key;
+        }
+
         mediaInput.text = media.text;
         return {
             entry: {
