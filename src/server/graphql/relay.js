@@ -63,6 +63,16 @@ const EntryType = new ql.GraphQLObjectType({
 var entryConnectionDefinition = 
     relayql.connectionDefinitions({nodeType: EntryType});
 
+const getSentimentCount = function (sentimentType, userId) {
+    return models.Entry.findByOwnerId(db, userId).then(function(result) {
+        return result.reduce(function(reduction, entry) {
+            if (entry.sentiment.type === sentimentType) {
+                reduction++;
+            }
+            return reduction;
+        }, 0);
+    });
+}
 const ViewerType = new ql.GraphQLObjectType({
     name: 'Viewer',
     fields: {
@@ -75,6 +85,14 @@ const ViewerType = new ql.GraphQLObjectType({
         topics: {
             type: new ql.GraphQLList(types.TopicType),
             resolve: () => models.Topic.findAll(db)
+        },
+        happyCount: {
+            type: ql.GraphQLInt,
+            resolve: (viewer, args, context) => getSentimentCount("happy", context.id)
+        },
+        sadCount: {
+            type: ql.GraphQLInt,
+            resolve: (viewer, args, context) => getSentimentCount("sad", context.id)
         }
     },
     interfaces: [nodeInterface]

@@ -7,7 +7,7 @@ storiesOf('AddEntryForm', module)
   .add('Initial View', () => (
     <Grid>
         <Row>
-            <Col>
+            <Col xs={12}>
                 <AddEntryForm/>
             </Col>
         </Row>

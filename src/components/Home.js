@@ -12,15 +12,16 @@ export class Home extends Component {
         }
     }
     render() {
+        console.log(this.props.viewer);
         return (
             <Grid>
                 <Row>
-                    <Col>
+                    <Col xs={12}>
                         { this.renderAddEntryForm() }
                     </Col>
                 </Row>
                 <Row>
-                    <Col>
+                    <Col xs={12}>
                         {this.props.children}
                     </Col>
                 </Row>
@@ -33,8 +34,10 @@ export const HomeContainer = Relay.createContainer(Home, {
     fragments: {
         viewer: () => Relay.QL`
         fragment on Viewer {
-            id,
+            id
             ${AddEntryFormContainer.getFragment('viewer')}
+            happyCount
+            sadCount
         }`,
     }
 });

@@ -91,4 +91,6 @@ type Viewer implements Node {
   id: ID!
   entries(after: String, first: Int, before: String, last: Int): EntryConnection
   topics: [Topic]
+  happyCount: Int
+  sadCount: Int
 }
