@@ -16,7 +16,7 @@ export const textEntry = {
 export const videoEntry = {
     media: {
         video: "/static/example.webm",
-        thumbnail: "/static/queue.jpg",
+        videoThumbnail: "/static/queue.jpg",
     },
     sentiment: {
         type: "sad",
@@ -30,7 +30,36 @@ export const videoEntry = {
 export const videoEntryWithText = {
     media: {
         video: "/static/example.webm",
-        thumbnail: "/static/queue.jpg",
+        videoThumbnail: "/static/queue.jpg",
+        text: "Queuing for the bus sucks"
+    },
+    sentiment: {
+        type: "sad",
+    },
+    topic: [{
+        name: 'Public Transport',
+    }],
+    timestamp: moment().format()
+};
+
+export const imageEntry = {
+    media: {
+        image: "/static/queue.jpg",
+        imageThumbnail: "/static/queue.jpg",
+    },
+    sentiment: {
+        type: "sad",
+    },
+    topic: [{
+        name: 'Public Transport',
+    }],
+    timestamp: moment().format()
+};
+
+export const imageEntryWithText = {
+    media: {
+        image: "/static/queue.jpg",
+        imageThumbnail: "/static/queue.jpg",
         text: "Queuing for the bus sucks"
     },
     sentiment: {
