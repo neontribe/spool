@@ -10,3 +10,8 @@ VALUES
     ('sport', 'Sport'),
     ('work', 'Work');
 INSERT INTO sentiment_type (type) VALUES ('happy'), ('sad');
+INSERT INTO
+    reward_type (type, name)
+VALUES
+    ('10_happy_photos', '10_happy_photos description'),
+    ('25_entries', '25_entries description');
