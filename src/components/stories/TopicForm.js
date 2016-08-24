@@ -19,7 +19,7 @@ storiesOf('TopicForm', module)
     <Grid>
         <Row>
             <Col>
-                <TopicForm topics={topics} initialValue="sport" save={action('Save Value')}/>
+                <TopicForm topics={topics} initialValue={["sport"]} save={action('Save Value')}/>
             </Col>
         </Row>
     </Grid>
