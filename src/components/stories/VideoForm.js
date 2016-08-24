@@ -7,7 +7,7 @@ storiesOf('VideoForm', module)
   .add('Initial View', () => (
     <Grid>
         <Row>
-            <Col>
+            <Col xs={12}>
                 <VideoForm save={action('Save Video')} back={action('Back')}/>
             </Col>
         </Row>

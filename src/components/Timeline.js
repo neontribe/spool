@@ -10,11 +10,11 @@ export class Timeline extends Component {
     renderEntries() {
         if (this.props.relay) {
             return this.props.viewer.entries.edges.map((entry) => {
-                return (<EntryContainer key={entry.node.id} entry={entry.node}/>);
+                return (<EntryContainer key={entry.node.id} entry={entry.node} />);
             })
         } else {
             return this.props.viewer.entries.edges.map((entry) => {
-                return (<Entry key={entry.node.id} entry={entry.node}/>);
+                return (<Entry key={entry.node.id} entry={entry.node} />);
             })
         }
     }
