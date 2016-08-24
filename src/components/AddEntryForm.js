@@ -45,19 +45,14 @@ export class AddEntryForm extends Component {
                 <Row>
                     <Col xs={12}>
                         <ButtonToolbar>
-                            <Button block onClick={_.partial(this.showForm, 'text')}
-                                bsStyle="primary" bsSize="large">
-                                <Glyphicon glyph="pencil"/> Text
-                            </Button>
-                            <Button onClick={_.partial(this.showForm, 'video')}
-                                bsStyle="primary" bsSize="large">
-                                <Glyphicon glyph="film"/> Video
-                            </Button>
+                            <Button onClick={_.partial(this.showForm, 'text')}>Text</Button>
+                            <Button onClick={_.partial(this.showForm, 'video')}>Video</Button>
                             {/*<Button onClick={_.partial(this.showForm, 'image')}
                                 bsStyle="primary" bsSize="large">
                                 <Glyphicon glyph="camera"/> Image
                             </Button>*/}
-                            <Modal show={this.state.show}
+                            <Modal
+                                show={this.state.show}
                                 onHide={() => this.setState({ show: false })}
                                 backdrop={true}
                                 bsSize="large">

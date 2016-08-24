@@ -40,11 +40,13 @@ class App extends Component {
             <Row>
                 <Col xs={12}>
                     <div className='page-header'>
-                      <h1>SPOOL</h1>
-                      <div className='profile'>
-                        <ProfileLink profile={this.state.profile} disabled={!this.props.route.auth.loggedIn()}/>
-                        {this.props.route.auth.loggedIn() && <a href="javascript:;" className='logout' onClick={this.logout}>Log out</a>}
-                      </div>
+                      <h1>
+                        <img src='/static/logo.png' alt='Speak out on-line' className='logo'></img>
+                      </h1>
+
+                      <ProfileLink profile={this.state.profile} disabled={!this.props.route.auth.loggedIn()} />
+
+                      {this.props.route.auth.loggedIn() && <a href='javascript:;' role='button' className='logout' onClick={this.logout}>Log out</a>}
                     </div>
                 </Col>
             </Row>
