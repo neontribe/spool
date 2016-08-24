@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormGroup, ControlLabel, Button, ButtonToolbar, Checkbox } from 'react-bootstrap';
+import { FormGroup, ControlLabel, Button, ButtonToolbar, Checkbox, Glyphicon } from 'react-bootstrap';
 
 class TopicForm extends Component {
     constructor(props) {
@@ -41,9 +41,10 @@ class TopicForm extends Component {
                 <ControlLabel>Topic</ControlLabel>
                 {this.renderCheckboxes()}
                 <ButtonToolbar>
-                  <Button bsStyle="primary" bsSize="large" block
-                      onClick={this.continue}
-                      disabled={this.state.value.length === 0}>Next</Button>
+                    <Button
+                        onClick={this.continue}
+                        disabled={this.state.value.length === 0}
+                    ><Glyphicon glyph="chevron-right" /> Next</Button>
                 </ButtonToolbar>
             </FormGroup>
         );

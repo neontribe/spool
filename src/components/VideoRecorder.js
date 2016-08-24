@@ -131,8 +131,7 @@ class VideoRecorder extends Component {
         return (
             <Grid>
                 <Row>
-                    <Col xs={3}/>
-                    <Col xs={6}>
+                    <Col xsOffset={3} xs={6}>
                         { this.state.streaming &&
                             <ResponsiveEmbed a4by3>
                                 <video
@@ -153,43 +152,35 @@ class VideoRecorder extends Component {
                             </ResponsiveEmbed>
                         }
                     </Col>
-                    <Col xs={3}/>
                 </Row>
                 <Row>
-                    <Col xs={3}/>
-                    <Col xs={6}>
+                    <Col xsOffset={3} xs={6}>
                         { (!this.state.recording && !this.state.playing) &&
-                            <Button bsStyle="primary" bsSize="large" block
-                              onClick={this.startRecording}>
+                            <Button onClick={this.startRecording}>
                               <Glyphicon glyph="record" /> Record
                             </Button>
                         }
                         { this.state.recording &&
-                            <Button bsStyle="primary" bsSize="large" block
-                              onClick={this.stopRecording}>
+                            <Button onClick={this.stopRecording}>
                               <Glyphicon glyph="stop" /> Stop Recording
                             </Button>
                         }
                         { (this.state.lastTakeURL && !this.state.playing) &&
-                              <Button bsStyle="primary" bsSize="large" block
-                                onClick={this.replayLastTake}>
+                              <Button onClick={this.replayLastTake}>
                                 <Glyphicon glyph="play"/> Replay
                               </Button>
                         }
                         { (this.state.lastTakeURL && this.state.playing) &&
-                              <Button bsStyle="primary" bsSize="large" block
-                                onClick={this.save}>
+                              <Button onClick={this.save}>
                                 <Glyphicon glyph="save"/> Save
                               </Button>
                         }
                         { this.state.playing &&
-                              <Button bsStyle="primary" bsSize="large" block
-                                onClick={this.discardLastTake}>
+                              <Button onClick={this.discardLastTake}>
                                 <Glyphicon glyph="trash"/> Delete
                               </Button>
                         }
                     </Col>
-                    <Col xs={3}/>
                 </Row>
             </Grid>
         );
