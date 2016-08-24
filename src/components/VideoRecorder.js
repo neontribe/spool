@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, ResponsiveEmbed, Button, Glyphicon } from 'react-bootstrap';
+import { Grid, Row, Col, ResponsiveEmbed, Button, ButtonToolbar, Glyphicon } from 'react-bootstrap';
 import MediaStreamRecorder from 'msr';
 import captureVideoFrame from 'capture-video-frame';
 
@@ -154,32 +154,34 @@ class VideoRecorder extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xsOffset={3} xs={6}>
-                        { (!this.state.recording && !this.state.playing) &&
-                            <Button onClick={this.startRecording}>
-                              <Glyphicon glyph="record" /> Record
-                            </Button>
-                        }
-                        { this.state.recording &&
-                            <Button onClick={this.stopRecording}>
-                              <Glyphicon glyph="stop" /> Stop Recording
-                            </Button>
-                        }
-                        { (this.state.lastTakeURL && !this.state.playing) &&
-                              <Button onClick={this.replayLastTake}>
-                                <Glyphicon glyph="play"/> Replay
-                              </Button>
-                        }
-                        { (this.state.lastTakeURL && this.state.playing) &&
-                              <Button onClick={this.save}>
-                                <Glyphicon glyph="save"/> Save
-                              </Button>
-                        }
-                        { this.state.playing &&
-                              <Button onClick={this.discardLastTake}>
-                                <Glyphicon glyph="trash"/> Delete
-                              </Button>
-                        }
+                    <Col xs={12}>
+                        <ButtonToolbar>
+                            { (!this.state.recording && !this.state.playing) &&
+                                <Button onClick={this.startRecording}>
+                                  <Glyphicon glyph="record" /> Record
+                                </Button>
+                            }
+                            { this.state.recording &&
+                                <Button onClick={this.stopRecording}>
+                                  <Glyphicon glyph="stop" /> Stop Recording
+                                </Button>
+                            }
+                            { (this.state.lastTakeURL && !this.state.playing) &&
+                                  <Button onClick={this.replayLastTake}>
+                                    <Glyphicon glyph="play"/> Replay
+                                  </Button>
+                            }
+                            { (this.state.lastTakeURL && this.state.playing) &&
+                                  <Button onClick={this.save}>
+                                    <Glyphicon glyph="save"/> Save
+                                  </Button>
+                            }
+                            { this.state.playing &&
+                                  <Button onClick={this.discardLastTake}>
+                                    <Glyphicon glyph="trash"/> Delete
+                                  </Button>
+                            }
+                        </ButtonToolbar>
                     </Col>
                 </Row>
             </Grid>

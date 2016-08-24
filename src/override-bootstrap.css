@@ -29,3 +29,41 @@
 .modal-footer {
 	border: 0;
 }
+
+.modal-backdrop.in {
+	opacity: .7;
+}
+
+.modal-content {
+	background: none;
+	box-shadow: none;
+	border: 0;
+}
+
+.modal-body {
+	border-radius: 5px;
+	background-color: rgba(255, 255, 255, .85);
+}
+
+.modal-title,
+.modal-header .close {
+	color: #fff;
+	font-weight: bold;
+	opacity: 1;
+}
+
+.modal-header .close {
+	font-size: 2rem;
+	position: absolute;
+	top: .5rem;
+	right: .5rem;
+	height: 2.5rem;
+	width: 2.5rem;
+	text-shadow: none;
+	border-radius: 50%;
+	color: #fff;
+}
+
+.modal-header .close:hover {
+	background-color: rgba(0, 0, 0, .5);
+}

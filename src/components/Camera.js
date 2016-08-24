@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, ResponsiveEmbed, Button, Glyphicon, Image } from 'react-bootstrap';
+import { Grid, Row, Col, ResponsiveEmbed, Button, ButtonToolbar, Glyphicon, Image } from 'react-bootstrap';
 import captureVideoFrame from 'capture-video-frame';
 
 const mediaConstraints = {
@@ -98,9 +98,8 @@ class Camera extends Component {
         return (
             <Grid>
                 <Row>
-                    <Col xs={3}/>
-                    <Col xs={6}>
-                        <div>
+                    <Col xsOffset={3} xs={6}>
+                        <div style={{ position: 'relative' }}>
                             { this.state.streaming &&
                                 <ResponsiveEmbed a4by3>
                                     <video
@@ -141,31 +140,30 @@ class Camera extends Component {
                             }
                         </div>
                     </Col>
-                    <Col xs={3}/>
                 </Row>
                 <Row>
-                    <Col xs={3}/>
-                    <Col xs={6}>
-                        { (this.state.streaming) &&
-                            <Button bsStyle="primary" bsSize="large" block
-                              onClick={this.shutter}>
-                              <Glyphicon glyph="record" /> Take Picture
-                            </Button>
-                        }
-                        { (this.state.image) &&
-                              <Button bsStyle="primary" bsSize="large" block
-                                onClick={this.save}>
-                                <Glyphicon glyph="save"/> Save
-                              </Button>
-                        }
-                        { this.state.image &&
-                              <Button bsStyle="primary" bsSize="large" block
-                                onClick={this.discard}>
-                                <Glyphicon glyph="trash"/> Delete
-                              </Button>
-                        }
+                    <Col xs={12}>
+                        <ButtonToolbar className='toolbar-center'>
+                            { (this.state.streaming) &&
+                                <Button bsStyle="primary" bsSize="large" block
+                                  onClick={this.shutter}>
+                                  <Glyphicon glyph="camera" /> Take Picture
+                                </Button>
+                            }
+                            { (this.state.image) &&
+                                  <Button bsStyle="primary" bsSize="large" block
+                                    onClick={this.save}>
+                                    <Glyphicon glyph="save"/> Save
+                                  </Button>
+                            }
+                            { this.state.image &&
+                                  <Button bsStyle="primary" bsSize="large" block
+                                    onClick={this.discard}>
+                                    <Glyphicon glyph="trash"/> Delete
+                                  </Button>
+                            }
+                        </ButtonToolbar>
                     </Col>
-                    <Col xs={3}/>
                 </Row>
             </Grid>
         );

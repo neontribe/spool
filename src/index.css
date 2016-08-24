@@ -66,6 +66,11 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
+ul {
+  margin: 0;
+  padding: 0;
+}
+
 [hidden] {
   display: none;
 }
@@ -94,7 +99,7 @@ h1, h2, h3, h4, h5, h6 {
 -------------------------------- */
 
 .form-control {
-  border: 0;
+  border: 2px solid #222;
   border-radius: 0;
   background-color: #eaeaea;
 }
@@ -113,6 +118,10 @@ h1, h2, h3, h4, h5, h6 {
   float: none;
 }
 
+.btn-toolbar.toolbar-center {
+  text-align: center;
+}
+
 .btn {
   position: relative;
   display: inline-block;
@@ -129,6 +138,10 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: none;
   border-left: 2.5rem solid #0c3846;
   background: #144959;
+}
+
+.btn + .btn {
+  margin-left: .5rem;
 }
 
 .btn .glyphicon {
@@ -164,7 +177,8 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #aaa;
 }
 
-.btn[disabled]:hover {
+.btn[disabled]:hover,
+.btn[disabled]:focus {
   border-color: #0c3846;
   background-color: #aaa;
 }
@@ -221,7 +235,8 @@ h1, h2, h3, h4, h5, h6 {
   transition: all .5s ease-in;
 }
 
-.profile-img-container:hover {
+.profile-img-container:hover,
+.profile-img-container:focus {
   background: rgba(255, 255, 255, .35);
 }
 
@@ -302,11 +317,14 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #89664c;
 }
 
-.entry--quote {
+.entry-quote-container {
   flex: 1;
   text-align: right;
-  font-size: 1.5rem;
   margin-right: 3rem;
+}
+
+.entry--quote {
+  font-size: 1.5rem;
 }
 
 .entry--meta {
@@ -326,7 +344,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Indicate which emoji is selected on the sentiment form */
-.selected-emoji {
+.selected-emoji,
+.happy-container:hover,
+.sad-container:hover {
   background-color: #2ecc71;
 }
 

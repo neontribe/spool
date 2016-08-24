@@ -15,17 +15,20 @@ class TopicForm extends Component {
 
     continue(event) {
         event.preventDefault();
+
         this.props.save(this.state.value);
     }
 
     handleChange(event) {
         var valueExists = this.state.value.indexOf(event.target.value);
         var values = this.state.value.slice(0);
+
         if (valueExists === -1) {
             values.push(event.target.value);
         } else {
             values.splice(valueExists, 1);
         }
+
         this.setState({
             value: values
         })
@@ -39,7 +42,9 @@ class TopicForm extends Component {
         return (
             <FormGroup controlId="topic">
                 <ControlLabel>Topic</ControlLabel>
+
                 {this.renderCheckboxes()}
+
                 <ButtonToolbar>
                     <Button
                         onClick={this.continue}
