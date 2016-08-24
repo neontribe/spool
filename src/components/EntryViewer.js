@@ -63,17 +63,6 @@ class EntryViewer extends Component {
                                                     <span className="entry--tag">{this.props.entry.topic.map((t) => t.name).join(' ')}</span>
                                                 </div>
                                             </div>
-
-                                            { this.props.withViewer &&
-                                                <Modal
-                                                    show={this.state.showEntryViewer}
-                                                    bsSize="large"
-                                                    backdrop={true}
-                                                    onHide={this.hideViewer}
-                                                >
-                                                    <EntryViewer entry={this.props.entry} />
-                                                </Modal>
-                                            }
                                         </div>
                                     </div>
                                 </div>
