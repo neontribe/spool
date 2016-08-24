@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import { Entry } from '../Entry';
-import { entries, videoEntry, videoEntryWithText } from './fixtures';
+import { entries, videoEntry, videoEntryWithText, imageEntry, imageEntryWithText } from './fixtures';
 
 storiesOf('Entry', module)
   .add('with text media', () => (
@@ -18,5 +18,15 @@ storiesOf('Entry', module)
   .add('with video (with text)', () => (
   	<div>
     	<Entry entry={videoEntryWithText} />
+    </div>
+  ))
+  .add('with image (no text)', () => (
+  	<div>
+    	<Entry entry={imageEntry} />
+    </div>
+  ))
+  .add('with image (with text)', () => (
+  	<div>
+    	<Entry entry={imageEntryWithText} />
     </div>
   ));

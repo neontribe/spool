@@ -143,25 +143,28 @@ class Camera extends Component {
                 </Row>
                 <Row>
                     <Col xs={12}>
-                        <ButtonToolbar className='toolbar-center'>
-                            { (this.state.streaming) &&
-                                <Button bsStyle="primary" bsSize="large" block
-                                  onClick={this.shutter}>
-                                  <Glyphicon glyph="camera" /> Take Picture
-                                </Button>
-                            }
-                            { (this.state.image) &&
-                                  <Button bsStyle="primary" bsSize="large" block
-                                    onClick={this.save}>
-                                    <Glyphicon glyph="save"/> Save
-                                  </Button>
-                            }
-                            { this.state.image &&
-                                  <Button bsStyle="primary" bsSize="large" block
-                                    onClick={this.discard}>
-                                    <Glyphicon glyph="trash"/> Delete
-                                  </Button>
-                            }
+                        <ButtonToolbar className="toolbar-center">
+                            <Button bsStyle="primary" bsSize="large" block
+                              disabled={!this.state.streaming}
+                              onClick={this.shutter}>
+                              <Glyphicon glyph="record" /> Take Picture
+                            </Button>
+                        </ButtonToolbar>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12}>
+                        <ButtonToolbar className="toolbar-center">
+                            <Button bsStyle="primary" bsSize="large" block
+                              disabled={!this.state.image}
+                              onClick={this.discard}>
+                              <Glyphicon glyph="trash"/> Delete
+                            </Button>
+                            <Button bsStyle="primary" bsSize="large" block
+                                disabled={!this.state.image}
+                                onClick={this.save}>
+                                <Glyphicon glyph="save"/> Save
+                            </Button>
                         </ButtonToolbar>
                     </Col>
                 </Row>
