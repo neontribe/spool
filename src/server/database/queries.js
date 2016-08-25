@@ -144,6 +144,26 @@ SELECT
 FROM
     reward_type`.setName('user_rewards_configure');
 
+const userRewardsComplete = (userId, rewardTypeId) => SQL`
+INSERT INTO
+    reward_log (reward_type_id, user_id, timestamp)
+SELECT
+	${rewardTypeId} AS reward_type_id,
+    ${userId} AS user_id,
+	now() AS timestamp,
+FROM
+   reward_log 
+JOIN
+	x_users_reward_types ON x_users_reward_types.user_id = ${userId} 
+AND 
+	x_users_reward_types.reward_type_id = ${rewardTypeId}
+WHERE
+	reward_log.reward_type_id = ${rewardTypeId} 
+AND 
+	reward_log.user_id = ${userId} 
+AND 
+	reward_log.timestamp IS NULL`.setName('user_rewards_complete');
+
 module.exports = {
     entry: {
         byId: entryById,
@@ -163,7 +183,8 @@ module.exports = {
         byId: userById,
         create: userCreate,
         rewards: {
-            configure: userRewardsConfigure
+            configure: userRewardsConfigure,
+			complete: userRewardsComplete
         }
     }
 }

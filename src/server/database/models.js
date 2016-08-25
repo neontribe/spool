@@ -1,5 +1,79 @@
 const moment = require('moment');
 const queries = require('./queries');
+const db = require('./database');
+
+class Reward {
+	constructor(id, user, type, name, goal, completed) {
+		this.id = id;
+		this.user = user;
+		this.type = type
+		this.name = name;
+		this.goal = goal;
+		this.completed = completed ? moment(completed) : false;
+	}
+
+	validate(goal, current) {
+		return goal === current;
+	}
+
+	set current(value) {
+		this.current = value;
+		if (this.validate(this.goal, this.current) && !this.completed) {
+			this.completed = moment();
+			Reward.complete(db, this.userId, this.id);
+		}
+	}
+
+	toString() {
+		return this.name;
+	}
+
+	static inflate(row) {}
+	static findByUserIdAndType(userId, type) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(true, function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows)
+                    }
+                });
+            });
+        });
+		p = p.then(rows => rows.map(r => Reward.inflate(r)));
+        return p;
+	}
+
+	static complete(userId, rewardTypeId) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.user.rewards.complete(userId, rewardTypeId), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve()
+                    }
+                });
+            });
+        });
+        return p;
+	}
+}
+class CountReward extends Reward {
+	constructor(type, name, goal, completed) {
+		super(type, name, goal, completed);
+	}
+	validate(goal, current) {
+		return current >= goal
+	}
+	toString() {
+		//string sub goal adn current
+		return this.name;
+	}
+}
 
 class Sentiment {
     constructor(type) {
