@@ -1,4 +1,4 @@
-SPOOL TEST 6
+SPOOL TEST 7
 =====
 
 Hipster BadgeZone
