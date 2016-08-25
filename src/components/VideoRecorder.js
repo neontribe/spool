@@ -152,7 +152,9 @@ class VideoRecorder extends Component {
     }
 
     save() {
-        const thumb = captureVideoFrame(this._player, 'png');
+        // Take a thumb from the replay, or from the recorder if it is a direct save
+        const thumb = captureVideoFrame(this._player, 'png')
+            || captureVideoFrame(this._recorder, 'png');
         this.props.save({
             video: this.state.lastTakeBlob,
             videoThumbnail: thumb.blob
@@ -167,6 +169,7 @@ class VideoRecorder extends Component {
                         { this.state.streaming &&
                             <ResponsiveEmbed a4by3>
                                 <video
+                                    ref={(ref) => { this._recorder = ref }}
                                     src={this.state.streamURL}
                                     muted
                                     autoPlay
