@@ -41,8 +41,12 @@ class EntryForm extends Component {
       }
   }
 
+  previousStep() {
+      return this.state.steps[this.state.steps.indexOf(this.state.step) - 1];
+  }
+
   back() {
-      var prev = this.state.steps[this.state.steps.indexOf(this.state.step) - 1];
+	  var prev = this.previousStep();
       if (prev) {
           this.setState({step: prev});
       }
@@ -66,8 +70,8 @@ class EntryForm extends Component {
             {{
                 media: ({
                     text: (<TextForm save={_.partial(this.saveEntry, 'media')}/>),
-                    video: (<VideoForm save={_.partial(this.saveEntry, 'media')} back={this.back}/>),
-                    image: (<ImageForm save={_.partial(this.saveEntry, 'media')} back={this.back}/>)
+                    video: (<VideoForm save={_.partial(this.saveEntry, 'media')} back={this.previousStep() ? this.back : undefined}/>),
+                    image: (<ImageForm save={_.partial(this.saveEntry, 'media')} back={this.previousStep() ? this.back : undefined}/>)
                 }[this.state.entry.type]),
                 caption: (<CaptionForm save={_.partial(this.saveEntry, 'media')} type={this.state.entry.type}/>),
                 sentiment: (<SentimentForm save={_.partial(this.saveEntry, 'sentiment')} />),
