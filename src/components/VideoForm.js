@@ -73,6 +73,12 @@ class VideoForm extends Component {
         });
     }
 
+	renderBack() {
+		if (this.props.back) {
+            return (<div><span> or </span><Button onClick={this.back}>Go back</Button></div>);
+		}
+	}
+
     render() {
         return (
             <div>
@@ -85,8 +91,7 @@ class VideoForm extends Component {
                                         <p>{errorMap[this.state.recorderError]}</p>
                                         <p>
                                             <Button onClick={this.requestUploadMode}>Try uploading</Button>
-                                            <span> or </span>
-                                            <Button onClick={this.back}>Go back</Button>
+											{ this.renderBack() }
                                         </p>
                                     </Alert>,
                     upload: <h2>Uploader</h2>
@@ -99,7 +104,7 @@ class VideoForm extends Component {
 
 VideoForm.propTypes = {
     save: React.PropTypes.func.isRequired,
-    back: React.PropTypes.func.isRequired,
+    back: React.PropTypes.func,
     mode: React.PropTypes.string
 };
 

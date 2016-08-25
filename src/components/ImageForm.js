@@ -42,6 +42,12 @@ class ImageForm extends Component {
         this.props.back();
     }
 
+	renderBack() {
+		if (this.props.back) {
+            return (<div><span> or </span><Button onClick={this.back}>Go back</Button></div>);
+		}
+	}
+
     /**
      * Get two blobs, 'thumbnail' and 'image' from the camera and save them
      */
@@ -85,8 +91,7 @@ class ImageForm extends Component {
                                         <p>{errorMap[this.state.cameraError]}</p>
                                         <p>
                                             <Button onClick={this.requestUploadMode}>Try uploading</Button>
-                                            <span> or </span>
-                                            <Button onClick={this.back}>Go back</Button>
+											{ this.renderBack() }
                                         </p>
                                     </Alert>,
                     upload: <h2>Uploader</h2>
@@ -99,7 +104,7 @@ class ImageForm extends Component {
 
 ImageForm.propTypes = {
     save: React.PropTypes.func.isRequired,
-    back: React.PropTypes.func.isRequired,
+    back: React.PropTypes.func,
     mode: React.PropTypes.string
 };
 
