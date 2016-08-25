@@ -58,7 +58,7 @@ class TopicForm extends Component {
     render() {
         return (
             <FormGroup controlId="topic" className='topics'>
-                <ControlLabel>Topic</ControlLabel>
+                <ControlLabel>Add some labels...</ControlLabel>
 
                 <Grid>
                     <Row>
@@ -84,7 +84,7 @@ TopicForm.propTypes = {
 };
 
 TopicForm.defaultProps = {
-    initialValue: [] 
+    initialValue: []
 };
 
 export default TopicForm;

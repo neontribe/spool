@@ -29,6 +29,11 @@ class SentimentForm extends Component {
         return (
             <Grid>
                 <Row>
+                    <Col xs={12}>
+                        <p><strong>Does it make you happy or sad?</strong></p>
+                    </Col>
+                </Row>
+                <Row>
                     <Col xs={6}>
                         <div
                             className="happy-container"
