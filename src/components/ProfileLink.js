@@ -47,7 +47,7 @@ class ProfileLink extends Component {
                     <span>{this.props.profile.nickname}</span>
                 </h3>
 
-                <Modal show={this.state.showProfile} onHide={this.state.hideProfile} bsSize='large'>
+                <Modal show={this.state.showProfile} onHide={this.hideProfile} bsSize='large' backdrop={true}>
                     <Modal.Header closeButton/>
                         <Modal.Title>My SPOOL Profile</Modal.Title>
                     <Modal.Header/>
