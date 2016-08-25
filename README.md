@@ -57,3 +57,4 @@ Sprint Zero
     * dependencies.io
     * Code Climate
     * Coveralls
+test-three
