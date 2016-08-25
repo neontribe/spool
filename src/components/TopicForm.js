@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormGroup, ControlLabel, Button, ButtonToolbar, Checkbox, Glyphicon, Grid, Row, Col } from 'react-bootstrap';
+import { FormGroup, ControlLabel, Button, ButtonToolbar, Glyphicon, Grid, Row, Col } from 'react-bootstrap';
 
 class TopicForm extends Component {
     constructor(props) {
