@@ -27,8 +27,8 @@ class Camera extends Component {
         this.stopMediaStream = this.stopMediaStream.bind(this);
         this.onMediaSuccess = this.onMediaSuccess.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
-        this.shutter = this.shutter.bind(this);
-        this.save = this.save.bind(this);
+        this.shutter = _.debounce(this.shutter.bind(this), 500);
+        this.save = _.debounce(this.save.bind(this), 500);
         this.discard = this.discard.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
         this.getVideoDevices = this.getVideoDevices.bind(this);
