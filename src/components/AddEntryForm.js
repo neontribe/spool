@@ -51,7 +51,7 @@ export class AddEntryForm extends Component {
                             <Modal
                                 show={this.state.show}
                                 onHide={() => this.setState({ show: false })}
-                                backdrop={true}
+                                backdrop="static"
                                 bsSize="large"
                             >
                                 <Modal.Header closeButton>
