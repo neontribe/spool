@@ -45,7 +45,7 @@
     "detect-port": "1.0.0",
     "enzyme": "^2.4.1",
     "http-proxy-middleware": "0.17.0",
-    "jest": "14.1.0",
+    "jest": "15.1.0",
     "jsdom": "^9.4.1",
     "mocha": "^3.0.1",
     "nyc": "^7.1.0",
