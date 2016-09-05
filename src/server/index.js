@@ -1,7 +1,6 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const schema = require('./graphql/schema.js');
-const path = require('path');
 const cors = require('cors');
 const s3Router = require('./s3Router');
 const bodyParser = require('body-parser');

@@ -1,23 +1,23 @@
 const ql = require('graphql');
-const models = require('../database/models');
+require('../database/models');
 
 const MediaType = new ql.GraphQLObjectType({
     name: 'Media',
     fields: {
         text: { type: ql.GraphQLString },
-        video: { 
+        video: {
             type: ql.GraphQLString,
             resolve: (media) => media.video ? '/s3/assets/'+media.video : null
         },
-        videoThumbnail: { 
+        videoThumbnail: {
             type: ql.GraphQLString,
             resolve: (media) => media.videoThumbnail ? '/s3/assets/'+media.videoThumbnail : null
         },
-        image: { 
+        image: {
             type: ql.GraphQLString,
             resolve: (media) => media.image ? '/s3/assets/'+media.image : null
         },
-        imageThumbnail: { 
+        imageThumbnail: {
             type: ql.GraphQLString,
             resolve: (media) => media.imageThumbnail ? '/s3/assets/'+media.imageThumbnail : null
         }
