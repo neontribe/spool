@@ -1,10 +1,10 @@
 const SQL = require('sql-template-strings');
 
-const entryCreate = (authorId, ownerId, mediaId, sentimentType) => SQL`
+const entryCreate = (authorId, ownerId, sentimentType) => SQL`
 INSERT INTO
-    entry (author_id, owner_id, media_id, sentiment_type_id, timestamp)
+    entry (author_id, owner_id, sentiment_type_id, timestamp)
 VALUES
-    (${authorId}, ${ownerId}, ${mediaId},
+    (${authorId}, ${ownerId},
         (SELECT sentiment_type_id FROM sentiment_type WHERE sentiment_type.type = ${sentimentType}), now())
 RETURNING
     entry_id`.setName('entry_create');
@@ -30,12 +30,12 @@ SELECT
 
 FROM 
     entry
-JOIN 
+LEFT JOIN 
     user_account AS author ON author.user_id = entry.author_id
 JOIN
     user_account AS owner ON owner.user_id = entry.owner_id
 JOIN
-    media ON media.media_id = entry.media_id
+    media ON media.entry_id = entry.entry_id
 JOIN
     sentiment_type ON sentiment_type.sentiment_type_id = entry.sentiment_type_id
 WHERE
@@ -65,12 +65,12 @@ SELECT
 
 FROM 
     entry
-JOIN 
+LEFT JOIN 
     user_account AS author ON author.user_id = entry.author_id
 JOIN
     user_account AS owner ON owner.user_id = entry.owner_id
 JOIN
-    media ON media.media_id = entry.media_id
+    media ON media.entry_id = entry.entry_id
 JOIN
     sentiment_type ON sentiment_type.sentiment_type_id = entry.sentiment_type_id
 WHERE
@@ -101,11 +101,11 @@ INSERT INTO
 VALUES
     (${entryId}, (SELECT topic_type_id FROM topic_type WHERE topic_type.type = ${type}))`.setName('topic_create');
 
-const mediaCreate = (text, video, videoThumbnail, image, imageThumbnail) => SQL`
+const mediaCreate = (entryId, text, video, videoThumbnail, image, imageThumbnail) => SQL`
 INSERT INTO
-    media (text, video, video_thumbnail, image, image_thumbnail)
+    media (entry_id, text, video, video_thumbnail, image, image_thumbnail)
 VALUES
-    (${text}, ${video}, ${videoThumbnail}, ${image}, ${imageThumbnail})
+    (${entryId}, ${text}, ${video}, ${videoThumbnail}, ${image}, ${imageThumbnail})
 RETURNING
     media_id`.setName('media_create');
 
