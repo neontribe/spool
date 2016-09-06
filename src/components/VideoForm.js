@@ -103,7 +103,7 @@ class VideoForm extends Component {
 }
 
 VideoForm.propTypes = {
-    save: React.PropTypes.func.isRequired,
+    save: React.PropTypes.func,
     back: React.PropTypes.func,
     mode: React.PropTypes.string
 };
