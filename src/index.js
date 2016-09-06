@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Relay from 'react-relay';
 import { RelayNetworkLayer, urlMiddleware, authMiddleware } from 'react-relay-network-layer';
-import { Router, Route, IndexRoute, IndexRedirect, hashHistory, applyRouterMiddleware } from 'react-router';
+import { Router, Route, IndexRoute, IndexRedirect, browserHistory, applyRouterMiddleware } from 'react-router';
 import useRelay from 'react-router-relay';
 import AuthService from './auth/AuthService';
 import App from './App';
@@ -31,14 +31,26 @@ function setupRelayNetworkLayer() {
 
 // onEnter callback to validate authentication in private routes
 const requireAuth = (nextState, replace) => {
-  if (!auth.loggedIn()) {
-    replace({ pathname: '/login' });
+  if (nextState.location.hash) {
+     auth.parseHash(nextState.location.hash);
   }
+  if (!auth.loggedIn()) {
+      replace({ pathname: '/login' });
+      return false;
+  }
+  return true;
 };
-// OnEnter for callback url to parse access_token
-const parseAuthHash = (nextState, replace) => {
-    auth.parseHash(nextState.location.hash);
-    replace('/home');
+
+const parseAuth = (nextState, replace) => {
+    //because the page can't set the id token fast enough, check the nextState to see if the hash exists
+    //if it does exist then grab the id token from the hash and then set it to local storage
+    if (nextState.location.hash) {
+        auth.parseHash(nextState.location.hash);
+    }
+    if (auth.loggedIn()) {
+        replace({ pathname: '/' });
+        return true;
+    }
 }
 
 const ViewerQueries = {
@@ -47,16 +59,14 @@ const ViewerQueries = {
 
 setupRelayNetworkLayer();
 ReactDOM.render(
-  // TODO: Shift to browserHistory only blocked by auth0 access_token handling
-  // see: https://auth0.com/forum/t/having-trouble-with-login-following-the-react-guide/3084
-  <Router history={hashHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
+  <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
     <Route path="/" component={App} auth={auth}>
         <IndexRedirect to="/home" />
         <Route path="home" component={HomeContainer} queries={ViewerQueries} onEnter={requireAuth}>
             <IndexRoute component={TimelineContainer} queries={ViewerQueries} onEnter={requireAuth} />
         </Route>
-        <Route path="login" component={SimpleLogin} />
-        <Route path="access_token=:token" onEnter={parseAuthHash} />
+        <Route path="login" component={SimpleLogin} onEnter={parseAuth}/>
+        <Route path="access_token=:token" component={SimpleLogin} onEnter={parseAuth}/>
     </Route>
   </Router>,
   document.getElementById('root')
