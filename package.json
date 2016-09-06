@@ -21,7 +21,7 @@
     "start": "node src/server/index.js",
     "start-dev": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && npm start",
     "build-schema": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && node ./scripts/updateSchema.js",
-    "setup-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && psql -d $DATABASE_URL < setup.sql",
+    "setup-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && sequelize --url $DATABASE_URL db:seed:all",
     "build-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && sequelize --url $DATABASE_URL db:migrate && npm run setup-database",
     "reset-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && sequelize --url $DATABASE_URL db:migrate:undo:all",
     "postinstall": "npm run snyk-protect && npm run build && npm run build-database",
