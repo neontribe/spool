@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Relay from 'react-relay';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Glyphicon } from 'react-bootstrap';
 
 export class Home extends Component {
     render() {
@@ -9,7 +9,9 @@ export class Home extends Component {
             <Grid>
                 <Row>
                     <Col xs={12}>
-                        <Link to={'/add'}>Get Started</Link>
+                      <div className="get-started">
+                          <Link className="btn" to={'/add'}><Glyphicon glyph="plus"/> Get Started</Link>
+                      </div>
                     </Col>
                 </Row>
                 <Row>

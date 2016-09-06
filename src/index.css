@@ -465,8 +465,9 @@ ul {
   background-color: rgba(0, 0, 0, .1);
 }
 
-
-
+.get-started {
+    text-align: center;
+}
 
 .intro {
   padding: 2rem;
