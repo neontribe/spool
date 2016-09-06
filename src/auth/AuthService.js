@@ -45,9 +45,10 @@ export default class AuthService extends EventEmitter {
     if (authResult && authResult.idToken) {
       this.setToken(authResult.idToken);
       this.auth0.getProfile(authResult.idToken, (err, profile) => {
-          if (err) { console.log(err); }
+         if (err) { console.log(err); }
          this.setProfile(profile);
       });
+      return !isTokenExpired(authResult.idToken);
     }
   }
 
