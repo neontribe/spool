@@ -16,7 +16,12 @@ module.exports = {
               autoIncrement: true 
           },
           media_id: { 
-              type: Sequelize.INTEGER
+              type: Sequelize.INTEGER,
+              references: {
+                  model: 'media',
+                  key: 'media_id'
+              },
+              onDelete: 'cascade'
           },
           author_id: { 
               type: Sequelize.INTEGER
