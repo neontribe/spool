@@ -16,7 +16,7 @@ class SentimentForm extends Component {
 
     continue(event) {
         event.preventDefault();
-        this.props.save(this.state.value);
+        this.props.save(this.props.saveKey, this.state.value);
     }
 
     handleChange(value) {
@@ -79,11 +79,13 @@ class SentimentForm extends Component {
 
 SentimentForm.propTypes = {
     initialValue: React.PropTypes.string,
-    save: React.PropTypes.func.isRequired
+    save: React.PropTypes.func,
+    saveKey: React.PropTypes.string
 };
 
 SentimentForm.defaultProps = {
-    initialValue: ''
+    initialValue: '',
+    saveKey: 'sentiment'
 };
 
 export default SentimentForm;

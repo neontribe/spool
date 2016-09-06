@@ -47,7 +47,7 @@ class TextForm extends Component {
 
 TextForm.propTypes = {
     initialValue: React.PropTypes.string,
-    save: React.PropTypes.func.isRequired
+    save: React.PropTypes.func
 };
 
 TextForm.defaultProps = {

@@ -8,6 +8,13 @@ import AuthService from './auth/AuthService';
 import App from './App';
 import { HomeContainer } from './components/Home';
 import SimpleLogin from './components/SimpleLogin';
+import { AddEntryContainer } from './components/AddEntry';
+import TopicForm from './components/TopicForm';
+import SentimentForm from './components/SentimentForm';
+import MediaForm from './components/MediaForm';
+import VideoForm from './components/VideoForm';
+import ImageForm from './components/ImageForm';
+import TextForm from './components/TextForm';
 
 import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap/dist/css/bootstrap-theme.css';
@@ -44,10 +51,11 @@ const requireAuth = (nextState, replace) => {
 const parseAuth = (nextState, replace) => {
     //because the page can't set the id token fast enough, check the nextState to see if the hash exists
     //if it does exist then grab the id token from the hash and then set it to local storage
+    var authTokenOK;
     if (nextState.location.hash) {
-        auth.parseHash(nextState.location.hash);
+        authTokenOK = auth.parseHash(nextState.location.hash);
     }
-    if (auth.loggedIn()) {
+    if (authTokenOK) {
         replace({ pathname: '/' });
         return true;
     }
@@ -64,6 +72,16 @@ ReactDOM.render(
         <IndexRedirect to="/home" />
         <Route path="home" component={HomeContainer} queries={ViewerQueries} onEnter={requireAuth}>
             <IndexRoute component={TimelineContainer} queries={ViewerQueries} onEnter={requireAuth} />
+        </Route>
+        <Route path="add" component={AddEntryContainer} queries={ViewerQueries} onEnter={requireAuth}>
+            <IndexRedirect to="topic"/>
+            <Route path="topic" component={TopicForm} />
+            <Route path="sentiment" component={SentimentForm} />
+            <Route path="media" component={MediaForm}>
+                <Route path="video" component={VideoForm}/>
+                <Route path="image" component={ImageForm}/>
+                <Route path="text" component={TextForm}/>
+            </Route>
         </Route>
         <Route path="login" component={SimpleLogin} onEnter={parseAuth}/>
         <Route path="access_token=:token" component={SimpleLogin} onEnter={parseAuth}/>

@@ -16,7 +16,7 @@ class TopicForm extends Component {
     continue(event) {
         event.preventDefault();
 
-        this.props.save(this.state.value);
+        this.props.save(this.props.saveKey, this.state.value);
     }
 
     handleChange(event) {
@@ -79,12 +79,14 @@ class TopicForm extends Component {
 
 TopicForm.propTypes = {
     initialValue: React.PropTypes.array,
-    save: React.PropTypes.func.isRequired,
-    topics: React.PropTypes.array
+    save: React.PropTypes.func,
+    topics: React.PropTypes.array,
+    saveKey: React.PropTypes.string
 };
 
 TopicForm.defaultProps = {
-    initialValue: []
+    initialValue: [],
+    saveKey: 'topic'
 };
 
 export default TopicForm;
