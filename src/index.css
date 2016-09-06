@@ -257,6 +257,7 @@ ul {
 -------------------------------- */
 
 .entry {
+  display: block;
   min-height: 100px;
   position: relative;
   color: #fff;

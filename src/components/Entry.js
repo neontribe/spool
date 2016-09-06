@@ -46,38 +46,40 @@ export class Entry extends Component {
         }
 
         return (
-            <div className={className} style={this.getStyles()}>
-                <a href="./view-full-entry" onClick={this.showViewer} className='entry-content'>
-                    <div className='entry-quote-container'>
-                        { this.props.entry.media.text &&
-                            <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
+            <a className="entry" href="/entry" onClick={this.showViewer}>
+                <div className={className} style={this.getStyles()}>
+                    <div className='entry-content'>
+                        <div className='entry-quote-container'>
+                            { this.props.entry.media.text &&
+                                <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
+                            }
+                        </div>
+
+                        <Image
+                            src={'/static/' + this.props.entry.sentiment.type + '.png'}
+                            alt={this.props.entry.sentiment.type}
+                        />
+
+                        <div className='entry--meta'>
+                            <div className="entry--time">{this.formatTimestamp()}</div>
+                            <div className="entry--tags">
+                                {this.props.entry.topic.map((t) => t.name).join(', ')}
+                            </div>
+                        </div>
+
+                        { this.props.withViewer &&
+                            <Modal
+                                show={this.state.showEntryViewer}
+                                bsSize="large"
+                                backdrop={true}
+                                onHide={this.hideViewer}
+                            >
+                                <EntryViewer entry={this.props.entry} />
+                            </Modal>
                         }
                     </div>
-
-                    <Image
-                        src={'/static/' + this.props.entry.sentiment.type + '.png'}
-                        alt={this.props.entry.sentiment.type}
-                    />
-
-                    <div className='entry--meta'>
-                        <div className="entry--time">{this.formatTimestamp()}</div>
-                        <div className="entry--tags">
-                            {this.props.entry.topic.map((t) => t.name).join(', ')}
-                        </div>
-                    </div>
-
-                    { this.props.withViewer &&
-                        <Modal
-                            show={this.state.showEntryViewer}
-                            bsSize="large"
-                            backdrop={true}
-                            onHide={this.hideViewer}
-                        >
-                            <EntryViewer entry={this.props.entry} />
-                        </Modal>
-                    }
-                </a>
-            </div>
+                </div>
+            </a>
         );
     }
 }
