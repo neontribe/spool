@@ -103,7 +103,7 @@ class ImageForm extends Component {
 }
 
 ImageForm.propTypes = {
-    save: React.PropTypes.func.isRequired,
+    save: React.PropTypes.func,
     back: React.PropTypes.func,
     mode: React.PropTypes.string
 };
