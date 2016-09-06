@@ -9,6 +9,7 @@ const db = require('./database/database.js');
 const models = require('./database/models.js');
 const createHash = require('sha.js');
 const sslRedirect = require('heroku-ssl-redirect');
+const path = require('path');
 
 var app = express();
 
@@ -87,9 +88,9 @@ app.use('/s3', bodyParser.json(), s3Router({
 app.use(express.static('build'));
 
 /* Drop all routes through to index.html to support browserHistory routing in react */
-// app.get('*', function (request, response){
-//   response.sendFile(path.resolve('build', 'index.html'))
-// })
+app.get('*', function (request, response){
+  response.sendFile(path.resolve('build', 'index.html'))
+})
 
 module.exports = app;
 
