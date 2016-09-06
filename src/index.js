@@ -44,10 +44,11 @@ const requireAuth = (nextState, replace) => {
 const parseAuth = (nextState, replace) => {
     //because the page can't set the id token fast enough, check the nextState to see if the hash exists
     //if it does exist then grab the id token from the hash and then set it to local storage
+    var authTokenOK;
     if (nextState.location.hash) {
-        auth.parseHash(nextState.location.hash);
+        authTokenOK = auth.parseHash(nextState.location.hash);
     }
-    if (auth.loggedIn()) {
+    if (authTokenOK) {
         replace({ pathname: '/' });
         return true;
     }
