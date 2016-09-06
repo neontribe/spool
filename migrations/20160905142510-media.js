@@ -14,10 +14,15 @@ module.exports = {
         media_id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
-            autoIncrement: true
+            autoIncrement: true,
         },
-        user_id: {
+        entry_id: {
             type: Sequelize.INTEGER,
+            references: {
+                model: 'entry',
+                key: 'entry_id'
+            },
+            onDelete: 'CASCADE'
         },
         text: {
             type: Sequelize.STRING,

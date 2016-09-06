@@ -11,10 +11,19 @@ module.exports = {
       */
      return queryInterface.createTable('x_entry_topics', {
          entry_id: {
-            type: Sequelize.INTEGER
+            type: Sequelize.INTEGER,
+            references: {
+                model: 'entry',
+                key: 'entry_id'
+            },
+            onDelete: 'CASCADE'
          },
          topic_type_id: {
-            type: Sequelize.INTEGER
+             type: Sequelize.INTEGER,
+             references: {
+                model: 'topic_type',
+                key: 'topic_type_id'
+             }
          }
     })
   },

@@ -15,17 +15,29 @@ module.exports = {
               primaryKey: true,
               autoIncrement: true 
           },
-          media_id: { 
-              type: Sequelize.INTEGER
-          },
+          /* we do not cascade author deletions, we should handle this in our app since author will need to be migrated to the owner */
           author_id: { 
-              type: Sequelize.INTEGER
+              type: Sequelize.INTEGER,
+              references: {
+                  model: 'user_account',
+                  key: 'user_id'
+              },
+              onDelete: 'SET NULL'
           },
           owner_id: { 
-              type: Sequelize.INTEGER
+              type: Sequelize.INTEGER,
+              references: {
+                  model: 'user_account',
+                  key: 'user_id'
+              },
+              onDelete: 'CASCADE'
           },
           sentiment_type_id: { 
-              type: Sequelize.INTEGER
+              type: Sequelize.INTEGER,
+              references: {
+                  model: 'sentiment_type',
+                  key: 'sentiment_type_id'
+              }
           },
           timestamp: { 
               type: Sequelize.DATE
