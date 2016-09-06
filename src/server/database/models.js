@@ -37,15 +37,15 @@ class Media {
         return new Media(id, text, video, videoThumbnail, image, imageThumbnail);
     }
 
-    static create(db, userId, media) {
+    static create(db, entryId, media) {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
-                client.query(queries.media.create(media.text, media.video, media.videoThumbnail, media.image, media.imageThumbnail), function (error, result) {
+                client.query(queries.media.create(entryId, media.text, media.video, media.videoThumbnail, media.image, media.imageThumbnail), function (error, result) {
                     done();
                     if (error) {
                         reject(error);
                     } else {
-                        resolve(result.rows[0].media_id);
+                        resolve();
                     }
                 });
             });
@@ -227,8 +227,11 @@ class Entry {
 
         var id = row[p('id')];
         var media = Media.inflate(row, 'media_');
-        var author = User.inflate(row, 'author_');
         var owner = User.inflate(row, 'owner_');
+        var author = owner;
+        if (row['author_id']) {
+            author = User.inflate(row, 'author_');
+        }
         var sentiment = Sentiment.inflate(row, 'sentiment_');
         var timestamp = row[p('timestamp')];
 
@@ -283,21 +286,19 @@ class Entry {
 
     static create(db, entry) {
         var p = new Promise(function (resolve, reject) {
-            // sentiment is lookup during entry insert
-            var mediaPromise = Media.create(db, entry.owner, entry.media);
-            mediaPromise.then(function(mediaId) {
-                db.connect().then(function({client, done}) {
-                    client.query(queries.entry.create(entry.author, entry.owner, mediaId, entry.sentiment), function (error, result) {
-                        done();
-                        if (error) {
-                            reject(error);
-                        } else {
-                            let id = result.rows[0].entry_id;
-                            Promise.all(entry.topic.map((t) => Topic.create(db, id, t))).then(function() {
-                                resolve(Entry.findById(db, id).then((entries) => entries.shift()));
-                            });
-                        }
-                    });
+            db.connect().then(function({client, done}) {
+                client.query(queries.entry.create(entry.author, entry.owner, entry.sentiment), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        let id = result.rows[0].entry_id;
+                        let insertPromises = entry.topic.map((t) => Topic.create(db, id, t));
+                        insertPromises.push(Media.create(db, id, entry.media));
+                        Promise.all(insertPromises).then(function() {
+                            resolve(Entry.findById(db, id).then((entries) => entries.shift()));
+                        });
+                    }
                 });
             });
         });
