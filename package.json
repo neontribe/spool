@@ -2,8 +2,8 @@
   "name": "spool",
   "version": "1.0.0",
   "engines": {
-    "node": "6.2.1",
-    "npm": "3.9.3"
+    "node": "6.5.0",
+    "npm": "3.10.3"
   },
   "description": "Helping folk with learning disabilities get involved in policy consultations",
   "main": "src/server/index.js",
@@ -12,7 +12,6 @@
   "scripts": {
     "test": "NODE_ENV=test && if [ -f .env ] ; then export $(cat .env | xargs) ; fi && nyc mocha .mocha_setup.js src/**/*-test.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "vulnerabilities": "snyk test",
     "lint": "eslint .",
     "start-ui": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && node scripts/start.js",
     "build": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && node scripts/build.js && cp -r ./static/* ./build/static/",
@@ -24,8 +23,7 @@
     "setup-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && psql -d $DATABASE_URL < setup.sql",
     "build-database": "db-migrate up && npm run setup-database",
     "reset-database": "db-migrate reset",
-    "postinstall": "npm run snyk-protect && npm run build && npm run build-database",
-    "snyk-protect": "snyk protect"
+    "postinstall": "npm run build && npm run build-database"
   },
   "repository": {
     "type": "git",
@@ -58,7 +56,7 @@
     "autoprefixer": "6.4.0",
     "aws-sdk": "^2.5.2",
     "babel-cli": "^6.11.4",
-    "babel-core": "6.14.0",
+    "babel-core": "6.11.4",
     "babel-eslint": "6.1.2",
     "babel-loader": "6.2.4",
     "babel-plugin-syntax-async-functions": "6.8.0",
@@ -125,7 +123,6 @@
     "recursive-readdir": "2.0.0",
     "rimraf": "2.5.4",
     "sha.js": "^2.4.5",
-    "snyk": "^1.18.0",
     "sql-template-strings": "^2.2.0",
     "strip-ansi": "3.0.1",
     "style-loader": "0.13.1",
@@ -183,6 +180,5 @@
     "testRegex": "(__tests__/.*|\\.(test|spec))\\.js$",
     "testEnvironment": "node",
     "verbose": true
-  },
-  "snyk": true
+  }
 }
