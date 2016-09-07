@@ -12,3 +12,4 @@ require('./SentimentForm');
 require('./TopicForm');
 require('./Intro');
 require('./SimpleLogin');
+require('./AddEntryControls');

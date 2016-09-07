@@ -45,6 +45,7 @@ class TopicForm extends Component {
                         <input
                             type='checkbox'
                             value={t.type}
+                            checked={this.state.value.indexOf(t.type) !== -1}
                             className={className}
                             onChange={this.handleChange}
                         />

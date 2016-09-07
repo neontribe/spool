@@ -10,21 +10,18 @@ class AddEntryControls extends Component {
         };
     }
 
-
-
-
     render() {
         return (
             <div className="add-entry-controls">
                 <div className="group-left">
-                    {!this.props.removeBack &&
+                    {this.props.onBack &&
                         <Button
                             onClick={this.props.onBack}
                             disabled={this.props.disableBack}>
                             <Glyphicon glyph="chevron-left" /> Back
                         </Button>
                     }
-                    {!this.props.removeQuit &&
+                    {this.props.onQuit &&
                         <Button
                             onClick={this.props.onQuit}
                             disabled={this.props.disableQuit}>
@@ -33,7 +30,7 @@ class AddEntryControls extends Component {
                     }
                 </div>
                 <div className="group-right">
-                    {!this.props.removeNext &&
+                    {this.props.onNext &&
                         <Button
                             onClick={this.props.onNext}
                             disabled={this.props.disableNext}>
@@ -53,15 +50,11 @@ AddEntryControls.propTypes = {
     onNext: React.PropTypes.func,
     disableNext: React.PropTypes.bool,
     disableBack: React.PropTypes.bool,
-    disableQuit: React.PropTypes.bool,
-    removeNext: React.PropTypes.bool,
-    removeBack: React.PropTypes.bool,
-    removeQuit: React.PropTypes.bool
+    disableQuit: React.PropTypes.bool
 };
 
 AddEntryControls.defaultProps = {
-    removeBack: true,
-    removeQuit: true
+
 };
 
 export default AddEntryControls;
