@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Col } from 'react-bootstrap';
 
 export class IconCard extends Component {
     static propTypes = {
