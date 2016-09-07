@@ -387,6 +387,10 @@ ul {
    Topics
 
 -------------------------------- */
+.iconCard {
+    height: 100%;
+    width: 100%;
+}
 
 .iconCard label, .iconCard div  {
   display: block;

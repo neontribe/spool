@@ -14,17 +14,17 @@ export class IconCard extends Component {
     }
     renderStatic() {
         return (
-            <Col xs={6} sm={3} className={this.generateClassName()}>
+            <div className={this.generateClassName()}>
                 <div>
                     <span className="icon"></span>
                     <span>{this.props.message}</span>
                 </div>
-            </Col>
+            </div>
         );
     }
     renderCheckbox() {
         return (
-            <Col xs={6} sm={3} className={this.generateClassName()}>
+            <div className={this.generateClassName()}>
                 <label>
                     <input
                         type='checkbox'
@@ -35,7 +35,7 @@ export class IconCard extends Component {
                     <span className="icon"></span>
                     <span>{this.props.message}</span>
                 </label>
-            </Col>
+            </div>
         );
     }
     render() {

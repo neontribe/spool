@@ -37,12 +37,14 @@ class TopicForm extends Component {
 
     renderCheckboxes() {
         return this.props.topics.map((t, i) => (
+            <Col xs={6} sm={3}>
                 <IconCard
                     key={i}
                     onChange={this.handleChange}
                     icon={t.type}
                     message={t.name}
                     value={t.type} />
+            </Col>
         ));
     }
 
