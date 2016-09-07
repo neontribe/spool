@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { FormGroup, FormControl, ControlLabel, ButtonToolbar, Button, Glyphicon } from 'react-bootstrap';
+import { Grid, Row, Col, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import AddEntryControls from './AddEntryControls';
 
 class TextForm extends Component {
     constructor(props) {
@@ -26,21 +27,27 @@ class TextForm extends Component {
 
     render() {
         return (
-            <FormGroup controlId="media">
-                <ControlLabel>I just want to say...</ControlLabel>
-                <FormControl
-                    componentClass="textarea"
-                    placeholder=""
-                    value={this.state.value}
-                    onChange={this.handleChange} />
+            <Grid>
+                <Row>
+                    <Col>
+                        <FormGroup controlId="media">
+                            <ControlLabel>I just want to say...</ControlLabel>
+                            <FormControl
+                                componentClass="textarea"
+                                placeholder=""
+                                value={this.state.value}
+                                onChange={this.handleChange} />
+                        </FormGroup>
+                    </Col>
+                    <Col>
+                        <AddEntryControls
+                            onNext={this.continue}
+                            disableNext={!this.state.value}
+                            />
+                    </Col>
+                </Row>
+            </Grid>
 
-                <ButtonToolbar>
-                    <Button
-                        onClick={this.continue}
-                        disabled={!this.state.value}
-                    ><Glyphicon glyph="chevron-right" />Next</Button>
-                </ButtonToolbar>
-            </FormGroup>
         );
     }
 }

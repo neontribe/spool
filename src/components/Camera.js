@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, ResponsiveEmbed, Button, ButtonToolbar, Glyphicon, Image } from 'react-bootstrap';
+import AddEntryControls from './AddEntryControls';
 import captureVideoFrame from 'capture-video-frame';
 import _ from 'lodash';
+import ReactCountdownClock from 'react-countdown-clock';
 
 const mediaConstraints = {
     audio: false,
@@ -27,12 +29,13 @@ class Camera extends Component {
         this.stopMediaStream = this.stopMediaStream.bind(this);
         this.onMediaSuccess = this.onMediaSuccess.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
-        this.shutter = _.debounce(this.shutter.bind(this), 500);
+        this.startCountdown = _.debounce(this.startCountdown.bind(this), 500);
+        this.shutter = this.shutter.bind(this);
         this.save = _.debounce(this.save.bind(this), 500);
-        this.discard = this.discard.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
         this.getVideoDevices = this.getVideoDevices.bind(this);
         this.switchVideoDevices = this.switchVideoDevices.bind(this);
+        this.getCountdownSize = this.getCountdownSize.bind(this);
     }
 
     componentWillMount() {
@@ -103,9 +106,18 @@ class Camera extends Component {
         this.state.stream.getTracks().map((track) => track.stop());
     }
 
+    startCountdown() {
+        this.setState({
+            image: null,
+            thumbnail: null,
+            countdown: true
+        });
+    }
+
     shutter() {
         const image = captureVideoFrame(this._viewfinder, 'png');
         this.setState({
+            countdown: false,
             image: image,
             thumbnail: image
         });
@@ -119,18 +131,17 @@ class Camera extends Component {
         });
     }
 
-    discard() {
-        this.setState({
-            image: null,
-            thumbnail: null
-        })
+    getCountdownSize(){
+        var video = this._viewfinder;
+        var dimensions = video.getBoundingClientRect();
+        return _.min([dimensions.height, dimensions.width]) * 0.9;
     }
 
     render() {
         return (
             <Grid>
                 <Row>
-                    <Col xs={12}>
+                    <Col>
                         <div style={{ position: 'relative' }}>
                             { this.state.streaming &&
                                 <ResponsiveEmbed a4by3>
@@ -170,40 +181,52 @@ class Camera extends Component {
                                     </div>
                                 </div>
                             }
+                            {  this.state.countdown &&
+                                <div style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        width: '100%',
+                                        height: '100%',
+                                        backgroundColor: 'rgba(0,0,0,0)'
+                                    }}>
+                                        <ReactCountdownClock
+                                            seconds={this.props.countdownSeconds}
+                                            size={this.getCountdownSize()}
+                                            color="#a3dfef"
+                                            alpha={0.9}
+                                            showMilliseconds={false}
+                                            onComplete={this.shutter} />
+                                </div>
+                            }
                         </div>
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={12}>
+                    <Col>
                         <ButtonToolbar className="toolbar-center">
                             <Button bsStyle="primary" bsSize="large" block
                               disabled={!this.state.streaming}
-                              onClick={this.shutter}>
+                              onClick={this.startCountdown}>
                               <Glyphicon glyph="record" /> Take Picture
                             </Button>
-                            { this.state.devices.length > 1 &&
+                        </ButtonToolbar>
+                        { this.state.devices.length > 1 &&
+                            <ButtonToolbar>
                                 <Button bsStyle="primary" bsSize="large" block
                                     onClick={this.switchVideoDevices}>
                                     <Glyphicon glyph="refresh" /> Switch Cameras
                                 </Button>
-                            }
-                        </ButtonToolbar>
+                            </ButtonToolbar>
+                        }
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={12}>
-                        <ButtonToolbar className="toolbar-center">
-                            <Button bsStyle="primary" bsSize="large" block
-                              disabled={!this.state.image}
-                              onClick={this.discard}>
-                              <Glyphicon glyph="trash"/> Delete
-                            </Button>
-                            <Button bsStyle="primary" bsSize="large" block
-                                disabled={!this.state.image}
-                                onClick={this.save}>
-                                <Glyphicon glyph="save"/> Save
-                            </Button>
-                        </ButtonToolbar>
+                    <Col>
+                        <AddEntryControls
+                            onNext={this.save}
+                            disableNext={!this.state.image}
+                            />
                     </Col>
                 </Row>
             </Grid>
@@ -213,9 +236,12 @@ class Camera extends Component {
 
 Camera.propTypes = {
     save: React.PropTypes.func.isRequired,
-    onFailure: React.PropTypes.func.isRequired
+    onFailure: React.PropTypes.func.isRequired,
+    countdownSeconds: React.PropTypes.number
 };
-Camera.defaultProps = {};
+Camera.defaultProps = {
+    countdownSeconds: 5
+};
 /**
  * Expose a test for media capabilities for use by other components
  */

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Button, ButtonToolbar, Image, Glyphicon } from 'react-bootstrap';
+import { Grid, Row, Col, Image } from 'react-bootstrap';
+import AddEntryControls from './AddEntryControls';
 import _ from 'lodash';
 
 class SentimentForm extends Component {
@@ -29,7 +30,7 @@ class SentimentForm extends Component {
         return (
             <Grid>
                 <Row>
-                    <Col xs={12}>
+                    <Col>
                         <p><strong>Does it make you happy or sad?</strong></p>
                     </Col>
                 </Row>
@@ -62,13 +63,11 @@ class SentimentForm extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={12}>
-                        <ButtonToolbar>
-                            <Button
-                                onClick={this.continue}
-                                disabled={!this.state.value}
-                            ><Glyphicon glyph="chevron-right" />Next</Button>
-                        </ButtonToolbar>
+                    <Col>
+                        <AddEntryControls
+                            onNext={this.continue}
+                            disableNext={!this.state.value}
+                            />
                     </Col>
                 </Row>
             </Grid>
