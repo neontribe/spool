@@ -14,3 +14,4 @@ require('./Intro');
 require('./SimpleLogin');
 require('./Dashboard');
 require('./IconCard');
+require('./UsageChart');
