@@ -32,7 +32,7 @@ class AddEntry extends Component {
     getPathForNextStage(){
         // Find our next route and calculate its path in order to navigate to it.
         // This is all a bit of a faff, really.
-        debugger;
+
         // Find the index of this components route in the routes
         var addIndex = this.props.routes.indexOf(this.props.route);
         // Use it to find the current route under this component (the stage)
