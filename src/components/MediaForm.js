@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ButtonToolbar, Button, Glyphicon } from 'react-bootstrap';
+import { Grid, Row, Col, Button, Glyphicon } from 'react-bootstrap';
 import { withRouter } from 'react-router';
 import _ from 'lodash';
 
@@ -20,11 +20,19 @@ class MediaForm extends Component {
 
   renderChooser() {
       return (
-          <ButtonToolbar className='add-entry-form'>
-            <Button onClick={_.partial(this.setMediaType, 'text')}><Glyphicon glyph="pencil" /> Words</Button>
-            <Button onClick={_.partial(this.setMediaType, 'video')}><Glyphicon glyph="film" /> Video</Button>
-            <Button onClick={_.partial(this.setMediaType, 'image')}><Glyphicon glyph="picture" /> Photo</Button>
-          </ButtonToolbar>
+          <div className='media-form'>
+              <Grid>
+                  <Row>
+                      <Col xsOffset={3} xs={6}>
+                          <Button onClick={_.partial(this.setMediaType, 'video')}><Glyphicon glyph="film" /> Video</Button>
+                      </Col>
+                      <Col xsOffset={3} xs={6}>
+                          <Button onClick={_.partial(this.setMediaType, 'image')}><Glyphicon glyph="picture" /> Photo</Button>
+                          <Button onClick={_.partial(this.setMediaType, 'text')}><Glyphicon glyph="pencil" /> Words</Button>
+                      </Col>
+                  </Row>
+              </Grid>
+          </div>
       );
   }
 

@@ -71,7 +71,7 @@ class AddEntry extends Component {
         return (
             <Grid>
                 <Row>
-                    <Col xs={12}>
+                    <Col xsOffset={3} xs={6}>
                         { children }
                     </Col>
                 </Row>

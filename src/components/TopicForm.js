@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { FormGroup, ControlLabel, Button, ButtonToolbar, Glyphicon, Grid, Row, Col } from 'react-bootstrap';
+import { FormGroup, ControlLabel, Grid, Row, Col } from 'react-bootstrap';
+import AddEntryControls from './AddEntryControls';
 
 class TopicForm extends Component {
     constructor(props) {
@@ -57,22 +58,24 @@ class TopicForm extends Component {
 
     render() {
         return (
-            <FormGroup controlId="topic" className='topics'>
-                <ControlLabel>Add some labels...</ControlLabel>
+
 
                 <Grid>
                     <Row>
-                        {this.renderCheckboxes()}
+                        <FormGroup controlId="topic" className='topics'>
+                            <ControlLabel>Add some labels...</ControlLabel>
+                            {this.renderCheckboxes()}
+                        </FormGroup>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <AddEntryControls
+                                onNext={this.continue}
+                                disableNext={this.state.value.length === 0}
+                                />
+                        </Col>
                     </Row>
                 </Grid>
-
-                <ButtonToolbar>
-                    <Button
-                        onClick={this.continue}
-                        disabled={this.state.value.length === 0}
-                    ><Glyphicon glyph="chevron-right" /> Next</Button>
-                </ButtonToolbar>
-            </FormGroup>
         );
     }
 }

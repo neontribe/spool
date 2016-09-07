@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Alert } from 'react-bootstrap';
+import { Grid, Row, Col, Button, Alert } from 'react-bootstrap';
 import uploadToS3 from '../s3';
 import Camera from './Camera';
 import _ from 'lodash';
@@ -81,23 +81,27 @@ class ImageForm extends Component {
 
     render() {
         return (
-            <div>
-            {(
-                {
-                    loading: <h2>Loading</h2>,
-                    record: <Camera save={this.save} onFailure={this.onMediaFailure}/>,
-                    fallbackPrompt: <Alert bsStyle="danger">
-                                        <h4>Oh Snap. We can&apos;t take a picture</h4>
-                                        <p>{errorMap[this.state.cameraError]}</p>
-                                        <p>
-                                            <Button onClick={this.requestUploadMode}>Try uploading</Button>
-											{ this.renderBack() }
-                                        </p>
-                                    </Alert>,
-                    upload: <h2>Uploader</h2>
-                }
-            )[this.state.mode]}
-            </div>
+            <Grid>
+                <Row>
+                    <Col>
+                        {(
+                            {
+                                loading: <h2>Loading</h2>,
+                                record: <Camera save={this.save} onFailure={this.onMediaFailure}/>,
+                                fallbackPrompt: <Alert bsStyle="danger">
+                                                    <h4>Oh Snap. We can&apos;t take a picture</h4>
+                                                    <p>{errorMap[this.state.cameraError]}</p>
+                                                    <p>
+                                                        <Button onClick={this.requestUploadMode}>Try uploading</Button>
+            											{ this.renderBack() }
+                                                    </p>
+                                                </Alert>,
+                                upload: <h2>Uploader</h2>
+                            }
+                        )[this.state.mode]}
+                    </Col>
+                </Row>
+            </Grid>
         );
     }
 }
