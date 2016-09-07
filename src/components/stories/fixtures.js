@@ -114,15 +114,11 @@ export const entries =  [
 ];
 
 export const topics = [
-    { name: 'Transport', type: 'public_transport' },
-    { name: 'Foo Bar', type: 'foo_bar' },
-    { name: 'Foo Bar', type: 'foo_bar' },
-    { name: 'Foo Bar', type: 'foo_bar' },
-    { name: 'Foo Bar', type: 'foo_bar' },
-    { name: 'Foo Bar', type: 'foo_bar' },
-    { name: 'Foo Bar', type: 'foo_bar' },
-    { name: 'Foo Bar', type: 'foo_bar' },
-    { name: 'Foo Bar', type: 'foo_bar' }
+    { name: 'Transport', type: 'transport' },
+    { name: 'Health', type: 'health' },
+    { name: 'Leisure', type: 'leisure' },
+    { name: 'Work', type: 'work' },
+    { name: 'Food', type: 'food' },
 ];
 
 export const googleProfile = {

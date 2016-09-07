@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { FormGroup, ControlLabel, Button, ButtonToolbar, Glyphicon, Grid, Row, Col } from 'react-bootstrap';
+import { IconCard } from './IconCard';
 
 class TopicForm extends Component {
     constructor(props) {
@@ -22,7 +23,6 @@ class TopicForm extends Component {
     handleChange(event) {
         var valueExists = this.state.value.indexOf(event.target.value);
         var values = this.state.value.slice(0);
-
         if (valueExists === -1) {
             values.push(event.target.value);
         } else {
@@ -35,24 +35,14 @@ class TopicForm extends Component {
     }
 
     renderCheckboxes() {
-        return this.props.topics.map((t, i) => {
-            var className = 'visual-hidden topic topic-' + t.name.replace(/\s+/g, '-').toLowerCase();
-
-            return (
-                <Col xs={6} sm={3} key={i}>
-                    <label>
-                        <input
-                            type='checkbox'
-                            value={t.type}
-                            className={className}
-                            onChange={this.handleChange}
-                        />
-                        <span></span>
-                        <span>{t.name}</span>
-                    </label>
-                </Col>
-            );
-        });
+        return this.props.topics.map((t, i) => (
+                <IconCard 
+                    key={i}
+                    onChange={this.handleChange}
+                    icon={t.type}
+                    message={t.name}
+                    value={t.type} />
+        ));
     }
 
     render() {
