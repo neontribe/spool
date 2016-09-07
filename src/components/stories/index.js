@@ -12,3 +12,5 @@ require('./SentimentForm');
 require('./TopicForm');
 require('./Intro');
 require('./SimpleLogin');
+require('./Dashboard');
+require('./IconCard');
