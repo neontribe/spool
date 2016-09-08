@@ -6,7 +6,7 @@ import { Router, Route, IndexRoute, IndexRedirect, browserHistory, applyRouterMi
 import useRelay from 'react-router-relay';
 import AuthService from './auth/AuthService';
 import App from './App';
-import { HomeContainer } from './components/Home';
+import RoleSwitchContainer from './components/RoleSwitch';
 import SimpleLogin from './components/SimpleLogin';
 import { AddEntryContainer } from './components/AddEntry';
 import TopicForm from './components/TopicForm';
@@ -56,7 +56,7 @@ const parseAuth = (nextState, replace) => {
         authTokenOK = auth.parseHash(nextState.location.hash);
     }
     if (authTokenOK) {
-        replace({ pathname: '/' });
+        replace({ pathname: '/home' });
         return true;
     }
 }
@@ -69,9 +69,18 @@ setupRelayNetworkLayer();
 ReactDOM.render(
   <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
     <Route path="/" component={App} auth={auth}>
-        <IndexRedirect to="/home" />
-        <Route path="home" component={HomeContainer} queries={ViewerQueries} onEnter={requireAuth}>
-            <IndexRoute component={TimelineContainer} queries={ViewerQueries} onEnter={requireAuth} />
+        <IndexRedirect to="home" />
+        <Route path="home" component={RoleSwitchContainer} queries={ViewerQueries} onEnter={requireAuth}>
+            <IndexRoute
+                components={{
+                    Creator: TimelineContainer,
+                    Consumer: TextForm,
+                    Missing: TextForm
+                }}
+                queries={{
+                    Creator: ViewerQueries
+                }}
+            />
         </Route>
         <Route path="add" component={AddEntryContainer} queries={ViewerQueries} onEnter={requireAuth}>
             <IndexRedirect to="topic"/>
@@ -86,6 +95,7 @@ ReactDOM.render(
         <Route path="login" component={SimpleLogin} onEnter={parseAuth}/>
         <Route path="access_token=:token" component={SimpleLogin} onEnter={parseAuth}/>
     </Route>
+
   </Router>,
   document.getElementById('root')
 );

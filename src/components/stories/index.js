@@ -1,7 +1,6 @@
 require('./Entry.js');
 require('./EntryViewer.js');
 require('./Timeline.js');
-require('./Home.js');
 require('./ProfileLink');
 require('./TextForm');
 require('./VideoForm');

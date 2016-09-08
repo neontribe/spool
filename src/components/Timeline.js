@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import { ListGroup } from 'react-bootstrap';
+import { Link } from 'react-router';
+import { ListGroup, Glyphicon } from 'react-bootstrap';
 import { EntryContainer, Entry } from './Entry';
 import Intro from './Intro';
 
@@ -21,12 +22,18 @@ export class Timeline extends Component {
     }
     render() {
         return (
-            <ListGroup componentClass="div">
-                {this.renderEntries()}
-                {!this.props.viewer.role.entries.edges.length &&
-                    <Intro />
-                }
-            </ListGroup>
+            <div>
+                <div className="get-started">
+                    <Link className="btn" to={'/add'}><Glyphicon glyph="plus"/> Get Started</Link>
+                </div>
+                <ListGroup componentClass="div">
+                    {this.renderEntries()}
+                    {!this.props.viewer.role.entries.edges.length &&
+                        <Intro />
+                    }
+                </ListGroup>
+            </div>
+
         );
     }
 }
@@ -40,6 +47,8 @@ export const TimelineContainer = Relay.createContainer(Timeline, {
         fragment on Viewer {
             role {
                 ... on Creator {
+                    happyCount
+                    sadCount
                     entries(first: $first) {
                         edges {
                             node {
