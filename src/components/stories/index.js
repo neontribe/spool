@@ -12,3 +12,5 @@ require('./TopicForm');
 require('./Intro');
 require('./SimpleLogin');
 require('./AddEntryControls');
+require('./Signup');
+require('./Dashboard');

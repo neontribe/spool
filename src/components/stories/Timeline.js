@@ -4,14 +4,18 @@ import { Timeline } from '../Timeline';
 import { entries } from './fixtures';
 
 const initialData = {
-    entries: {
-        edges: []
+    role: {
+        entries: {
+            edges: []
+        }
     }
 }
 
 const entriesData = {
-    entries: {
-        edges: entries.map((e) => {return {node:e}})
+    role: {
+        entries: {
+            edges: entries.map((e) => {return {node:e}})
+        }
     }
 }
 
