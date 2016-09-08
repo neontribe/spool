@@ -74,18 +74,14 @@ const getSentimentCount = function (sentimentType, userId) {
         }, 0);
     });
 }
-const ViewerType = new ql.GraphQLObjectType({
-    name: 'Viewer',
+
+const CreatorRoleType = new ql.GraphQLObjectType({
+    name: 'Creator',
     fields: {
-        id: relayql.globalIdField(),
         entries: {
             type: entryConnectionDefinition.connectionType,
             args: relayql.connectionArgs,
             resolve: (viewer, args, context) => relayql.connectionFromPromisedArray(models.Entry.findByOwnerId(db, context.id), args)
-        },
-        topics: {
-            type: new ql.GraphQLList(types.TopicType),
-            resolve: () => models.Topic.findAll(db)
         },
         happyCount: {
             type: ql.GraphQLInt,
@@ -94,6 +90,57 @@ const ViewerType = new ql.GraphQLObjectType({
         sadCount: {
             type: ql.GraphQLInt,
             resolve: (viewer, args, context) => getSentimentCount("sad", context.id)
+        }
+    }
+});
+
+const ConsumerRoleType = new ql.GraphQLObjectType({
+    name: 'Consumer',
+    fields: {
+        hello: {
+            type: ql.GraphQLString,
+            resolve: () => 'hello world'
+        }
+    }
+});
+
+const MissingRoleType = new ql.GraphQLObjectType({
+    name: 'Missing',
+    fields: {
+        information: {
+            type: new ql.GraphQLList(ql.GraphQLString),
+            resolve: () => ['location', 'role']
+        }
+    }
+});
+
+const RoleType = new ql.GraphQLUnionType({
+    name: 'Role',
+    types: [ CreatorRoleType, ConsumerRoleType, MissingRoleType ],
+    resolveType(value) {
+        if (value === 'creator') {
+            return CreatorRoleType;
+        }
+        if (value === 'consumer') {
+            return ConsumerRoleType;
+        }
+        if (!value) {
+            return MissingRoleType;
+        }
+    }
+});
+
+const ViewerType = new ql.GraphQLObjectType({
+    name: 'Viewer',
+    fields: {
+        id: relayql.globalIdField(),
+        role: {
+            type: RoleType,
+            resolve: () => 'creator'
+        },
+        topics: {
+            type: new ql.GraphQLList(types.TopicType),
+            resolve: () => models.Topic.findAll(db)
         }
     },
     interfaces: [nodeInterface]

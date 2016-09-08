@@ -29,8 +29,13 @@ export const HomeContainer = Relay.createContainer(Home, {
         viewer: () => Relay.QL`
         fragment on Viewer {
             id
-            happyCount
-            sadCount
+            role {
+                __typename
+                ... on Creator {
+                    happyCount
+                    sadCount
+                }
+            }
         }`,
     }
 });

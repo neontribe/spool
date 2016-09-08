@@ -10,11 +10,11 @@ export class Timeline extends Component {
     }
     renderEntries() {
         if (this.props.relay) {
-            return this.props.viewer.entries.edges.map((entry) => {
+            return this.props.viewer.role.entries.edges.map((entry) => {
                 return (<EntryContainer key={entry.node.id} entry={entry.node} />);
             })
         } else {
-            return this.props.viewer.entries.edges.map((entry) => {
+            return this.props.viewer.role.entries.edges.map((entry) => {
                 return (<Entry key={entry.node.id} entry={entry.node} />);
             })
         }
@@ -23,7 +23,7 @@ export class Timeline extends Component {
         return (
             <ListGroup componentClass="div">
                 {this.renderEntries()}
-                {!this.props.viewer.entries.edges.length &&
+                {!this.props.viewer.role.entries.edges.length &&
                     <Intro />
                 }
             </ListGroup>
@@ -38,11 +38,15 @@ export const TimelineContainer = Relay.createContainer(Timeline, {
     fragments: {
         viewer: () => Relay.QL`
         fragment on Viewer {
-            entries(first: $first) {
-                edges {
-                    node {
-                        id,
-                        ${EntryContainer.getFragment('entry')}
+            role {
+                ... on Creator {
+                    entries(first: $first) {
+                        edges {
+                            node {
+                                id,
+                                ${EntryContainer.getFragment('entry')}
+                            }
+                        }
                     }
                 }
             }
