@@ -7,6 +7,7 @@ import useRelay from 'react-router-relay';
 import AuthService from './auth/AuthService';
 import App from './App';
 import RoleSwitchContainer from './components/RoleSwitch';
+import { TimelineContainer } from './components/Timeline';
 import SimpleLogin from './components/SimpleLogin';
 import { AddEntryContainer } from './components/AddEntry';
 import TopicForm from './components/TopicForm';
@@ -17,11 +18,8 @@ import ImageForm from './components/ImageForm';
 import TextForm from './components/TextForm';
 
 import 'bootstrap/dist/css/bootstrap.css';
-// import 'bootstrap/dist/css/bootstrap-theme.css';
 import './override-bootstrap.css';
 import './index.css';
-
-import { TimelineContainer } from './components/Timeline';
 
 const auth = new AuthService(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN);
 
