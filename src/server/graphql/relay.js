@@ -136,7 +136,9 @@ const ViewerType = new ql.GraphQLObjectType({
         id: relayql.globalIdField(),
         role: {
             type: RoleType,
-            resolve: () => 'creator'
+            resolve: (viewer, args, context) => {
+                return context.role || false;
+            }
         },
         topics: {
             type: new ql.GraphQLList(types.TopicType),

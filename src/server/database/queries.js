@@ -112,18 +112,24 @@ RETURNING
 const userByAuthHash = (hash) => SQL`
 SELECT
     user_id AS id,
-    auth_hash AS auth_hash
+    auth_hash AS auth_hash,
+    role_type.type AS role
 FROM
     user_account
+LEFT JOIN
+    role_type ON role_type.role_type_id = user_account.role_type_id
 WHERE
     user_account.auth_hash = ${hash}`.setName('user_by_auth_hash');
 
 const userById = (userId) => SQL`
 SELECT
     user_id AS id,
-    auth_hash
+    auth_hash,
+    role_type.type AS role
 FROM
     user_account
+LEFT JOIN
+    role_type ON role_type.role_type_id = user_account.role_type_id
 WHERE
     user_account.user_id = ${userId}`.setName('user_by_user_id');
 
@@ -134,6 +140,14 @@ VALUES
     (${hash})
 RETURNING
     user_id AS id`.setName('user_create');
+
+const userUpdateRole = (userId, role) => SQL`
+UPDATE
+    user_account
+SET
+    role_type_id = (SELECT role_type_id FROM role_type WHERE role_type.name = ${role})
+WHERE
+    user_account.user_id = ${userId}`.setName('user_update_role');
 
 module.exports = {
     entry: {
@@ -153,5 +167,6 @@ module.exports = {
         byAuthHash: userByAuthHash,
         byId: userById,
         create: userCreate,
+        updateRole: userUpdateRole,
     }
 }

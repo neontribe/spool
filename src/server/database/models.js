@@ -55,9 +55,10 @@ class Media {
 }
 
 class User {
-    constructor(id, authHash) {
+    constructor(id, authHash, role) {
         this.id = id;
-        this.authHash = authHash
+        this.authHash = authHash;
+        this.role = role;
     }
 
     static inflate(row, prefix = '') {
@@ -65,8 +66,9 @@ class User {
 
         var id = row[p('id')];
         var authHash = row[p('auth_hash')];
+        var role = row[p('role')];
 
-        return new User(id, authHash);
+        return new User(id, authHash, role);
     }
 
     static create(db, authHash) {
