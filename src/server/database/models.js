@@ -55,10 +55,11 @@ class Media {
 }
 
 class User {
-    constructor(id, authHash, role) {
+    constructor(id, authHash, role, region) {
         this.id = id;
         this.authHash = authHash;
         this.role = role;
+        this.region = region;
     }
 
     static inflate(row, prefix = '') {
@@ -67,8 +68,9 @@ class User {
         var id = row[p('id')];
         var authHash = row[p('auth_hash')];
         var role = row[p('role')];
+        var region = row[p('region')];
 
-        return new User(id, authHash, role);
+        return new User(id, authHash, role, region);
     }
 
     static create(db, authHash) {
@@ -85,9 +87,7 @@ class User {
                 });
             });
         });
-
         return p;
-
     }
 
     static findById(db, id) {
@@ -309,7 +309,7 @@ class Entry {
     }
 }
 
-/* Just putting this in a class for the sake of it */
+/* The following classes have no importance, merely a store for a collection of useful statics */
 class Count { 
     static findCreatorActivity(db, from, to, isActive = (entryCount => entryCount >= 1)) {
         var p = new Promise(function (resolve, reject) {
@@ -334,11 +334,34 @@ class Count {
       return p;
     }
 }
+class Region {
+    static findAll(db) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.region.all(), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows);
+                    }
+                });
+            });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map(row => row.type);
+        });
+
+        return p;
+    }
+}
 
 module.exports = {
     Entry,
     Topic,
     User,
     Media,
-    Count
+    Count,
+    Region
 }

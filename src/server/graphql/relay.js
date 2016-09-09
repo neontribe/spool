@@ -162,6 +162,10 @@ const ViewerType = new ql.GraphQLObjectType({
             type: RoleType,
             resolve: (viewer, args, context) => context.role || false,
         },
+        region: {
+            type: ql.GraphQLString,
+            resolve: (viewer, args, context) => context.region,
+        },
         topics: {
             type: new ql.GraphQLList(types.TopicType),
             resolve: () => models.Topic.findAll(db)
@@ -172,7 +176,24 @@ const ViewerType = new ql.GraphQLObjectType({
 
 const viewerField = {
     type: ViewerType,
-    resolve: (root, args, context) =>  models.User.findById(db, context.id).then((users) => users.shift()),
+    // no need to resolve anything since this is already resolved by our JWT middleware
+    // and supplied in context
+    resolve: () => true
+}
+
+const MetaType = new ql.GraphQLObjectType({
+    name: 'Meta',
+    fields: {
+        regions: {
+            type: new ql.GraphQLList(ql.GraphQLString),
+            resolve: () => models.Region.findAll(db)
+        }
+    }
+});
+
+const metaField = {
+    type: MetaType,
+    resolve: () => true
 }
 
 const createEntry = relayql.mutationWithClientMutationId({
@@ -207,7 +228,8 @@ const createEntry = relayql.mutationWithClientMutationId({
 module.exports = {
     fields: {
         nodeField,
-        viewerField
+        viewerField,
+        metaField,
     },
     mutations: {
         createEntry

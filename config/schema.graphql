@@ -86,6 +86,10 @@ input MediaInput {
   imageThumbnail: String
 }
 
+type Meta {
+  regions: [String]
+}
+
 type Missing {
   information: [String]
 }
@@ -122,6 +126,7 @@ type Query {
     id: ID!
   ): Node
   viewer: Viewer
+  meta: Meta
 }
 
 union Role = Creator | Consumer | Missing
@@ -143,5 +148,6 @@ type Viewer implements Node {
   # The ID of an object
   id: ID!
   role: Role
+  region: String
   topics: [Topic]
 }

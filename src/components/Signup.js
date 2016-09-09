@@ -1,8 +1,9 @@
 import React from 'react';
+import Relay from 'react-relay';
 import { Grid, Row, Col, Form, FormGroup, FormControl, ControlLabel, Radio, Button, Glyphicon, HelpBlock } from 'react-bootstrap';
 import _ from 'lodash';
 
-class Signup extends React.Component {
+export class Signup extends React.Component {
     constructor(props) {
         super(props);
 
@@ -110,4 +111,12 @@ Signup.defaultProps = {
     availableRegions: ['South Shields', 'Liverpool', 'Gloucestershire']
 }
 
-export default Signup;
+export const SignupContainer = Relay.createContainer(Signup, {
+    fragments: {
+        meta: () => Relay.QL`
+        fragment on Meta {
+            regions
+        }
+        `
+    }
+});

@@ -10,7 +10,7 @@ import RoleSwitchContainer from './components/RoleSwitch';
 import { TimelineContainer } from './components/Timeline';
 import { DashboardContainer } from './components/Dashboard';
 import SimpleLogin from './components/SimpleLogin';
-import Signup from './components/Signup';
+import { SignupContainer } from './components/Signup';
 import { AddEntryContainer } from './components/AddEntry';
 import TopicForm from './components/TopicForm';
 import SentimentForm from './components/SentimentForm';
@@ -47,6 +47,9 @@ function setupRelayNetworkLayer() {
 const ViewerQueries = {
     viewer: () => Relay.QL`query { viewer }`,
 };
+const MetaQueries = {
+    meta: () => Relay.QL`query { meta }`,
+}
 
 setupRelayNetworkLayer();
 
@@ -59,11 +62,12 @@ ReactDOM.render(
                 components={{
                     Creator: TimelineContainer,
                     Consumer: DashboardContainer,
-                    Missing: Signup
+                    Missing: SignupContainer,
                 }}
                 queries={{
                     Creator: ViewerQueries,
                     Consumer: ViewerQueries,
+                    Missing: MetaQueries,
                 }}
             />
         </Route>

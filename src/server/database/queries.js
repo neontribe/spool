@@ -113,11 +113,14 @@ const userByAuthHash = (hash) => SQL`
 SELECT
     user_id AS id,
     auth_hash AS auth_hash,
-    role_type.type AS role
+    role_type.type AS role,
+    region_type.type AS region
 FROM
     user_account
 LEFT JOIN
     role_type ON role_type.role_type_id = user_account.role_type_id
+LEFT JOIN
+    region_type ON region_type.region_type_id = user_account.region_type_id
 WHERE
     user_account.auth_hash = ${hash}`.setName('user_by_auth_hash');
 
@@ -125,11 +128,14 @@ const userById = (userId) => SQL`
 SELECT
     user_id AS id,
     auth_hash,
-    role_type.type AS role
+    role_type.type AS role,
+    region_type.type AS region
 FROM
     user_account
 LEFT JOIN
     role_type ON role_type.role_type_id = user_account.role_type_id
+LEFT JOIN
+    region_type ON region_type.region_type_id = user_account.region_type_id
 WHERE
     user_account.user_id = ${userId}`.setName('user_by_user_id');
 
@@ -141,11 +147,12 @@ VALUES
 RETURNING
     user_id AS id`.setName('user_create');
 
-const userUpdateRole = (userId, role) => SQL`
+const userUpdateRole = (userId, role, region = 'Test') => SQL`
 UPDATE
     user_account
 SET
-    role_type_id = (SELECT role_type_id FROM role_type WHERE role_type.name = ${role})
+    role_type_id = (SELECT role_type_id FROM role_type WHERE role_type.name = ${role}),
+    region_type_id = (SELECT region_type_id FROM region_type WHERE region_type.type = ${region})
 WHERE
     user_account.user_id = ${userId}`.setName('user_update_role');
 
@@ -161,6 +168,13 @@ const entryCountByRange = (from, to) => SQL`
     GROUP BY
         entry.owner_id
 `.setName('entry_count_by_range')
+
+const regionAll= () => SQL`
+    SELECT
+        region_type.type
+    FROM
+        region_type
+`.setName('region_all');
 
 module.exports = {
     entry: {
@@ -182,5 +196,8 @@ module.exports = {
         byId: userById,
         create: userCreate,
         updateRole: userUpdateRole,
-    }
+    },
+    region: {
+        all: regionAll,
+    },
 }
