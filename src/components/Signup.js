@@ -7,9 +7,10 @@ export class Signup extends React.Component {
     constructor(props) {
         super(props);
 
+        let role = props.viewer.role.__typename;
         this.state = {
-            role: props.role,
-            region: props.region
+            role: (role === this.props.missingRole) ? this.props.defaultRole : role,
+            region: props.viewer.region || ""
         };
 
         this.onChange = this.onChange.bind(this);
@@ -47,7 +48,7 @@ export class Signup extends React.Component {
                                         onChange={_.partial(this.onChange, 'region')}
                                         >
                                         <option value="" disabled={true}>I live in&hellip;</option>
-                                        {this.props.availableRegions.map((region) => {
+                                        {this.props.meta.regions.map((region) => {
                                             return <option key={'region_' + region}
                                                         value={region}
                                                         >{region}</option>;
@@ -68,7 +69,7 @@ export class Signup extends React.Component {
                                     })}
                                 </Col>
                             </FormGroup>
-                            { this.state.role !== this.props.availableRoles[0] &&
+                            { this.state.role !== 'Creator' &&
                                 <FormGroup controlId="unlockCode">
                                     <Col componentClass={ControlLabel}>
                                         Unlock Code
@@ -105,10 +106,9 @@ export class Signup extends React.Component {
 }
 
 Signup.defaultProps = {
-    role: 'Creator',
-    region: "",
     availableRoles: ['Creator', 'Consumer'],
-    availableRegions: ['South Shields', 'Liverpool', 'Gloucestershire']
+    defaultRole: 'Creator',
+    missingRole: 'Missing'
 }
 
 export const SignupContainer = Relay.createContainer(Signup, {
@@ -120,6 +120,14 @@ export const SignupContainer = Relay.createContainer(Signup, {
                 type
                 name
                 secret
+            }
+        }
+        `,
+        viewer: () => Relay.QL`
+        fragment on Viewer {
+            region
+            role {
+                __typename
             }
         }
         `

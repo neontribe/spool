@@ -47,8 +47,9 @@ function setupRelayNetworkLayer() {
 const ViewerQueries = {
     viewer: () => Relay.QL`query { viewer }`,
 };
-const MetaQueries = {
+const SignupQueries = {
     meta: () => Relay.QL`query { meta }`,
+    ...ViewerQueries
 }
 
 setupRelayNetworkLayer();
@@ -67,7 +68,7 @@ ReactDOM.render(
                 queries={{
                     Creator: ViewerQueries,
                     Consumer: ViewerQueries,
-                    Missing: MetaQueries,
+                    Missing: SignupQueries,
                 }}
             />
         </Route>
