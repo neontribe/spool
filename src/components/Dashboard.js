@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
-import { IconCard } from './IconCard';
 import Relay from 'react-relay';
 import moment from 'moment';
 
