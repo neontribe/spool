@@ -8,7 +8,7 @@ import AuthService from './auth/AuthService';
 import App from './App';
 import RoleSwitchContainer from './components/RoleSwitch';
 import { TimelineContainer } from './components/Timeline';
-import Dashboard from './components/Dashboard';
+import { DashboardContainer } from './components/Dashboard';
 import SimpleLogin from './components/SimpleLogin';
 import Signup from './components/Signup';
 import { AddEntryContainer } from './components/AddEntry';
@@ -58,11 +58,12 @@ ReactDOM.render(
             <IndexRoute
                 components={{
                     Creator: TimelineContainer,
-                    Consumer: Dashboard,
+                    Consumer: DashboardContainer,
                     Missing: Signup
                 }}
                 queries={{
-                    Creator: ViewerQueries
+                    Creator: ViewerQueries,
+                    Consumer: ViewerQueries,
                 }}
             />
         </Route>

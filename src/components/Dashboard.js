@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { IconCard } from './IconCard';
+import Relay from 'react-relay';
 
 export class Dashboard extends Component {
     render() {
+        debugger;
         return (
             <Grid>
                 <Row>
@@ -22,7 +24,18 @@ export class Dashboard extends Component {
                        </label>
                     </Col>
                 </Row>
-                <!-- <Row>
+                <Row>
+                    <Col xs={12}>
+                        <p></p>
+                    </Col>
+                </Row>
+            </Grid>
+        );
+    }
+};
+/*
+ *
+                <Row>
                     <Col xs={12}>
                         <p style={{backgroundColor:'green', color:'white'}}>
                             There are
@@ -92,8 +105,21 @@ export class Dashboard extends Component {
                     <Col xs={12}>
                         <button>View more Metrics...</button>
                     </Col>
-                </Row> -->
-            </Grid>
-        );
+                    </Row> */
+
+export const DashboardContainer = Relay.createContainer(Dashboard, {
+    fragments: {
+        viewer: () => Relay.QL`
+            fragment on Viewer {
+                role {
+                    ... on Consumer {
+                        creatorCount {
+                            active
+                            stale
+                        }
+                    }
+                }
+            }
+        `,
     }
-};
+});

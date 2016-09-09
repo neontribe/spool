@@ -94,12 +94,30 @@ const CreatorRoleType = new ql.GraphQLObjectType({
     }
 });
 
+const CreatorCountType = new ql.GraphQLObjectType({
+    name: 'CreatorCount',
+    fields: {
+        active: {
+            type: ql.GraphQLInt,
+            resolve: () => 1
+        },
+        stale: {
+            type: ql.GraphQLInt,
+            resolve: () => 2
+        }
+    }
+});
+
 const ConsumerRoleType = new ql.GraphQLObjectType({
     name: 'Consumer',
     fields: {
-        hello: {
-            type: ql.GraphQLString,
-            resolve: () => 'hello world'
+        creatorCount: {
+            type: CreatorCountType,
+            /*            args: {
+                fromDate: ql.GraphQLString,
+                toDate: ql.GraphQLString
+            }, */
+            resolve: () => true
         }
     }
 });

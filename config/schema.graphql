@@ -4,7 +4,7 @@ schema {
 }
 
 type Consumer {
-  hello: String
+  creatorCount: CreatorCount
 }
 
 input CreateEntryInput {
@@ -22,6 +22,11 @@ type Creator {
   entries(after: String, first: Int, before: String, last: Int): EntryConnection
   happyCount: Int
   sadCount: Int
+}
+
+type CreatorCount {
+  active: Int
+  stale: Int
 }
 
 type Entry implements Node {
