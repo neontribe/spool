@@ -469,15 +469,15 @@ ul {
     text-align: center;
 }
 
-.add-entry-controls {
+.full-width {
     width: 100%;
 }
 
-.add-entry-controls .group-right {
+.full-width .group-right {
     float: right;
 }
 
-.add-entry-controls .group-left {
+.full-width .group-left {
     float: left;
 }
 
