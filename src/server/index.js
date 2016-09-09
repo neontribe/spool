@@ -10,8 +10,12 @@ const models = require('./database/models.js');
 const createHash = require('sha.js');
 const sslRedirect = require('heroku-ssl-redirect');
 const path = require('path');
+const compression = require('compression');
+const serveStatic = require('serve-static');
 
 var app = express();
+
+app.use(compression());
 
 // enable ssl redirect when the NODE_ENV is production
 app.use(sslRedirect(['production']));
@@ -85,7 +89,7 @@ app.use('/s3', bodyParser.json(), s3Router({
 }));
 
 /* Static Resouces */
-app.use(express.static('build'));
+app.use(serveStatic('build', {maxAge: '30 days'}));
 
 /* Drop all routes through to index.html to support browserHistory routing in react */
 app.get('*', function (request, response){
