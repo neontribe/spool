@@ -36,41 +36,17 @@ function setupRelayNetworkLayer() {
     ], { disableBatchQuery:  true }));
 }
 
-// onEnter callback to validate authentication in private routes
-const requireAuth = (nextState, replace) => {
-  if (nextState.location.hash) {
-     auth.parseHash(nextState.location.hash);
-  }
-  if (!auth.loggedIn()) {
-      replace({ pathname: '/login' });
-      return false;
-  }
-  return true;
-};
-
-const parseAuth = (nextState, replace) => {
-    //because the page can't set the id token fast enough, check the nextState to see if the hash exists
-    //if it does exist then grab the id token from the hash and then set it to local storage
-    var authTokenOK;
-    if (nextState.location.hash) {
-        authTokenOK = auth.parseHash(nextState.location.hash);
-    }
-    if (authTokenOK) {
-        replace({ pathname: '/home' });
-        return true;
-    }
-}
-
 const ViewerQueries = {
     viewer: () => Relay.QL`query { viewer }`,
 };
 
 setupRelayNetworkLayer();
+
 ReactDOM.render(
   <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
     <Route path="/" component={App} auth={auth}>
         <IndexRedirect to="home" />
-        <Route path="home" component={RoleSwitchContainer} queries={ViewerQueries} onEnter={requireAuth}>
+        <Route path="home" component={RoleSwitchContainer} queries={ViewerQueries} onEnter={auth.requireAuthOnEnter}>
             <IndexRoute
                 components={{
                     Creator: TimelineContainer,
@@ -82,7 +58,7 @@ ReactDOM.render(
                 }}
             />
         </Route>
-        <Route path="add" component={AddEntryContainer} queries={ViewerQueries} onEnter={requireAuth}>
+        <Route path="add" component={AddEntryContainer} queries={ViewerQueries} onEnter={auth.requireAuthOnEnter}>
             <IndexRedirect to="topic"/>
             <Route path="topic" component={TopicForm} />
             <Route path="sentiment" component={SentimentForm} />
@@ -92,10 +68,9 @@ ReactDOM.render(
                 <Route path="text" component={TextForm}/>
             </Route>
         </Route>
-        <Route path="login" component={SimpleLogin} onEnter={parseAuth}/>
-        <Route path="access_token=:token" component={SimpleLogin} onEnter={parseAuth}/>
+        <Route path="login" component={SimpleLogin}/>
+        <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter}/>
     </Route>
-
   </Router>,
   document.getElementById('root')
 );

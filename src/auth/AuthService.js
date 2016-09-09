@@ -9,11 +9,14 @@ export default class AuthService extends EventEmitter {
     this.auth0 = new Auth0({
         clientID: clientId,
         domain: domain,
-        callbackOnLocationHash: true
+        callbackOnLocationHash: true,
+        callbackURL: 'http://localhost:3000/callback'
     });
 
     this.login = this.login.bind(this);
     this.signup = this.signup.bind(this);
+    this.parseAuthOnEnter = this.parseAuthOnEnter.bind(this);
+    this.requireAuthOnEnter = this.requireAuthOnEnter.bind(this);
   }
 
   login(params, onError) {
@@ -76,5 +79,29 @@ export default class AuthService extends EventEmitter {
     return profile ? JSON.parse(localStorage.profile) : null;
   }
 
+  // onEnter callback to parse the authToken on login
+  parseAuthOnEnter(nextState, replace) {
+      //because the page can't set the id token fast enough, check the nextState to see if the hash exists
+      //if it does exist then grab the id token from the hash and then set it to local storage
+      if (nextState.location.hash) {
+        this.parseHash(nextState.location.hash);
+      }
+      if (this.loggedIn()) {
+        replace({ pathname: '/' });
+        return true;
+      }
+  }
+
+  // onEnter callback to validate authentication in private routes
+  requireAuthOnEnter(nextState, replace) {
+     if (nextState.location.hash) {
+         this.parseHash(nextState.location.hash);
+     }
+     if (!this.loggedIn()) {
+         replace({ pathname: '/login' });
+         return false;
+     }
+     return true;
+  }
 
 }
