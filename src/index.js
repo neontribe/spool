@@ -82,6 +82,7 @@ ReactDOM.render(
                 <Route path="text" component={TextForm}/>
             </Route>
         </Route>
+        <Route path="settings" component={SignupContainer} queries={SignupQueries} onEnter={auth.requireAuthOnEnter}/>
         <Route path="login" component={SimpleLogin}/>
         <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter}/>
     </Route>
