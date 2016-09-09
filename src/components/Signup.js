@@ -2,6 +2,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import { Grid, Row, Col, Form, FormGroup, FormControl, ControlLabel, Radio, Button, Glyphicon, HelpBlock } from 'react-bootstrap';
 import _ from 'lodash';
+import { withRouter } from 'react-router';
 
 export class Signup extends React.Component {
     constructor(props) {
@@ -24,6 +25,9 @@ export class Signup extends React.Component {
     onSubmit(event) {
         event.preventDefault();
         // Perform Mutation
+        // var onSuccess = () => {
+        //     this.props.router.push('/home');
+        // }
     }
 
     render() {
@@ -110,6 +114,8 @@ Signup.defaultProps = {
     defaultRole: 'Creator',
     missingRole: 'Missing'
 }
+
+Signup = withRouter(Signup);
 
 export const SignupContainer = Relay.createContainer(Signup, {
     fragments: {
