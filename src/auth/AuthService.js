@@ -3,16 +3,16 @@ import Auth0 from 'auth0-js';
 import { isTokenExpired } from './jwtHelper';
 
 export default class AuthService extends EventEmitter {
-  constructor(clientId, domain) {
+  constructor(clientId, domain, urls) {
     super();
     // Configure Auth0
     this.auth0 = new Auth0({
         clientID: clientId,
         domain: domain,
         callbackOnLocationHash: true,
-        callbackURL: 'http://localhost:3000/callback'
+        callbackURL: urls.callbackURL
     });
-
+    this.urls = urls;
     this.login = this.login.bind(this);
     this.signup = this.signup.bind(this);
     this.parseAuthOnEnter = this.parseAuthOnEnter.bind(this);
@@ -87,7 +87,7 @@ export default class AuthService extends EventEmitter {
         this.parseHash(nextState.location.hash);
       }
       if (this.loggedIn()) {
-        replace({ pathname: '/' });
+        replace({ pathname: this.urls.loggedIn });
         return true;
       }
   }
@@ -98,7 +98,7 @@ export default class AuthService extends EventEmitter {
          this.parseHash(nextState.location.hash);
      }
      if (!this.loggedIn()) {
-         replace({ pathname: '/login' });
+         replace({ pathname: this.urls.login });
          return false;
      }
      return true;

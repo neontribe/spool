@@ -23,7 +23,15 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './override-bootstrap.css';
 import './index.css';
 
-const auth = new AuthService(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN);
+const auth = new AuthService(
+    process.env.AUTH0_CLIENT_ID,
+    process.env.AUTH0_DOMAIN,
+    {
+        callbackURL: window.location.origin + '/callback',
+        login: '/login',
+        loggedIn: '/home'
+    }
+);
 
 function setupRelayNetworkLayer() {
     Relay.injectNetworkLayer(new RelayNetworkLayer([
