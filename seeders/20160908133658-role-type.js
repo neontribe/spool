@@ -23,7 +23,7 @@ module.exports = {
               type: 'consumer',
               name: 'Consumer',
               secret: 'test123',
-              hidden: true,
+              hidden: false,
           }
       ]);
   },

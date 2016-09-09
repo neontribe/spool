@@ -16,8 +16,7 @@ export default class UpdateUserMutation extends Relay.Mutation {
         return {
             user: {
                 region: this.props.region,
-                //                roleSecret: this.props.roleSecret,
-                roleSecret: 'test123',
+                roleSecret: this.props.secret,
             }
         }
     }
@@ -26,7 +25,8 @@ export default class UpdateUserMutation extends Relay.Mutation {
         return Relay.QL`
         fragment on UpdateUserPayload {
             viewer {
-                role 
+                region
+                role
             }
         }`
     }

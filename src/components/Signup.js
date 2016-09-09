@@ -10,8 +10,11 @@ export class Signup extends React.Component {
         super(props);
 
         let role = props.viewer.role.__typename;
+        role = (role === this.props.missingRole) ? this.props.defaultRole : role
+        let secret = _.find(this.props.meta.roles, { name: role }).secret;
         this.state = {
-            role: (role === this.props.missingRole) ? this.props.defaultRole : role,
+            role,
+            secret: secret,
             region: props.viewer.region || ""
         };
 
@@ -86,8 +89,9 @@ export class Signup extends React.Component {
                                     </Col>
                                     <Col>
                                         <FormControl type="text"
-                                        placeholder="We'll ask for an unlock code here in the future"
-                                        value={this.state.unlockCode} />
+                                            placeholder="We'll ask for an unlock code here in the future"
+                                            onChange={_.partial(this.onChange, 'secret')}
+                                            value={this.state.secret} />
                                     </Col>
                                     <Col>
                                         <HelpBlock>An unlock code is need to enable access to the dashboard</HelpBlock>
