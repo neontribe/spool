@@ -3,6 +3,7 @@ const relayql = require('graphql-relay');
 const types = require('./types.js');
 const db = require('../database/database.js');
 const models = require('../database/models.js');
+const moment = require('moment');
 const _ = require('lodash');
 
 var {nodeInterface, nodeField} = relayql.nodeDefinitions(
@@ -94,16 +95,16 @@ const CreatorRoleType = new ql.GraphQLObjectType({
     }
 });
 
-const CreatorCountType = new ql.GraphQLObjectType({
-    name: 'CreatorCount',
+const CreatorActivityCountType = new ql.GraphQLObjectType({
+    name: 'CreatorActivityCount',
     fields: {
         active: {
             type: ql.GraphQLInt,
-            resolve: () => 1
+            resolve: (counts) => counts.active
         },
         stale: {
             type: ql.GraphQLInt,
-            resolve: () => 2
+            resolve: (counts) => counts.stale
         }
     }
 });
@@ -111,13 +112,18 @@ const CreatorCountType = new ql.GraphQLObjectType({
 const ConsumerRoleType = new ql.GraphQLObjectType({
     name: 'Consumer',
     fields: {
-        creatorCount: {
-            type: CreatorCountType,
-            /*            args: {
-                fromDate: ql.GraphQLString,
-                toDate: ql.GraphQLString
-            }, */
-            resolve: () => true
+        creatorActivityCount: {
+            type: CreatorActivityCountType,
+            args: {
+                range: {
+                    type: types.DateRangeInputType,
+                }
+            },
+            resolve: function(consumer, {range}) {
+                var fromDate = moment(range.from);
+                var toDate = moment(range.to);
+                return models.Count.findCreatorActivity(db, fromDate, toDate)
+            }
         }
     }
 });

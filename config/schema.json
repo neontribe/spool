@@ -740,12 +740,23 @@
           "description": null,
           "fields": [
             {
-              "name": "creatorCount",
+              "name": "creatorActivityCount",
               "description": null,
-              "args": [],
+              "args": [
+                {
+                  "name": "range",
+                  "description": null,
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "DateRangeInput",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "OBJECT",
-                "name": "CreatorCount",
+                "name": "CreatorActivityCount",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -758,8 +769,47 @@
           "possibleTypes": null
         },
         {
+          "kind": "INPUT_OBJECT",
+          "name": "DateRangeInput",
+          "description": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "from",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "to",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
           "kind": "OBJECT",
-          "name": "CreatorCount",
+          "name": "CreatorActivityCount",
           "description": null,
           "fields": [
             {

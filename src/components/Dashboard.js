@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { IconCard } from './IconCard';
 import Relay from 'react-relay';
+import moment from 'moment';
 
 export class Dashboard extends Component {
     render() {
-        debugger;
         return (
             <Grid>
                 <Row>
@@ -26,7 +26,8 @@ export class Dashboard extends Component {
                 </Row>
                 <Row>
                     <Col xs={12}>
-                        <p></p>
+                        <p>Active: {this.props.viewer.role.creatorActivityCount.active}</p>
+                        <p>Stale: {this.props.viewer.role.creatorActivityCount.stale}</p>
                     </Col>
                 </Row>
             </Grid>
@@ -108,12 +109,18 @@ export class Dashboard extends Component {
                     </Row> */
 
 export const DashboardContainer = Relay.createContainer(Dashboard, {
+    initialVariables: {
+        range: {
+            from: moment().startOf('date').format(),
+            to: moment().endOf('date').format()
+        }
+    },
     fragments: {
         viewer: () => Relay.QL`
             fragment on Viewer {
                 role {
                     ... on Consumer {
-                        creatorCount {
+                        creatorActivityCount(range: $range) {
                             active
                             stale
                         }

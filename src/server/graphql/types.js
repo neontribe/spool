@@ -74,11 +74,24 @@ const EntryInputType = new ql.GraphQLInputObjectType({
     }
 });
 
+const DateRangeInputType = new ql.GraphQLInputObjectType({
+    name: 'DateRangeInput',
+    fields: {
+        from: {
+            type: new ql.GraphQLNonNull(ql.GraphQLString)
+        },
+        to: {
+            type: new ql.GraphQLNonNull(ql.GraphQLString)
+        }
+    }
+});
+
 module.exports = {
     MediaType,
     UserType,
     SentimentType,
     TopicType,
     MediaInputType,
-    EntryInputType
+    EntryInputType,
+    DateRangeInputType
 };

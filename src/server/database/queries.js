@@ -149,11 +149,25 @@ SET
 WHERE
     user_account.user_id = ${userId}`.setName('user_update_role');
 
+const entryCountByRange = (from, to) => SQL`
+    SELECT
+        owner_id,
+        COUNT(entry.entry_id)
+    FROM
+        entry
+    WHERE
+        entry.timestamp
+            BETWEEN ${from} AND ${to}
+    GROUP BY
+        entry.owner_id
+`.setName('entry_count_by_range')
+
 module.exports = {
     entry: {
         byId: entryById,
         byOwner: entryByOwner,
         create: entryCreate,
+        countByRange: entryCountByRange
     },
     topic: {
         byEntry: topicByEntry,

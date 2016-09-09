@@ -4,7 +4,7 @@ schema {
 }
 
 type Consumer {
-  creatorCount: CreatorCount
+  creatorActivityCount(range: DateRangeInput): CreatorActivityCount
 }
 
 input CreateEntryInput {
@@ -24,9 +24,14 @@ type Creator {
   sadCount: Int
 }
 
-type CreatorCount {
+type CreatorActivityCount {
   active: Int
   stale: Int
+}
+
+input DateRangeInput {
+  from: String!
+  to: String!
 }
 
 type Entry implements Node {

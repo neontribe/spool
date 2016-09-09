@@ -309,9 +309,36 @@ class Entry {
     }
 }
 
+/* Just putting this in a class for the sake of it */
+class Count { 
+    static findCreatorActivity(db, from, to, isActive = (entryCount => entryCount >= 1)) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.entry.countByRange(from.format(), to.format()), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        var counts = result.rows.reduce(function(reduction, row) {
+                            isActive(row.count) ? reduction.active++ : reduction.stale++;
+                            return reduction;
+                        }, {
+                            active: 0,
+                            stale: 0,
+                        });
+                        resolve(counts);
+                    }
+                });
+            });
+        });
+      return p;
+    }
+}
+
 module.exports = {
     Entry,
     Topic,
     User,
-    Media
+    Media,
+    Count
 }
