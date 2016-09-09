@@ -238,7 +238,9 @@ const updateUser = relayql.mutationWithClientMutationId({
         viewer: viewerField
     },
     mutateAndGetPayload: function mutateUserPayload({user}, context) {
-        return models.User.updateById(db, context.id, user.roleSecret, user.region)
+        return models.User.updateById(db, context.id, user.roleSecret, user.region).then(function() {
+            return {};
+        });
     }
 });
 

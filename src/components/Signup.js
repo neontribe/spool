@@ -3,6 +3,7 @@ import Relay from 'react-relay';
 import { Grid, Row, Col, Form, FormGroup, FormControl, ControlLabel, Radio, Button, Glyphicon, HelpBlock } from 'react-bootstrap';
 import _ from 'lodash';
 import { withRouter } from 'react-router';
+import UpdateUserMutation from './mutations/UpdateUserMutation';
 
 export class Signup extends React.Component {
     constructor(props) {
@@ -24,10 +25,15 @@ export class Signup extends React.Component {
 
     onSubmit(event) {
         event.preventDefault();
+        var viewer = this.props.viewer;
         // Perform Mutation
-        // var onSuccess = () => {
-        //     this.props.router.push('/home');
-        // }
+        var onSuccess = () => {
+            this.props.router.push('/home');
+        };
+        this.props.relay.commitUpdate(
+            new UpdateUserMutation({viewer, ...this.state}),
+            {onSuccess}
+        );
     }
 
     render() {
@@ -135,6 +141,7 @@ export const SignupContainer = Relay.createContainer(Signup, {
             role {
                 __typename
             }
+            ${UpdateUserMutation.getFragment('viewer')}
         }
         `
     }

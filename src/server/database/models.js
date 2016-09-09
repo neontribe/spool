@@ -141,7 +141,7 @@ class User {
                         reject(error);
                     } else {
                         //resolve the user
-                        resolve(true);
+                        resolve();
                     }
                 });
             });
