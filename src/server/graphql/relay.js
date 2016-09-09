@@ -82,15 +82,15 @@ const CreatorRoleType = new ql.GraphQLObjectType({
         entries: {
             type: entryConnectionDefinition.connectionType,
             args: relayql.connectionArgs,
-            resolve: (viewer, args, context) => relayql.connectionFromPromisedArray(models.Entry.findByOwnerId(db, context.id), args)
+            resolve: (creator, args, context) => relayql.connectionFromPromisedArray(models.Entry.findByOwnerId(db, creator.id), args)
         },
         happyCount: {
             type: ql.GraphQLInt,
-            resolve: (viewer, args, context) => getSentimentCount("happy", context.id)
+            resolve: (creator, args, context) => getSentimentCount("happy", creator.id)
         },
         sadCount: {
             type: ql.GraphQLInt,
-            resolve: (viewer, args, context) => getSentimentCount("sad", context.id)
+            resolve: (creator, args, context) => getSentimentCount("sad", creator.id)
         }
     }
 });
@@ -141,15 +141,15 @@ const MissingRoleType = new ql.GraphQLObjectType({
 const RoleType = new ql.GraphQLUnionType({
     name: 'Role',
     types: [ CreatorRoleType, ConsumerRoleType, MissingRoleType ],
-    resolveType(value) {
-        if (value === 'creator') {
+    resolveType(user) {
+        if (!user.role) {
+            return MissingRoleType;
+        }
+        if (user.role === 'creator') {
             return CreatorRoleType;
         }
-        if (value === 'consumer') {
+        if (user.role === 'consumer') {
             return ConsumerRoleType;
-        }
-        if (!value) {
-            return MissingRoleType;
         }
     }
 });
@@ -160,11 +160,11 @@ const ViewerType = new ql.GraphQLObjectType({
         id: relayql.globalIdField(),
         role: {
             type: RoleType,
-            resolve: (viewer, args, context) => context.role || false,
+            resolve: (viewer, args, context) => viewer,
         },
         region: {
             type: ql.GraphQLString,
-            resolve: (viewer, args, context) => context.region,
+            resolve: (viewer, args, context) => viewer.region,
         },
         topics: {
             type: new ql.GraphQLList(types.TopicType),
@@ -176,9 +176,7 @@ const ViewerType = new ql.GraphQLObjectType({
 
 const viewerField = {
     type: ViewerType,
-    // no need to resolve anything since this is already resolved by our JWT middleware
-    // and supplied in context
-    resolve: () => true
+    resolve: (root, args, context) =>  models.User.findById(db, context.id).then((users) => users.shift())
 }
 
 const MetaType = new ql.GraphQLObjectType({
@@ -187,6 +185,10 @@ const MetaType = new ql.GraphQLObjectType({
         regions: {
             type: new ql.GraphQLList(ql.GraphQLString),
             resolve: () => models.Region.findAll(db)
+        },
+        roles: {
+            type: new ql.GraphQLList(types.RoleDefinitionType),
+            resolve: () => models.Role.findAll(db)
         }
     }
 });
@@ -225,6 +227,21 @@ const createEntry = relayql.mutationWithClientMutationId({
     }
 });
 
+const updateUser = relayql.mutationWithClientMutationId({
+    name: 'UpdateUser',
+    inputFields: {
+        user: {
+            type: types.UserInputType
+        }
+    },
+    outputFields: {
+        viewer: viewerField
+    },
+    mutateAndGetPayload: function mutateUserPayload({user}, context) {
+        return models.User.updateById(db, context.id, user.roleSecret, user.region)
+    }
+});
+
 module.exports = {
     fields: {
         nodeField,
@@ -232,6 +249,7 @@ module.exports = {
         metaField,
     },
     mutations: {
-        createEntry
+        createEntry,
+        updateUser
     }
 }

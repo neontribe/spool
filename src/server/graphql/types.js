@@ -47,6 +47,15 @@ const TopicType = new ql.GraphQLObjectType({
     }
 });
 
+const RoleDefinitionType = new ql.GraphQLObjectType({
+    name: 'RoleDefinition',
+    fields: {
+        type: { type: ql.GraphQLString, resolve: (role) => role.type },
+        name: { type: ql.GraphQLString, resolve: (role) => role.name },
+        secret: { type: ql.GraphQLString, resolve: (role) => role.secret }
+    }
+});
+
 /*
  * GraphQL does not support union input types
  * So the resolution of union types can be done run-time
@@ -86,12 +95,26 @@ const DateRangeInputType = new ql.GraphQLInputObjectType({
     }
 });
 
+const UserInputType = new ql.GraphQLInputObjectType({
+    name: 'UserInput',
+    fields: {
+        region: {
+            type: new ql.GraphQLNonNull(ql.GraphQLString)
+        },
+        roleSecret: {
+            type: new ql.GraphQLNonNull(ql.GraphQLString)
+        }
+    }
+});
+
 module.exports = {
     MediaType,
     UserType,
     SentimentType,
     TopicType,
+    RoleDefinitionType,
     MediaInputType,
     EntryInputType,
-    DateRangeInputType
+    DateRangeInputType,
+    UserInputType,
 };

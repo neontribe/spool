@@ -147,11 +147,11 @@ VALUES
 RETURNING
     user_id AS id`.setName('user_create');
 
-const userUpdateRole = (userId, role, region = 'Test') => SQL`
+const userUpdateById = (userId, roleSecret, region = 'Test') => SQL`
 UPDATE
     user_account
 SET
-    role_type_id = (SELECT role_type_id FROM role_type WHERE role_type.name = ${role}),
+    role_type_id = (SELECT role_type_id FROM role_type WHERE role_type.secret = ${roleSecret}),
     region_type_id = (SELECT region_type_id FROM region_type WHERE region_type.type = ${region})
 WHERE
     user_account.user_id = ${userId}`.setName('user_update_role');
@@ -169,12 +169,22 @@ const entryCountByRange = (from, to) => SQL`
         entry.owner_id
 `.setName('entry_count_by_range')
 
-const regionAll= () => SQL`
+const regionAll = () => SQL`
     SELECT
         region_type.type
     FROM
         region_type
 `.setName('region_all');
+
+const roleAll = () => SQL`
+    SELECT
+        role_type.type,
+        role_type.name,
+        role_type.secret,
+        role_type.hidden
+    FROM
+        role_type
+`.setName('role_all');
 
 module.exports = {
     entry: {
@@ -195,7 +205,10 @@ module.exports = {
         byAuthHash: userByAuthHash,
         byId: userById,
         create: userCreate,
-        updateRole: userUpdateRole,
+        updateById: userUpdateById,
+    },
+    role: {
+        all: roleAll
     },
     region: {
         all: regionAll,

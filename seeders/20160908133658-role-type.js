@@ -15,11 +15,15 @@ module.exports = {
       return queryInterface.bulkInsert('role_type', [
           {
               type: 'creator',
-              name: 'Creator'
+              name: 'Creator',
+              secret: 'creator',
+              hidden: false,
           },
           {
               type: 'consumer',
-              name: 'Consumer'
+              name: 'Consumer',
+              secret: 'test123',
+              hidden: true,
           }
       ]);
   },

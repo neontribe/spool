@@ -131,6 +131,24 @@ class User {
 
         return p;
     }
+
+    static updateById(db, id, roleSecret, region) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.user.updateById(id, roleSecret, region), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        //resolve the user
+                        resolve(true);
+                    }
+                });
+            });
+        });
+
+        return p;
+    }
 }
 
 class Topic {
@@ -356,6 +374,45 @@ class Region {
         return p;
     }
 }
+class Role {
+    constructor(type, name, secret, hidden) {
+        this.type = type;
+        this.name = name;
+        this.hidden = hidden;
+        if(!this.hidden) {
+            this.secret = secret;
+        }
+    }
+    static inflate(row, prefix = '') {
+        var p = (name) => prefix + name;
+        var type = row[p('type')];
+        var name = row[p('name')];
+        var secret = row[p('secret')];
+        var hidden = row[p('hidden')];
+
+        return new Role(type, name, secret, !!hidden);
+    }
+    static findAll(db) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.role.all(), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows);
+                    }
+                });
+            });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map(row => Role.inflate(row));
+        });
+
+        return p;
+    }
+}
 
 module.exports = {
     Entry,
@@ -363,5 +420,6 @@ module.exports = {
     User,
     Media,
     Count,
-    Region
+    Region,
+    Role,
 }

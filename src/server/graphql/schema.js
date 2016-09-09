@@ -13,7 +13,8 @@ const QueryType = new ql.GraphQLObjectType({
 const MutationType = new ql.GraphQLObjectType({
     name: 'Mutations',
     fields: {
-        createEntry: relay.mutations.createEntry
+        createEntry: relay.mutations.createEntry,
+        updateUser: relay.mutations.updateUser,
     }
 });
 

@@ -88,6 +88,7 @@ input MediaInput {
 
 type Meta {
   regions: [String]
+  roles: [RoleDefinition]
 }
 
 type Missing {
@@ -96,6 +97,7 @@ type Missing {
 
 type Mutations {
   createEntry(input: CreateEntryInput!): CreateEntryPayload
+  updateUser(input: UpdateUserInput!): UpdateUserPayload
 }
 
 # An object with an ID
@@ -131,6 +133,12 @@ type Query {
 
 union Role = Creator | Consumer | Missing
 
+type RoleDefinition {
+  type: String
+  name: String
+  secret: String
+}
+
 type Sentiment {
   type: String
 }
@@ -140,8 +148,23 @@ type Topic {
   name: String
 }
 
+input UpdateUserInput {
+  user: UserInput
+  clientMutationId: String!
+}
+
+type UpdateUserPayload {
+  viewer: Viewer
+  clientMutationId: String!
+}
+
 type User {
   id: Int
+}
+
+input UserInput {
+  region: String!
+  roleSecret: String!
 }
 
 type Viewer implements Node {

@@ -116,6 +116,11 @@ export const SignupContainer = Relay.createContainer(Signup, {
         meta: () => Relay.QL`
         fragment on Meta {
             regions
+            roles {
+                type
+                name
+                secret
+            }
         }
         `
     }

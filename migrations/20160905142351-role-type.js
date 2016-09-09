@@ -20,6 +20,13 @@ module.exports = {
           },
           name: {
               type: Sequelize.STRING
+          },
+          secret: {
+              type: Sequelize.STRING,
+              unique: true
+          },
+          hidden: {
+              type: Sequelize.BOOLEAN
           }
       });
   },
