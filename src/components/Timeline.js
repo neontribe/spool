@@ -9,6 +9,14 @@ export class Timeline extends Component {
     static propTypes = {
         viewer: React.PropTypes.object.isRequired,
     }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            hasEntries: props.viewer.role.entries.edges.length
+        };
+    }
+
     renderEntries() {
         if (this.props.relay) {
             return this.props.viewer.role.entries.edges.map((entry) => {
@@ -23,12 +31,13 @@ export class Timeline extends Component {
     render() {
         return (
             <div>
-                <div className="get-started">
-                    <Link className="btn" to={'/add'}><Glyphicon glyph="plus"/> Get Started</Link>
+                <div className="centered">
+                    <Link className="btn" to={'/add'}>
+                        <Glyphicon glyph="plus"/> {this.state.hasEntries ? 'Add New Entry' : 'Get Started'}</Link>
                 </div>
                 <ListGroup componentClass="div">
                     {this.renderEntries()}
-                    {!this.props.viewer.role.entries.edges.length &&
+                    {!this.state.hasEntries &&
                         <Intro />
                     }
                 </ListGroup>
