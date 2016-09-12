@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import { Grid, Row, Col, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
 import AddEntryControls from './AddEntryControls';
 
 class TextForm extends Component {
@@ -34,9 +34,11 @@ class TextForm extends Component {
                             <ControlLabel>I just want to say...</ControlLabel>
                             <FormControl
                                 componentClass="textarea"
+                                maxLength={this.props.maxLength}
                                 placeholder=""
                                 value={this.state.value}
                                 onChange={this.handleChange} />
+                            <HelpBlock>{this.state.value.length} of {this.props.maxLength} letters used</HelpBlock>
                         </FormGroup>
                     </Col>
                     <Col>
@@ -58,7 +60,8 @@ TextForm.propTypes = {
 };
 
 TextForm.defaultProps = {
-    initialValue: ''
+    initialValue: '',
+    maxLength: 250
 };
 
 export default TextForm;
