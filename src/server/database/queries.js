@@ -1,15 +1,40 @@
 const SQL = require('sql-template-strings');
 
-const entryCreate = (authorId, ownerId, sentimentType) => SQL`
-INSERT INTO
-    entry (author_id, owner_id, sentiment_type_id, timestamp)
-VALUES
-    (${authorId}, ${ownerId},
-        (SELECT sentiment_type_id FROM sentiment_type WHERE sentiment_type.type = ${sentimentType}), now())
-RETURNING
-    entry_id`.setName('entry_create');
+const entry = {
+    byId: (entryId) => SQL`
+SELECT
+    entry.entry_id AS id,
 
-const entryByOwner = (ownerId) => SQL`
+    entry.timestamp,
+
+    sentiment_type.type AS sentiment_type,
+
+    author.user_id AS author_id,
+
+    owner.user_id AS owner_id,
+
+    media.media_id AS media_id,
+    media.text AS media_text,
+    media.video AS media_video,
+    media.video_thumbnail AS media_video_thumbnail,
+    media.image AS media_image,
+    media.image_thumbnail AS media_image_thumbnail
+
+FROM 
+    entry
+LEFT JOIN 
+    user_account AS author ON author.user_id = entry.author_id
+JOIN
+    user_account AS owner ON owner.user_id = entry.owner_id
+JOIN
+    media ON media.entry_id = entry.entry_id
+JOIN
+    sentiment_type ON sentiment_type.sentiment_type_id = entry.sentiment_type_id
+WHERE
+    entry.entry_id = ${entryId}`.setName('entry_by_entry_id'),
+
+
+    byOwner: (ownerId) => SQL`
 SELECT
     entry.entry_id AS id,
 
@@ -41,43 +66,34 @@ JOIN
 WHERE
     entry.owner_id = ${ownerId}
 ORDER BY
-    timestamp DESC`.setName('entry_by_owner_id');
+    timestamp DESC`.setName('entry_by_owner_id'),
 
-/* some DRY concerns here */
-const entryById = (entryId) => SQL`
+
+    create: (authorId, ownerId, sentimentType) => SQL`
+INSERT INTO
+    entry (author_id, owner_id, sentiment_type_id, timestamp)
+VALUES
+    (${authorId}, ${ownerId},
+        (SELECT sentiment_type_id FROM sentiment_type WHERE sentiment_type.type = ${sentimentType}), now())
+RETURNING
+    entry_id`.setName('entry_create'),
+
+
+    countByRange: (from, to) => SQL`
 SELECT
-    entry.entry_id AS id,
-
-    entry.timestamp,
-
-    sentiment_type.type AS sentiment_type,
-
-    author.user_id AS author_id,
-
-    owner.user_id AS owner_id,
-
-    media.media_id AS media_id,
-    media.text AS media_text,
-    media.video AS media_video,
-    media.video_thumbnail AS media_video_thumbnail,
-    media.image AS media_image,
-    media.image_thumbnail AS media_image_thumbnail
-
-FROM 
+    owner_id,
+    COUNT(entry.entry_id)
+FROM
     entry
-LEFT JOIN 
-    user_account AS author ON author.user_id = entry.author_id
-JOIN
-    user_account AS owner ON owner.user_id = entry.owner_id
-JOIN
-    media ON media.entry_id = entry.entry_id
-JOIN
-    sentiment_type ON sentiment_type.sentiment_type_id = entry.sentiment_type_id
 WHERE
-    entry.entry_id = ${entryId}`.setName('entry_by_entry_id');
+    entry.timestamp
+        BETWEEN ${from} AND ${to}
+GROUP BY
+    entry.owner_id`.setName('entry_count_by_range'),
+};
 
-
-const topicByEntry = (entryId) => SQL`
+const topic = {
+    byEntry: (entryId) => SQL`
 SELECT
     topic_type.type AS topic_type,
     topic_type.name AS topic_name
@@ -86,30 +102,36 @@ FROM
 JOIN
     topic_type ON topic_type.topic_type_id = x_entry_topics.topic_type_id
 WHERE
-    x_entry_topics.entry_id = ${entryId}`.setName('topic_by_entry_id');
+    x_entry_topics.entry_id = ${entryId}`.setName('topic_by_entry_id'),
 
-const topicAll = () => SQL`
+
+    create: (entryId, type) => SQL`
+INSERT INTO
+    x_entry_topics (entry_id, topic_type_id)
+VALUES
+    (${entryId}, (SELECT topic_type_id FROM topic_type WHERE topic_type.type = ${type}))`.setName('topic_create'),
+
+
+    all: () => SQL`
 SELECT
     topic_type.type AS topic_type,
     topic_type.name AS topic_name
 FROM
-    topic_type`.setName('topic_all');
+    topic_type`.setName('topic_all'),
+};
 
-const topicCreate = (entryId, type) => SQL`
-INSERT INTO
-    x_entry_topics (entry_id, topic_type_id)
-VALUES
-    (${entryId}, (SELECT topic_type_id FROM topic_type WHERE topic_type.type = ${type}))`.setName('topic_create');
-
-const mediaCreate = (entryId, text, video, videoThumbnail, image, imageThumbnail) => SQL`
+const media = {
+    create: (entryId, text, video, videoThumbnail, image, imageThumbnail) => SQL`
 INSERT INTO
     media (entry_id, text, video, video_thumbnail, image, image_thumbnail)
 VALUES
     (${entryId}, ${text}, ${video}, ${videoThumbnail}, ${image}, ${imageThumbnail})
 RETURNING
-    media_id`.setName('media_create');
+    media_id`.setName('media_create'),
+};
 
-const userByAuthHash = (hash) => SQL`
+const user = {
+    byAuthHash: (hash) => SQL`
 SELECT
     user_id AS id,
     auth_hash AS auth_hash,
@@ -122,9 +144,10 @@ LEFT JOIN
 LEFT JOIN
     region_type ON region_type.region_type_id = user_account.region_type_id
 WHERE
-    user_account.auth_hash = ${hash}`.setName('user_by_auth_hash');
+    user_account.auth_hash = ${hash}`.setName('user_by_auth_hash'),
 
-const userById = (userId) => SQL`
+
+    byId: (userId) => SQL`
 SELECT
     user_id AS id,
     auth_hash,
@@ -137,80 +160,52 @@ LEFT JOIN
 LEFT JOIN
     region_type ON region_type.region_type_id = user_account.region_type_id
 WHERE
-    user_account.user_id = ${userId}`.setName('user_by_user_id');
+    user_account.user_id = ${userId}`.setName('user_by_user_id'),
 
-const userCreate = (hash) => SQL`
+
+    create: (hash) => SQL`
 INSERT INTO
     user_account (auth_hash)
 VALUES
     (${hash})
 RETURNING
-    user_id AS id`.setName('user_create');
+    user_id AS id`.setName('user_create'),
 
-const userUpdateById = (userId, roleSecret, region = 'Test') => SQL`
+
+    updateById: (userId, roleSecret, region = 'Test') => SQL`
 UPDATE
     user_account
 SET
     role_type_id = (SELECT role_type_id FROM role_type WHERE role_type.secret = ${roleSecret}),
     region_type_id = (SELECT region_type_id FROM region_type WHERE region_type.type = ${region})
 WHERE
-    user_account.user_id = ${userId}`.setName('user_update_role');
+    user_account.user_id = ${userId}`.setName('user_update_role'),
+};
 
-const entryCountByRange = (from, to) => SQL`
-    SELECT
-        owner_id,
-        COUNT(entry.entry_id)
-    FROM
-        entry
-    WHERE
-        entry.timestamp
-            BETWEEN ${from} AND ${to}
-    GROUP BY
-        entry.owner_id
-`.setName('entry_count_by_range')
+const region = {
+    all: () => SQL`
+SELECT
+    region_type.type
+FROM
+    region_type`.setName('region_all'),
+};
 
-const regionAll = () => SQL`
-    SELECT
-        region_type.type
-    FROM
-        region_type
-`.setName('region_all');
-
-const roleAll = () => SQL`
-    SELECT
-        role_type.type,
-        role_type.name,
-        role_type.secret,
-        role_type.hidden
-    FROM
-        role_type
-`.setName('role_all');
+const role = {
+    all: () => SQL`
+SELECT
+    role_type.type,
+    role_type.name,
+    role_type.secret,
+    role_type.hidden
+FROM
+    role_type`.setName('role_all'),
+};
 
 module.exports = {
-    entry: {
-        byId: entryById,
-        byOwner: entryByOwner,
-        create: entryCreate,
-        countByRange: entryCountByRange
-    },
-    topic: {
-        byEntry: topicByEntry,
-        create: topicCreate,
-        all: topicAll
-    },
-    media: {
-        create: mediaCreate,
-    },
-    user: {
-        byAuthHash: userByAuthHash,
-        byId: userById,
-        create: userCreate,
-        updateById: userUpdateById,
-    },
-    role: {
-        all: roleAll
-    },
-    region: {
-        all: regionAll,
-    },
-}
+    entry,
+    topic,
+    media,
+    user,
+    role,
+    region
+};
