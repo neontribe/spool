@@ -14,8 +14,7 @@ class TextForm extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    continue(event) {
-        event.preventDefault();
+    continue() {
         this.props.save({text: this.state.value});
     }
 

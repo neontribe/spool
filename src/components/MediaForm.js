@@ -10,7 +10,7 @@ class MediaForm extends Component {
 
     this.state = {};
 
-    this.setMediaType = this.setMediaType.bind(this);
+    this.setMediaType = _.debounce(this.setMediaType.bind(this), 500, {leading: true, trailing: false});
     this.renderChooser = this.renderChooser.bind(this);
   }
 
