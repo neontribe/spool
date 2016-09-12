@@ -32,7 +32,7 @@ class TopicForm extends Component {
 
         this.setState({
             value: values
-        })
+        });
     }
 
     renderCheckboxes() {
@@ -41,6 +41,7 @@ class TopicForm extends Component {
                 <IconCard
                     key={i}
                     onChange={this.handleChange}
+                    checked={(this.state.value.indexOf(t.type) !== -1)}
                     icon={t.type}
                     message={t.name}
                     value={t.type} />

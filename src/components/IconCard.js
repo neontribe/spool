@@ -28,6 +28,7 @@ export class IconCard extends Component {
                     <input
                         type='checkbox'
                         className='visual-hidden'
+                        checked={this.props.checked}
                         value={this.props.value}
                         onChange={this.props.onChange}
                     />
