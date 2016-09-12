@@ -9,6 +9,14 @@ VALUES
 RETURNING
     entry_id`.setName('entry_create');
 
+const requestCreate = (userId, start, end) => SQL`
+INSERT INTO
+    request (user_id, start, end)
+VALUES
+    (${userId}, ${start}, ${end})
+RETURNING
+    request_id`.setName('request_create');
+
 const entryByOwner = (ownerId) => SQL`
 SELECT
     entry.entry_id AS id,
@@ -95,11 +103,112 @@ SELECT
 FROM
     topic_type`.setName('topic_all');
 
-const topicCreate = (entryId, type) => SQL`
+const entryTopicCreate = (entryId, type) => SQL`
 INSERT INTO
     x_entry_topics (entry_id, topic_type_id)
 VALUES
-    (${entryId}, (SELECT topic_type_id FROM topic_type WHERE topic_type.type = ${type}))`.setName('topic_create');
+    (${entryId}, (SELECT topic_type_id FROM topic_type WHERE topic_type.type = ${type}))`.setName('entry_topic_create');
+
+const requestTopicCreate = (requestId, type) => SQL`
+INSERT INTO
+    x_request_topics (request_id, topic_type_id)
+VALUES
+    (${requestId}, (SELECT topic_type_id FROM topic_type WHERE topic_type.type = ${type}))`.setName('request_topic_create');
+
+/*
+ * Given a requestId
+ * Inserts records into 'user_request' where the request end is less than the user account creation timestamp and the user does not already have a matching record in 'user_request'
+ */
+const userRequestCreate = (requestId) => SQL`
+INSERT INTO
+    user_request (request_id, user_id)
+VALUES
+    (
+        SELECT
+            request.request_id,
+            potential_user.user_id
+        FROM
+            request
+        JOIN
+            user_account AS policy_user ON policy_user.user_id = request.user_id
+        JOIN
+            user_account AS potential_user 
+            ON potential_user.timestamp < request.end
+            AND potential_user.region_type_id = policy_user.region_type_id
+        LEFT JOIN 
+            user_request AS existing_user 
+            ON existing_user.request_id = request.request_id 
+            AND existing_user.user_id = potential_user.id
+        WHERE
+            request.request_id = ${request_id}
+        AND
+            existing_user.user_id IS NULL
+     )
+RETURNING
+    user_request.user_request_id`.setName('user_request_create');
+
+/*
+ * Given a userRequestId
+ * Inserts records into 'x_entries_user_requests' where the request end is less than the
+ * entry creation timestamp and the entry does not already have a matching record in 'x_entries_user_requests'
+ */
+const userRequestEntryCreate = (userRequestId) => SQL`
+INSERT INTO
+    x_entries_user_requests (entry_id, user_request_id)
+VALUES
+    (
+        SELECT
+            potential_entry.entry_id,
+            user_request.user_request_id
+        FROM
+            user_request
+        JOIN
+            request ON request.request_id = user_request.request_id
+        JOIN
+            entry AS potential_entry
+            ON potential_entry.timestamp < request.end
+            AND potential_entry.owner_id = user_request.user_id
+        LEFT JOIN
+            x_entries_user_requests AS existing_entry
+            ON existing_entry.entry_id = potential_entry.entry_id
+            AND existing_entry.user_request_id = user_request.user_request_id
+        WHERE
+            user_request.user_request_id = ${userRequestId}
+        AND
+            existing_entry.user_request_id IS NULL
+    )`.setName('user_request_entry_create');
+
+/*
+ * Given a entryId
+ * Inserts records into 'x_entries_user_requests' where the request end is less than the
+ * entry creatino timestamp and the entry does not already have a matching record in
+ * 'x_entries_user_requests'
+ */
+const entryUserRequestCreate = (entryId) => SQL`
+INSERT INTO
+    x_entries_user_requests (entry_id, user_request_id)
+VALUES
+    (
+        SELECT
+            entry.entry_id,
+            user_request.user_request_id
+        FROM
+            entry
+        JOIN
+            user_request ON user_request.user_id = entry.owner_id
+        JOIN
+            request AS potential_request
+            ON potential_request.end > entry.timestamp
+            AND potential_request.request_id = user_request.request_id
+        LEFT JOIN
+            x_entries_user_requests AS existing_user_request
+            ON existing_user_request.user_request_id = user_request.user_request_id
+            AND existing_user_request.entry_id = entry.entry_id
+        WHERE
+            entry.entry_id = ${entryId}
+        AND
+            existing_user_request.entry_id IS NULL
+    )`.setName('entry_user_request_create');
 
 const mediaCreate = (entryId, text, video, videoThumbnail, image, imageThumbnail) => SQL`
 INSERT INTO
@@ -186,16 +295,37 @@ const roleAll = () => SQL`
         role_type
 `.setName('role_all');
 
+
 module.exports = {
+    request: {
+        create: requestCreate,
+        topics: {
+            create: requestTopicCreate
+        },
+        users: {
+            create: requestUserCreate
+        }
+    },
+    userRequest: {
+        create: userRequestCreate,
+        entries: {
+            create: userRequestEntryCreate
+        }
+    },
     entry: {
         byId: entryById,
         byOwner: entryByOwner,
         create: entryCreate,
-        countByRange: entryCountByRange
+        countByRange: entryCountByRange,
+        userRequest: {
+            create: entryUserRequestCreate,
+        },
+        topics: {
+            create: entryTopicCreate,
+        }
     },
     topic: {
         byEntry: topicByEntry,
-        create: topicCreate,
         all: topicAll
     },
     media: {

@@ -210,7 +210,7 @@ class Topic {
     static create(db, id, type) {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
-                client.query(queries.topic.create(id, type), function (error, result) {
+                client.query(queries.entry.topics.create(id, type), function (error, result) {
                     done();
                     if (error) {
                         reject(error);
