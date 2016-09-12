@@ -11,19 +11,29 @@ export class Signup extends React.Component {
 
         let role = props.viewer.role.__typename;
         role = (role === this.props.missingRole) ? this.props.defaultRole : role
-        let secret = _.find(this.props.meta.roles, { name: role }).secret;
         this.state = {
             role,
-            secret: secret,
-            region: props.viewer.region || ""
+            secret: _.find(this.props.meta.roles, {name: role}).secret,
+            region: props.viewer.region || "",
+            requireSecret: false
         };
 
         this.onChange = this.onChange.bind(this);
+        this.onChangeRole = this.onChangeRole.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
 
     onChange(key, event) {
         this.setState({[key]: event.target.value});
+    }
+
+    onChangeRole(event) {
+        let role = event.target.value;
+        this.setState({
+            role: role,
+            secret: _.find(this.props.meta.roles, {name: role}).secret,
+            requireSecret: role !== this.props.defaultRole
+        });
     }
 
     onSubmit(event) {
@@ -78,11 +88,11 @@ export class Signup extends React.Component {
                                         return <Radio key={'role_' + role}
                                                     value={role}
                                                     checked={this.state.role === role}
-                                                    onChange={_.partial(this.onChange, 'role')}>{role}</Radio>;
+                                                    onChange={this.onChangeRole}>{role}</Radio>;
                                     })}
                                 </Col>
                             </FormGroup>
-                            { this.state.role !== 'Creator' &&
+                            { this.state.requireSecret &&
                                 <FormGroup controlId="unlockCode">
                                     <Col componentClass={ControlLabel}>
                                         Unlock Code
@@ -91,7 +101,7 @@ export class Signup extends React.Component {
                                         <FormControl type="text"
                                             placeholder="We'll ask for an unlock code here in the future"
                                             onChange={_.partial(this.onChange, 'secret')}
-                                            value={this.state.secret} />
+                                            value={this.state.secret || ''} />
                                     </Col>
                                     <Col>
                                         <HelpBlock>An unlock code is need to enable access to the dashboard</HelpBlock>

@@ -37,7 +37,7 @@ class TopicForm extends Component {
 
     renderCheckboxes() {
         return this.props.topics.map((t, i) => (
-            <Col xs={6} sm={3}>
+            <Col xs={6} sm={3} key={'col_' + i}>
                 <IconCard
                     key={i}
                     onChange={this.handleChange}
@@ -55,7 +55,9 @@ class TopicForm extends Component {
                 <Grid>
                     <Row>
                         <FormGroup controlId="topic" className='topics'>
-                            <ControlLabel>Add some labels...</ControlLabel>
+                            <Row>
+                                <ControlLabel>Add some labels...</ControlLabel>
+                            </Row>
                             {this.renderCheckboxes()}
                         </FormGroup>
                     </Row>
