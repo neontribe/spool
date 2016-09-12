@@ -29,12 +29,12 @@ class Camera extends Component {
         this.stopMediaStream = this.stopMediaStream.bind(this);
         this.onMediaSuccess = this.onMediaSuccess.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
-        this.startCountdown = _.debounce(this.startCountdown.bind(this), 500);
+        this.startCountdown = _.debounce(this.startCountdown.bind(this), 500, {leading: true, trailing: false});
         this.shutter = this.shutter.bind(this);
-        this.save = _.debounce(this.save.bind(this), 500);
+        this.save = this.save.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
         this.getVideoDevices = this.getVideoDevices.bind(this);
-        this.switchVideoDevices = this.switchVideoDevices.bind(this);
+        this.switchVideoDevices = _.debounce(this.switchVideoDevices.bind(this), 500, {leading: true, trailing: false});
         this.getCountdownSize = this.getCountdownSize.bind(this);
     }
 

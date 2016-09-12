@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import {Button, Grid, Row, Col} from 'react-bootstrap';
 import AuthService from '../auth/AuthService';
+import _ from 'lodash';
 
 class SimpleLogin extends Component {
 
   constructor(props) {
       super(props);
 
-      this.googleLogin = this.googleLogin.bind(this);
-      this.twitterLogin = this.twitterLogin.bind(this);
+      this.googleLogin = _.debounce(this.googleLogin.bind(this), 500, {leading: true, trailing: false});
+      this.twitterLogin = _.debounce(this.twitterLogin.bind(this), 500, {leading: true, trailing: false});
   }
 
   googleLogin(){

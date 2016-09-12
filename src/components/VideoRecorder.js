@@ -30,19 +30,19 @@ class VideoRecorder extends Component {
 
         this.startMediaStream = this.startMediaStream.bind(this);
         this.stopMediaStream = this.stopMediaStream.bind(this);
-        this.startCountdown = _.debounce(this.startCountdown.bind(this), 500);
+        this.startCountdown = _.debounce(this.startCountdown.bind(this), 500, {leading: true, trailing: false});
         this.startRecording = this.startRecording.bind(this);
-        this.stopRecording = _.debounce(this.stopRecording.bind(this), 500);
+        this.stopRecording = _.debounce(this.stopRecording.bind(this), 500, {leading: true, trailing: false});
         this.onMediaSuccess = this.onMediaSuccess.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
         this.onRecordingFinished = this.onRecordingFinished.bind(this);
         this.replayLastTake = this.replayLastTake.bind(this);
         this.discardLastTake = this.discardLastTake.bind(this);
-        this.save = _.debounce(this.save.bind(this), 500);
+        this.save = this.save.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
         this.getVideoDevices = this.getVideoDevices.bind(this);
         this.getCountdownSize = this.getCountdownSize.bind(this);
-        this.switchVideoDevices = _.debounce(this.switchVideoDevices.bind(this), 500);
+        this.switchVideoDevices = _.debounce(this.switchVideoDevices.bind(this), 500, {leading: true, trailing: false});
     }
 
     componentWillMount() {

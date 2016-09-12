@@ -15,8 +15,7 @@ class SentimentForm extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    continue(event) {
-        event.preventDefault();
+    continue() {
         this.props.save(this.props.saveKey, this.state.value);
     }
 
