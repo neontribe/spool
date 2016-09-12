@@ -2,6 +2,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import { Grid, Row, Col, Form, FormGroup, FormControl, ControlLabel, Radio, Button, Glyphicon, HelpBlock } from 'react-bootstrap';
 import _ from 'lodash';
+import keydown from 'react-keydown';
 import { withRouter } from 'react-router';
 import UpdateUserMutation from './mutations/UpdateUserMutation';
 
@@ -21,6 +22,15 @@ export class Signup extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.onChangeRole = this.onChangeRole.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.showRoleChooser = this.showRoleChooser.bind(this);
+    }
+
+    componentWillReceiveProps({ keydown }) {
+        if (keydown.event) {
+            if (keydown.event.key === 'r') {
+                this.showRoleChooser();
+            }
+        }
     }
 
     onChange(key, event) {
@@ -47,6 +57,12 @@ export class Signup extends React.Component {
             new UpdateUserMutation({viewer, ...this.state}),
             {onSuccess}
         );
+    }
+
+    showRoleChooser() {
+        this.setState({
+            showRoleChooser: true
+        });
     }
 
     render() {
@@ -79,20 +95,22 @@ export class Signup extends React.Component {
                                     </FormControl>
                                 </Col>
                             </FormGroup>
-                            <FormGroup controlId="role">
-                                <Col componentClass={ControlLabel}>
-                                    What kind of access do you need?
-                                </Col>
-                                <Col>
-                                    {this.props.availableRoles.map((role) => {
-                                        return <Radio key={'role_' + role}
-                                                    value={role}
-                                                    checked={this.state.role === role}
-                                                    onChange={this.onChangeRole}>{role}</Radio>;
-                                    })}
-                                </Col>
-                            </FormGroup>
-                            { this.state.requireSecret &&
+                            {this.state.showRoleChooser &&
+                                <FormGroup controlId="role">
+                                    <Col componentClass={ControlLabel}>
+                                        What kind of access do you need?
+                                    </Col>
+                                    <Col>
+                                        {this.props.availableRoles.map((role) => {
+                                            return <Radio key={'role_' + role}
+                                                        value={role}
+                                                        checked={this.state.role === role}
+                                                        onChange={this.onChangeRole}>{role}</Radio>;
+                                        })}
+                                    </Col>
+                                </FormGroup>
+                            }
+                            { (this.state.requireSecret && this.state.showRoleChooser) &&
                                 <FormGroup controlId="unlockCode">
                                     <Col componentClass={ControlLabel}>
                                         Unlock Code
@@ -135,6 +153,7 @@ Signup.defaultProps = {
     missingRole: 'Missing'
 }
 
+Signup = keydown(Signup);
 Signup = withRouter(Signup);
 
 export const SignupContainer = Relay.createContainer(Signup, {
