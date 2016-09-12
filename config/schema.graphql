@@ -3,6 +3,10 @@ schema {
   mutation: Mutations
 }
 
+type Consumer {
+  creatorActivityCount(range: DateRangeInput): CreatorActivityCount
+}
+
 input CreateEntryInput {
   entry: EntryInput
   clientMutationId: String!
@@ -14,7 +18,24 @@ type CreateEntryPayload {
   clientMutationId: String!
 }
 
+type Creator {
+  entries(after: String, first: Int, before: String, last: Int): EntryConnection
+  happyCount: Int
+  sadCount: Int
+}
+
+type CreatorActivityCount {
+  active: Int
+  stale: Int
+}
+
+input DateRangeInput {
+  from: String!
+  to: String!
+}
+
 type Entry implements Node {
+  # The ID of an object
   id: ID!
   _id: Int
   media: Media
@@ -25,13 +46,21 @@ type Entry implements Node {
   timestamp: String
 }
 
+# A connection to a list of items.
 type EntryConnection {
+  # Information to aid in pagination.
   pageInfo: PageInfo!
+
+  # A list of edges.
   edges: [EntryEdge]
 }
 
+# An edge in a connection.
 type EntryEdge {
+  # The item at the end of the edge
   node: Entry
+
+  # A cursor for use in pagination
   cursor: String!
 }
 
@@ -57,24 +86,57 @@ input MediaInput {
   imageThumbnail: String
 }
 
-type Mutations {
-  createEntry(input: CreateEntryInput!): CreateEntryPayload
+type Meta {
+  regions: [String]
+  roles: [RoleDefinition]
 }
 
+type Missing {
+  information: [String]
+}
+
+type Mutations {
+  createEntry(input: CreateEntryInput!): CreateEntryPayload
+  updateUser(input: UpdateUserInput!): UpdateUserPayload
+}
+
+# An object with an ID
 interface Node {
+  # The id of the object.
   id: ID!
 }
 
+# Information about pagination in a connection.
 type PageInfo {
+  # When paginating forwards, are there more items?
   hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
   hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
   startCursor: String
+
+  # When paginating forwards, the cursor to continue.
   endCursor: String
 }
 
 type Query {
-  node(id: ID!): Node
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
   viewer: Viewer
+  meta: Meta
+}
+
+union Role = Creator | Consumer | Missing
+
+type RoleDefinition {
+  type: String
+  name: String
+  secret: String
 }
 
 type Sentiment {
@@ -86,14 +148,29 @@ type Topic {
   name: String
 }
 
+input UpdateUserInput {
+  user: UserInput
+  clientMutationId: String!
+}
+
+type UpdateUserPayload {
+  viewer: Viewer
+  clientMutationId: String!
+}
+
 type User {
   id: Int
 }
 
+input UserInput {
+  region: String!
+  roleSecret: String!
+}
+
 type Viewer implements Node {
+  # The ID of an object
   id: ID!
-  entries(after: String, first: Int, before: String, last: Int): EntryConnection
+  role: Role
+  region: String
   topics: [Topic]
-  happyCount: Int
-  sadCount: Int
 }

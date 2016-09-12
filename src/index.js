@@ -6,8 +6,11 @@ import { Router, Route, IndexRoute, IndexRedirect, browserHistory, applyRouterMi
 import useRelay from 'react-router-relay';
 import AuthService from './auth/AuthService';
 import App from './App';
-import { HomeContainer } from './components/Home';
+import RoleSwitchContainer from './components/RoleSwitch';
+import { TimelineContainer } from './components/Timeline';
+import { DashboardContainer } from './components/Dashboard';
 import SimpleLogin from './components/SimpleLogin';
+import { SignupContainer } from './components/Signup';
 import { AddEntryContainer } from './components/AddEntry';
 import TopicForm from './components/TopicForm';
 import SentimentForm from './components/SentimentForm';
@@ -17,13 +20,18 @@ import ImageForm from './components/ImageForm';
 import TextForm from './components/TextForm';
 
 import 'bootstrap/dist/css/bootstrap.css';
-// import 'bootstrap/dist/css/bootstrap-theme.css';
 import './override-bootstrap.css';
 import './index.css';
 
-import { TimelineContainer } from './components/Timeline';
-
-const auth = new AuthService(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN);
+const auth = new AuthService(
+    process.env.AUTH0_CLIENT_ID,
+    process.env.AUTH0_DOMAIN,
+    {
+        callbackURL: window.location.origin + '/callback',
+        login: '/login',
+        loggedIn: '/home'
+    }
+);
 
 function setupRelayNetworkLayer() {
     Relay.injectNetworkLayer(new RelayNetworkLayer([
@@ -36,44 +44,35 @@ function setupRelayNetworkLayer() {
     ], { disableBatchQuery:  true }));
 }
 
-// onEnter callback to validate authentication in private routes
-const requireAuth = (nextState, replace) => {
-  if (nextState.location.hash) {
-     auth.parseHash(nextState.location.hash);
-  }
-  if (!auth.loggedIn()) {
-      replace({ pathname: '/login' });
-      return false;
-  }
-  return true;
-};
-
-const parseAuth = (nextState, replace) => {
-    //because the page can't set the id token fast enough, check the nextState to see if the hash exists
-    //if it does exist then grab the id token from the hash and then set it to local storage
-    var authTokenOK;
-    if (nextState.location.hash) {
-        authTokenOK = auth.parseHash(nextState.location.hash);
-    }
-    if (authTokenOK) {
-        replace({ pathname: '/' });
-        return true;
-    }
-}
-
 const ViewerQueries = {
     viewer: () => Relay.QL`query { viewer }`,
 };
+const SignupQueries = {
+    meta: () => Relay.QL`query { meta }`,
+    ...ViewerQueries
+}
 
 setupRelayNetworkLayer();
+
 ReactDOM.render(
   <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
     <Route path="/" component={App} auth={auth}>
-        <IndexRedirect to="/home" />
-        <Route path="home" component={HomeContainer} queries={ViewerQueries} onEnter={requireAuth}>
-            <IndexRoute component={TimelineContainer} queries={ViewerQueries} onEnter={requireAuth} />
+        <IndexRedirect to="home" />
+        <Route path="home" component={RoleSwitchContainer} queries={ViewerQueries} onEnter={auth.requireAuthOnEnter}>
+            <IndexRoute
+                components={{
+                    Creator: TimelineContainer,
+                    Consumer: DashboardContainer,
+                    Missing: SignupContainer,
+                }}
+                queries={{
+                    Creator: ViewerQueries,
+                    Consumer: ViewerQueries,
+                    Missing: SignupQueries,
+                }}
+            />
         </Route>
-        <Route path="add" component={AddEntryContainer} queries={ViewerQueries} onEnter={requireAuth}>
+        <Route path="add" component={AddEntryContainer} queries={ViewerQueries} onEnter={auth.requireAuthOnEnter}>
             <IndexRedirect to="topic"/>
             <Route path="topic" component={TopicForm} />
             <Route path="sentiment" component={SentimentForm} />
@@ -83,8 +82,9 @@ ReactDOM.render(
                 <Route path="text" component={TextForm}/>
             </Route>
         </Route>
-        <Route path="login" component={SimpleLogin} onEnter={parseAuth}/>
-        <Route path="access_token=:token" component={SimpleLogin} onEnter={parseAuth}/>
+        <Route path="settings" component={SignupContainer} queries={SignupQueries} onEnter={auth.requireAuthOnEnter}/>
+        <Route path="login" component={SimpleLogin}/>
+        <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter}/>
     </Route>
   </Router>,
   document.getElementById('root')

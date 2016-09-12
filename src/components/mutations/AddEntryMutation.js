@@ -6,8 +6,12 @@ export default class AddEntryMutation extends Relay.Mutation {
         viewer: () => Relay.QL`
         fragment on Viewer {
             id
-            happyCount
-            sadCount
+            role {
+                ... on Creator {
+                    happyCount
+                    sadCount
+                }
+            }
         }`
     }
     getMutation() {
@@ -41,9 +45,13 @@ export default class AddEntryMutation extends Relay.Mutation {
         return Relay.QL`
         fragment on CreateEntryPayload {
             viewer {
-                entries
-                happyCount
-                sadCount
+                role {
+                    ... on Creator {
+                        entries
+                        happyCount
+                        sadCount
+                    }
+                }
             }
             entryEdge
         }`
@@ -66,8 +74,8 @@ export default class AddEntryMutation extends Relay.Mutation {
   getOptimisticResponse() {
       var viewer = this.props.viewer;
       var entry = this.props.entry;
-      var happyCount = this.props.viewer.happyCount;
-      var sadCount = this.props.viewer.sadCount;
+      var happyCount = this.props.viewer.role.happyCount;
+      var sadCount = this.props.viewer.role.sadCount;
       switch (entry.sentiment) {
           case 'happy':
               happyCount++;

@@ -3,6 +3,7 @@ const relayql = require('graphql-relay');
 const types = require('./types.js');
 const db = require('../database/database.js');
 const models = require('../database/models.js');
+const moment = require('moment');
 const _ = require('lodash');
 
 var {nodeInterface, nodeField} = relayql.nodeDefinitions(
@@ -74,26 +75,100 @@ const getSentimentCount = function (sentimentType, userId) {
         }, 0);
     });
 }
+
+const CreatorRoleType = new ql.GraphQLObjectType({
+    name: 'Creator',
+    fields: {
+        entries: {
+            type: entryConnectionDefinition.connectionType,
+            args: relayql.connectionArgs,
+            resolve: (creator, args, context) => relayql.connectionFromPromisedArray(models.Entry.findByOwnerId(db, creator.id), args)
+        },
+        happyCount: {
+            type: ql.GraphQLInt,
+            resolve: (creator, args, context) => getSentimentCount("happy", creator.id)
+        },
+        sadCount: {
+            type: ql.GraphQLInt,
+            resolve: (creator, args, context) => getSentimentCount("sad", creator.id)
+        }
+    }
+});
+
+const CreatorActivityCountType = new ql.GraphQLObjectType({
+    name: 'CreatorActivityCount',
+    fields: {
+        active: {
+            type: ql.GraphQLInt,
+            resolve: (counts) => counts.active
+        },
+        stale: {
+            type: ql.GraphQLInt,
+            resolve: (counts) => counts.stale
+        }
+    }
+});
+
+const ConsumerRoleType = new ql.GraphQLObjectType({
+    name: 'Consumer',
+    fields: {
+        creatorActivityCount: {
+            type: CreatorActivityCountType,
+            args: {
+                range: {
+                    type: types.DateRangeInputType,
+                }
+            },
+            resolve: function(consumer, {range}) {
+                var fromDate = moment(range.from);
+                var toDate = moment(range.to);
+                return models.Count.findCreatorActivity(db, fromDate, toDate)
+            }
+        }
+    }
+});
+
+const MissingRoleType = new ql.GraphQLObjectType({
+    name: 'Missing',
+    fields: {
+        information: {
+            type: new ql.GraphQLList(ql.GraphQLString),
+            resolve: () => ['location', 'role']
+        }
+    }
+});
+
+const RoleType = new ql.GraphQLUnionType({
+    name: 'Role',
+    types: [ CreatorRoleType, ConsumerRoleType, MissingRoleType ],
+    resolveType(user) {
+        if (!user.role) {
+            return MissingRoleType;
+        }
+        if (user.role === 'creator') {
+            return CreatorRoleType;
+        }
+        if (user.role === 'consumer') {
+            return ConsumerRoleType;
+        }
+    }
+});
+
 const ViewerType = new ql.GraphQLObjectType({
     name: 'Viewer',
     fields: {
         id: relayql.globalIdField(),
-        entries: {
-            type: entryConnectionDefinition.connectionType,
-            args: relayql.connectionArgs,
-            resolve: (viewer, args, context) => relayql.connectionFromPromisedArray(models.Entry.findByOwnerId(db, context.id), args)
+        role: {
+            type: RoleType,
+            resolve: (viewer, args, context) => viewer,
+        },
+        region: {
+            type: ql.GraphQLString,
+            resolve: (viewer, args, context) => viewer.region,
         },
         topics: {
             type: new ql.GraphQLList(types.TopicType),
             resolve: () => models.Topic.findAll(db)
-        },
-        happyCount: {
-            type: ql.GraphQLInt,
-            resolve: (viewer, args, context) => getSentimentCount("happy", context.id)
-        },
-        sadCount: {
-            type: ql.GraphQLInt,
-            resolve: (viewer, args, context) => getSentimentCount("sad", context.id)
         }
     },
     interfaces: [nodeInterface]
@@ -101,7 +176,26 @@ const ViewerType = new ql.GraphQLObjectType({
 
 const viewerField = {
     type: ViewerType,
-    resolve: (root, args, context) =>  models.User.findById(db, context.id).then((users) => users.shift()),
+    resolve: (root, args, context) =>  models.User.findById(db, context.id).then((users) => users.shift())
+}
+
+const MetaType = new ql.GraphQLObjectType({
+    name: 'Meta',
+    fields: {
+        regions: {
+            type: new ql.GraphQLList(ql.GraphQLString),
+            resolve: () => models.Region.findAll(db)
+        },
+        roles: {
+            type: new ql.GraphQLList(types.RoleDefinitionType),
+            resolve: () => models.Role.findAll(db)
+        }
+    }
+});
+
+const metaField = {
+    type: MetaType,
+    resolve: () => true
 }
 
 const createEntry = relayql.mutationWithClientMutationId({
@@ -133,12 +227,31 @@ const createEntry = relayql.mutationWithClientMutationId({
     }
 });
 
+const updateUser = relayql.mutationWithClientMutationId({
+    name: 'UpdateUser',
+    inputFields: {
+        user: {
+            type: types.UserInputType
+        }
+    },
+    outputFields: {
+        viewer: viewerField
+    },
+    mutateAndGetPayload: function mutateUserPayload({user}, context) {
+        return models.User.updateById(db, context.id, user.roleSecret, user.region).then(function() {
+            return {};
+        });
+    }
+});
+
 module.exports = {
     fields: {
         nodeField,
-        viewerField
+        viewerField,
+        metaField,
     },
     mutations: {
-        createEntry
+        createEntry,
+        updateUser
     }
 }

@@ -112,18 +112,30 @@ RETURNING
 const userByAuthHash = (hash) => SQL`
 SELECT
     user_id AS id,
-    auth_hash AS auth_hash
+    auth_hash AS auth_hash,
+    role_type.type AS role,
+    region_type.type AS region
 FROM
     user_account
+LEFT JOIN
+    role_type ON role_type.role_type_id = user_account.role_type_id
+LEFT JOIN
+    region_type ON region_type.region_type_id = user_account.region_type_id
 WHERE
     user_account.auth_hash = ${hash}`.setName('user_by_auth_hash');
 
 const userById = (userId) => SQL`
 SELECT
     user_id AS id,
-    auth_hash
+    auth_hash,
+    role_type.type AS role,
+    region_type.type AS region
 FROM
     user_account
+LEFT JOIN
+    role_type ON role_type.role_type_id = user_account.role_type_id
+LEFT JOIN
+    region_type ON region_type.region_type_id = user_account.region_type_id
 WHERE
     user_account.user_id = ${userId}`.setName('user_by_user_id');
 
@@ -135,11 +147,51 @@ VALUES
 RETURNING
     user_id AS id`.setName('user_create');
 
+const userUpdateById = (userId, roleSecret, region = 'Test') => SQL`
+UPDATE
+    user_account
+SET
+    role_type_id = (SELECT role_type_id FROM role_type WHERE role_type.secret = ${roleSecret}),
+    region_type_id = (SELECT region_type_id FROM region_type WHERE region_type.type = ${region})
+WHERE
+    user_account.user_id = ${userId}`.setName('user_update_role');
+
+const entryCountByRange = (from, to) => SQL`
+    SELECT
+        owner_id,
+        COUNT(entry.entry_id)
+    FROM
+        entry
+    WHERE
+        entry.timestamp
+            BETWEEN ${from} AND ${to}
+    GROUP BY
+        entry.owner_id
+`.setName('entry_count_by_range')
+
+const regionAll = () => SQL`
+    SELECT
+        region_type.type
+    FROM
+        region_type
+`.setName('region_all');
+
+const roleAll = () => SQL`
+    SELECT
+        role_type.type,
+        role_type.name,
+        role_type.secret,
+        role_type.hidden
+    FROM
+        role_type
+`.setName('role_all');
+
 module.exports = {
     entry: {
         byId: entryById,
         byOwner: entryByOwner,
         create: entryCreate,
+        countByRange: entryCountByRange
     },
     topic: {
         byEntry: topicByEntry,
@@ -153,5 +205,12 @@ module.exports = {
         byAuthHash: userByAuthHash,
         byId: userById,
         create: userCreate,
-    }
+        updateById: userUpdateById,
+    },
+    role: {
+        all: roleAll
+    },
+    region: {
+        all: regionAll,
+    },
 }

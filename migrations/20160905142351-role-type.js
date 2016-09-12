@@ -8,30 +8,26 @@ module.exports = {
 
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
-      */
-      return queryInterface.createTable('user_account', {
-          user_id: {
+    */
+      return queryInterface.createTable('role_type', {
+          role_type_id: {
               type: Sequelize.INTEGER,
               primaryKey: true,
               autoIncrement: true
           },
-          auth_hash: {
+          type: {
+              type: Sequelize.STRING
+          },
+          name: {
+              type: Sequelize.STRING
+          },
+          secret: {
               type: Sequelize.STRING,
+              unique: true
           },
-          role_type_id: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: 'role_type',
-                key: 'role_type_id'
-            }
-          },
-          region_type_id: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: 'region_type',
-                key: 'region_type_id'
-            }
-          },
+          hidden: {
+              type: Sequelize.BOOLEAN
+          }
       });
   },
 
@@ -42,7 +38,7 @@ module.exports = {
 
       Example:
       return queryInterface.dropTable('users');
-      */
-     return queryInterface.dropTable('user_account')
+    */
+     return queryInterface.dropTable('role_type');
   }
 };

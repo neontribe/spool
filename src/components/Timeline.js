@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import { ListGroup } from 'react-bootstrap';
+import { Link } from 'react-router';
+import { ListGroup, Glyphicon } from 'react-bootstrap';
 import { EntryContainer, Entry } from './Entry';
 import Intro from './Intro';
 
@@ -8,25 +9,40 @@ export class Timeline extends Component {
     static propTypes = {
         viewer: React.PropTypes.object.isRequired,
     }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            hasEntries: props.viewer.role.entries.edges.length
+        };
+    }
+
     renderEntries() {
         if (this.props.relay) {
-            return this.props.viewer.entries.edges.map((entry) => {
+            return this.props.viewer.role.entries.edges.map((entry) => {
                 return (<EntryContainer key={entry.node.id} entry={entry.node} />);
             })
         } else {
-            return this.props.viewer.entries.edges.map((entry) => {
+            return this.props.viewer.role.entries.edges.map((entry) => {
                 return (<Entry key={entry.node.id} entry={entry.node} />);
             })
         }
     }
     render() {
         return (
-            <ListGroup componentClass="div">
-                {this.renderEntries()}
-                {!this.props.viewer.entries.edges.length &&
-                    <Intro />
-                }
-            </ListGroup>
+            <div>
+                <div className="centered">
+                    <Link className="btn" to={'/add'}>
+                        <Glyphicon glyph="plus"/> {this.state.hasEntries ? 'Add New Entry' : 'Get Started'}</Link>
+                </div>
+                <ListGroup componentClass="div">
+                    {this.renderEntries()}
+                    {!this.state.hasEntries &&
+                        <Intro />
+                    }
+                </ListGroup>
+            </div>
+
         );
     }
 }
@@ -38,11 +54,17 @@ export const TimelineContainer = Relay.createContainer(Timeline, {
     fragments: {
         viewer: () => Relay.QL`
         fragment on Viewer {
-            entries(first: $first) {
-                edges {
-                    node {
-                        id,
-                        ${EntryContainer.getFragment('entry')}
+            role {
+                ... on Creator {
+                    happyCount
+                    sadCount
+                    entries(first: $first) {
+                        edges {
+                            node {
+                                id,
+                                ${EntryContainer.getFragment('entry')}
+                            }
+                        }
                     }
                 }
             }

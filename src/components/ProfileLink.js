@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Image, Modal, Button } from 'react-bootstrap';
+import { Grid, Row, Col, Image, Modal, Button, Panel, Glyphicon } from 'react-bootstrap';
+import { withRouter } from 'react-router';
 
 class ProfileLink extends Component {
 
@@ -17,6 +18,7 @@ class ProfileLink extends Component {
 
         this.showProfile = this.showProfile.bind(this);
         this.hideProfile = this.hideProfile.bind(this);
+        this.navigateToSettings = this.navigateToSettings.bind(this);
     }
 
     showProfile(e) {
@@ -28,6 +30,11 @@ class ProfileLink extends Component {
         this.setState({ showProfile: false });
     }
 
+    navigateToSettings(){
+        this.hideProfile();
+        this.props.router.push('/settings');
+    }
+
     render() {
         if (this.props.disabled || !this.props.profile) {
             return false;
@@ -35,7 +42,7 @@ class ProfileLink extends Component {
 
         return (
             <div className='profile'>
-                <a href='./view-profile' className='profile-img-container' onClick={this.showProfile}>
+                <a href='/view-profile' className='profile-img-container' onClick={this.showProfile}>
                     <Image
                         src={this.props.profile.picture}
                         className='profile-img'
@@ -52,12 +59,39 @@ class ProfileLink extends Component {
                         <Modal.Title>My SPOOL Profile</Modal.Title>
                     <Modal.Header/>
                     <Modal.Body>
-                        <pre>
-                            { JSON.stringify(this.props.profile, null, '\t') }
-                        </pre>
+                        <Grid>
+                            <Row>
+                                <Col>
+                                    <div className="full-width centered">
+                                        <Button onClick={this.navigateToSettings}>
+                                            <Glyphicon glyph="cog"/> Edit My Settings
+                                        </Button>
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <div className="full-width centered">
+                                        <Button
+                                            onClick={() => this.setState({ showTechDetails: !this.state.showTechDetails})}>
+                                            <Glyphicon glyph="zoom-in"/> Show Technical Info
+                                        </Button>
+                                    </div>
+                                    <Panel collapsible expanded={this.state.showTechDetails}>
+                                        <h3>SPOOL Version: {process.env.VERSION}</h3>
+                                        <h3>Social Profile Data</h3>
+                                        <pre>
+                                            { JSON.stringify(this.props.profile, null, '\t') }
+                                        </pre>
+                                    </Panel>
+                                </Col>
+                            </Row>
+                        </Grid>
+
+
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.hideProfile}>Close</Button>
+                        <Button onClick={this.hideProfile}><Glyphicon glyph="remove"/> Close</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -65,4 +99,4 @@ class ProfileLink extends Component {
     }
 }
 
-export default ProfileLink;
+export default withRouter(ProfileLink);

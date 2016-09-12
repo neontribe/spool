@@ -5,6 +5,7 @@ var REACT_APP = /^REACT_APP_/i;
 var NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development');
 var AUTH0_CLIENT_ID = JSON.stringify(process.env.AUTH0_CLIENT_ID || 'missing');
 var AUTH0_DOMAIN = JSON.stringify(process.env.AUTH0_DOMAIN || 'missing');
+var VERSION = JSON.stringify(process.env.npm_package_version || 'missing');
 
 module.exports = Object
   .keys(process.env)
@@ -15,5 +16,6 @@ module.exports = Object
   }, {
     'process.env.NODE_ENV': NODE_ENV,
     'process.env.AUTH0_CLIENT_ID': AUTH0_CLIENT_ID,
-    'process.env.AUTH0_DOMAIN': AUTH0_DOMAIN
+    'process.env.AUTH0_DOMAIN': AUTH0_DOMAIN,
+    'process.env.VERSION': VERSION
   });

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FormGroup, ControlLabel, Grid, Row, Col } from 'react-bootstrap';
 import AddEntryControls from './AddEntryControls';
+import { IconCard } from './IconCard';
 
 class TopicForm extends Component {
     constructor(props) {
@@ -23,7 +24,6 @@ class TopicForm extends Component {
     handleChange(event) {
         var valueExists = this.state.value.indexOf(event.target.value);
         var values = this.state.value.slice(0);
-
         if (valueExists === -1) {
             values.push(event.target.value);
         } else {
@@ -36,25 +36,16 @@ class TopicForm extends Component {
     }
 
     renderCheckboxes() {
-        return this.props.topics.map((t, i) => {
-            var className = 'visual-hidden topic topic-' + t.name.replace(/\s+/g, '-').toLowerCase();
-
-            return (
-                <Col xs={6} sm={3} key={i}>
-                    <label>
-                        <input
-                            type='checkbox'
-                            value={t.type}
-                            checked={this.state.value.indexOf(t.type) !== -1}
-                            className={className}
-                            onChange={this.handleChange}
-                        />
-                        <span></span>
-                        <span>{t.name}</span>
-                    </label>
-                </Col>
-            );
-        });
+        return this.props.topics.map((t, i) => (
+            <Col xs={6} sm={3} key={'col_' + i}>
+                <IconCard
+                    key={i}
+                    onChange={this.handleChange}
+                    icon={t.type}
+                    message={t.name}
+                    value={t.type} />
+            </Col>
+        ));
     }
 
     render() {
@@ -64,7 +55,9 @@ class TopicForm extends Component {
                 <Grid>
                     <Row>
                         <FormGroup controlId="topic" className='topics'>
-                            <ControlLabel>Add some labels...</ControlLabel>
+                            <Row>
+                                <ControlLabel>Add some labels...</ControlLabel>
+                            </Row>
                             {this.renderCheckboxes()}
                         </FormGroup>
                     </Row>

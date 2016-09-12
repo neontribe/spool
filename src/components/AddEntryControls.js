@@ -12,7 +12,7 @@ class AddEntryControls extends Component {
 
     render() {
         return (
-            <div className="add-entry-controls">
+            <div className="full-width">
                 <div className="group-left">
                     {this.props.onBack &&
                         <Button

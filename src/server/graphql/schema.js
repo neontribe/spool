@@ -5,14 +5,16 @@ const QueryType = new ql.GraphQLObjectType({
     name: 'Query',
     fields: {
         node: relay.fields.nodeField,
-        viewer: relay.fields.viewerField
+        viewer: relay.fields.viewerField,
+        meta: relay.fields.metaField,
     },
 })
 
 const MutationType = new ql.GraphQLObjectType({
     name: 'Mutations',
     fields: {
-        createEntry: relay.mutations.createEntry
+        createEntry: relay.mutations.createEntry,
+        updateUser: relay.mutations.updateUser,
     }
 });
 
