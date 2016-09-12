@@ -122,7 +122,7 @@ export class Signup extends React.Component {
                                             value={this.state.secret || ''} />
                                     </Col>
                                     <Col>
-                                        <HelpBlock>An unlock code is need to enable access to the dashboard</HelpBlock>
+                                        <HelpBlock>An unlock code is required to enable access to the dashboard</HelpBlock>
                                     </Col>
                                 </FormGroup>
                             }
