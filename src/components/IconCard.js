@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormGroup, ControlLabel, Button, ButtonToolbar, Glyphicon, Grid, Row, Col } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 
 export class IconCard extends Component {
     static propTypes = {

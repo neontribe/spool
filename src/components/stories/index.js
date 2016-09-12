@@ -14,3 +14,4 @@ require('./SimpleLogin');
 require('./AddEntryControls');
 require('./Signup');
 require('./Dashboard');
+require('./IconCard');

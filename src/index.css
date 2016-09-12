@@ -388,12 +388,21 @@ ul {
 
 -------------------------------- */
 
-.topics label {
+.iconCard label, .iconCard div  {
   display: block;
   margin-bottom: 1rem;
+  font-weight: bold;
 }
 
-.topics [type="checkbox"] + span {
+.iconCard label {
+  cursor: pointer;
+}
+
+.iconCard [type="checkbox"]:checked + span {
+  background-color: #2ecc71;
+}
+
+.iconCard .icon {
   position: relative;
   display: flex;
   align-items: center;
@@ -403,60 +412,44 @@ ul {
   font-family: 'Glyphicons Halflings';
   color: #fff;
   background-color: #144959;
-  cursor: pointer;
 }
 
-.topics [type="checkbox"]:checked + span {
-  background-color: #2ecc71;
-}
-
-.topic + span:before {
+.iconCard .icon:before {
   content: "\E098";
   font-size: 3rem;
 }
 
-.topic-transport + span:before {
+.iconCard.transport .icon:before {
   content: "\E108";
 }
 
-.topic-education + span:before {
+.iconCard.education .icon:before {
   content: "\E223";
 }
 
-.topic-home + span:before {
+.iconCard.home .icon:before {
   content: "\E021";
 }
 
-.topic-leisure + span:before {
+.iconCard.leisure .icon:before {
   content: "\E199";
 }
 
-.topic-health + span:before {
+.iconCard.health .icon:before {
   content: "\E143";
 }
 
-.topic-food + span:before {
+.iconCard.food .icon:before {
   content: "\E179";
 }
 
-.topic-sport + span:before {
+.iconCard.sport .icon:before {
   content: "\E221";
 }
 
-.topic-work + span:before {
+.iconCard.work .icon:before {
   content: "\E139";
 }
-
-
-
-
-
-
-
-
-
-
-
 
 .media-form {
   text-align: center;
