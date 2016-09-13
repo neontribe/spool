@@ -9,6 +9,7 @@ import App from './App';
 import RoleSwitchContainer from './components/RoleSwitch';
 import { TimelineContainer } from './components/Timeline';
 import { DashboardContainer } from './components/Dashboard';
+import RequestForm from './components/RequestForm';
 import SimpleLogin from './components/SimpleLogin';
 import { SignupContainer } from './components/Signup';
 import { AddEntryContainer } from './components/AddEntry';
@@ -59,7 +60,7 @@ ReactDOM.render(
     <Route path="/" component={App} auth={auth}>
         <IndexRedirect to="home" />
         <Route path="home" component={RoleSwitchContainer} queries={ViewerQueries} onEnter={auth.requireAuthOnEnter}>
-            <IndexRoute auth={auth}
+            <IndexRoute
                 components={{
                     Creator: TimelineContainer,
                     Consumer: DashboardContainer,
@@ -72,6 +73,7 @@ ReactDOM.render(
                 }}
             />
         </Route>
+        <Route path="requests/add" component={RequestForm} auth={auth} />
         <Route path="add" component={AddEntryContainer} queries={ViewerQueries} onEnter={auth.requireAuthOnEnter}>
             <IndexRedirect to="topic"/>
             <Route path="topic" component={TopicForm} />

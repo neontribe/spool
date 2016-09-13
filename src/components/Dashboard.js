@@ -1,38 +1,13 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Glyphicon } from 'react-bootstrap';
 import TopicsOverview from './TopicsOverview';
-import RequestForm from './RequestForm';
 import Relay from 'react-relay';
 import moment from 'moment';
+import { Link } from 'react-router';
 
 import { topicsWithCounts } from './stories/fixtures';
 
 export class Dashboard extends Component {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            showRequestForm: false,
-            requestTopic: null,
-            issuerProfile: props.route.auth.getProfile()
-        }
-
-        this.createRequest = this.createRequest.bind(this);
-        this.cancelRequest = this.cancelRequest.bind(this);
-    }
-
-    createRequest(requestTopic) {
-        this.setState({
-            showRequestForm: true,
-            requestTopic
-        });
-    }
-
-    cancelRequest() {
-        this.setState({
-            showRequestForm: false,
-            requestTopic: null
-        })
-    }
 
     render() {
         return (
@@ -52,6 +27,12 @@ export class Dashboard extends Component {
                             </select>
                        </label>
                     </Col>
+                    <Col xs={2}>
+                        <div className="centered">
+                            <Link className="btn" to={'/requests/add'}>
+                                <Glyphicon glyph="plus"/> New Access Request</Link>
+                        </div>
+                    </Col>
                 </Row>
                 <Row>
                     <Col xs={12}>
@@ -64,11 +45,6 @@ export class Dashboard extends Component {
                        <TopicsOverview topics={this.props.topics} />
                    </Col>
                </Row>
-                <RequestForm
-                    show={this.state.showRequestForm}
-                    cancel={this.cancelRequest}
-                    topic={this.state.requestTopic}
-                    issuerProfile={this.state.issuerProfile}/>
             </Grid>
         );
     }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import  _ from 'lodash';
 
-class AddEntryControls extends Component {
+class AddControls extends Component {
 
     constructor(props) {
         super(props);
@@ -52,7 +52,7 @@ class AddEntryControls extends Component {
     }
 }
 
-AddEntryControls.propTypes = {
+AddControls.propTypes = {
     onQuit: React.PropTypes.func,
     onBack: React.PropTypes.func,
     onNext: React.PropTypes.func,
@@ -61,8 +61,8 @@ AddEntryControls.propTypes = {
     disableQuit: React.PropTypes.bool
 };
 
-AddEntryControls.defaultProps = {
+AddControls.defaultProps = {
 
 };
 
-export default AddEntryControls;
+export default AddControls;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
-import AddEntryControls from './AddEntryControls';
+import AddControls from './AddControls';
 
 class TextForm extends Component {
     constructor(props) {
@@ -41,7 +41,7 @@ class TextForm extends Component {
                         </FormGroup>
                     </Col>
                     <Col>
-                        <AddEntryControls
+                        <AddControls
                             onNext={this.continue}
                             disableNext={!this.state.value}
                             />

@@ -11,7 +11,7 @@ require('./SentimentForm');
 require('./TopicForm');
 require('./Intro');
 require('./SimpleLogin');
-require('./AddEntryControls');
+require('./AddControls');
 require('./Signup');
 require('./Dashboard');
 require('./IconCard');
