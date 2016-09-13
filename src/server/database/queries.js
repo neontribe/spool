@@ -141,9 +141,9 @@ WHERE
 
 const userCreate = (hash) => SQL`
 INSERT INTO
-    user_account (auth_hash)
+    user_account (auth_hash, timestamp)
 VALUES
-    (${hash})
+    (${hash}, now())
 RETURNING
     user_id AS id`.setName('user_create');
 
