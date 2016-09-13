@@ -95,6 +95,15 @@ const DateRangeInputType = new ql.GraphQLInputObjectType({
     }
 });
 
+const RequestInputType = new ql.GraphQLInputObjectType({
+    name: 'RequestInput',
+    fields: {
+        range: {
+            type: DateRangeInputType
+        }
+    }
+});
+
 const UserInputType = new ql.GraphQLInputObjectType({
     name: 'UserInput',
     fields: {
@@ -115,6 +124,7 @@ module.exports = {
     RoleDefinitionType,
     MediaInputType,
     EntryInputType,
+    RequestInputType,
     DateRangeInputType,
     UserInputType,
 };

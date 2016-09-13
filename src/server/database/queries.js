@@ -159,7 +159,8 @@ const request = {
             request.request_id AS id,
             request.user_id,
             request.start,
-            request.end
+            request.end,
+            region_type.type AS region,
         FROM
             request
         JOIN
@@ -187,10 +188,18 @@ const user_request = {
         SELECT
             user_request.user_request_id
             user_request.user_id,
+            user_request.seen,
             user_request.request_id,
-            user_request.seen
+            request.user_id AS request_user_id,
+            request.start AS request_start,
+            request.end AS request_end,
+            region_type.type AS request_region,
         FROM
-            user_request`,
+            user_request
+        JOIN
+            request ON request.request_id = user_request.request_id
+        JOIN
+            region_type ON region_type.region_type_id = user_account.region_type_id`,
     create: (requestId, userId) => SQL`
         INSERT INTO
             user_request (request_id, user_id)
@@ -215,7 +224,6 @@ const user_request = {
         .setName('user_request_by_user_request_id'),
     byUserBeforeEnd: (userId, timestamp) => SQL``
         .append(user_request._root)
-        .append(SQL` JOIN request ON request.request_id = user_request.request_id`)
         .append(SQL` WHERE user_request.user_id = ${userId} AND request.end > ${timestamp}`)
         .setName('user_request_by_user_before_timestamp'),
 }

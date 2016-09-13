@@ -408,19 +408,21 @@ class Role {
     }
 }
 class Request {
-    constructor(id, user, start, end) {
+    constructor(id, user, start, end, region) {
         this.id = id;
         this.user = user;
         this.start = moment(start);
         this.end = moment(end);
+        this.region = region;
     }
     static inflate(row, prefix = '') {
         var p = (name) => prefix + name;
         var id = row[p('id')];
         var start = row[p('start')];
         var end = row[p('end')];
-        var user = User.inflate(row, 'user');
-        return new Request(id, user, start, end);
+        var region = row[p('region')];
+        var user = User.inflate(row, p+'user_');
+        return new Request(id, user, start, end, region);
     }
     static create(db, userId, start, end) {
         var p = new Promise(function (resolve, reject) {
@@ -481,19 +483,19 @@ class Request {
     }
 }
 class UserRequest {
-    constructor(id, requestId, user, seen) {
+    constructor(id, request, user, seen) {
         this.id = id;
-        this.requestId = requestId;
+        this.request = request;
         this.user = user;
         this.seen = seen;
     }
     static inflate(row, prefix = '') {
         var p = (name) => prefix + name;
         var id = row[p('id')];
-        var user = User.inflate(row, 'user');
-        var requestId = row[p('request_id')];
+        var user = User.inflate(row, 'user_');
+        var request = Request.inflate(row, 'request_');
         var seen = row[p('seen')];
-        return new Request(id, requestId, user, !!seen);
+        return new Request(id, request, user, !!seen);
     }
     static findById(db, id) {
         var p = new Promise(function (resolve, reject) {
