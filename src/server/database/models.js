@@ -149,6 +149,27 @@ class User {
 
         return p;
     }
+    
+    static findByRegionType(db, regionType) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function ({client, done}) {
+                client.query(queries.user.byRegionType(regionType), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows);
+                    }
+                });
+            });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map((row) => User.inflate(row));
+        });
+
+        return p;
+    }
 }
 
 class Topic {
@@ -304,6 +325,27 @@ class Entry {
         return p;
     }
 
+    static findByOwnerBeforeTimestamp(ownerId, timestamp) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.entry.byOwnerBeforeTimestamp(ownerId, timestamp.format()), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows)
+                    }
+                });
+            });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map((row) => Entry.inflate(row));
+        });
+
+        return p;
+    }
+
     static create(db, entry) {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
@@ -326,7 +368,226 @@ class Entry {
         return p;
     }
 }
+class Role {
+    constructor(type, name, secret, hidden) {
+        this.type = type;
+        this.name = name;
+        this.hidden = hidden;
+        if(!this.hidden) {
+            this.secret = secret;
+        }
+    }
+    static inflate(row, prefix = '') {
+        var p = (name) => prefix + name;
+        var type = row[p('type')];
+        var name = row[p('name')];
+        var secret = row[p('secret')];
+        var hidden = row[p('hidden')];
 
+        return new Role(type, name, secret, !!hidden);
+    }
+    static findAll(db) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.role.all(), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows);
+                    }
+                });
+            });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map(row => Role.inflate(row));
+        });
+
+        return p;
+    }
+}
+class Request {
+    constructor(id, user, start, end) {
+        this.id = id;
+        this.user = user;
+        this.start = moment(start);
+        this.end = moment(end);
+    }
+    static inflate(row, prefix = '') {
+        var p = (name) => prefix + name;
+        var id = row[p('id')];
+        var start = row[p('start')];
+        var end = row[p('end')];
+        var user = User.inflate(row, 'user');
+        return new Request(id, user, start, end);
+    }
+    static create(db, userId, start, end) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.request.create(userId, start.format(), end.format()), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        let id = result.rows[0].request_id;
+                        resolve(Request.findById(db, id).then((request) => request.shift()));
+                    }
+                });
+            });
+        });
+
+        return p;
+    }
+    static findById(db, requestId) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.request.byId(requestId), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows)
+                    }
+                });
+            });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map((row) => Request.inflate(row));
+        });
+
+        return p;
+    }
+    static findByRegionBeforeEnd(db, regionType, timestamp) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.request.findByRegionBeforeEnd(regionType, timestamp.format()), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows);
+                    }
+                });
+            });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map(row => Request.inflate(row));
+        });
+
+        return p;
+    }
+}
+class UserRequest {
+    constructor(id, requestId, user, seen) {
+        this.id = id;
+        this.requestId = requestId;
+        this.user = user;
+        this.seen = seen;
+    }
+    static inflate(row, prefix = '') {
+        var p = (name) => prefix + name;
+        var id = row[p('id')];
+        var user = User.inflate(row, 'user');
+        var requestId = row[p('request_id')];
+        var seen = row[p('seen')];
+        return new Request(id, requestId, user, !!seen);
+    }
+    static findById(db, id) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.user_request.byId(id), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows)
+                    }
+                });
+            });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map((row) => UserRequest.inflate(row));
+        });
+
+        return p;
+    }
+    static findByUserNotSeen(db, userId) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.user_request.byUserNotSeen(userId), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows)
+                    }
+                });
+            });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map((row) => UserRequest.inflate(row));
+        });
+
+        return p;
+    }
+    static findByUserBeforeEnd(db, userId, timestamp) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.user_request.byUserBeforeEnd(userId, timestamp.format()), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows)
+                    }
+                });
+            });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map((row) => UserRequest.inflate(row));
+        });
+
+        return p;
+    }
+    static create(db, requestId, userId) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.user_request.create(requestId, userId), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        let id = result.rows[0].user_request_id;
+                        resolve(UserRequest.findById(db, id).then((userRequests) => userRequests.shift()));
+                    }
+                });
+            });
+        });
+
+        return p;
+    }
+    static linkEntry(db, entryId, userRequestId) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.user_request.entry.create(entryId, userRequestId), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        });
+        return p;
+    }
+}
 /* The following classes have no importance, merely a store for a collection of useful statics */
 class Count { 
     static findCreatorActivity(db, from, to, isActive = (entryCount => entryCount >= 1)) {
@@ -374,45 +635,6 @@ class Region {
         return p;
     }
 }
-class Role {
-    constructor(type, name, secret, hidden) {
-        this.type = type;
-        this.name = name;
-        this.hidden = hidden;
-        if(!this.hidden) {
-            this.secret = secret;
-        }
-    }
-    static inflate(row, prefix = '') {
-        var p = (name) => prefix + name;
-        var type = row[p('type')];
-        var name = row[p('name')];
-        var secret = row[p('secret')];
-        var hidden = row[p('hidden')];
-
-        return new Role(type, name, secret, !!hidden);
-    }
-    static findAll(db) {
-        var p = new Promise(function (resolve, reject) {
-            db.connect().then(function({client, done}) {
-                client.query(queries.role.all(), function (error, result) {
-                    done();
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(result.rows);
-                    }
-                });
-            });
-        });
-
-        p = p.then(function (rows) {
-            return rows.map(row => Role.inflate(row));
-        });
-
-        return p;
-    }
-}
 
 module.exports = {
     Entry,
@@ -422,4 +644,6 @@ module.exports = {
     Count,
     Region,
     Role,
+    Request,
+    UserRequest
 }
