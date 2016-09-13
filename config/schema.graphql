@@ -18,6 +18,16 @@ type CreateEntryPayload {
   clientMutationId: String!
 }
 
+input CreateRequestInput {
+  request: RequestInput
+  clientMutationId: String!
+}
+
+type CreateRequestPayload {
+  viewer: Viewer
+  clientMutationId: String!
+}
+
 type Creator {
   entries(after: String, first: Int, before: String, last: Int): EntryConnection
   happyCount: Int
@@ -97,6 +107,7 @@ type Missing {
 
 type Mutations {
   createEntry(input: CreateEntryInput!): CreateEntryPayload
+  createRequest(input: CreateRequestInput!): CreateRequestPayload
   updateUser(input: UpdateUserInput!): UpdateUserPayload
 }
 
@@ -129,6 +140,10 @@ type Query {
   ): Node
   viewer: Viewer
   meta: Meta
+}
+
+input RequestInput {
+  range: DateRangeInput
 }
 
 union Role = Creator | Consumer | Missing

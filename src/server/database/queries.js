@@ -156,10 +156,11 @@ const role = {
 const request = {
     _root: SQL`
         SELECT
-            request.request_id,
+            request.request_id AS id,
             request.user_id,
             request.start,
-            request.end
+            request.end,
+            region_type.type AS region,
         FROM
             request
         JOIN
@@ -173,6 +174,9 @@ const request = {
             (${userId}, ${start}, ${end})
         RETURNING
             request_id`.setName('request_create'),
+    byId: (requestId) => SQL``
+        .append(request._root)
+        .append(SQL` WHERE request.request_id = ${requestId}`),
     byRegionBeforeEnd: (regionType, timestamp) => SQL``
         .append(request._root)
         .append(SQL` WHERE region_type.type = ${regionType} AND request.end > timestamp`)
@@ -184,18 +188,26 @@ const user_request = {
         SELECT
             user_request.user_request_id
             user_request.user_id,
+            user_request.seen,
             user_request.request_id,
-            user_request.seen
+            request.user_id AS request_user_id,
+            request.start AS request_start,
+            request.end AS request_end,
+            region_type.type AS request_region,
         FROM
-            user_request`,
+            user_request
+        JOIN
+            request ON request.request_id = user_request.request_id
+        JOIN
+            region_type ON region_type.region_type_id = user_account.region_type_id`,
     create: (requestId, userId) => SQL`
         INSERT INTO
             user_request (request_id, user_id)
         VALUES
             (${requestId}, ${userId})
         RETURNING
-            request_id`.setName('user_request_create'),
-    entries: {
+            user_request_id`.setName('user_request_create'),
+    entry: {
         create: (entryId, userRequestId) => SQL`
             INSERT INTO
                 x_entries_user_requests
@@ -206,9 +218,12 @@ const user_request = {
         .append(user_request._root)
         .append(SQL` WHERE user_request.user_id = ${userId} AND user_request.seen IS FALSE`)
         .setName('user_request_by_user_not_seen'),
+    byId: (userRequestId) => SQL``
+        .append(user_request._root)
+        .append(SQL` WHERE user_request.user_request_id = ${userRequestId}`)
+        .setName('user_request_by_user_request_id'),
     byUserBeforeEnd: (userId, timestamp) => SQL``
         .append(user_request._root)
-        .append(SQL` JOIN request ON request.request_id = user_request.request_id`)
         .append(SQL` WHERE user_request.user_id = ${userId} AND request.end > ${timestamp}`)
         .setName('user_request_by_user_before_timestamp'),
 }
