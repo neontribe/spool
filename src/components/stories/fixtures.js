@@ -145,3 +145,7 @@ export const googleProfile = {
     "created_at": "2016-08-15T23:01:02.918Z",
     "global_client_id": "xxxx"
 };
+
+export const auth = {
+    getProfile: function() { return googleProfile; }
+};

@@ -396,13 +396,15 @@ ul {
   display: block;
   margin-bottom: 1rem;
   font-weight: bold;
+  color: #fff;
+  background-color: #144959;
 }
 
 .iconCard label {
   cursor: pointer;
 }
 
-.iconCard [type="checkbox"]:checked + span {
+.iconCard [type="checkbox"]:checked ~ span {
   background-color: #2ecc71;
 }
 
@@ -412,10 +414,15 @@ ul {
   align-items: center;
   justify-content: center;
   min-height: 100px;
-  margin-bottom: .25rem;
   font-family: 'Glyphicons Halflings';
-  color: #fff;
-  background-color: #144959;
+}
+
+.iconCard .title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-bottom: .25rem;
 }
 
 .iconCard .icon:before {
@@ -494,4 +501,8 @@ ul {
 
 .intro h2 {
   margin-bottom: .5em;
+}
+
+.clear {
+    clear: both;
 }

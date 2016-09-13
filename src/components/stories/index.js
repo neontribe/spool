@@ -15,3 +15,4 @@ require('./AddEntryControls');
 require('./Signup');
 require('./Dashboard');
 require('./IconCard');
+require('./RequestForm');
