@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, Glyphicon, Image, FormGroup, ControlLabel } from 'react-bootstrap';
+import { Modal, Button, Glyphicon, Image, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
 import DatePicker from 'react-bootstrap-date-picker';
 import _ from 'lodash';
 import moment from 'moment';
@@ -12,12 +12,15 @@ class RequestForm extends Component {
         this.state = {
             request: {
                 fromDate: moment().toISOString(),
-                toDate: moment().add(1, 'months').toISOString()
+                toDate: moment().add(1, 'months').toISOString(),
+                reason: '',
+                issuerProfile: props.issuerProfile
             }
         }
 
         this.save = this.save.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     save() {
@@ -30,6 +33,10 @@ class RequestForm extends Component {
         this.setState({
             request
         });
+    }
+
+    handleInputChange(key, evt) {
+        this.handleChange(key, evt.target.value);
     }
 
     render(){
@@ -61,6 +68,14 @@ class RequestForm extends Component {
                           onChange={_.partial(this.handleChange, 'toDate')} />
                     </FormGroup>
 
+                    <FormGroup>
+                        <ControlLabel>Because</ControlLabel>
+                        <FormControl componentClass="textarea"
+                          maxLength={this.props.maxLength}
+                          onChange={_.partial(this.handleInputChange, 'reason')} />
+                        <HelpBlock>{this.state.request.reason.length} of {this.props.maxLength} letters used</HelpBlock>
+                    </FormGroup>
+
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.props.cancel}><Glyphicon glyph="remove"/> Cancel</Button>
@@ -75,7 +90,12 @@ RequestForm.propTypes = {
     cancel: React.PropTypes.func,
     show: React.PropTypes.bool,
     topic: React.PropTypes.string,
-    issuerProfile: React.PropTypes.object
+    issuerProfile: React.PropTypes.object,
+    maxLength: React.PropTypes.number
+}
+
+RequestForm.defaultProps = {
+    maxLength: 240
 }
 
 export default RequestForm;
