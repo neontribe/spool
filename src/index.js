@@ -59,7 +59,7 @@ ReactDOM.render(
     <Route path="/" component={App} auth={auth}>
         <IndexRedirect to="home" />
         <Route path="home" component={RoleSwitchContainer} queries={ViewerQueries} onEnter={auth.requireAuthOnEnter}>
-            <IndexRoute
+            <IndexRoute auth={auth}
                 components={{
                     Creator: TimelineContainer,
                     Consumer: DashboardContainer,

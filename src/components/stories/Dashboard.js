@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import { Dashboard } from '../Dashboard';
+import { auth } from './fixtures';
 
 const viewer = {
     role: {
@@ -13,5 +14,5 @@ const viewer = {
 
 storiesOf('Dashboard', module)
   .add('Initial View', () => (
-    <Dashboard viewer={viewer}/>
+    <Dashboard viewer={viewer} route={{auth}}/>
   ));
