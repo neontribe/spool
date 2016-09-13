@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Button, Glyphicon, Badge } from 'react-bootstrap';
-import { IconCard } from './IconCard';
+import { Grid, Row, Col } from 'react-bootstrap';
+import TopicsOverview from './TopicsOverview';
 import RequestForm from './RequestForm';
 import Relay from 'react-relay';
-import _ from 'lodash';
 import moment from 'moment';
+
+import { topicsWithCounts } from './stories/fixtures';
 
 export class Dashboard extends Component {
     constructor(props, context) {
@@ -58,31 +59,11 @@ export class Dashboard extends Component {
                         <p>Stale: {this.props.viewer.role.creatorActivityCount.stale}</p>
                     </Col>
                 </Row>
-                <Row>
-                    <Col xs={12}>
-                        <h2>Entries by topic</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={2}>
-                        <IconCard message="Transport" icon="transport" />
-                    </Col>
-                    <Col xs={4}>
-                        <div><Badge>32</Badge> entries by <Badge>8</Badge> creators</div>
-                        <Button onClick={_.partial(this.createRequest, 'transport')}>
-                            <Glyphicon glyph="comment"/>Request Access
-                        </Button>
-                    </Col>
-                    <Col xs={2}>
-                        <IconCard message="Education" icon="education" />
-                    </Col>
-                    <Col xs={4}>
-                        <div><Badge>12</Badge> entries by <Badge>7</Badge> creators</div>
-                        <Button onClick={_.partial(this.createRequest, 'education')}>
-                            <Glyphicon glyph="comment"/>Request Access
-                        </Button>
-                    </Col>
-                </Row>
+               <Row>
+                   <Col xs={12}>
+                       <TopicsOverview topics={this.props.topics} />
+                   </Col>
+               </Row>
                 <RequestForm
                     show={this.state.showRequestForm}
                     cancel={this.cancelRequest}
@@ -92,6 +73,14 @@ export class Dashboard extends Component {
         );
     }
 };
+
+Dashboard.propTypes = {
+    topics: React.PropTypes.array
+};
+
+Dashboard.defaultProps = {
+    topics: topicsWithCounts
+}
 /*
  *
                 <Row>

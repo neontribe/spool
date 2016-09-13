@@ -506,3 +506,8 @@ ul {
 .clear {
     clear: both;
 }
+
+.topicCount {
+    margin-bottom: .5em;
+    text-align: center;
+}

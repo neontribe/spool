@@ -121,6 +121,14 @@ export const topics = [
     { name: 'Food', type: 'food' },
 ];
 
+export const topicsWithCounts = [
+    { name: 'Transport', type: 'transport', userCount: 4, entryCount: 10 },
+    { name: 'Health', type: 'health', userCount: 2, entryCount: 8 },
+    { name: 'Leisure', type: 'leisure', userCount: 12, entryCount: 34 },
+    { name: 'Work', type: 'work', userCount: 0, entryCount: 0 },
+    { name: 'Food', type: 'food', userCount: 40, entryCount: 103 },
+];
+
 export const googleProfile = {
     "email": "fernando@example.com",
     "email_verified": true,

@@ -16,3 +16,4 @@ require('./Signup');
 require('./Dashboard');
 require('./IconCard');
 require('./RequestForm');
+require('./TopicsOverview');
