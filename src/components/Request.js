@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, Button, Glyphicon, Image } from 'react-bootstrap';
+import Relay from 'react-relay';
 
 class Request extends Component {
     constructor(props) {
@@ -16,15 +17,12 @@ class Request extends Component {
         this.setState({
             alertVisible: false
         });
-        if (this.props.onDismiss) {
-            this.props.onDismiss();
-        }
     }
 
     render() {
         if (this.state.alertVisible) {
             return (
-                <Alert bsStyle="info" onDismiss={this.handleAlertDismiss} >
+                <Alert bsStyle="info" onDismiss={this.props.allowMutation ? this.handleAlertDismiss : null} >
                     <Image
                             src={this.props.issuerAvatar}
                             className='profile-img'
@@ -52,10 +50,16 @@ class Request extends Component {
                             <IconCard icon="question-sign" />
                         </div>
                     </div>**/}
-                    <div className="full-width centered">
-                        <Button bsStyle="danger" onClick={this.props.onDeny}><Glyphicon glyph="remove"/> No</Button>
-                        <Button bsStyle="success" onClick={this.props.onAccept}><Glyphicon glyph="ok"/> Yes</Button>
-                    </div>
+
+                        <div className="full-width centered">
+                            <Button bsStyle="danger"
+                                disabled={!this.props.allowMutation}
+                                onClick={this.props.onDeny}><Glyphicon glyph="remove"/> No</Button>
+                            <Button bsStyle="success"
+                                disabled={!this.props.allowMutation}
+                                onClick={this.props.onAccept}><Glyphicon glyph="ok"/> Yes</Button>
+                        </div>
+
                 </Alert>
             );
         } else {
@@ -71,9 +75,15 @@ Request.PropTypes = {
     topics: React.PropTypes.array.isRequired,
     issuerName: React.PropTypes.string.isRequired,
     issuerAvatar: React.PropTypes.string.isRequired,
-    onAccept: React.PropTypes.func.isRequired,
-    onDeny: React.PropTypes.func.isRequired,
-    onDismiss: React.PropTypes.func
+    allowMutation: React.PropTypes.bool
+}
+
+Request.defaultProps = {
+    allowMutation: true
 }
 
 export default Request;
+
+export const RequestContainer = Relay.createContainer(Request, {
+    fragments: {}
+});

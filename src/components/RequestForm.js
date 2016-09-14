@@ -8,6 +8,7 @@ import TopicChooser from './TopicChooser';
 import Relay from 'react-relay';
 import AddRequestMutation from './mutations/AddRequestMutation.js';
 import Request from './Request';
+import { withRouter } from 'react-router';
 
 export class RequestForm extends Component {
 
@@ -18,7 +19,7 @@ export class RequestForm extends Component {
 
         this.state = {
             request: {
-                fromDate: moment().toISOString(),
+                fromDate: moment().add(-1, 'months').toISOString(),
                 toDate: moment().add(1, 'months').toISOString(),
                 reason: '',
                 topics: [],
@@ -30,10 +31,11 @@ export class RequestForm extends Component {
         this.save = this.save.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.validateRequest = this.validateRequest.bind(this);
     }
 
     save() {
-        var onSuccess = () => console.log('onSuccess() RequestForm');
+        var onSuccess = () => this.props.router.push('/home');
         var viewer = this.props.viewer;
         this.props.relay.commitUpdate(
             new AddRequestMutation({request: this.state.request, viewer}),
@@ -44,13 +46,25 @@ export class RequestForm extends Component {
     handleChange(key, value) {
         var request = this.state.request;
         request[key] = value;
+        var requestIsComplete = this.validateRequest(request);
         this.setState({
-            request
+            request,
+            requestIsComplete
         });
     }
 
     handleInputChange(key, evt) {
         this.handleChange(key, evt.target.value);
+    }
+
+    validateRequest(request) {
+        var valid = true;
+        _.forOwn(request, (value) => {
+            if (_.isEmpty(value)) {
+                valid = false;
+            }
+        });
+        return valid;
     }
 
     render(){
@@ -66,6 +80,7 @@ export class RequestForm extends Component {
                         <h3>Preview:</h3>
                         <Request
                             {...this.state.request}
+                            allowMutation={false}
                              />
                     </Col>
                 </Row>
@@ -77,29 +92,33 @@ export class RequestForm extends Component {
                             maxSelections={1}
                             onChange={_.partial(this.handleChange, 'topics')} />
                         <FormGroup>
-                            <ControlLabel>From</ControlLabel>
-                            <DatePicker value={this.state.request.fromDate}
-                              onChange={_.partial(this.handleChange, 'fromDate')} />
-                        </FormGroup>
-
-                        <FormGroup>
-                            <ControlLabel>To</ControlLabel>
-                            <DatePicker value={this.state.request.toDate}
-                              onChange={_.partial(this.handleChange, 'toDate')} />
-                        </FormGroup>
-
-                        <FormGroup>
                             <ControlLabel>Because</ControlLabel>
                             <FormControl componentClass="textarea"
                               maxLength={this.props.maxLength}
                               onChange={_.partial(this.handleInputChange, 'reason')} />
                             <HelpBlock>{this.state.request.reason.length} of {this.props.maxLength} letters used</HelpBlock>
                         </FormGroup>
+                        <FormGroup>
+                            <ControlLabel>From</ControlLabel>
+                            <DatePicker value={this.state.request.fromDate}
+                              onChange={_.partial(this.handleChange, 'fromDate')} />
+                            <HelpBlock>The request will be sent to people who made entries with the {this.state.request.topics.join(' and ')} topic after this date.</HelpBlock>
+                        </FormGroup>
+
+                        <FormGroup>
+                            <ControlLabel>To</ControlLabel>
+                            <DatePicker value={this.state.request.toDate}
+                              onChange={_.partial(this.handleChange, 'toDate')} />
+                          <HelpBlock>People who make entries in the {this.state.request.topics.join(' and ')} topic will be shown this request until this  date.</HelpBlock>
+                        </FormGroup>
                     </Col>
                 </Row>
                 <Row>
                     <Col xsOffset={3} xs={6}>
-                        <AddControls onNext={this.save} />
+                        <AddControls
+                            disableNext={!this.state.requestIsComplete}
+                            onNext={this.save}
+                            onQuit={this.props.router.goBack}/>
                     </Col>
                 </Row>
             </Grid>
@@ -114,6 +133,8 @@ RequestForm.propTypes = {
 RequestForm.defaultProps = {
     maxLength: 240
 }
+
+RequestForm = withRouter(RequestForm);
 
 export default RequestForm;
 

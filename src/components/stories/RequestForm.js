@@ -1,5 +1,5 @@
 import React from 'react';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import RequestForm from '../RequestForm';
 
 import { auth, topics } from './fixtures';
@@ -9,5 +9,6 @@ storiesOf('RequestForm', module)
     <RequestForm
         route={{auth}}
         viewer={{topics}}
+        router={{goBack: action('back')}}
     />
   ));
