@@ -13,13 +13,16 @@ class RequestForm extends Component {
     constructor(props) {
         super(props);
 
+        var {name: issuerName, picture: issuerAvatar} = props.route.auth.getProfile();
+
         this.state = {
             request: {
                 fromDate: moment().toISOString(),
                 toDate: moment().add(1, 'months').toISOString(),
                 reason: '',
-                issuerProfile: props.route.auth.getProfile(),
-                topic: null
+                topics: null,
+                issuerName,
+                issuerAvatar
             }
         }
 
@@ -55,11 +58,11 @@ class RequestForm extends Component {
                 <Row>
                     <Col xsOffset={3} xs={6}>
                         <Image
-                            src={this.state.request.issuerProfile.picture}
+                            src={this.state.request.issuerAvatar}
                             className='profile-img'
                             circle
                         />
-                        <span>{this.state.request.issuerProfile.name}</span>
+                        <span>{this.state.request.issuerName}</span>
                     </Col>
                 </Row>
                 <Row>
@@ -68,7 +71,7 @@ class RequestForm extends Component {
                             label="Would like to see entries about"
                             topics={this.props.topics}
                             maxSelections={1}
-                            onChange={_.partial(this.handleChange, 'topic')} />
+                            onChange={_.partial(this.handleChange, 'topics')} />
                         <FormGroup>
                             <ControlLabel>From</ControlLabel>
                             <DatePicker value={this.state.request.fromDate}

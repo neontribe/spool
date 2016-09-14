@@ -45,3 +45,5 @@ export class IconCard extends Component {
         return this.renderStatic();
     }
 };
+
+export default IconCard;
