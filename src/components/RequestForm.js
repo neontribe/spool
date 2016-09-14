@@ -59,7 +59,7 @@ class RequestForm extends Component {
                             className='profile-img'
                             circle
                         />
-                        <span>{this.state.request.issuerProfile.nickname}</span>
+                        <span>{this.state.request.issuerProfile.name}</span>
                     </Col>
                 </Row>
                 <Row>
