@@ -67,6 +67,7 @@ class RequestForm extends Component {
                         <TopicChooser
                             label="Would like to see entries about"
                             topics={this.props.topics}
+                            maxSelections={1}
                             onChange={_.partial(this.handleChange, 'topic')} />
                         <FormGroup>
                             <ControlLabel>From</ControlLabel>
