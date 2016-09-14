@@ -17,3 +17,4 @@ require('./Dashboard');
 require('./IconCard');
 require('./RequestForm');
 require('./TopicsOverview');
+require('./TopicChooser');
