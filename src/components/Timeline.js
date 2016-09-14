@@ -66,6 +66,21 @@ export const TimelineContainer = Relay.createContainer(Timeline, {
                             }
                         }
                     }
+                    requests(first: $first) {
+                        edges {
+                            node {
+                                id,
+                                _id,
+                                request {
+                                    id
+                                    from
+                                    to
+                                    region
+                                }
+                                seen
+                            }
+                        }
+                    }
                 }
             }
         }`,

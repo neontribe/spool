@@ -30,6 +30,7 @@ type CreateRequestPayload {
 
 type Creator {
   entries(after: String, first: Int, before: String, last: Int): EntryConnection
+  requests(after: String, first: Int, before: String, last: Int): UserRequestConnection
   happyCount: Int
   sadCount: Int
 }
@@ -142,6 +143,16 @@ type Query {
   meta: Meta
 }
 
+type Request implements Node {
+  # The ID of an object
+  id: ID!
+  _id: Int
+  from: String
+  to: String
+  region: String
+  user: User
+}
+
 input RequestInput {
   range: DateRangeInput
 }
@@ -180,6 +191,32 @@ type User {
 input UserInput {
   region: String!
   roleSecret: String!
+}
+
+type UserRequest implements Node {
+  # The ID of an object
+  id: ID!
+  _id: Int
+  request: Request
+  seen: Boolean
+}
+
+# A connection to a list of items.
+type UserRequestConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [UserRequestEdge]
+}
+
+# An edge in a connection.
+type UserRequestEdge {
+  # The item at the end of the edge
+  node: UserRequest
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 type Viewer implements Node {

@@ -410,6 +410,7 @@ class Role {
 class Request {
     constructor(id, user, from, to, region) {
         this.id = id;
+        this._id = id;
         this.user = user;
         this.from = moment(from);
         this.to = moment(to);
@@ -485,6 +486,7 @@ class Request {
 class UserRequest {
     constructor(id, request, user, seen) {
         this.id = id;
+        this._id = id;
         this.request = request;
         this.user = user;
         this.seen = seen;
