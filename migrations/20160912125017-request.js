@@ -23,12 +23,19 @@ module.exports = {
               },
 //              onDelete: 'CASCADE' ? hmm
           },
-          start: { 
+          region_type_id: {
+            type: Sequelize.INTEGER,
+            references: {
+                model: 'region_type',
+                key: 'region_type_id'
+            }
+          },
+          from: { 
               type: Sequelize.DATE
           },
-          end: { 
+          to: { 
               type: Sequelize.DATE
-          }
+          },
       });
   },
 

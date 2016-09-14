@@ -150,10 +150,10 @@ class User {
         return p;
     }
     
-    static findByRegionType(db, regionType) {
+    static findByRoleAndRegionType(db, roleType, regionType) {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function ({client, done}) {
-                client.query(queries.user.byRegionType(regionType), function (error, result) {
+                client.query(queries.user.byRoleAndRegionType(roleType, regionType), function (error, result) {
                     done();
                     if (error) {
                         reject(error);
@@ -325,7 +325,7 @@ class Entry {
         return p;
     }
 
-    static findByOwnerBeforeTimestamp(ownerId, timestamp) {
+    static findByOwnerBeforeTimestamp(db, ownerId, timestamp) {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
                 client.query(queries.entry.byOwnerBeforeTimestamp(ownerId, timestamp.format()), function (error, result) {
@@ -408,26 +408,26 @@ class Role {
     }
 }
 class Request {
-    constructor(id, user, start, end, region) {
+    constructor(id, user, from, to, region) {
         this.id = id;
         this.user = user;
-        this.start = moment(start);
-        this.end = moment(end);
+        this.from = moment(from);
+        this.to = moment(to);
         this.region = region;
     }
     static inflate(row, prefix = '') {
         var p = (name) => prefix + name;
         var id = row[p('id')];
-        var start = row[p('start')];
-        var end = row[p('end')];
+        var from = row[p('from')];
+        var to = row[p('to')];
         var region = row[p('region')];
-        var user = User.inflate(row, p+'user_');
-        return new Request(id, user, start, end, region);
+        var user = User.inflate(row, prefix+'user_');
+        return new Request(id, user, from, to, region);
     }
-    static create(db, userId, start, end) {
+    static create(db, userId, from, to, region) {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
-                client.query(queries.request.create(userId, start.format(), end.format()), function (error, result) {
+                client.query(queries.request.create(userId, from.format(), to.format(), region), function (error, result) {
                     done();
                     if (error) {
                         reject(error);
@@ -492,10 +492,10 @@ class UserRequest {
     static inflate(row, prefix = '') {
         var p = (name) => prefix + name;
         var id = row[p('id')];
-        var user = User.inflate(row, 'user_');
-        var request = Request.inflate(row, 'request_');
+        var user = User.inflate(row, prefix+'user_');
+        var request = Request.inflate(row, prefix+'request_');
         var seen = row[p('seen')];
-        return new Request(id, request, user, !!seen);
+        return new UserRequest(id, request, user, !!seen);
     }
     static findById(db, id) {
         var p = new Promise(function (resolve, reject) {

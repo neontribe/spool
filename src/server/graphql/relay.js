@@ -256,9 +256,12 @@ const createRequest = relayql.mutationWithClientMutationId({
         viewer: viewerField
     },
     mutateAndGetPayload: function mutateEntryPayload({request}, context) {
+        if (context.role !== "consumer") {
+            return {};
+        }
         request.userId = context.id;
         // make new request
-        return spool.makeRequest(request).then(function() {
+        return spool.makeRequest(request, context).then(function() {
             return {};
         });
     }

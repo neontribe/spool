@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Image, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
+import { Grid, Row, Col, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
 import DatePicker from 'react-bootstrap-date-picker';
 import _ from 'lodash';
 import moment from 'moment';
 import AddControls from './AddControls';
 import TopicChooser from './TopicChooser';
+import Relay from 'react-relay';
+import AddRequestMutation from './mutations/AddRequestMutation.js';
 import Request from './Request';
 
-import { topics } from './stories/fixtures';
-
-class RequestForm extends Component {
+export class RequestForm extends Component {
 
     constructor(props) {
         super(props);
@@ -33,7 +33,12 @@ class RequestForm extends Component {
     }
 
     save() {
-        console.log('save', this.state.request);
+        var onSuccess = () => console.log('onSuccess() RequestForm');
+        var viewer = this.props.viewer;
+        this.props.relay.commitUpdate(
+            new AddRequestMutation({request: this.state.request, viewer}),
+            {onSuccess}
+        );
     }
 
     handleChange(key, value) {
@@ -68,7 +73,7 @@ class RequestForm extends Component {
                     <Col xsOffset={3} xs={6}>
                         <TopicChooser
                             label="Entries tagged with topic"
-                            topics={this.props.topics}
+                            topics={this.props.viewer.topics}
                             maxSelections={1}
                             onChange={_.partial(this.handleChange, 'topics')} />
                         <FormGroup>
@@ -103,13 +108,26 @@ class RequestForm extends Component {
 }
 
 RequestForm.propTypes = {
-    maxLength: React.PropTypes.number,
-    topics: React.PropTypes.array
+    maxLength: React.PropTypes.number
 }
 
 RequestForm.defaultProps = {
-    maxLength: 240,
-    topics: topics
+    maxLength: 240
 }
 
 export default RequestForm;
+
+export const RequestFormContainer = Relay.createContainer(RequestForm, {
+    fragments: {
+        viewer: () => Relay.QL`
+            fragment on Viewer {
+                id
+                topics {
+                    type,
+                    name
+                }
+                ${AddRequestMutation.getFragment('viewer')}
+            }
+        `,
+    }
+});
