@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Button, Glyphicon } from 'react-bootstrap';
+import { Alert, Button, Glyphicon, Image } from 'react-bootstrap';
 
 class Request extends Component {
     constructor(props) {
@@ -25,8 +25,13 @@ class Request extends Component {
         if (this.state.alertVisible) {
             return (
                 <Alert bsStyle="info" onDismiss={this.handleAlertDismiss} >
-                    <p>{this.props.issuerName} would like to be able to see your entries about {this.props.topics.join(' and ')} because they are {this.props.reason}</p>
+                    <Image
+                            src={this.props.issuerAvatar}
+                            className='profile-img'
+                            circle
+                            />
 
+                    <p>{this.props.issuerName} would like to be able to see your entries about {this.props.topics.join(' and ')} because they are {this.props.reason}</p>
                     {/**<div className="easyread">
                         <div>
                             <Image
