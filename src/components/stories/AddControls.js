@@ -1,26 +1,26 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import AddEntryControls from '../AddEntryControls';
+import AddControls from '../AddControls';
 
-storiesOf('AddEntryControls', module)
+storiesOf('AddControls', module)
   .add('Just Next', () => (
-    <AddEntryControls
+    <AddControls
         onNext={action('Next')}/>
    )).add('Next Disabled', () => (
-     <AddEntryControls
+     <AddControls
         disableNext={true}
         onNext={action('Next')}/>
   )).add('With Back', () => (
-    <AddEntryControls
+    <AddControls
         onNext={action('Next')}
         onBack={action('Back')}/>
 )).add('With Quit', () => (
-    <AddEntryControls
+    <AddControls
         onNext={action('Next')}
         onBack={action('Back')}
         onQuit={action('Quit')}/>
 )).add('All Disabled', () => (
-    <AddEntryControls
+    <AddControls
         onNext={action('Next')}
         onBack={action('Back')}
         onQuit={action('Quit')}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { FormGroup, ControlLabel, Grid, Row, Col } from 'react-bootstrap';
-import AddEntryControls from './AddEntryControls';
-import { IconCard } from './IconCard';
+import { Grid, Row, Col } from 'react-bootstrap';
+import AddControls from './AddControls';
+import TopicChooser from './TopicChooser';
 
 class TopicForm extends Component {
     constructor(props) {
@@ -19,32 +19,8 @@ class TopicForm extends Component {
         this.props.save(this.props.saveKey, this.state.value);
     }
 
-    handleChange(event) {
-        var valueExists = this.state.value.indexOf(event.target.value);
-        var values = this.state.value.slice(0);
-        if (valueExists === -1) {
-            values.push(event.target.value);
-        } else {
-            values.splice(valueExists, 1);
-        }
-
-        this.setState({
-            value: values
-        });
-    }
-
-    renderCheckboxes() {
-        return this.props.topics.map((t, i) => (
-            <Col xs={6} sm={3} key={'col_' + i}>
-                <IconCard
-                    key={i}
-                    onChange={this.handleChange}
-                    checked={(this.state.value.indexOf(t.type) !== -1)}
-                    icon={t.type}
-                    message={t.name}
-                    value={t.type} />
-            </Col>
-        ));
+    handleChange(value) {
+        this.setState({ value })
     }
 
     render() {
@@ -53,16 +29,15 @@ class TopicForm extends Component {
 
                 <Grid>
                     <Row>
-                        <FormGroup controlId="topic" className='topics'>
-                            <Row>
-                                <ControlLabel>Add some labels...</ControlLabel>
-                            </Row>
-                            {this.renderCheckboxes()}
-                        </FormGroup>
+                        <TopicChooser
+                            label="Add some labels..."
+                            topics={this.props.topics}
+                            onChange={this.handleChange}
+                            initialValue={this.props.initialValue} />
                     </Row>
                     <Row>
                         <Col>
-                            <AddEntryControls
+                            <AddControls
                                 onNext={this.continue}
                                 disableNext={this.state.value.length === 0}
                                 />

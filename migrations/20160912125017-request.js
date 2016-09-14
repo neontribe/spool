@@ -8,31 +8,25 @@ module.exports = {
 
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
-      */
-      return queryInterface.createTable('user_account', {
-          user_id: {
+    */
+      return queryInterface.createTable('request', {
+          request_id: { 
               type: Sequelize.INTEGER,
               primaryKey: true,
-              autoIncrement: true
+              autoIncrement: true 
           },
-          auth_hash: {
-              type: Sequelize.STRING,
+          user_id: { 
+              type: Sequelize.INTEGER,
+              references: {
+                  model: 'user_account',
+                  key: 'user_id'
+              },
+//              onDelete: 'CASCADE' ? hmm
           },
-          role_type_id: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: 'role_type',
-                key: 'role_type_id'
-            }
+          start: { 
+              type: Sequelize.DATE
           },
-          region_type_id: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: 'region_type',
-                key: 'region_type_id'
-            }
-          },
-          timestamp: { 
+          end: { 
               type: Sequelize.DATE
           }
       });
@@ -45,7 +39,7 @@ module.exports = {
 
       Example:
       return queryInterface.dropTable('users');
-      */
-     return queryInterface.dropTable('user_account')
+    */
+      return queryInterface.dropTable('request');
   }
 };

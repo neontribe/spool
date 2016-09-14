@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Glyphicon } from 'react-bootstrap';
+import TopicsOverview from './TopicsOverview';
 import Relay from 'react-relay';
 import moment from 'moment';
+import { Link } from 'react-router';
+
+import { topicsWithCounts } from './stories/fixtures';
 
 export class Dashboard extends Component {
+
     render() {
         return (
             <Grid>
@@ -22,6 +27,12 @@ export class Dashboard extends Component {
                             </select>
                        </label>
                     </Col>
+                    <Col xs={2}>
+                        <div className="centered">
+                            <Link className="btn" to={'/requests/add'}>
+                                <Glyphicon glyph="plus"/> New Access Request</Link>
+                        </div>
+                    </Col>
                 </Row>
                 <Row>
                     <Col xs={12}>
@@ -29,10 +40,23 @@ export class Dashboard extends Component {
                         <p>Stale: {this.props.viewer.role.creatorActivityCount.stale}</p>
                     </Col>
                 </Row>
+               <Row>
+                   <Col xs={12}>
+                       <TopicsOverview topics={this.props.topics} />
+                   </Col>
+               </Row>
             </Grid>
         );
     }
 };
+
+Dashboard.propTypes = {
+    topics: React.PropTypes.array
+};
+
+Dashboard.defaultProps = {
+    topics: topicsWithCounts
+}
 /*
  *
                 <Row>

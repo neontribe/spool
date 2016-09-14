@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, ResponsiveEmbed, Button, ButtonToolbar, Glyphicon, Image } from 'react-bootstrap';
-import AddEntryControls from './AddEntryControls';
+import AddControls from './AddControls';
 import captureVideoFrame from 'capture-video-frame';
 import _ from 'lodash';
 import ReactCountdownClock from 'react-countdown-clock';
@@ -223,7 +223,7 @@ class Camera extends Component {
                 </Row>
                 <Row>
                     <Col>
-                        <AddEntryControls
+                        <AddControls
                             onNext={this.save}
                             disableNext={!this.state.image}
                             />

@@ -5,6 +5,7 @@ const db = require('../database/database.js');
 const models = require('../database/models.js');
 const moment = require('moment');
 const _ = require('lodash');
+const spool = require('../spool.js');
 
 var {nodeInterface, nodeField} = relayql.nodeDefinitions(
     /* retrieve given an id and type */
@@ -244,6 +245,25 @@ const updateUser = relayql.mutationWithClientMutationId({
     }
 });
 
+const createRequest = relayql.mutationWithClientMutationId({
+    name: 'CreateRequest',
+    inputFields: {
+        request: {
+            type: types.RequestInputType
+        }
+    },
+    outputFields: {
+        viewer: viewerField
+    },
+    mutateAndGetPayload: function mutateEntryPayload({request}, context) {
+        request.userId = context.id;
+        // make new request
+        return spool.makeRequest(request).then(function() {
+            return {};
+        });
+    }
+});
+
 module.exports = {
     fields: {
         nodeField,
@@ -252,6 +272,7 @@ module.exports = {
     },
     mutations: {
         createEntry,
-        updateUser
+        createRequest,
+        updateUser,
     }
 }
