@@ -113,9 +113,10 @@ const user = {
         .append(user._root)
         .append(SQL` WHERE user_account.user_id = ${userId}`)
         .setName('user_by_user_id') ,
-    byRegionType: (regionType) => SQL``
+    byRoleAndRegionType: (roleType, regionType) => SQL``
         .append(user._root)
         .append(SQL` WHERE region_type.type = ${regionType}`)
+        .append(SQL` AND role_type.type = ${roleType}`)
         .setName('user_by_region_type'),
     create: (hash) => SQL`
         INSERT INTO
@@ -158,20 +159,18 @@ const request = {
         SELECT
             request.request_id AS id,
             request.user_id,
-            request.start,
-            request.end,
-            region_type.type AS region,
+            request.from,
+            request.to,
+            region_type.type AS region
         FROM
             request
         JOIN
-            user_account ON user_account.user_id = request.user_id
-        JOIN
-            region_type ON region_type.region_type_id = user_account.region_type_id`,
-    create: (userId, start, end) => SQL`
+            region_type ON region_type.region_type_id = request.region_type_id`,
+    create: (userId, from, to, regionType) => SQL`
         INSERT INTO
-            request (user_id, start, end)
+            request ("user_id", "from", "to", "region_type_id")
         VALUES
-            (${userId}, ${start}, ${end})
+            (${userId}, ${from}, ${to}, (SELECT region_type_id FROM region_type WHERE region_type.type = ${regionType}))
         RETURNING
             request_id`.setName('request_create'),
     byId: (requestId) => SQL``
@@ -179,27 +178,27 @@ const request = {
         .append(SQL` WHERE request.request_id = ${requestId}`),
     byRegionBeforeEnd: (regionType, timestamp) => SQL``
         .append(request._root)
-        .append(SQL` WHERE region_type.type = ${regionType} AND request.end > timestamp`)
+        .append(SQL` WHERE region_type.type = ${regionType} AND request.to > timestamp`)
         .setName('request_by_region_before_end'),
 }
 
 const user_request = {
     _root: SQL`
         SELECT
-            user_request.user_request_id
+            user_request.user_request_id as id,
             user_request.user_id,
             user_request.seen,
             user_request.request_id,
             request.user_id AS request_user_id,
-            request.start AS request_start,
-            request.end AS request_end,
-            region_type.type AS request_region,
+            request.from AS request_from,
+            request.to AS request_to,
+            region_type.type AS request_region
         FROM
             user_request
         JOIN
             request ON request.request_id = user_request.request_id
         JOIN
-            region_type ON region_type.region_type_id = user_account.region_type_id`,
+            region_type ON region_type.region_type_id = request.region_type_id`,
     create: (requestId, userId) => SQL`
         INSERT INTO
             user_request (request_id, user_id)
@@ -210,7 +209,7 @@ const user_request = {
     entry: {
         create: (entryId, userRequestId) => SQL`
             INSERT INTO
-                x_entries_user_requests
+                x_entries_user_requests (entry_id, user_request_id)
             VALUES
                 (${entryId}, ${userRequestId})`.setName('user_request_entries_create'),
     },

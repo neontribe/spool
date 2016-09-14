@@ -1,17 +1,19 @@
 const co = require('co');
 const db = require('./database/database.js');
+const models = require('./database/models.js');
+const moment = require('moment');
 
-function makeRequest(request) {
+function makeRequest(request, userContext) {
     return co(function* () {
         // make a new request
-        var newRequest = yield models.Request.create(db, request.userId, moment(request.range.from), moment(request.range.to));
-        // find each user that is in the request region
-        var users = yield models.User.findByRegionType(db, newRequest.region);
+        var newRequest = yield models.Request.create(db, request.userId, moment(request.range.from), moment(request.range.to), userContext.region);
+        // find each consumer user that is in the request region
+        var users = yield models.User.findByRoleAndRegionType(db, "creator", newRequest.region);
         // for each of the users, create a user_request for that user
         var userRequests = yield users.map((user) => models.UserRequest.create(db, newRequest.id, user.id));
         yield userRequests.map(function* (userRequest) {
             // find all entries that are in the bounds of the request
-            var entries = yield models.Entry.findByOwnerBeforeTimestamp(db, userRequest.user.id, userRequest.request.end);
+            var entries = yield models.Entry.findByOwnerBeforeTimestamp(db, userRequest.user.id, userRequest.request.to);
             // link the entries to the user request
             yield entries.map(entry => models.UserRequest.linkEntry(db, entry.id, userRequest.id));
         });

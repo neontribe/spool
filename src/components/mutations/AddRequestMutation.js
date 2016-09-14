@@ -16,8 +16,8 @@ export default class AddRequestMutation extends Relay.Mutation {
         return {
             request: {
                 range: {
-                    from: moment().format(),
-                    to: moment().format()
+                    from: moment(this.props.request.fromDate).format(),
+                    to: moment(this.props.request.toDate).format()
                 }
             }
         }
