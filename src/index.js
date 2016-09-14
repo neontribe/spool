@@ -73,13 +73,13 @@ ReactDOM.render(
             />
         </Route>
         <Route path="add" component={AddEntryContainer} queries={ViewerQueries} onEnter={auth.requireAuthOnEnter}>
-            <IndexRedirect to="topic"/>
-            <Route path="topic" component={TopicForm} />
-            <Route path="sentiment" component={SentimentForm} />
-            <Route path="media" component={MediaForm}>
+            <IndexRedirect to="about"/>
+            <Route path="about" component={TopicForm} />
+            <Route path="feeling" component={SentimentForm} />
+            <Route path="message" component={MediaForm}>
                 <Route path="video" component={VideoForm}/>
-                <Route path="image" component={ImageForm}/>
-                <Route path="text" component={TextForm}/>
+                <Route path="photo" component={ImageForm}/>
+                <Route path="typing" component={TextForm}/>
             </Route>
         </Route>
         <Route path="settings" component={SignupContainer} queries={SignupQueries} onEnter={auth.requireAuthOnEnter}/>

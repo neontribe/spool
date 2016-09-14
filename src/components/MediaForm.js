@@ -15,7 +15,7 @@ class MediaForm extends Component {
   }
 
   setMediaType(type) {
-      this.props.router.push('/add/media/' + type);
+      this.props.router.push('/add/message/' + type);
   }
 
   renderChooser() {
@@ -27,8 +27,8 @@ class MediaForm extends Component {
                           <Button onClick={_.partial(this.setMediaType, 'video')}><Glyphicon glyph="film" /> Video</Button>
                       </Col>
                       <Col xsOffset={3} xs={6}>
-                          <Button onClick={_.partial(this.setMediaType, 'image')}><Glyphicon glyph="picture" /> Photo</Button>
-                          <Button onClick={_.partial(this.setMediaType, 'text')}><Glyphicon glyph="pencil" /> Words</Button>
+                          <Button onClick={_.partial(this.setMediaType, 'photo')}><Glyphicon glyph="picture" /> Photo</Button>
+                          <Button onClick={_.partial(this.setMediaType, 'typing')}><Glyphicon glyph="pencil" /> Words</Button>
                       </Col>
                   </Row>
               </Grid>

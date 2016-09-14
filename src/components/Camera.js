@@ -16,6 +16,7 @@ class Camera extends Component {
         super(props);
 
         this.state = {
+            connecting: true,
             streaming: false,
             stream: null,
             streamURL: null,
@@ -92,6 +93,7 @@ class Camera extends Component {
 
     onMediaSuccess(stream) {
         this.setState({
+            connecting: false,
             streaming: true,
             streamURL: URL.createObjectURL(stream),
             stream: stream
@@ -143,6 +145,11 @@ class Camera extends Component {
                 <Row>
                     <Col>
                         <div style={{ position: 'relative' }}>
+                            { this.state.connecting &&
+                                <ResponsiveEmbed a4by3>
+                                    <div className="connecting" />
+                                </ResponsiveEmbed>
+                            }
                             { this.state.streaming &&
                                 <ResponsiveEmbed a4by3>
                                     <video
