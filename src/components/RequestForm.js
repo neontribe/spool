@@ -67,7 +67,7 @@ class RequestForm extends Component {
                 <Row>
                     <Col xsOffset={3} xs={6}>
                         <TopicChooser
-                            label="Would like to see entries about"
+                            label="Entries tagged with topic"
                             topics={this.props.topics}
                             maxSelections={1}
                             onChange={_.partial(this.handleChange, 'topics')} />
