@@ -17,6 +17,7 @@ class VideoRecorder extends Component {
         super(props);
 
         this.state = {
+            connecting: true,
             playing: false,
             recording: false,
             mediaRecorder: null,
@@ -102,6 +103,7 @@ class VideoRecorder extends Component {
         mediaRecorder.ondataavailable = this.onRecordingFinished;
 
         this.setState({
+            connecting: false,
             streaming: true,
             streamURL: URL.createObjectURL(stream),
             mediaRecorder: mediaRecorder
@@ -189,6 +191,11 @@ class VideoRecorder extends Component {
                 <Row>
                     <Col>
                         <div style={{ position: 'relative' }}>
+                            { this.state.connecting &&
+                                <ResponsiveEmbed a4by3>
+                                    <div className="connecting" />
+                                </ResponsiveEmbed>
+                            }
                             { this.state.streaming &&
                                 <ResponsiveEmbed a4by3>
                                     <video
