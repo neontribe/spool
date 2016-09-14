@@ -12,11 +12,11 @@ class TopicsOverview extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    { this.props.topics.map((topic, i) => {
+                    { this.props.topics.map((item, i) => {
                         return (
-                            <Col xs={3} key={topic.type + '_' + i}>
-                                <IconCard message={topic.name} icon={topic.type} />
-                                <div className="topicCount"><Badge>{topic.entryCount}</Badge> entries by <Badge>{topic.userCount}</Badge> creators</div>
+                            <Col xs={3} key={item.topic.type + '_' + i}>
+                                <IconCard message={item.topic.name} icon={item.topic.type} />
+                                <div className="topicCount"><Badge>{item.entryCount}</Badge> entries by <Badge>{item.creatorCount}</Badge> creators</div>
                             </Col>
                         );
                     })}

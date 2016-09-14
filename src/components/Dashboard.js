@@ -5,8 +5,6 @@ import Relay from 'react-relay';
 import moment from 'moment';
 import { Link } from 'react-router';
 
-import { topicsWithCounts } from './stories/fixtures';
-
 export class Dashboard extends Component {
 
     render() {
@@ -42,7 +40,7 @@ export class Dashboard extends Component {
                 </Row>
                <Row>
                    <Col xs={12}>
-                       <TopicsOverview topics={this.props.topics} />
+                       <TopicsOverview topics={this.props.viewer.role.topicCounts} />
                    </Col>
                </Row>
             </Grid>
@@ -50,13 +48,6 @@ export class Dashboard extends Component {
     }
 };
 
-Dashboard.propTypes = {
-    topics: React.PropTypes.array
-};
-
-Dashboard.defaultProps = {
-    topics: topicsWithCounts
-}
 /*
  *
                 <Row>
@@ -146,6 +137,14 @@ export const DashboardContainer = Relay.createContainer(Dashboard, {
                         creatorActivityCount(range: $range) {
                             active
                             stale
+                        }
+                        topicCounts(range: $range) {
+                            topic {
+                                type
+                                name
+                            }
+                            entryCount
+                            creatorCount
                         }
                     }
                 }

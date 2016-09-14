@@ -33,7 +33,7 @@ class Media {
 
         var image = row[p('image')];
         var imageThumbnail = row[p('image_thumbnail')];
-        
+
         return new Media(id, text, video, videoThumbnail, image, imageThumbnail);
     }
 
@@ -149,7 +149,7 @@ class User {
 
         return p;
     }
-    
+
     static findByRoleAndRegionType(db, roleType, regionType) {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function ({client, done}) {
@@ -593,7 +593,7 @@ class UserRequest {
     }
 }
 /* The following classes have no importance, merely a store for a collection of useful statics */
-class Count { 
+class Count {
     static findCreatorActivity(db, from, to, isActive = (entryCount => entryCount >= 1)) {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
@@ -603,11 +603,42 @@ class Count {
                         reject(error);
                     } else {
                         var counts = result.rows.reduce(function(reduction, row) {
-                            isActive(row.count) ? reduction.active++ : reduction.stale++;
+                            if (isActive(row.count)) {
+                                reduction.active++
+                            } else {
+                                reduction.stale++;
+                            }
                             return reduction;
                         }, {
                             active: 0,
                             stale: 0,
+                        });
+                        resolve(counts);
+                    }
+                });
+            });
+        });
+      return p;
+  }
+
+    static findTopicCounts(db, from, to) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.topic.countsByRange(from.format(), to.format()), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        var counts = result.rows.map(function(row) {
+                            var topic = {
+                                type: row.topic_type,
+                                name: row.topic_name,
+                            };
+                            return {
+                                topic,
+                                entryCount: row.entry_count,
+                                creatorCount: row.creator_count
+                            };
                         });
                         resolve(counts);
                     }

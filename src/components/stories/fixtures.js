@@ -121,14 +121,6 @@ export const topics = [
     { name: 'Food', type: 'food' },
 ];
 
-export const topicsWithCounts = [
-    { name: 'Transport', type: 'transport', userCount: 4, entryCount: 10 },
-    { name: 'Health', type: 'health', userCount: 2, entryCount: 8 },
-    { name: 'Leisure', type: 'leisure', userCount: 12, entryCount: 34 },
-    { name: 'Work', type: 'work', userCount: 0, entryCount: 0 },
-    { name: 'Food', type: 'food', userCount: 40, entryCount: 103 },
-];
-
 export const googleProfile = {
     "email": "fernando@example.com",
     "email_verified": true,
@@ -166,3 +158,80 @@ export const request = {
     reason: 'researching the best way to make catching buses easier',
     topics: ['transport']
 };
+
+export const topicCounts = [
+          {
+            "topic": {
+              "type": "education",
+              "name": "Education"
+            },
+            "entryCount": 3,
+            "creatorCount": 2
+          },
+          {
+            "topic": {
+              "type": "food",
+              "name": "Food"
+            },
+            "entryCount": 1,
+            "creatorCount": 1
+          },
+          {
+            "topic": {
+              "type": "health",
+              "name": "Health"
+            },
+            "entryCount": 1,
+            "creatorCount": 1
+          },
+          {
+            "topic": {
+              "type": "home",
+              "name": "Home"
+            },
+            "entryCount": 2,
+            "creatorCount": 1
+          },
+          {
+            "topic": {
+              "type": "leisure",
+              "name": "Leisure"
+            },
+            "entryCount": 2,
+            "creatorCount": 2
+          },
+          {
+            "topic": {
+              "type": "sport",
+              "name": "Sport"
+            },
+            "entryCount": 2,
+            "creatorCount": 2
+          },
+          {
+            "topic": {
+              "type": "transport",
+              "name": "Transport"
+            },
+            "entryCount": 1,
+            "creatorCount": 1
+          },
+          {
+            "topic": {
+              "type": "work",
+              "name": "Work"
+            },
+            "entryCount": 0,
+            "creatorCount": 0
+          }
+      ];
+
+export const dashboardViewer = {
+    role: {
+        creatorActivityCount: {
+            active: 10,
+            stale: 3
+        },
+        topicCounts
+    }
+}

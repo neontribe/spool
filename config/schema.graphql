@@ -5,27 +5,28 @@ schema {
 
 type Consumer {
   creatorActivityCount(range: DateRangeInput): CreatorActivityCount
+  topicCounts(range: DateRangeInput): [TopicCount]
 }
 
 input CreateEntryInput {
   entry: EntryInput
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type CreateEntryPayload {
   viewer: Viewer
   entryEdge: EntryEdge
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 input CreateRequestInput {
   request: RequestInput
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type CreateRequestPayload {
   viewer: Viewer
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type Creator {
@@ -174,14 +175,20 @@ type Topic {
   name: String
 }
 
+type TopicCount {
+  topic: Topic
+  entryCount: Int
+  creatorCount: Int
+}
+
 input UpdateUserInput {
   user: UserInput
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type UpdateUserPayload {
   viewer: Viewer
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type User {

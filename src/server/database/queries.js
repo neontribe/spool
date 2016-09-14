@@ -14,9 +14,9 @@ const entry = {
             media.video_thumbnail AS media_video_thumbnail,
             media.image AS media_image,
             media.image_thumbnail AS media_image_thumbnail
-        FROM 
+        FROM
             entry
-        LEFT JOIN 
+        LEFT JOIN
             user_account AS author ON author.user_id = entry.author_id
         JOIN
             user_account AS owner ON owner.user_id = entry.owner_id
@@ -68,7 +68,7 @@ const topic = {
             topic_type`,
     byEntry: (entryId) => SQL``
         .append(topic._root)
-        .append(SQL` 
+        .append(SQL`
         JOIN
             x_entry_topics ON x_entry_topics.topic_type_id = topic_type.topic_type_id
         WHERE
@@ -80,6 +80,21 @@ const topic = {
         VALUES
             (${entryId}, (SELECT topic_type_id FROM topic_type WHERE topic_type.type = ${type}))`.setName('topic_create'),
     all: () => SQL``.append(topic._root).setName('topic_all'),
+    countsByRange: (from, to) => SQL`
+        SELECT
+            topic_type.type AS topic_type,
+            topic_type.name AS topic_name,
+            COUNT(entry.entry_id) AS entry_count,
+            COUNT(DISTINCT entry.owner_id) AS creator_count
+        FROM
+            topic_type
+        LEFT JOIN
+            x_entry_topics ON x_entry_topics.topic_type_id = topic_type.topic_type_id
+        LEFT JOIN
+            entry ON entry.entry_id = x_entry_topics.entry_id AND entry.timestamp BETWEEN ${from} AND ${to}
+        GROUP BY
+            topic_type.type, topic_type.name
+        `.setName('topic_counts_by_range'),
 };
 
 const media = {

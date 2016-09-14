@@ -192,6 +192,19 @@ const ConsumerRoleType = new ql.GraphQLObjectType({
                 var toDate = moment(range.to);
                 return models.Count.findCreatorActivity(db, fromDate, toDate)
             }
+        },
+        topicCounts: {
+            type: new ql.GraphQLList(types.TopicCountType),
+            args: {
+                range: {
+                    type: types.DateRangeInputType,
+                }
+            },
+            resolve: function(consumer, {range}) {
+                var fromDate = moment(range.from);
+                var toDate = moment(range.to);
+                return models.Count.findTopicCounts(db, fromDate, toDate)
+            }
         }
     }
 });

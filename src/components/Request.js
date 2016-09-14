@@ -79,7 +79,8 @@ Request.PropTypes = {
 }
 
 Request.defaultProps = {
-    allowMutation: true
+    allowMutation: true,
+    topics: ['transport']
 }
 
 export default Request;
