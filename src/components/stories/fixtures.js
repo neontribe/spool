@@ -157,3 +157,12 @@ export const googleProfile = {
 export const auth = {
     getProfile: function() { return googleProfile; }
 };
+
+export const request = {
+    issuerAvatar: googleProfile.picture,
+    issuerName: googleProfile.name,
+    fromDate: '10/10/2017',
+    toDate: '11/11/2017',
+    reason: 'researching the best way to make catching buses easier',
+    topics: ['transport']
+};

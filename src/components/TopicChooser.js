@@ -14,13 +14,18 @@ class TopicChooser extends Component {
     }
 
     handleChange(event) {
-        // TODO implement multi/solo mode
         var valueExists = this.state.value.indexOf(event.target.value);
         var values = this.state.value.slice(0);
         if (valueExists === -1) {
             values.push(event.target.value);
         } else {
             values.splice(valueExists, 1);
+        }
+
+        if (this.props.maxSelections) {
+            if (values.length > this.props.maxSelections) {
+                values.shift();
+            }
         }
 
         this.setState({
@@ -66,12 +71,11 @@ TopicChooser.propTypes = {
     topics: React.PropTypes.array,
     saveKey: React.PropTypes.string,
     label: React.PropTypes.string,
-    multiselect: React.PropTypes.bool
+    maxSelections: React.PropTypes.number
 };
 
 TopicChooser.defaultProps = {
-    initialValue: [],
-    multiselect: true
+    initialValue: []
 };
 
 export default TopicChooser;
