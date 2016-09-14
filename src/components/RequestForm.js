@@ -80,6 +80,7 @@ export class RequestForm extends Component {
                         <h3>Preview:</h3>
                         <Request
                             {...this.state.request}
+                            allowMutation={false}
                              />
                     </Col>
                 </Row>
