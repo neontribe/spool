@@ -7,6 +7,7 @@ import AddControls from './AddControls';
 import TopicChooser from './TopicChooser';
 import Relay from 'react-relay';
 import AddRequestMutation from './mutations/AddRequestMutation.js';
+import Request from './Request';
 
 export class RequestForm extends Component {
 
@@ -20,7 +21,7 @@ export class RequestForm extends Component {
                 fromDate: moment().toISOString(),
                 toDate: moment().add(1, 'months').toISOString(),
                 reason: '',
-                topics: null,
+                topics: [],
                 issuerName,
                 issuerAvatar
             }
@@ -63,12 +64,10 @@ export class RequestForm extends Component {
                 </Row>
                 <Row>
                     <Col xsOffset={3} xs={6}>
-                        <Image
-                            src={this.state.request.issuerAvatar}
-                            className='profile-img'
-                            circle
-                        />
-                        <span>{this.state.request.issuerName}</span>
+                        <h3>Preview:</h3>
+                        <Request
+                            {...this.state.request}
+                             />
                     </Col>
                 </Row>
                 <Row>
