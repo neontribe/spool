@@ -106,7 +106,7 @@ export const TimelineContainer = Relay.createContainer(Timeline, {
                                     reason
                                     name
                                     avatar
-                                    topic {
+                                    topics {
                                         type
                                         name
                                     }

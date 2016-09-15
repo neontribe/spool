@@ -123,7 +123,7 @@ const RequestInputType = new ql.GraphQLInputObjectType({
         name: { type: ql.GraphQLString },
         org: { type: ql.GraphQLString },
         avatar: { type: ql.GraphQLString },
-        topic: { type: new ql.GraphQLList(ql.GraphQLString) }
+        topics: { type: new ql.GraphQLList(ql.GraphQLString) }
     }
 });
 

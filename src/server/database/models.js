@@ -482,7 +482,7 @@ class Request {
                         reject(error);
                     } else {
                         let id = result.rows[0].request_id;
-                        let insertPromises = request.topic.map((t) => Topic.linkRequest(db, id, t));
+                        let insertPromises = request.topics.map((t) => Topic.linkRequest(db, id, t));
                         Promise.all(insertPromises).then(function() {
                             resolve(Request.findById(db, id).then((request) => request.shift()));
                         });

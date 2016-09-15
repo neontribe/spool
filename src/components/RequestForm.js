@@ -22,7 +22,7 @@ export class RequestForm extends Component {
                 fromDate: moment().add(-1, 'months').toISOString(),
                 toDate: moment().add(1, 'months').toISOString(),
                 reason: '',
-                topic: [],
+                topics: [],
                 name,
                 avatar,
                 org: ''
@@ -91,7 +91,7 @@ export class RequestForm extends Component {
                             label="Entries tagged with topic"
                             choices={this.props.viewer.topics}
                             maxSelections={1}
-                            onChange={_.partial(this.handleChange, 'topic')} />
+                            onChange={_.partial(this.handleChange, 'topics')} />
                         <FormGroup>
                             <ControlLabel>Organization</ControlLabel>
                             <FormControl type="text"
@@ -112,14 +112,14 @@ export class RequestForm extends Component {
                             <ControlLabel>From</ControlLabel>
                             <DatePicker value={this.state.request.fromDate}
                               onChange={_.partial(this.handleChange, 'fromDate')} />
-                            <HelpBlock>The request will be sent to people who made entries with the {this.state.request.topic.join(' and ')} topic after this date.</HelpBlock>
+                          <HelpBlock>The request will be sent to people who made entries with the {this.state.request.topics.join(' and ')} topic after this date.</HelpBlock>
                         </FormGroup>
 
                         <FormGroup>
                             <ControlLabel>To</ControlLabel>
                             <DatePicker value={this.state.request.toDate}
                               onChange={_.partial(this.handleChange, 'toDate')} />
-                          <HelpBlock>People who make entries in the {this.state.request.topic.join(' and ')} topic will be shown this request until this  date.</HelpBlock>
+                          <HelpBlock>People who make entries in the {this.state.request.topics.join(' and ')} topic will be shown this request until this  date.</HelpBlock>
                         </FormGroup>
                     </Col>
                 </Row>

@@ -29,7 +29,7 @@ class Request extends Component {
                             circle
                             />
 
-                        <p><strong>{this.props.name}</strong> from <strong>{this.props.org}</strong> would like to be able to see your entries about <strong>{this.props.topic.map((t) => t.type || t).join(' and ')}</strong> because they are {this.props.reason}</p>
+                        <p><strong>{this.props.name}</strong> from <strong>{this.props.org}</strong> would like to be able to see your entries about <strong>{this.props.topics.map((t) => t.type || t).join(' and ')}</strong> because they are {this.props.reason}</p>
                     {/**<div className="easyread">
                         <div>
                             <Image
@@ -72,7 +72,7 @@ Request.PropTypes = {
     fromDate: React.PropTypes.string.isRequired,
     toDate: React.PropTypes.string.isRequired,
     reason: React.PropTypes.string.isRequired,
-    topic: React.PropTypes.array.isRequired,
+    topics: React.PropTypes.array.isRequired,
     name: React.PropTypes.string.isRequired,
     avatar: React.PropTypes.string.isRequired,
     org: React.PropTypes.string.isRequired,
