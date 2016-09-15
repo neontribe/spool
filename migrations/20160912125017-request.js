@@ -30,6 +30,18 @@ module.exports = {
                 key: 'region_type_id'
             }
           },
+          reason: {
+              type: Sequelize.STRING
+          },
+          name: {
+              type: Sequelize.STRING
+          },
+          org: {
+              type: Sequelize.STRING
+          },
+          avatar: {
+              type: Sequelize.STRING
+          },
           from: { 
               type: Sequelize.DATE
           },

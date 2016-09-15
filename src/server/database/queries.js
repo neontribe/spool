@@ -74,11 +74,28 @@ const topic = {
         WHERE
         x_entry_topics.entry_id = ${entryId}`)
         .setName('topic_by_entry_id'),
-    create: (entryId, type) => SQL`
-        INSERT INTO
-            x_entry_topics (entry_id, topic_type_id)
-        VALUES
-            (${entryId}, (SELECT topic_type_id FROM topic_type WHERE topic_type.type = ${type}))`.setName('topic_create'),
+    byRequest: (requestId) => SQL``
+        .append(topic._root)
+        .append(SQL`
+        JOIN
+            x_request_topics ON x_request_topics.topic_type_id = topic_type.topic_type_id
+        WHERE
+            x_request_topics.request_id = ${requestId}`)
+        .setName('topic_by_request_id'),
+    entry: {
+        create: (entryId, type) => SQL`
+            INSERT INTO
+                x_entry_topics (entry_id, topic_type_id)
+            VALUES
+                (${entryId}, (SELECT topic_type_id FROM topic_type WHERE topic_type.type = ${type}))`.setName('topic_entry_create'),
+    },
+    request: {
+        create: (requestId, type) => SQL`
+            INSERT INTO
+                x_request_topics (request_id, topic_type_id)
+            VALUES
+                (${requestId}, (SELECT topic_type_id FROM topic_type WHERE topic_type.type = ${type}))`.setName('topic_request_create'),
+    },
     all: () => SQL``.append(topic._root).setName('topic_all'),
     countsByRange: (from, to) => SQL`
         SELECT
@@ -176,16 +193,20 @@ const request = {
             request.user_id,
             request.from,
             request.to,
-            region_type.type AS region
+            region_type.type AS region,
+            request.reason,
+            request.name,
+            request.org,
+            request.avatar
         FROM
             request
         JOIN
             region_type ON region_type.region_type_id = request.region_type_id`,
-    create: (userId, from, to, regionType) => SQL`
+    create: (userId, from, to, regionType, reason, name, org, avatar) => SQL`
         INSERT INTO
-            request ("user_id", "from", "to", "region_type_id")
+            request ("user_id", "from", "to", "reason", "name", "org","avatar", "region_type_id")
         VALUES
-            (${userId}, ${from}, ${to}, (SELECT region_type_id FROM region_type WHERE region_type.type = ${regionType}))
+            (${userId}, ${from}, ${to}, ${reason}, ${name}, ${org}, ${avatar}, (SELECT region_type_id FROM region_type WHERE region_type.type = ${regionType}))
         RETURNING
             request_id`.setName('request_create'),
     byId: (requestId) => SQL``

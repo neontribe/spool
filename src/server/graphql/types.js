@@ -118,7 +118,12 @@ const RequestInputType = new ql.GraphQLInputObjectType({
     fields: {
         range: {
             type: DateRangeInputType
-        }
+        },
+        reason: { type: ql.GraphQLString },
+        name: { type: ql.GraphQLString },
+        org: { type: ql.GraphQLString },
+        avatar: { type: ql.GraphQLString },
+        topic: { type: new ql.GraphQLList(ql.GraphQLString) }
     }
 });
 

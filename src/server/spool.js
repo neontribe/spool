@@ -3,10 +3,10 @@ const db = require('./database/database.js');
 const models = require('./database/models.js');
 const moment = require('moment');
 
-function makeRequest(request, userContext) {
+function makeRequest(request) {
     return co(function* () {
         // make a new request
-        var newRequest = yield models.Request.create(db, request.userId, moment(request.range.from), moment(request.range.to), userContext.region);
+        var newRequest = yield models.Request.create(db, request);
         // find each consumer user that is in the request region
         var users = yield models.User.findByRoleAndRegionType(db, "creator", newRequest.region);
         // for each of the users, create a user_request for that user

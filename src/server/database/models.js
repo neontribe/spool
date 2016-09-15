@@ -207,6 +207,27 @@ class Topic {
         return p;
     }
 
+    static findByRequestId(db, id) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.topic.byRequest(id), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result.rows);
+                    }
+                });
+            });
+        });
+
+        p = p.then(function (rows) {
+            return rows.map((row) => Topic.inflate(row, 'topic_'));
+        });
+
+        return p;
+    }
+
     static findAll(db) {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
@@ -228,10 +249,26 @@ class Topic {
         return p;
     }
 
-    static create(db, id, type) {
+    static linkEntry(db, id, type) {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
-                client.query(queries.topic.create(id, type), function (error, result) {
+                client.query(queries.topic.entry.create(id, type), function (error, result) {
+                    done();
+                    if (error) {
+                        reject(error);
+                    } else {
+                        //1:M, no ID
+                        resolve();
+                    }
+                });
+            });
+        });
+        return p;
+    }
+    static linkRequest(db, id, type) {
+        var p = new Promise(function (resolve, reject) {
+            db.connect().then(function({client, done}) {
+                client.query(queries.topic.request.create(id, type), function (error, result) {
                     done();
                     if (error) {
                         reject(error);
@@ -355,7 +392,7 @@ class Entry {
                         reject(error);
                     } else {
                         let id = result.rows[0].entry_id;
-                        let insertPromises = entry.topic.map((t) => Topic.create(db, id, t));
+                        let insertPromises = entry.topic.map((t) => Topic.linkEntry(db, id, t));
                         insertPromises.push(Media.create(db, id, entry.media));
                         Promise.all(insertPromises).then(function() {
                             resolve(Entry.findById(db, id).then((entries) => entries.shift()));
@@ -408,13 +445,17 @@ class Role {
     }
 }
 class Request {
-    constructor(id, user, from, to, region) {
+    constructor(id, user, from, to, region, reason, name, org, avatar) {
         this.id = id;
         this._id = id;
         this.user = user;
         this.from = moment(from);
         this.to = moment(to);
         this.region = region;
+        this.reason = reason;
+        this.name = name;
+        this.org = org;
+        this.avatar = avatar;
     }
     static inflate(row, prefix = '') {
         var p = (name) => prefix + name;
@@ -422,19 +463,29 @@ class Request {
         var from = row[p('from')];
         var to = row[p('to')];
         var region = row[p('region')];
+        var reason = row[p('reason')];
+        var name = row[p('name')];
+        var org = row[p('org')];
+        var avatar = row[p('avatar')];
         var user = User.inflate(row, prefix+'user_');
-        return new Request(id, user, from, to, region);
+        return new Request(id, user, from, to, region, reason, name, org, avatar);
     }
-    static create(db, userId, from, to, region) {
+    static create(db, request) {
         var p = new Promise(function (resolve, reject) {
             db.connect().then(function({client, done}) {
-                client.query(queries.request.create(userId, from.format(), to.format(), region), function (error, result) {
+                var from = request.range.from.format();
+                var to = request.range.to.format();
+                var {userId, region, reason, name, org, avatar} = request;
+                client.query(queries.request.create(userId, from, to, region, reason, name, org, avatar), function (error, result) {
                     done();
                     if (error) {
                         reject(error);
                     } else {
                         let id = result.rows[0].request_id;
-                        resolve(Request.findById(db, id).then((request) => request.shift()));
+                        let insertPromises = request.topic.map((t) => Topic.linkRequest(db, id, t));
+                        Promise.all(insertPromises).then(function() {
+                            resolve(Request.findById(db, id).then((request) => request.shift()));
+                        });
                     }
                 });
             });

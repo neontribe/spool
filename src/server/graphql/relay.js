@@ -111,6 +111,26 @@ const RequestType = new ql.GraphQLObjectType({
             type: types.UserType,
             resolve: (request) => request.user
         },
+        topic: {
+            type: new ql.GraphQLList(types.TopicType),
+            resolve: (request) => models.Topic.findByRequestId(db, request._id)
+        },
+        reason: {
+            type: ql.GraphQLString,
+            resolve: (request) => request.reason
+        },
+        name: {
+            type: ql.GraphQLString,
+            resolve: (request) => request.name
+        },
+        org: {
+            type: ql.GraphQLString,
+            resolve: (request) => request.org
+        },
+        avatar: {
+            type: ql.GraphQLString,
+            resolve: (request) => request.avatar
+        }
         //userRequests ? :-)
     },
     interfaces: [nodeInterface]
@@ -340,8 +360,11 @@ const createRequest = relayql.mutationWithClientMutationId({
             return {};
         }
         request.userId = context.id;
+        request.range.from = moment(request.range.from);
+        request.range.to = moment(request.range.to);
+        request.region = context.region;
         // make new request
-        return spool.makeRequest(request, context).then(function() {
+        return spool.makeRequest(request).then(function() {
             return {};
         });
     }

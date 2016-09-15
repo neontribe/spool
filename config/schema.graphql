@@ -10,23 +10,23 @@ type Consumer {
 
 input CreateEntryInput {
   entry: EntryInput
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type CreateEntryPayload {
   viewer: Viewer
   entryEdge: EntryEdge
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 input CreateRequestInput {
   request: RequestInput
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type CreateRequestPayload {
   viewer: Viewer
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type Creator {
@@ -152,10 +152,20 @@ type Request implements Node {
   to: String
   region: String
   user: User
+  topic: [Topic]
+  reason: String
+  name: String
+  org: String
+  avatar: String
 }
 
 input RequestInput {
   range: DateRangeInput
+  reason: String
+  name: String
+  org: String
+  avatar: String
+  topic: [String]
 }
 
 union Role = Creator | Consumer | Missing
@@ -183,12 +193,12 @@ type TopicCount {
 
 input UpdateUserInput {
   user: UserInput
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type UpdateUserPayload {
   viewer: Viewer
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type User {
