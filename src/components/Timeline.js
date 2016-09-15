@@ -35,15 +35,11 @@ export class Timeline extends Component {
             var request = _.first(this.props.viewer.role.requests.edges).node
             if (this.props.relay) {
                 return (
-                    <div className="centered">
-                        <RequestContainer {...request} />
-                    </div>
+                    <RequestContainer {...request} />
                 );
             } else {
                 return (
-                    <div className="centered">
-                        <Request {...request} />
-                    </div>
+                    <Request {...request} />
                 );
             }
         }
@@ -52,11 +48,19 @@ export class Timeline extends Component {
     render() {
         return (
             <div>
+
+                <div className="centered" >
+                    <div style={{width: '60%', margin:'auto'}}>
+                        {this.renderRequests()}
+                    </div>
+                </div>
+
                 <div className="centered">
                     <Link className="btn" to={'/add'}>
-                        <Glyphicon glyph="plus"/> {this.state.hasEntries ? 'Add New Entry' : 'Get Started'}</Link>
+                        <Glyphicon glyph="plus"/> {this.state.hasEntries ? 'Add New Entry' : 'Get Started'}
+                    </Link>
                 </div>
-                {this.renderRequests()}
+
                 <ListGroup componentClass="div">
                     {this.renderEntries()}
                     {!this.state.hasEntries &&
