@@ -51,7 +51,7 @@ class ProfileLink extends Component {
                 </a>
                 <h3 className='welcome'>
                     <span>Welcome</span>
-                    <span>{this.props.profile.nickname}</span>
+                    <span>{this.props.profile.name}</span>
                 </h3>
 
                 <Modal show={this.state.showProfile} onHide={this.hideProfile} bsSize='large' backdrop={true}>

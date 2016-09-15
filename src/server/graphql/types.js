@@ -95,6 +95,38 @@ const DateRangeInputType = new ql.GraphQLInputObjectType({
     }
 });
 
+const TopicCountType = new ql.GraphQLObjectType({
+    name: 'TopicCount',
+    fields: {
+        topic: {
+            type: TopicType,
+            resolve: (obj) => obj.topic
+        },
+        entryCount: {
+            type: ql.GraphQLInt,
+            resolve: (obj) => obj.entryCount
+        },
+        creatorCount: {
+            type: ql.GraphQLInt,
+            resolve: (obj) => obj.creatorCount
+        }
+    }
+});
+
+const RequestInputType = new ql.GraphQLInputObjectType({
+    name: 'RequestInput',
+    fields: {
+        range: {
+            type: DateRangeInputType
+        },
+        reason: { type: ql.GraphQLString },
+        name: { type: ql.GraphQLString },
+        org: { type: ql.GraphQLString },
+        avatar: { type: ql.GraphQLString },
+        topic: { type: new ql.GraphQLList(ql.GraphQLString) }
+    }
+});
+
 const UserInputType = new ql.GraphQLInputObjectType({
     name: 'UserInput',
     fields: {
@@ -115,6 +147,8 @@ module.exports = {
     RoleDefinitionType,
     MediaInputType,
     EntryInputType,
+    RequestInputType,
     DateRangeInputType,
+    TopicCountType,
     UserInputType,
 };

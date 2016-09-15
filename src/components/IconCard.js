@@ -16,7 +16,7 @@ export class IconCard extends Component {
             <div className={this.generateClassName()}>
                 <div>
                     <span className="icon"></span>
-                    <span>{this.props.message}</span>
+                    <span className="title">{this.props.message}</span>
                 </div>
             </div>
         );
@@ -33,7 +33,7 @@ export class IconCard extends Component {
                         onChange={this.props.onChange}
                     />
                     <span className="icon"></span>
-                    <span>{this.props.message}</span>
+                    <span className="title">{this.props.message}</span>
                 </label>
             </div>
         );
@@ -45,3 +45,5 @@ export class IconCard extends Component {
         return this.renderStatic();
     }
 };
+
+export default IconCard;

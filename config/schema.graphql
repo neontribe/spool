@@ -5,6 +5,7 @@ schema {
 
 type Consumer {
   creatorActivityCount(range: DateRangeInput): CreatorActivityCount
+  topicCounts(range: DateRangeInput): [TopicCount]
 }
 
 input CreateEntryInput {
@@ -18,8 +19,19 @@ type CreateEntryPayload {
   clientMutationId: String!
 }
 
+input CreateRequestInput {
+  request: RequestInput
+  clientMutationId: String!
+}
+
+type CreateRequestPayload {
+  viewer: Viewer
+  clientMutationId: String!
+}
+
 type Creator {
   entries(after: String, first: Int, before: String, last: Int): EntryConnection
+  requests(after: String, first: Int, before: String, last: Int): UserRequestConnection
   happyCount: Int
   sadCount: Int
 }
@@ -97,6 +109,7 @@ type Missing {
 
 type Mutations {
   createEntry(input: CreateEntryInput!): CreateEntryPayload
+  createRequest(input: CreateRequestInput!): CreateRequestPayload
   updateUser(input: UpdateUserInput!): UpdateUserPayload
 }
 
@@ -131,6 +144,30 @@ type Query {
   meta: Meta
 }
 
+type Request implements Node {
+  # The ID of an object
+  id: ID!
+  _id: Int
+  from: String
+  to: String
+  region: String
+  user: User
+  topic: [Topic]
+  reason: String
+  name: String
+  org: String
+  avatar: String
+}
+
+input RequestInput {
+  range: DateRangeInput
+  reason: String
+  name: String
+  org: String
+  avatar: String
+  topic: [String]
+}
+
 union Role = Creator | Consumer | Missing
 
 type RoleDefinition {
@@ -146,6 +183,12 @@ type Sentiment {
 type Topic {
   type: String
   name: String
+}
+
+type TopicCount {
+  topic: Topic
+  entryCount: Int
+  creatorCount: Int
 }
 
 input UpdateUserInput {
@@ -165,6 +208,32 @@ type User {
 input UserInput {
   region: String!
   roleSecret: String!
+}
+
+type UserRequest implements Node {
+  # The ID of an object
+  id: ID!
+  _id: Int
+  request: Request
+  seen: Boolean
+}
+
+# A connection to a list of items.
+type UserRequestConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [UserRequestEdge]
+}
+
+# An edge in a connection.
+type UserRequestEdge {
+  # The item at the end of the edge
+  node: UserRequest
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 type Viewer implements Node {
