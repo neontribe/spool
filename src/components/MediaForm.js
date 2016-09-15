@@ -1,38 +1,62 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Button, Glyphicon } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import { withRouter } from 'react-router';
+import IconChooser from './IconChooser';
+import AddControls from './AddControls';
 import _ from 'lodash';
+
+const choices = [
+      {
+          type: 'video',
+          name: 'Video'
+      },
+      {
+          type: 'photo',
+          name: 'Photo'
+      },
+      {
+          type: 'typing',
+          name: 'Typing'
+      }
+  ];
 
 class MediaForm extends Component {
 
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+        types: []
+    };
 
-    this.setMediaType = _.debounce(this.setMediaType.bind(this), 500, {leading: true, trailing: false});
-    this.renderChooser = this.renderChooser.bind(this);
+    this.handleNext = this.handleNext.bind(this);
+    this.handleChoice = this.handleChoice.bind(this);
   }
 
-  setMediaType(type) {
-      this.props.router.push('/add/message/' + type);
+  handleNext() {
+      this.props.router.push('/add/message/' + this.state.types[0]);
+  }
+
+  handleChoice(values) {
+      this.setState({types: values});
   }
 
   renderChooser() {
       return (
-          <div className='media-form'>
-              <Grid>
-                  <Row>
-                      <Col xsOffset={3} xs={6}>
-                          <Button onClick={_.partial(this.setMediaType, 'video')}><Glyphicon glyph="film" /> Video</Button>
-                      </Col>
-                      <Col xsOffset={3} xs={6}>
-                          <Button onClick={_.partial(this.setMediaType, 'photo')}><Glyphicon glyph="picture" /> Photo</Button>
-                          <Button onClick={_.partial(this.setMediaType, 'typing')}><Glyphicon glyph="pencil" /> Words</Button>
-                      </Col>
-                  </Row>
-              </Grid>
-          </div>
+          <Grid>
+              <Row>
+                  <Col xs={12} xsOffset={1}>
+                      <IconChooser
+                          label="How would you like to make your message?"
+                          choices={choices}
+                          maxSelections={1}
+                          onChange={this.handleChoice} />
+                  </Col>
+              </Row>
+              <Row>
+                  <AddControls onNext={this.handleNext} disableNext={!this.state.types.length} />
+              </Row>
+          </Grid>
       );
   }
 

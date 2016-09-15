@@ -18,4 +18,4 @@ require('./IconCard');
 require('./RequestForm');
 require('./Request');
 require('./TopicsOverview');
-require('./TopicChooser');
+require('./IconChooser');

@@ -4,7 +4,7 @@ import DatePicker from 'react-bootstrap-date-picker';
 import _ from 'lodash';
 import moment from 'moment';
 import AddControls from './AddControls';
-import TopicChooser from './TopicChooser';
+import IconChooser from './IconChooser';
 import Relay from 'react-relay';
 import AddRequestMutation from './mutations/AddRequestMutation.js';
 import Request from './Request';
@@ -86,9 +86,9 @@ export class RequestForm extends Component {
                 </Row>
                 <Row>
                     <Col xsOffset={3} xs={6}>
-                        <TopicChooser
+                        <IconChooser
                             label="Entries tagged with topic"
-                            topics={this.props.viewer.topics}
+                            choices={this.props.viewer.topics}
                             maxSelections={1}
                             onChange={_.partial(this.handleChange, 'topics')} />
                         <FormGroup>

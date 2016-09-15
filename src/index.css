@@ -470,6 +470,18 @@ ul {
     content: "\E085";
 }
 
+.iconCard.video .icon:before {
+    content: "\E059";
+}
+
+.iconCard.photo .icon:before {
+    content: "\E046";
+}
+
+.iconCard.typing .icon:before {
+    content: "\E047";
+}
+
 .media-form {
   text-align: center;
   padding: .25rem 1rem;
@@ -522,14 +534,4 @@ ul {
 
 .popover {
     color: #333;
-}
-
-.easyread {
-    width: 90%;
-    margin: auto;
-}
-.easyread > * {
-    display: inline-block;
-    margin-left: 1em;
-    width: 10%;
 }

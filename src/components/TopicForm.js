@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 import AddControls from './AddControls';
-import TopicChooser from './TopicChooser';
+import IconChooser from './IconChooser';
 
 class TopicForm extends Component {
     constructor(props) {
@@ -29,9 +29,9 @@ class TopicForm extends Component {
 
                 <Grid>
                     <Row>
-                        <TopicChooser
+                        <IconChooser
                             label="Add some labels..."
-                            topics={this.props.topics}
+                            choices={this.props.topics}
                             onChange={this.handleChange}
                             initialValue={this.props.initialValue} />
                     </Row>

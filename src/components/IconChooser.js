@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FormGroup, ControlLabel, Grid, Row, Col } from 'react-bootstrap';
 import { IconCard } from './IconCard';
 
-class TopicChooser extends Component {
+class IconChooser extends Component {
     constructor(props) {
         super(props);
 
@@ -36,7 +36,7 @@ class TopicChooser extends Component {
     }
 
     renderCheckboxes() {
-        return this.props.topics.map((t, i) => (
+        return this.props.choices.map((t, i) => (
             <Col xs={6} sm={3} key={'col_' + i}>
                 <IconCard
                     key={i}
@@ -53,7 +53,7 @@ class TopicChooser extends Component {
         return (
             <Grid>
                 <Row>
-                    <FormGroup controlId="topic" className='topics'>
+                    <FormGroup controlId="choice">
                         <Row>
                             <ControlLabel>{this.props.label}</ControlLabel>
                         </Row>
@@ -65,17 +65,17 @@ class TopicChooser extends Component {
     }
 }
 
-TopicChooser.propTypes = {
+IconChooser.propTypes = {
     initialValue: React.PropTypes.array,
     onChange: React.PropTypes.func,
-    topics: React.PropTypes.array,
+    choices: React.PropTypes.array,
     saveKey: React.PropTypes.string,
     label: React.PropTypes.string,
     maxSelections: React.PropTypes.number
 };
 
-TopicChooser.defaultProps = {
+IconChooser.defaultProps = {
     initialValue: []
 };
 
-export default TopicChooser;
+export default IconChooser;

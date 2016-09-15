@@ -1,17 +1,17 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import TopicChooser from '../TopicChooser';
+import IconChooser from '../IconChooser';
 import { Grid, Row, Col } from 'react-bootstrap';
 
 import {topics} from './fixtures';
 
-storiesOf('TopicChooser', module)
+storiesOf('IconChooser', module)
   .add('Initial View', () => (
     <Grid>
         <Row>
             <Col xs={12}>
-                <TopicChooser
-                  topics={topics}
+                <IconChooser
+                  choices={topics}
                   onChange={action('onChange')}/>
             </Col>
         </Row>
@@ -21,8 +21,8 @@ storiesOf('TopicChooser', module)
     <Grid>
         <Row>
             <Col xs={12}>
-                <TopicChooser
-                  topics={topics}
+                <IconChooser
+                  choices={topics}
                   initialValue={["transport"]}
                   onChange={action('onChange')}/>
             </Col>
@@ -33,9 +33,9 @@ storiesOf('TopicChooser', module)
       <Grid>
         <Row>
             <Col xs={12}>
-                <TopicChooser
+                <IconChooser
                   maxSelections={1}
-                  topics={topics}
+                  choices={topics}
                   initialValue={["public_transport"]}
                   onChange={action('onChange')}/>
             </Col>
