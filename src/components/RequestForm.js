@@ -24,7 +24,8 @@ export class RequestForm extends Component {
                 reason: '',
                 topics: [],
                 issuerName,
-                issuerAvatar
+                issuerAvatar,
+                organization: ''
             }
         }
 
@@ -92,11 +93,20 @@ export class RequestForm extends Component {
                             maxSelections={1}
                             onChange={_.partial(this.handleChange, 'topics')} />
                         <FormGroup>
+                            <ControlLabel>Organization</ControlLabel>
+                            <FormControl type="text"
+                              onChange={_.partial(this.handleInputChange, 'organization')} />
+                          <HelpBlock>Let recipents of this request know which body the request originates from</HelpBlock>
+                        </FormGroup>
+                        <FormGroup>
                             <ControlLabel>Because</ControlLabel>
                             <FormControl componentClass="textarea"
                               maxLength={this.props.maxLength}
                               onChange={_.partial(this.handleInputChange, 'reason')} />
-                            <HelpBlock>{this.state.request.reason.length} of {this.props.maxLength} letters used</HelpBlock>
+                          <HelpBlock>
+                              <p>{this.state.request.reason.length} of {this.props.maxLength} letters used</p>
+                              <p>Let people know, clearly and simply, why you'd like access to their data.</p>
+                          </HelpBlock>
                         </FormGroup>
                         <FormGroup>
                             <ControlLabel>From</ControlLabel>

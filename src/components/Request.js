@@ -29,7 +29,7 @@ class Request extends Component {
                             circle
                             />
 
-                    <p>{this.props.issuerName} would like to be able to see your entries about {this.props.topics.join(' and ')} because they are {this.props.reason}</p>
+                        <p><strong>{this.props.issuerName}</strong> from <strong>{this.props.organization}</strong> would like to be able to see your entries about <strong>{this.props.topics.join(' and ')}</strong> because they are {this.props.reason}</p>
                     {/**<div className="easyread">
                         <div>
                             <Image
@@ -75,6 +75,7 @@ Request.PropTypes = {
     topics: React.PropTypes.array.isRequired,
     issuerName: React.PropTypes.string.isRequired,
     issuerAvatar: React.PropTypes.string.isRequired,
+    organization: React.PropTypes.string.isRequired,
     allowMutation: React.PropTypes.bool
 }
 
