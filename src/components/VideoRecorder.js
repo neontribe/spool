@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, ResponsiveEmbed, Button, ButtonToolbar, Glyphicon } from 'react-bootstrap';
-import AddEntryControls from './AddEntryControls';
+import AddControls from './AddControls';
 import ReactCountdownClock from 'react-countdown-clock';
 import MediaStreamRecorder from 'msr';
 import captureVideoFrame from 'capture-video-frame';
@@ -259,7 +259,7 @@ class VideoRecorder extends Component {
                         </ButtonToolbar>
                     </Col>
                     <Col>
-                        <AddEntryControls
+                        <AddControls
                             onNext={this.save}
                             disableNext={!this.state.lastTakeURL && !this.state.playing}
                             />

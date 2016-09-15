@@ -145,3 +145,93 @@ export const googleProfile = {
     "created_at": "2016-08-15T23:01:02.918Z",
     "global_client_id": "xxxx"
 };
+
+export const auth = {
+    getProfile: function() { return googleProfile; }
+};
+
+export const request = {
+    issuerAvatar: googleProfile.picture,
+    issuerName: googleProfile.name,
+    fromDate: '10/10/2017',
+    toDate: '11/11/2017',
+    reason: 'researching the best way to make catching buses easier',
+    topics: ['transport']
+};
+
+export const topicCounts = [
+          {
+            "topic": {
+              "type": "education",
+              "name": "Education"
+            },
+            "entryCount": 3,
+            "creatorCount": 2
+          },
+          {
+            "topic": {
+              "type": "food",
+              "name": "Food"
+            },
+            "entryCount": 1,
+            "creatorCount": 1
+          },
+          {
+            "topic": {
+              "type": "health",
+              "name": "Health"
+            },
+            "entryCount": 1,
+            "creatorCount": 1
+          },
+          {
+            "topic": {
+              "type": "home",
+              "name": "Home"
+            },
+            "entryCount": 2,
+            "creatorCount": 1
+          },
+          {
+            "topic": {
+              "type": "leisure",
+              "name": "Leisure"
+            },
+            "entryCount": 2,
+            "creatorCount": 2
+          },
+          {
+            "topic": {
+              "type": "sport",
+              "name": "Sport"
+            },
+            "entryCount": 2,
+            "creatorCount": 2
+          },
+          {
+            "topic": {
+              "type": "transport",
+              "name": "Transport"
+            },
+            "entryCount": 1,
+            "creatorCount": 1
+          },
+          {
+            "topic": {
+              "type": "work",
+              "name": "Work"
+            },
+            "entryCount": 0,
+            "creatorCount": 0
+          }
+      ];
+
+export const dashboardViewer = {
+    role: {
+        creatorActivityCount: {
+            active: 10,
+            stale: 3
+        },
+        topicCounts
+    }
+}

@@ -9,6 +9,7 @@ import App from './App';
 import RoleSwitchContainer from './components/RoleSwitch';
 import { TimelineContainer } from './components/Timeline';
 import { DashboardContainer } from './components/Dashboard';
+import { RequestFormContainer } from './components/RequestForm';
 import SimpleLogin from './components/SimpleLogin';
 import { SignupContainer } from './components/Signup';
 import { AddEntryContainer } from './components/AddEntry';
@@ -72,6 +73,7 @@ ReactDOM.render(
                 }}
             />
         </Route>
+        <Route path="requests/add" component={RequestFormContainer} queries={ViewerQueries} auth={auth} onEnter={auth.requireAuthOnEnter}/>
         <Route path="add" component={AddEntryContainer} queries={ViewerQueries} onEnter={auth.requireAuthOnEnter}>
             <IndexRedirect to="about"/>
             <Route path="about" component={TopicForm} />

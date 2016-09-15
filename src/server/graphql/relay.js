@@ -5,6 +5,7 @@ const db = require('../database/database.js');
 const models = require('../database/models.js');
 const moment = require('moment');
 const _ = require('lodash');
+const spool = require('../spool.js');
 
 var {nodeInterface, nodeField} = relayql.nodeDefinitions(
     /* retrieve given an id and type */
@@ -16,13 +17,23 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
             return models.Entry.findById(db, id).then((entries) => entries.shift());
         } else if (type === 'Viewer') {
             return models.User.findById(db, id).then((users) => users.shift());
+        } else if (type === 'UserRequest') {
+            return models.UserRequest.findById(db, id).then((userRequests) => userRequests.shift());
+        } else if (type === 'Request') {
+            return models.Request.findById(db, id).then((requests) => requests.shift());
         }
     },
     /* resolve given an object */
     (obj) => {
-        if (obj.media) {
+        if (obj instanceof models.Entry) {
             // eslint-disable-next-line no-use-before-define
             return EntryType
+        } else if (obj instanceof models.UserRequest) {
+            // eslint-disable-next-line no-use-before-define
+            return UserRequestType
+        } else if (obj instanceof models.Request) {
+            // eslint-disable-next-line no-use-before-define
+            return RequestType
         } else {
             // eslint-disable-next-line no-use-before-define
             return ViewerType
@@ -76,6 +87,78 @@ const getSentimentCount = function (sentimentType, userId) {
     });
 }
 
+const RequestType = new ql.GraphQLObjectType({
+    name: 'Request',
+    fields: {
+        id: relayql.globalIdField(),
+        _id: {
+            type: ql.GraphQLInt,
+            resolve: (request) => request._id
+        },
+        from: {
+            type: ql.GraphQLString,
+            resolve: (request) => request.from
+        },
+        to: {
+            type: ql.GraphQLString,
+            resolve: (request) => request.to
+        },
+        region: {
+            type: ql.GraphQLString,
+            resolve: (request) => request.region
+        },
+        user: {
+            type: types.UserType,
+            resolve: (request) => request.user
+        },
+        topics: {
+            type: new ql.GraphQLList(types.TopicType),
+            resolve: (request) => models.Topic.findByRequestId(db, request._id)
+        },
+        reason: {
+            type: ql.GraphQLString,
+            resolve: (request) => request.reason
+        },
+        name: {
+            type: ql.GraphQLString,
+            resolve: (request) => request.name
+        },
+        org: {
+            type: ql.GraphQLString,
+            resolve: (request) => request.org
+        },
+        avatar: {
+            type: ql.GraphQLString,
+            resolve: (request) => request.avatar
+        }
+        //userRequests ? :-)
+    },
+    interfaces: [nodeInterface]
+});
+
+const UserRequestType = new ql.GraphQLObjectType({
+    name: 'UserRequest',
+    fields: {
+        id: relayql.globalIdField(),
+        _id: {
+            type: ql.GraphQLInt,
+            resolve: (userRequest) => userRequest._id
+        },
+        request: {
+            type: RequestType,
+            resolve: (userRequest) => userRequest.request
+        },
+        seen: {
+            type: ql.GraphQLBoolean,
+            resolve: (userRequest) => userRequest.seen
+        }
+    },
+    interfaces: [nodeInterface]
+});
+
+var userRequestConnectionDefinition =
+    relayql.connectionDefinitions({nodeType: UserRequestType});
+
 const CreatorRoleType = new ql.GraphQLObjectType({
     name: 'Creator',
     fields: {
@@ -83,6 +166,11 @@ const CreatorRoleType = new ql.GraphQLObjectType({
             type: entryConnectionDefinition.connectionType,
             args: relayql.connectionArgs,
             resolve: (creator, args, context) => relayql.connectionFromPromisedArray(models.Entry.findByOwnerId(db, creator.id), args)
+        },
+        requests: {
+            type: userRequestConnectionDefinition.connectionType,
+            args: relayql.connectionArgs,
+            resolve: (creator, args, context) => relayql.connectionFromPromisedArray(models.UserRequest.findByUserNotSeen(db, creator.id), args)
         },
         happyCount: {
             type: ql.GraphQLInt,
@@ -123,6 +211,19 @@ const ConsumerRoleType = new ql.GraphQLObjectType({
                 var fromDate = moment(range.from);
                 var toDate = moment(range.to);
                 return models.Count.findCreatorActivity(db, fromDate, toDate)
+            }
+        },
+        topicCounts: {
+            type: new ql.GraphQLList(types.TopicCountType),
+            args: {
+                range: {
+                    type: types.DateRangeInputType,
+                }
+            },
+            resolve: function(consumer, {range}) {
+                var fromDate = moment(range.from);
+                var toDate = moment(range.to);
+                return models.Count.findTopicCounts(db, fromDate, toDate)
             }
         }
     }
@@ -244,6 +345,31 @@ const updateUser = relayql.mutationWithClientMutationId({
     }
 });
 
+const createRequest = relayql.mutationWithClientMutationId({
+    name: 'CreateRequest',
+    inputFields: {
+        request: {
+            type: types.RequestInputType
+        }
+    },
+    outputFields: {
+        viewer: viewerField
+    },
+    mutateAndGetPayload: function mutateRequestPayload({request}, context) {
+        if (context.role !== "consumer") {
+            return {};
+        }
+        request.userId = context.id;
+        request.range.from = moment(request.range.from);
+        request.range.to = moment(request.range.to);
+        request.region = context.region;
+        // make new request
+        return spool.makeRequest(request).then(function() {
+            return {};
+        });
+    }
+});
+
 module.exports = {
     fields: {
         nodeField,
@@ -252,6 +378,7 @@ module.exports = {
     },
     mutations: {
         createEntry,
-        updateUser
+        createRequest,
+        updateUser,
     }
 }
