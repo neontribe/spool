@@ -151,12 +151,13 @@ export const auth = {
 };
 
 export const request = {
-    issuerAvatar: googleProfile.picture,
-    issuerName: googleProfile.name,
+    avatar: googleProfile.picture,
+    name: googleProfile.name,
     fromDate: '10/10/2017',
     toDate: '11/11/2017',
     reason: 'researching the best way to make catching buses easier',
-    topics: ['transport']
+    topics: ['transport'],
+    org: 'Spool'
 };
 
 export const topicCounts = [
