@@ -32,7 +32,7 @@ export class Timeline extends Component {
 
     renderRequests() {
         if (this.props.viewer.role.requests.edges.length) {
-            var request = _.first(this.props.viewer.role.requests.edges).node
+            var request = _.first(this.props.viewer.role.requests.edges).node.request
             if (this.props.relay) {
                 return (
                     <RequestContainer {...request} />
@@ -102,6 +102,14 @@ export const TimelineContainer = Relay.createContainer(Timeline, {
                                     from
                                     to
                                     region
+                                    org
+                                    reason
+                                    name
+                                    avatar
+                                    topic {
+                                        type
+                                        name
+                                    }
                                 }
                                 seen
                             }

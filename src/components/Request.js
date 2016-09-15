@@ -24,12 +24,12 @@ class Request extends Component {
             return (
                 <Alert bsStyle="info" onDismiss={this.props.allowMutation ? this.handleAlertDismiss : null} >
                     <Image
-                            src={this.props.issuerAvatar}
+                            src={this.props.avatar}
                             className='profile-img'
                             circle
                             />
 
-                        <p><strong>{this.props.issuerName}</strong> from <strong>{this.props.organization}</strong> would like to be able to see your entries about <strong>{this.props.topics.join(' and ')}</strong> because they are {this.props.reason}</p>
+                        <p><strong>{this.props.name}</strong> from <strong>{this.props.org}</strong> would like to be able to see your entries about <strong>{this.props.topic.map((t) => t.type || t).join(' and ')}</strong> because they are {this.props.reason}</p>
                     {/**<div className="easyread">
                         <div>
                             <Image
@@ -72,16 +72,15 @@ Request.PropTypes = {
     fromDate: React.PropTypes.string.isRequired,
     toDate: React.PropTypes.string.isRequired,
     reason: React.PropTypes.string.isRequired,
-    topics: React.PropTypes.array.isRequired,
-    issuerName: React.PropTypes.string.isRequired,
-    issuerAvatar: React.PropTypes.string.isRequired,
-    organization: React.PropTypes.string.isRequired,
+    topic: React.PropTypes.array.isRequired,
+    name: React.PropTypes.string.isRequired,
+    avatar: React.PropTypes.string.isRequired,
+    org: React.PropTypes.string.isRequired,
     allowMutation: React.PropTypes.bool
 }
 
 Request.defaultProps = {
-    allowMutation: true,
-    topics: ['transport']
+    allowMutation: true
 }
 
 export default Request;

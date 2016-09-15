@@ -111,7 +111,7 @@ const RequestType = new ql.GraphQLObjectType({
             type: types.UserType,
             resolve: (request) => request.user
         },
-        topic: {
+        topics: {
             type: new ql.GraphQLList(types.TopicType),
             resolve: (request) => models.Topic.findByRequestId(db, request._id)
         },
@@ -355,7 +355,7 @@ const createRequest = relayql.mutationWithClientMutationId({
     outputFields: {
         viewer: viewerField
     },
-    mutateAndGetPayload: function mutateEntryPayload({request}, context) {
+    mutateAndGetPayload: function mutateRequestPayload({request}, context) {
         if (context.role !== "consumer") {
             return {};
         }

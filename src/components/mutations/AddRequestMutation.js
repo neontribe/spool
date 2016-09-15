@@ -19,11 +19,11 @@ export default class AddRequestMutation extends Relay.Mutation {
                     from: moment(this.props.request.fromDate).startOf('date').format(),
                     to: moment(this.props.request.toDate).endOf('date').format(),
                 },
-                name: this.props.request.issuerName,
+                name: this.props.request.name,
                 reason: this.props.request.reason,
-                org: this.props.request.organization,
-                avatar: this.props.request.issuerAvatar,
-                topic: this.props.request.topics
+                org: this.props.request.org,
+                avatar: this.props.request.avatar,
+                topics: this.props.request.topics
             }
         }
     }

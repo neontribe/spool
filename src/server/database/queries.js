@@ -221,10 +221,14 @@ const request = {
 const user_request = {
     _root: SQL`
         SELECT
-            user_request.user_request_id as id,
+            user_request.user_request_id AS id,
             user_request.user_id,
             user_request.seen,
             user_request.request_id,
+            request.reason AS request_reason,
+            request.name AS request_name,
+            request.org AS request_org,
+            request.avatar AS request_avatar,
             request.user_id AS request_user_id,
             request.from AS request_from,
             request.to AS request_to,
