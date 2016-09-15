@@ -33,6 +33,11 @@ export class Timeline extends Component {
     renderRequests() {
         if (this.props.viewer.role.requests.edges.length) {
             var request = _.first(this.props.viewer.role.requests.edges).node
+            request.issuerName = 'Spool Consumer';
+            request.organization = 'SPOOL';
+            request.topics = ['transport'];
+            request.reason = 'thinking about improvements to Jarrow station';
+            request.issuerAvatar = 'https://lh6.googleusercontent.com/-EhASP_WNCa8/AAAAAAAAAAI/AAAAAAAAAAs/SIHqyeyvLyc/photo.jpg';
             if (this.props.relay) {
                 return (
                     <RequestContainer {...request} />
