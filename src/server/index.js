@@ -5,8 +5,7 @@ const cors = require('cors');
 const s3Router = require('./s3Router');
 const bodyParser = require('body-parser');
 const jwt = require('express-jwt');
-const db = require('./database/database.js');
-const models = require('./database/models.js');
+const {models} = require('./database');
 const createHash = require('sha.js');
 const sslRedirect = require('heroku-ssl-redirect');
 const path = require('path');
@@ -46,11 +45,19 @@ function reconcileUser() {
         var sha256 = createHash('sha256')
         var hash = sha256.update(userId).digest('hex');
         var p = new Promise(function findUserPromise(resolve, reject) {
-            models.User.findByAuthHash(db, hash).then(function handleFindUser(rows) {
-                if (rows.length > 0) {
-                    resolve(rows.shift());
+            models.UserAccount.findOne({
+                where: {
+                    authHash: hash
+                }
+            }).catch(function () {
+                console.dir(arguments);
+            }).then(function handleFindUser(user) {
+                if (user) {
+                    resolve(user);
                 } else {
-                    userCreateCache[userId] = userCreateCache[userId] || models.User.create(db, hash);
+                    userCreateCache[userId] = userCreateCache[userId] || models.UserAccount.create({
+                        authHash: hash
+                    });
                     userCreateCache[userId].then(function(user) {
                         resolve(user);
                     });

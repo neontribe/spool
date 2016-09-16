@@ -1,6 +1,5 @@
 const co = require('co');
-const db = require('./database/database.js');
-const models = require('./database/models.js');
+const {models} = require('./database');
 const moment = require('moment');
 
 function makeRequest(request) {

@@ -1,0 +1,106 @@
+
+
+Entry
+-----
+has many          entry_topic                              as TopicEntryIdFkeys 
+has many          entry_user_request                       as UserRequestEntryIdFkeys 
+has many          media                                    as MediaEntryIdFkeys 
+belongs to        user_account                             as Author 
+belongs to        user_account                             as Owner 
+belongs to        sentiment                                as Sentiment 
+belongs to many   topic                                    as EntryTopicTopics 
+belongs to many   user_request                             as EntryUserRequestUserRequests 
+
+
+EntryTopic
+----------
+belongs to        entry                                    as Entry 
+belongs to        topic                                    as Topic 
+
+
+EntryUserRequest
+----------------
+belongs to        entry                                    as Entry 
+belongs to        user_request                             as UserRequest 
+
+
+Medium
+------
+belongs to        entry                                    as Entry 
+
+
+Region
+------
+has many          request                                  as RequestRegionIdFkeys 
+has many          user_account                             as UserAccountRegionIdFkeys 
+belongs to many   user_account                             as RequestUsers 
+belongs to many   role                                     as UserAccountRoles 
+
+
+Request
+-------
+has many          request_topic                            as TopicRequestIdFkeys 
+has many          user_request                             as UserRequestRequestIdFkeys 
+belongs to        region                                   as Region 
+belongs to        user_account                             as User 
+belongs to many   topic                                    as RequestTopicTopics 
+belongs to many   user_account                             as UserRequestUsers 
+
+
+RequestTopic
+------------
+belongs to        request                                  as Request 
+belongs to        topic                                    as Topic 
+
+
+Role
+----
+has many          user_account                             as UserAccountRoleIdFkeys 
+belongs to many   region                                   as UserAccountRegions 
+
+
+Sentiment
+---------
+has many          entry                                    as EntrySentimentIdFkeys 
+belongs to many   user_account                             as EntryAuthors 
+belongs to many   user_account                             as EntryOwners 
+
+
+SequelizeDatum
+--------------
+
+
+SequelizeMetum
+--------------
+
+
+Topic
+-----
+has many          entry_topic                              as EntryTopicTopicIdFkeys 
+has many          request_topic                            as RequestTopicTopicIdFkeys 
+belongs to many   entry                                    as EntryTopicEntries 
+belongs to many   request                                  as RequestTopicRequests 
+
+
+UserAccount
+-----------
+has many          entry                                    as EntryAuthorIdFkeys 
+has many          entry                                    as EntryOwnerIdFkeys 
+has many          request                                  as RequestUserIdFkeys 
+has many          user_request                             as UserRequestUserIdFkeys 
+belongs to        region                                   as Region 
+belongs to        role                                     as Role 
+belongs to many   user_account                             as EntryOwners 
+belongs to many   sentiment                                as EntrySentiments 
+belongs to many   user_account                             as EntryAuthors 
+belongs to many   sentiment                                as EntrySentiments 
+belongs to many   region                                   as RequestRegions 
+belongs to many   request                                  as UserRequestRequests 
+
+
+UserRequest
+-----------
+has many          entry_user_request                       as EntryUserRequestUserRequestIdFkeys 
+belongs to        request                                  as Request 
+belongs to        user_account                             as User 
+belongs to many   entry                                    as EntryUserRequestEntries 
