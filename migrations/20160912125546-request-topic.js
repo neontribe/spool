@@ -9,16 +9,23 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
       */
-      return queryInterface.createTable('sentiment_type', {
-          sentiment_type_id: {
-              type: Sequelize.INTEGER,
-              primaryKey: true,
-              autoIncrement: true
-          },
-          type: {
-              type: Sequelize.STRING
-          }
-      });
+     return queryInterface.createTable('request_topic', {
+         request_id: {
+            type: Sequelize.INTEGER,
+            references: {
+                model: 'request',
+                key: 'request_id'
+            },
+            onDelete: 'CASCADE'
+         },
+         topic_id: {
+             type: Sequelize.INTEGER,
+             references: {
+                model: 'topic',
+                key: 'topic_id'
+             }
+         }
+    })
   },
 
   down: function (queryInterface, Sequelize) {
@@ -29,6 +36,6 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
     */
-     return queryInterface.dropTable('sentiment_type');
+     return queryInterface.dropTable('request_topic');
   }
 };

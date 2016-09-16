@@ -32,11 +32,11 @@ module.exports = {
               },
               onDelete: 'CASCADE'
           },
-          sentiment_type_id: { 
+          sentiment_id: { 
               type: Sequelize.INTEGER,
               references: {
-                  model: 'sentiment_type',
-                  key: 'sentiment_type_id'
+                  model: 'sentiment',
+                  key: 'sentiment_id'
               }
           },
           timestamp: { 
