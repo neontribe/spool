@@ -16,14 +16,6 @@ module.exports = {
             primaryKey: true,
             autoIncrement: true,
         },
-        entry_id: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: 'entry',
-                key: 'entry_id'
-            },
-            onDelete: 'CASCADE'
-        },
         text: {
             type: Sequelize.STRING,
         },

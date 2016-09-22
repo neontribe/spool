@@ -9,17 +9,6 @@ module.exports = function(sequelize, DataTypes) {
             primaryKey: true,
             autoIncrement: true
         },
-        entryId: {
-            type: DataTypes.INTEGER,
-            field: 'entry_id',
-            allowNull: true,
-            references: {
-                model: 'entry',
-                key: 'entry_id'
-            },
-            onUpdate: 'NO ACTION',
-            onDelete: 'CASCADE'
-        },
         text: {
             type: DataTypes.STRING(255),
             field: 'text',
@@ -57,11 +46,40 @@ module.exports.initRelations = function() {
     var model = require('../index');
     var Medium = model.Medium;
     var Entry = model.Entry;
+    var UserAccount = model.UserAccount;
+    var Sentiment = model.Sentiment;
 
-    Medium.belongsTo(Entry, {
-        as: 'Entry',
-        foreignKey: 'entry_id',
-        onDelete: 'CASCADE',
+    Medium.hasMany(Entry, {
+        as: 'EntryMediaIdFkeys',
+        foreignKey: 'media_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
+
+    Medium.belongsToMany(UserAccount, {
+        as: 'EntryAuthors',
+        through: Entry,
+        foreignKey: 'media_id',
+        otherKey: 'author_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
+
+    Medium.belongsToMany(UserAccount, {
+        as: 'EntryOwners',
+        through: Entry,
+        foreignKey: 'media_id',
+        otherKey: 'owner_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
+
+    Medium.belongsToMany(Sentiment, {
+        as: 'EntrySentiments',
+        through: Entry,
+        foreignKey: 'media_id',
+        otherKey: 'sentiment_id',
+        onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
     });
 

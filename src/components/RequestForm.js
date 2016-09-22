@@ -36,10 +36,10 @@ export class RequestForm extends Component {
     }
 
     save() {
-        var onSuccess = () => this.props.router.push('/home');
-        var viewer = this.props.viewer;
+        var onSuccess = () => this.props.router.push('/dashboard');
+        var consumer = this.props.consumer;
         this.props.relay.commitUpdate(
-            new AddRequestMutation({request: this.state.request, viewer}),
+            new AddRequestMutation({request: this.state.request, consumer}),
             {onSuccess}
         );
     }
@@ -89,7 +89,7 @@ export class RequestForm extends Component {
                     <Col xsOffset={3} xs={6}>
                         <IconChooser
                             label="Entries tagged with topic"
-                            choices={this.props.viewer.topics}
+                            choices={this.props.consumer.topics}
                             maxSelections={1}
                             onChange={_.partial(this.handleChange, 'topics')} />
                         <FormGroup>
@@ -138,11 +138,11 @@ export class RequestForm extends Component {
 
 RequestForm.propTypes = {
     maxLength: React.PropTypes.number
-}
+};
 
 RequestForm.defaultProps = {
     maxLength: 240
-}
+};
 
 RequestForm = withRouter(RequestForm);
 
@@ -150,14 +150,14 @@ export default RequestForm;
 
 export const RequestFormContainer = Relay.createContainer(RequestForm, {
     fragments: {
-        viewer: () => Relay.QL`
-            fragment on Viewer {
+        consumer: () => Relay.QL`
+            fragment on Consumer {
                 id
                 topics {
                     type,
                     name
                 }
-                ${AddRequestMutation.getFragment('viewer')}
+                ${AddRequestMutation.getFragment('consumer')}
             }
         `,
     }

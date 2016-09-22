@@ -93,15 +93,15 @@ export default class AuthService extends EventEmitter {
   }
 
   // onEnter callback to validate authentication in private routes
-  requireAuthOnEnter(nextState, replace) {
+  requireAuthOnEnter(nextState, replace, callback) {
      if (nextState.location.hash) {
          this.parseHash(nextState.location.hash);
      }
      if (!this.loggedIn()) {
          replace({ pathname: this.urls.login });
-         return false;
+         callback(new Error('User is not logged in'));
      }
-     return true;
+     callback();
   }
 
 }

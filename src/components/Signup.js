@@ -7,18 +7,23 @@ import { withRouter } from 'react-router';
 import UpdateUserMutation from './mutations/UpdateUserMutation';
 
 export class Signup extends React.Component {
+    static propTypes = {
+        defaultRole: React.PropTypes.string
+    }
+    static defaultProps = {
+        defaultRole: 'creator'
+    }
     constructor(props) {
         super(props);
-
-        let role = props.viewer.role.__typename;
-        role = (role === this.props.missingRole) ? this.props.defaultRole : role
+        let role = this.getRole();
+        let currentRole = _.find(props.meta.roles, {type: role});
         this.state = {
             role,
-            secret: _.find(this.props.meta.roles, {name: role}).secret,
-            region: props.viewer.region || "",
-            requireSecret: false
+            secret: currentRole && currentRole.secret,
+            region: props.user.region,
+            requireSecret: false,
+            changed: false,
         };
-
         this.onChange = this.onChange.bind(this);
         this.onChangeRole = this.onChangeRole.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -34,38 +39,55 @@ export class Signup extends React.Component {
     }
 
     onChange(key, event) {
-        this.setState({[key]: event.target.value});
+        this.setState({[key]: event.target.value, changed: true});
     }
 
     onChangeRole(event) {
         let role = event.target.value;
         this.setState({
             role: role,
-            secret: _.find(this.props.meta.roles, {name: role}).secret,
-            requireSecret: role !== this.props.defaultRole
+            secret: _.find(this.props.meta.roles, {type: role}).secret,
+            requireSecret: !!role,
+            changed: true,
         });
+    }
+
+    handleRedirect(role) {
+        role = role || this.getRole();
+        var redirectTo = this.props.route.roleMap[role];
+        if(redirectTo) {
+            return this.props.router.push(redirectTo);
+        }
+    }
+
+    getRole() {
+        return (this.state && this.state.role) || this.props.user.role || this.props.defaultRole;
     }
 
     onSubmit(event) {
         event.preventDefault();
-        var viewer = this.props.viewer;
-        // Perform Mutation
-        var onSuccess = () => {
-            this.props.router.push('/home');
-        };
-        this.props.relay.commitUpdate(
-            new UpdateUserMutation({viewer, ...this.state}),
-            {onSuccess}
-        );
+        var success = () => this.handleRedirect();
+        if (this.state.changed) {
+            var user = this.props.user;
+            // Perform Mutation
+            this.props.relay.commitUpdate(
+                new UpdateUserMutation({user, ...this.state}),
+                {onSuccess: success},
+            );
+        } else {
+            success();
+        }
     }
 
     showRoleChooser() {
         this.setState({
-            showRoleChooser: true
+            showRoleChooser: true,
+            changed: true,
         });
     }
 
     render() {
+        var currentRole = this.getRole();
         return (
             <Grid>
                 <Row>
@@ -83,14 +105,14 @@ export class Signup extends React.Component {
                                 <Col>
                                     <FormControl componentClass="select"
                                         placeholder="I live in..."
-                                        value={this.state.region}
+                                        value={this.state.region || ""}
                                         onChange={_.partial(this.onChange, 'region')}
                                         >
                                         <option value="" disabled={true}>I live in&hellip;</option>
-                                        {this.props.meta.regions.map((region) => {
-                                            return <option key={'region_' + region}
-                                                        value={region}
-                                                        >{region}</option>;
+                                        {this.props.meta.regions.map(({type}) => {
+                                            return <option key={'region_' + type}
+                                                        value={type}
+                                                        >{type}</option>;
                                         })}
                                     </FormControl>
                                 </Col>
@@ -101,11 +123,11 @@ export class Signup extends React.Component {
                                         What kind of access do you need?
                                     </Col>
                                     <Col>
-                                        {this.props.availableRoles.map((role) => {
-                                            return <Radio key={'role_' + role}
-                                                        value={role}
-                                                        checked={this.state.role === role}
-                                                        onChange={this.onChangeRole}>{role}</Radio>;
+                                        {this.props.meta.roles.map(({type, name}) => {
+                                            return <Radio key={'role_' + type}
+                                                        value={type}
+                                                        checked={currentRole === type}
+                                                        onChange={this.onChangeRole}>{name}</Radio>;
                                         })}
                                     </Col>
                                 </FormGroup>
@@ -147,35 +169,26 @@ export class Signup extends React.Component {
     }
 }
 
-Signup.defaultProps = {
-    availableRoles: ['Creator', 'Consumer'],
-    defaultRole: 'Creator',
-    missingRole: 'Missing'
-}
-
 Signup = keydown(Signup);
 Signup = withRouter(Signup);
-
 export const SignupContainer = Relay.createContainer(Signup, {
     fragments: {
         meta: () => Relay.QL`
         fragment on Meta {
-            regions
+            regions {
+                type
+            }
             roles {
                 type
                 name
                 secret
             }
-        }
-        `,
-        viewer: () => Relay.QL`
-        fragment on Viewer {
+        }`,
+        user: () => Relay.QL`
+        fragment on User {
+            role
             region
-            role {
-                __typename
-            }
-            ${UpdateUserMutation.getFragment('viewer')}
-        }
-        `
+            ${UpdateUserMutation.getFragment('user')}
+        }`,
     }
 });

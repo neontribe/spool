@@ -57,7 +57,7 @@ TopicForm.propTypes = {
 
 TopicForm.defaultProps = {
     initialValue: [],
-    saveKey: 'topic'
+    saveKey: 'topics'
 };
 
 export default TopicForm;

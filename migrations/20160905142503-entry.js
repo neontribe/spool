@@ -32,6 +32,13 @@ module.exports = {
               },
               onDelete: 'CASCADE'
           },
+          media_id: {
+              type: Sequelize.INTEGER,
+              references: {
+                  model: 'media',
+                  key: 'media_id'
+              }
+          },
           sentiment_id: { 
               type: Sequelize.INTEGER,
               references: {
@@ -39,9 +46,12 @@ module.exports = {
                   key: 'sentiment_id'
               }
           },
-          timestamp: { 
+          created_at: { 
               type: Sequelize.DATE
-          }
+          },
+          updated_at: { 
+              type: Sequelize.DATE
+          },
       });
   },
 

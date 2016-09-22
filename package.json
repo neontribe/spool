@@ -24,7 +24,8 @@
     "build-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && sequelize --config config/database.js --env spool db:migrate && npm run setup-database",
     "reset-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && npm run reset-seeds && sequelize --config config/database.js --env spool db:migrate:undo:all",
     "reset-seeds": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && for f in seeders/*; do sequelize --config config/database.js --env spool --seed \"$f\" db:seed:undo; done",
-    "postinstall": "npm run build && npm run build-database"
+    "postinstall": "npm run build && npm run build-database",
+    "generate-database": "pgen exec ./config/sequelize-template -t src/server/database/models"
   },
   "repository": {
     "type": "git",
@@ -48,6 +49,7 @@
     "jsdom": "^9.4.1",
     "mocha": "^3.0.1",
     "nyc": "^8.1.0",
+    "pg-generator": "^3.4.2",
     "react-addons-test-utils": "^15.3.0",
     "supertest": "^2.0.0",
     "webpack-dev-server": "1.15.1"

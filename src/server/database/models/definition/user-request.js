@@ -36,11 +36,21 @@ module.exports = function(sequelize, DataTypes) {
             field: 'seen',
             allowNull: true,
             defaultValue: false
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            field: 'created_at',
+            allowNull: true
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            field: 'updated_at',
+            allowNull: true
         }
     }, {
         schema: 'public',
         tableName: 'user_request',
-        timestamps: false
+        timestamps: true
     });
 };
 

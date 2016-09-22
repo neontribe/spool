@@ -27,6 +27,7 @@ module.exports.initRelations = function() {
     var Sentiment = model.Sentiment;
     var Entry = model.Entry;
     var UserAccount = model.UserAccount;
+    var Medium = model.Medium;
 
     Sentiment.hasMany(Entry, {
         as: 'EntrySentimentIdFkeys',
@@ -40,6 +41,15 @@ module.exports.initRelations = function() {
         through: Entry,
         foreignKey: 'sentiment_id',
         otherKey: 'author_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
+
+    Sentiment.belongsToMany(Medium, {
+        as: 'EntryMedia',
+        through: Entry,
+        foreignKey: 'sentiment_id',
+        otherKey: 'media_id',
         onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
     });

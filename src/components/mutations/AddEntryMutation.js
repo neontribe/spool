@@ -3,15 +3,11 @@ import moment from 'moment';
 
 export default class AddEntryMutation extends Relay.Mutation {
     static fragments = {
-        viewer: () => Relay.QL`
-        fragment on Viewer {
+        creator: () => Relay.QL`
+        fragment on Creator {
             id
-            role {
-                ... on Creator {
-                    happyCount
-                    sadCount
-                }
-            }
+            happyCount
+            sadCount
         }`
     }
     getMutation() {
@@ -36,7 +32,7 @@ export default class AddEntryMutation extends Relay.Mutation {
             entry: {
                 media: mediaInput,
                 sentiment: entry.sentiment,
-                topic: entry.topic
+                topics: entry.topics
             }
         }
     }
@@ -44,14 +40,10 @@ export default class AddEntryMutation extends Relay.Mutation {
     getFatQuery() {
         return Relay.QL`
         fragment on CreateEntryPayload {
-            viewer {
-                role {
-                    ... on Creator {
-                        entries
-                        happyCount
-                        sadCount
-                    }
-                }
+            creator {
+                entries
+                happyCount
+                sadCount
             }
             entryEdge
         }`
@@ -61,47 +53,13 @@ export default class AddEntryMutation extends Relay.Mutation {
   getConfigs() {
     return [{
       type: 'RANGE_ADD',
-      parentName: 'viewer',
-      parentID: this.props.viewer.id,
+      parentName: 'creator',
+      parentID: this.props.creator.id,
       connectionName: 'entries',
       edgeName: 'entryEdge',
       rangeBehaviors: ({ status }) => (
         status === 'completed' ? 'ignore' : 'prepend'
       ),
     }];
-  }
-
-  getOptimisticResponse() {
-      var viewer = this.props.viewer;
-      var entry = this.props.entry;
-      var happyCount = this.props.viewer.role.happyCount;
-      var sadCount = this.props.viewer.role.sadCount;
-      switch (entry.sentiment) {
-          case 'happy':
-              happyCount++;
-              break;
-          case 'sad':
-              sadCount++;
-              break;
-          default:
-              break;
-      }
-      return {
-          viewer: {
-              id: viewer.id,
-              happyCount,
-              sadCount
-          },
-          entryEdge: {
-              node: {
-                media: entry.media,
-                topic: entry.topic.map((t) => {return { name: t }}),
-                sentiment: {
-                    type: entry.sentiment
-                },
-                timestamp: moment().format()
-              }
-          }
-      }
   }
 }

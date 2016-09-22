@@ -42,12 +42,36 @@
               "deprecationReason": null
             },
             {
-              "name": "viewer",
+              "name": "creator",
               "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "Viewer",
+                "name": "Creator",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "consumer",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Consumer",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "user",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -109,7 +133,7 @@
           "possibleTypes": [
             {
               "kind": "OBJECT",
-              "name": "Viewer",
+              "name": "Creator",
               "ofType": null
             },
             {
@@ -126,12 +150,17 @@
               "kind": "OBJECT",
               "name": "Request",
               "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
             }
           ]
         },
         {
           "kind": "OBJECT",
-          "name": "Viewer",
+          "name": "Creator",
           "description": null,
           "fields": [
             {
@@ -151,30 +180,6 @@
               "deprecationReason": null
             },
             {
-              "name": "role",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "UNION",
-                "name": "Role",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "region",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "topics",
               "description": null,
               "args": [],
@@ -189,50 +194,7 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [
-            {
-              "kind": "INTERFACE",
-              "name": "Node",
-              "ofType": null
-            }
-          ],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "UNION",
-          "name": "Role",
-          "description": null,
-          "fields": null,
-          "inputFields": null,
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": [
-            {
-              "kind": "OBJECT",
-              "name": "Creator",
-              "ofType": null
             },
-            {
-              "kind": "OBJECT",
-              "name": "Consumer",
-              "ofType": null
-            },
-            {
-              "kind": "OBJECT",
-              "name": "Missing",
-              "ofType": null
-            }
-          ]
-        },
-        {
-          "kind": "OBJECT",
-          "name": "Creator",
-          "description": null,
-          "fields": [
             {
               "name": "entries",
               "description": null,
@@ -358,6 +320,47 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "Topic",
+          "description": null,
+          "fields": [
+            {
+              "name": "type",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "name",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -570,48 +573,12 @@
               "deprecationReason": null
             },
             {
-              "name": "_id",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "media",
               "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
                 "name": "Media",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "author",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "User",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "owner",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "User",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -630,7 +597,7 @@
               "deprecationReason": null
             },
             {
-              "name": "topic",
+              "name": "topics",
               "description": null,
               "args": [],
               "type": {
@@ -646,7 +613,19 @@
               "deprecationReason": null
             },
             {
-              "name": "timestamp",
+              "name": "created",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updated",
               "description": null,
               "args": [],
               "type": {
@@ -742,69 +721,11 @@
         },
         {
           "kind": "OBJECT",
-          "name": "User",
-          "description": null,
-          "fields": [
-            {
-              "name": "id",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
           "name": "Sentiment",
           "description": null,
           "fields": [
             {
               "name": "type",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
-          "name": "Topic",
-          "description": null,
-          "fields": [
-            {
-              "name": "type",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "name",
               "description": null,
               "args": [],
               "type": {
@@ -925,18 +846,6 @@
               "deprecationReason": null
             },
             {
-              "name": "_id",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "request",
               "description": null,
               "args": [],
@@ -955,6 +864,30 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "created",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updated",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -994,18 +927,6 @@
               "deprecationReason": null
             },
             {
-              "name": "_id",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "from",
               "description": null,
               "args": [],
@@ -1036,18 +957,6 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "user",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "User",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1116,6 +1025,30 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "created",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updated",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -1134,6 +1067,22 @@
           "name": "Consumer",
           "description": null,
           "fields": [
+            {
+              "name": "id",
+              "description": "The ID of an object",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
             {
               "name": "creatorActivityCount",
               "description": null,
@@ -1178,6 +1127,22 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "TopicCount",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "topics",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Topic",
                   "ofType": null
                 }
               },
@@ -1313,28 +1278,58 @@
         },
         {
           "kind": "OBJECT",
-          "name": "Missing",
+          "name": "User",
           "description": null,
           "fields": [
             {
-              "name": "information",
-              "description": null,
+              "name": "id",
+              "description": "The ID of an object",
               "args": [],
               "type": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
                   "kind": "SCALAR",
-                  "name": "String",
+                  "name": "ID",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "role",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "region",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
             }
           ],
           "inputFields": null,
-          "interfaces": [],
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
           "enumValues": null,
           "possibleTypes": null
         },
@@ -1351,8 +1346,8 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
+                  "kind": "OBJECT",
+                  "name": "RegionDefinitionType",
                   "ofType": null
                 }
               },
@@ -1371,6 +1366,29 @@
                   "name": "RoleDefinition",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "RegionDefinitionType",
+          "description": null,
+          "fields": [
+            {
+              "name": "type",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -1540,9 +1558,13 @@
               "name": "clientMutationId",
               "description": null,
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             }
@@ -1663,12 +1685,12 @@
           "description": null,
           "fields": [
             {
-              "name": "viewer",
+              "name": "creator",
               "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "Viewer",
+                "name": "Creator",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1691,9 +1713,13 @@
               "description": null,
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -1724,9 +1750,13 @@
               "name": "clientMutationId",
               "description": null,
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             }
@@ -1816,12 +1846,12 @@
           "description": null,
           "fields": [
             {
-              "name": "viewer",
+              "name": "consumer",
               "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "Viewer",
+                "name": "Consumer",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1832,9 +1862,13 @@
               "description": null,
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -1865,9 +1899,13 @@
               "name": "clientMutationId",
               "description": null,
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             }
@@ -1921,12 +1959,12 @@
           "description": null,
           "fields": [
             {
-              "name": "viewer",
+              "name": "user",
               "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "Viewer",
+                "name": "User",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1937,9 +1975,13 @@
               "description": null,
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null

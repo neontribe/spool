@@ -24,14 +24,6 @@ const MediaType = new ql.GraphQLObjectType({
     }
 });
 
-const UserType = new ql.GraphQLObjectType({
-    name: 'User',
-    fields: {
-        id: { type: ql.GraphQLInt }
-    }
-});
-
-
 const SentimentType = new ql.GraphQLObjectType({
     name: 'Sentiment',
     fields: {
@@ -53,6 +45,13 @@ const RoleDefinitionType = new ql.GraphQLObjectType({
         type: { type: ql.GraphQLString, resolve: (role) => role.type },
         name: { type: ql.GraphQLString, resolve: (role) => role.name },
         secret: { type: ql.GraphQLString, resolve: (role) => role.secret }
+    }
+});
+
+const RegionDefinitionType = new ql.GraphQLObjectType({
+    name: 'RegionDefinitionType',
+    fields: {
+        type: { type: ql.GraphQLString, resolve: (region) => region.type },
     }
 });
 
@@ -79,7 +78,7 @@ const EntryInputType = new ql.GraphQLInputObjectType({
     fields: {
         media: { type: MediaInputType },
         sentiment: { type: ql.GraphQLString },
-        topic: { type: new ql.GraphQLList(ql.GraphQLString) }
+        topics: { type: new ql.GraphQLList(ql.GraphQLString) }
     }
 });
 
@@ -100,15 +99,24 @@ const TopicCountType = new ql.GraphQLObjectType({
     fields: {
         topic: {
             type: TopicType,
-            resolve: (obj) => obj.topic
+            resolve: (obj) => {
+                return {
+                    name: obj.name,
+                    type: obj.type,
+                };
+            }
         },
         entryCount: {
             type: ql.GraphQLInt,
-            resolve: (obj) => obj.entryCount
+            resolve: (obj) => {
+                return obj.entry_count;
+            }
         },
         creatorCount: {
             type: ql.GraphQLInt,
-            resolve: (obj) => obj.creatorCount
+            resolve: (obj) => {
+                return obj.creator_count;
+            }
         }
     }
 });
@@ -141,10 +149,10 @@ const UserInputType = new ql.GraphQLInputObjectType({
 
 module.exports = {
     MediaType,
-    UserType,
     SentimentType,
     TopicType,
     RoleDefinitionType,
+    RegionDefinitionType,
     MediaInputType,
     EntryInputType,
     RequestInputType,

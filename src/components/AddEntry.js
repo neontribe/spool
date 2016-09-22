@@ -19,12 +19,12 @@ class AddEntry extends Component {
     }
 
     saveEntry(entry) {
-        var viewer = this.props.viewer;
+        var creator = this.props.creator;
         var onSuccess = () => {
             this.props.router.push('/home');
         }
         this.props.relay.commitUpdate(
-            new AddEntryMutation({viewer, entry}),
+            new AddEntryMutation({creator, entry}),
             {onSuccess}
         );
     }
@@ -65,7 +65,7 @@ class AddEntry extends Component {
         if (this.props.children) {
             children = React.cloneElement(this.props.children, {
                 save: this.setEntryData,
-                topics: this.props.viewer.topics
+                topics: this.props.creator.topics
             });
         }
         return (
@@ -90,14 +90,14 @@ export default withRouter(AddEntry);
 
 export const AddEntryContainer = Relay.createContainer(withRouter(AddEntry), {
     fragments: {
-        viewer: () => Relay.QL`
-            fragment on Viewer {
+        creator: () => Relay.QL`
+            fragment on Creator {
                 id
                 topics {
                     type,
                     name
                 }
-                ${AddEntryMutation.getFragment('viewer')}
+                ${AddEntryMutation.getFragment('creator')}
             }
         `,
     }

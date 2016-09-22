@@ -5,7 +5,7 @@ const cors = require('cors');
 const s3Router = require('./s3Router');
 const bodyParser = require('body-parser');
 const jwt = require('express-jwt');
-const {models} = require('./database');
+const {models, helpers} = require('./database');
 const createHash = require('sha.js');
 const sslRedirect = require('heroku-ssl-redirect');
 const path = require('path');
@@ -48,7 +48,8 @@ function reconcileUser() {
             models.UserAccount.findOne({
                 where: {
                     authHash: hash
-                }
+                },
+                include: helpers.includes.UserAccount.leftRoleAndRegion,
             }).catch(function () {
                 console.dir(arguments);
             }).then(function handleFindUser(user) {

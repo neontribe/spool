@@ -36,15 +36,20 @@ module.exports = function(sequelize, DataTypes) {
             onUpdate: 'NO ACTION',
             onDelete: 'NO ACTION'
         },
-        timestamp: {
+        createdAt: {
             type: DataTypes.DATE,
-            field: 'timestamp',
+            field: 'created_at',
+            allowNull: true
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            field: 'updated_at',
             allowNull: true
         }
     }, {
         schema: 'public',
         tableName: 'user_account',
-        timestamps: false
+        timestamps: true
     });
 };
 
@@ -57,6 +62,7 @@ module.exports.initRelations = function() {
     var UserRequest = model.UserRequest;
     var Region = model.Region;
     var Role = model.Role;
+    var Medium = model.Medium;
     var Sentiment = model.Sentiment;
 
     UserAccount.hasMany(Entry, {
@@ -101,6 +107,15 @@ module.exports.initRelations = function() {
         onUpdate: 'NO ACTION'
     });
 
+    UserAccount.belongsToMany(Medium, {
+        as: 'EntryMedia',
+        through: Entry,
+        foreignKey: 'author_id',
+        otherKey: 'media_id',
+        onDelete: 'SET NULL',
+        onUpdate: 'NO ACTION'
+    });
+
     UserAccount.belongsToMany(UserAccount, {
         as: 'EntryOwners',
         through: Entry,
@@ -124,6 +139,15 @@ module.exports.initRelations = function() {
         through: Entry,
         foreignKey: 'owner_id',
         otherKey: 'author_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'NO ACTION'
+    });
+
+    UserAccount.belongsToMany(Medium, {
+        as: 'EntryMedia',
+        through: Entry,
+        foreignKey: 'owner_id',
+        otherKey: 'media_id',
         onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
     });

@@ -32,7 +32,10 @@ module.exports = {
                 key: 'region_id'
             }
           },
-          timestamp: { 
+          created_at: { 
+              type: Sequelize.DATE
+          },
+          updated_at: { 
               type: Sequelize.DATE
           }
       });

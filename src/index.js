@@ -2,11 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Relay from 'react-relay';
 import { RelayNetworkLayer, urlMiddleware, authMiddleware } from 'react-relay-network-layer';
-import { Router, Route, IndexRoute, IndexRedirect, browserHistory, applyRouterMiddleware } from 'react-router';
+import { Router, Route, IndexRedirect, browserHistory, applyRouterMiddleware } from 'react-router';
 import useRelay from 'react-router-relay';
 import AuthService from './auth/AuthService';
 import App from './App';
-import RoleSwitchContainer from './components/RoleSwitch';
 import { TimelineContainer } from './components/Timeline';
 import { DashboardContainer } from './components/Dashboard';
 import { RequestFormContainer } from './components/RequestForm';
@@ -45,36 +44,39 @@ function setupRelayNetworkLayer() {
     ], { disableBatchQuery:  true }));
 }
 
-const ViewerQueries = {
-    viewer: () => Relay.QL`query { viewer }`,
-};
-const SignupQueries = {
+const MetaQueries = {
     meta: () => Relay.QL`query { meta }`,
-    ...ViewerQueries
-}
+};
+
+const ConsumerQueries = {
+    consumer: () => Relay.QL`query { consumer }`,
+};
+
+const CreatorQueries = {
+    creator: () => Relay.QL`query { creator }`,
+};
+
+const SignupQueries = {
+    user: () => Relay.QL`query { user }`,
+    ...MetaQueries
+};
 
 setupRelayNetworkLayer();
 
 ReactDOM.render(
   <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
     <Route path="/" component={App} auth={auth}>
-        <IndexRedirect to="home" />
-        <Route path="home" component={RoleSwitchContainer} queries={ViewerQueries} onEnter={auth.requireAuthOnEnter}>
-            <IndexRoute
-                components={{
-                    Creator: TimelineContainer,
-                    Consumer: DashboardContainer,
-                    Missing: SignupContainer,
-                }}
-                queries={{
-                    Creator: ViewerQueries,
-                    Consumer: ViewerQueries,
-                    Missing: SignupQueries,
-                }}
-            />
-        </Route>
-        <Route path="requests/add" component={RequestFormContainer} queries={ViewerQueries} auth={auth} onEnter={auth.requireAuthOnEnter}/>
-        <Route path="add" component={AddEntryContainer} queries={ViewerQueries} onEnter={auth.requireAuthOnEnter}>
+        <IndexRedirect to="settings" />
+        <Route path="settings" component={SignupContainer} roleMap={{
+            "consumer": "/dashboard",
+            "creator": "/home",
+        }} queries={SignupQueries} onEnter={auth.requireAuthOnEnter}/>
+
+        <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
+        <Route path="requests/add" component={RequestFormContainer} queries={ConsumerQueries} auth={auth} onEnter={auth.requireAuthOnEnter}/>
+
+        <Route path="home" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
+        <Route path="add" component={AddEntryContainer} queries={CreatorQueries}>
             <IndexRedirect to="about"/>
             <Route path="about" component={TopicForm} />
             <Route path="feeling" component={SentimentForm} />
@@ -84,7 +86,7 @@ ReactDOM.render(
                 <Route path="typing" component={TextForm}/>
             </Route>
         </Route>
-        <Route path="settings" component={SignupContainer} queries={SignupQueries} onEnter={auth.requireAuthOnEnter}/>
+
         <Route path="login" component={SimpleLogin}/>
         <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter}/>
     </Route>

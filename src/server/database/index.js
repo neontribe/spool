@@ -1,4 +1,5 @@
 const pg = require('pg');
+const SQL = require('sql-template-strings');
 const url = require('url')
 const Sequelize = require('sequelize');
 const models = require('./models');
@@ -28,10 +29,144 @@ var sequelize = new Sequelize(config.database, config.user, config.password, {
         max: 5,
         idle: 10000
     },
-    native: true
+    native: true,
+    omitNull: true,
 });
 models.init(sequelize);
+
+const helpers = {
+    includes: {
+        UserAccount: {
+            basic: [
+                {
+                    model: models.Role,
+                    as: 'Role',
+                }, 
+                {
+                    model: models.Region,
+                    as: 'Region',
+                },
+            ],
+            basicConsumer: [
+                {
+                    model: models.Role,
+                    as: 'Role',
+                    where: {
+                        type: 'consumer',
+                    },
+                }, 
+                {
+                    model: models.Region,
+                    as: 'Region',
+                },
+            ],
+            basicCreator: [
+                {
+                    model: models.Role,
+                    as: 'Role',
+                    where: {
+                        type: 'creator',
+                    },
+                }, 
+                {
+                    model: models.Region,
+                    as: 'Region',
+                },
+            ],
+            leftRoleAndRegion: [
+                {
+                    model: models.Role,
+                    required: false,
+                    as: 'Role',
+                }, 
+                {
+                    model: models.Region,
+                    required: false,
+                    as: 'Region',
+                },
+            ],
+        },
+        Entry: {
+            basic: [
+                {
+                    model: models.Medium,
+                    as: 'Medium',
+                },
+                {
+                    model: models.Sentiment,
+                    as: 'Sentiment',
+                },
+                {
+                    model: models.Topic,
+                    as: 'EntryTopicTopics',
+                }
+            ],
+            sentiment: [
+                {
+                    model: models.Sentiment,
+                    as: 'Sentiment',
+                },
+            ],
+        },
+        UserRequest: {
+            basic: [
+                {
+                    model: models.Request,
+                    as: 'Request',
+                    include: [
+                        {
+                            model: models.Topic,
+                            as: 'RequestTopicTopics',
+                        },
+                        {
+                            model: models.Region,
+                            as: 'Region',
+                        },
+                    ]
+                }
+            ],
+        },
+    },
+    queries: {
+        Topic: {
+            countsByRange: (from, to, regionId) => SQL`
+            SELECT
+                topic.type AS type,
+                topic.name AS name,
+                COUNT(user_account.user_id) AS entry_count,
+                COUNT(DISTINCT user_account.user_id) AS creator_count
+            FROM
+                topic
+            LEFT JOIN
+                entry_topic ON entry_topic.topic_id = topic.topic_id
+            LEFT JOIN
+                entry ON entry.entry_id = entry_topic.entry_id 
+                AND entry.created_at BETWEEN ${from} AND ${to}
+            LEFT JOIN
+                user_account ON user_account.user_id = entry.owner_id
+                AND user_account.region_id = ${regionId}
+            GROUP BY
+                topic.type, topic.name
+            `.useBind(),
+        },
+        UserAccount: {
+            entryActivity: (from, to) => SQL`
+            SELECT
+                COUNT(entry.entry_id) AS count
+            FROM
+                user_account
+            LEFT JOIN
+                entry ON entry.owner_id = user_account.user_id AND entry.created_at BETWEEN ${from} AND ${to}
+            WHERE
+                user_account.created_at <= ${from}
+            GROUP BY
+                user_account.user_id
+            `.useBind(),
+        }
+    }
+}
 module.exports = {
     sequelize,
-    models
+    models,
+    helpers,
 }

@@ -4,8 +4,8 @@ Entry
 -----
 has many          entry_topic                              as TopicEntryIdFkeys 
 has many          entry_user_request                       as UserRequestEntryIdFkeys 
-has many          media                                    as MediaEntryIdFkeys 
 belongs to        user_account                             as Author 
+belongs to        media                                    as Medium 
 belongs to        user_account                             as Owner 
 belongs to        sentiment                                as Sentiment 
 belongs to many   topic                                    as EntryTopicTopics 
@@ -26,7 +26,10 @@ belongs to        user_request                             as UserRequest
 
 Medium
 ------
-belongs to        entry                                    as Entry 
+has many          entry                                    as EntryMediaIdFkeys 
+belongs to many   user_account                             as EntryAuthors 
+belongs to many   user_account                             as EntryOwners 
+belongs to many   sentiment                                as EntrySentiments 
 
 
 Region
@@ -63,6 +66,7 @@ Sentiment
 ---------
 has many          entry                                    as EntrySentimentIdFkeys 
 belongs to many   user_account                             as EntryAuthors 
+belongs to many   media                                    as EntryMedia 
 belongs to many   user_account                             as EntryOwners 
 
 
@@ -90,9 +94,11 @@ has many          request                                  as RequestUserIdFkeys
 has many          user_request                             as UserRequestUserIdFkeys 
 belongs to        region                                   as Region 
 belongs to        role                                     as Role 
+belongs to many   media                                    as EntryMedia 
 belongs to many   user_account                             as EntryOwners 
 belongs to many   sentiment                                as EntrySentiments 
 belongs to many   user_account                             as EntryAuthors 
+belongs to many   media                                    as EntryMedia 
 belongs to many   sentiment                                as EntrySentiments 
 belongs to many   region                                   as RequestRegions 
 belongs to many   request                                  as UserRequestRequests 
