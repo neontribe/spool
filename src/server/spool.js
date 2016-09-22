@@ -2,6 +2,7 @@ const co = require('co');
 const {models, helpers} = require('./database');
 const _ = require('lodash');
 const moment = require('moment');
+const winston = require('winston');
 
 function makeRequest(request, topics) {
     return co(function* () {
@@ -54,7 +55,7 @@ function makeRequest(request, topics) {
             // link the entries to the user request
             yield entries.map(entry => entry.addEntryUserRequestUserRequest(userRequest));
         });
-    }).catch((err) => console.error(err));
+    }).catch((e) => winston.warn(e));
 }
 
 function getCreatorSentimentCount (sentimentType, userId) {
@@ -70,7 +71,7 @@ function getCreatorSentimentCount (sentimentType, userId) {
             }
             return reduction;
         }, 0);
-    }).catch((err) => console.error(err));
+    }).catch((e) => winston.warn(e));
 }
 
 function makeEntry(userId, entry) {
@@ -106,7 +107,7 @@ function makeEntry(userId, entry) {
                 }) 
             };
         }
-    }).catch((err) => console.error(err));
+    }).catch((e) => winston.warn(e));
 }
 
 function updateUser(id, userRegion, roleSecret) {
@@ -125,7 +126,7 @@ function updateUser(id, userRegion, roleSecret) {
             });
         }
         return {};
-    }).catch((err) => console.error(err));
+    }).catch((e) => winston.warn(e));
 }
 
 module.exports = {

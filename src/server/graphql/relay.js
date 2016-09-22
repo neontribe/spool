@@ -5,6 +5,7 @@ const {sequelize, models, helpers} = require('../database');
 const moment = require('moment');
 const _ = require('lodash');
 const spool = require('../spool.js');
+const winston = require('winston');
 
 var {nodeInterface, nodeField} = relayql.nodeDefinitions(
     /* retrieve given an id and type */
@@ -57,7 +58,8 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
             // eslint-disable-next-line no-use-before-define
             return RequestType
         } else if (obj instanceof models.UserAccount.Instance){
-            throw new Error('This is going to be a problem I think');
+            winston.warn('nodeDefinitions are unresolvable for UserAccount instances');
+            return null;
         }
     });
 
@@ -270,9 +272,7 @@ const ConsumerType = new ql.GraphQLObjectType({
                         active: 0,
                         stale: 0
                     });
-                }).catch((e) => {
-                    console.error(e);
-                });
+                }).catch((e) => winston.warn(e));
             },
         },
         topicCounts: {
@@ -288,13 +288,14 @@ const ConsumerType = new ql.GraphQLObjectType({
                 var regionId = root.regionId;
 
                 return sequelize.query(helpers.queries.Topic.countsByRange(from.format(), to.format(), regionId))
-                .then(([results, metadata]) => results);
+                .then(([results, metadata]) => results)
+                .catch((e) => winston.warn(e));
             },
         },
         topics: {
             type: new ql.GraphQLList(types.TopicType),
             resolve: () => {
-                return models.Topic.findAll();
+                return models.Topic.findAll().catch((e) => winston.warn(e));
             },
         },
     }
@@ -307,7 +308,7 @@ const consumerField = {
                 userId: context.userId,
             },
             include: helpers.includes.UserAccount.basicConsumer,
-        });
+        }).catch((e) => winston.warn(e));
     },
 }
 
@@ -318,7 +319,7 @@ const CreatorType = new ql.GraphQLObjectType({
         topics: {
             type: new ql.GraphQLList(types.TopicType),
             resolve: () => {
-                return models.Topic.findAll();
+                return models.Topic.findAll().catch((e) => winston.warn(e));
             },
         },
         entries: {
@@ -330,7 +331,7 @@ const CreatorType = new ql.GraphQLObjectType({
                         ownerId: root.userId,
                     },
                     include: helpers.includes.Entry.basic
-                }), args);
+                }).catch((e) => winston.warn(e)), args);
             },
         },
         requests: {
@@ -343,7 +344,7 @@ const CreatorType = new ql.GraphQLObjectType({
                         seen: false
                     },
                     include: helpers.includes.UserRequest.basic
-                }), args);
+                }).catch((e) => winston.warn(e)), args);
             },
         },
         happyCount: {
@@ -369,7 +370,7 @@ const creatorField = {
                 userId: context.userId,
             },
             include: helpers.includes.UserAccount.basic,
-        });
+        }).catch((e) => winston.warn(e));
     },
 }
 
@@ -381,7 +382,7 @@ const userField = {
                 userId: context.userId,
             },
             include: helpers.includes.UserAccount.leftRoleAndRegion,
-        });
+        }).catch((e) => winston.warn(e));
     },
 }
 
@@ -391,13 +392,13 @@ const MetaType = new ql.GraphQLObjectType({
         regions: {
             type: new ql.GraphQLList(types.RegionDefinitionType),
             resolve: () => {
-                return models.Region.findAll();
+                return models.Region.findAll().catch((e) => winston.warn(e));
             },
         },
         roles: {
             type: new ql.GraphQLList(types.RoleDefinitionType),
             resolve: () => {
-                return models.Role.findAll();
+                return models.Role.findAll().catch((e) => winston.warn(e));
             },
         },
     },
@@ -430,7 +431,7 @@ const createEntry = relayql.mutationWithClientMutationId({
                         cursor: relayql.offsetToCursor(indexOfEntry),
                         node: entry,
                     };
-                });
+                }).catch((e) => winston.warn(e));
            },
         },
     },

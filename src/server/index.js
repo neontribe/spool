@@ -11,6 +11,7 @@ const sslRedirect = require('heroku-ssl-redirect');
 const path = require('path');
 const compression = require('compression');
 const serveStatic = require('serve-static');
+const winston = require('winston');
 
 var app = express();
 
@@ -28,6 +29,7 @@ if(process.env.NODE_ENV !== 'production') {
         locations: error.locations,
         stack: error.stack
     });
+    winston.level = 'debug';
 }
 
 /*
@@ -50,8 +52,6 @@ function reconcileUser() {
                     authHash: hash
                 },
                 include: helpers.includes.UserAccount.leftRoleAndRegion,
-            }).catch(function () {
-                console.dir(arguments);
             }).then(function handleFindUser(user) {
                 if (user) {
                     resolve(user);
@@ -63,7 +63,7 @@ function reconcileUser() {
                         resolve(user);
                     });
                 }
-            });
+            }).catch((e) => winston.warn(e));
         });
         p.then(function handleFoundUser(user) {
             userCreateCache[userId] = undefined;
