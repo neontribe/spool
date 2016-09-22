@@ -78,15 +78,6 @@ export class RequestForm extends Component {
                 </Row>
                 <Row>
                     <Col xsOffset={3} xs={6}>
-                        <h3>Preview:</h3>
-                        <Request
-                            {...this.state.request}
-                            allowMutation={false}
-                             />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xsOffset={3} xs={6}>
                         <IconChooser
                             label="Entries tagged with topic"
                             choices={this.props.consumer.topics}
@@ -121,6 +112,15 @@ export class RequestForm extends Component {
                               onChange={_.partial(this.handleChange, 'toDate')} />
                           <HelpBlock>People who make entries in the {this.state.request.topics.join(' and ')} topic will be shown this request until this  date.</HelpBlock>
                         </FormGroup>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xsOffset={3} xs={6}>
+                        <h3>Preview:</h3>
+                        <Request
+                            {...this.state.request}
+                            allowMutation={false}
+                             />
                     </Col>
                 </Row>
                 <Row>

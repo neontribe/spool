@@ -255,7 +255,8 @@ const ConsumerType = new ql.GraphQLObjectType({
             resolve: function(root, {range}) {
                 var from = moment(range.from);
                 var to = moment(range.to);
-                return sequelize.query(helpers.queries.UserAccount.entryActivity(from.format(), to.format()))
+                var regionId = root.regionId
+                return sequelize.query(helpers.queries.UserAccount.entryActivity(from.format(), to.format(), regionId))
                 .then(([results, metadata]) => results)
                 .then(function(results) {
                     return results.reduce(function(reduction, row) {
@@ -434,6 +435,9 @@ const createEntry = relayql.mutationWithClientMutationId({
         },
     },
     mutateAndGetPayload: function mutateEntryPayload({entry}, context) {
+        if (context.Role.type !== "creator") {
+            return {};
+        }
         return spool.makeEntry(context.userId, entry)
     }
 });

@@ -1600,7 +1600,7 @@
               "defaultValue": null
             },
             {
-              "name": "topic",
+              "name": "topics",
               "description": null,
               "type": {
                 "kind": "LIST",

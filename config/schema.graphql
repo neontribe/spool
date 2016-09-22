@@ -83,7 +83,7 @@ type EntryEdge {
 input EntryInput {
   media: MediaInput
   sentiment: String
-  topic: [String]
+  topics: [String]
 }
 
 type Media {

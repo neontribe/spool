@@ -150,7 +150,7 @@ const helpers = {
             `.useBind(),
         },
         UserAccount: {
-            entryActivity: (from, to) => SQL`
+            entryActivity: (from, to, regionId) => SQL`
             SELECT
                 COUNT(entry.entry_id) AS count
             FROM
@@ -159,6 +159,8 @@ const helpers = {
                 entry ON entry.owner_id = user_account.user_id AND entry.created_at BETWEEN ${from} AND ${to}
             WHERE
                 user_account.created_at <= ${from}
+            AND
+                user_account.region_id = ${regionId}
             GROUP BY
                 user_account.user_id
             `.useBind(),
