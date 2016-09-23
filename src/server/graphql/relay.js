@@ -40,7 +40,7 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
         if (type === 'Request') {
             return models.Request.findOne({
                 where: {
-                    userRequestId: id,
+                    requestId: id,
                     userId: context.userId,
                 },
             });
@@ -82,46 +82,6 @@ const UserType = new ql.GraphQLObjectType({
     },
     interfaces: [nodeInterface]
 });
-
-const EntryType = new ql.GraphQLObjectType({
-    name: 'Entry',
-    fields: {
-        id: relayql.globalIdField('Entry', (root) => root.entryId),
-        media: {
-            type: types.MediaType,
-            resolve: (root) => {
-                return root.Medium;
-            },
-        },
-        sentiment: {
-            type: types.SentimentType,
-            resolve: (root) => {
-                return root.Sentiment;
-            },
-        },
-        topics: {
-            type: new ql.GraphQLList(types.TopicType),
-            resolve: (root) => {
-                return root.EntryTopicTopics;
-            },
-        },
-        created: {
-            type: ql.GraphQLString,
-            resolve: (root) => {
-                return moment(root.createdAt).format();
-            },
-        },
-        updated: {
-            type: ql.GraphQLString,
-            resolve: (root) => {
-                return moment(root.updatedAt).format();
-            },
-        }
-    },
-    interfaces: [nodeInterface]
-});
-var entryConnectionDefinition =
-    relayql.connectionDefinitions({nodeType: EntryType});
 
 const RequestType = new ql.GraphQLObjectType({
     name: 'Request',
@@ -224,6 +184,81 @@ const UserRequestType = new ql.GraphQLObjectType({
 });
 var userRequestConnectionDefinition =
     relayql.connectionDefinitions({nodeType: UserRequestType});
+
+const EntryRequest = new ql.GraphQLObjectType({
+    name: 'EntryRequest',
+    fields: {
+        access: {
+            type: ql.GraphQLBoolean,
+            resolve: (root) => {
+                return root.access;
+            },
+        },
+        userRequest: {
+            type: UserRequestType,
+            resolve: (root) => {
+                return root.UserRequest
+            }
+        }
+    },
+});
+
+const EntryType = new ql.GraphQLObjectType({
+    name: 'Entry',
+    fields: {
+        id: relayql.globalIdField('Entry', (root) => root.entryId),
+        media: {
+            type: types.MediaType,
+            resolve: (root) => {
+                return root.Medium;
+            },
+        },
+        sentiment: {
+            type: types.SentimentType,
+            resolve: (root) => {
+                return root.Sentiment;
+            },
+        },
+        topics: {
+            type: new ql.GraphQLList(types.TopicType),
+            resolve: (root) => {
+                return root.EntryTopicTopics;
+            },
+        },
+        created: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return moment(root.createdAt).format();
+            },
+        },
+        updated: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return moment(root.updatedAt).format();
+            },
+        },
+        requests: {
+            type: new ql.GraphQLList(EntryRequest),
+            resolve: (root) => {
+                return models.EntryUserRequest.findAll({
+                    where: {
+                        entryId: root.entryId
+                    },
+                    include: [
+                        {
+                            model: models.UserRequest,
+                            as: 'UserRequest',
+                            include: helpers.includes.UserRequest.basic
+                        }
+                    ]
+                });
+            }
+        }
+    },
+    interfaces: [nodeInterface]
+});
+var entryConnectionDefinition =
+    relayql.connectionDefinitions({nodeType: EntryType});
 
 const CreatorActivityCountType = new ql.GraphQLObjectType({
     name: 'CreatorActivityCount',
@@ -439,7 +474,10 @@ const createEntry = relayql.mutationWithClientMutationId({
         if (context.Role.type !== "creator") {
             return {};
         }
-        return spool.makeEntry(context.userId, entry)
+        var media = entry.media;
+        var topics = entry.topics;
+        var sentiment = entry.sentiment;
+        return spool.makeEntry(context.userId, media, sentiment, topics)
     }
 });
 

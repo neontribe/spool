@@ -93,17 +93,17 @@ function getCreatorSentimentCount (sentimentType, userId) {
     }).catch((e) => winston.warn(e));
 }
 
-function makeEntry(userId, entry) {
+function makeEntry(userId, mediaData, sentimentData, topicsData) {
     return co(function* () {
-        var insertMedia = models.Medium.create(entry.media, {
+        var insertMedia = models.Medium.create(mediaData, {
             returning: true,
         });
         var findSentiment = models.Sentiment.findAll().then((sentiments) => {
-            return _.find(sentiments, { type: entry.sentiment });
+            return _.find(sentiments, { type: sentimentData });
         });
         var findTopics = models.Topic.findAll({
             where: {
-                type: entry.topics
+                type: topicsData
             },
         });
         var [media, sentiment, topics] = yield [insertMedia, findSentiment, findTopics];
@@ -117,6 +117,36 @@ function makeEntry(userId, entry) {
                 returning: true,
             });
             yield newEntry.addEntryTopicTopics(topics);
+
+            var now = moment().format();
+            // find every request open for this user whos criteria matches
+            // this new entry
+            var matchingRequests = yield models.UserRequest.findAll({
+                where: {
+                    userId: userId,
+                },
+                include: [
+                    {
+                        model: models.Request,
+                        as: 'Request',
+                        where: {
+                            to: {
+                                $gte: now,
+                            }
+                        },
+                        include: [
+                            {
+                                model: models.Topic,
+                                as: 'RequestTopicTopics',
+                                where: {
+                                    type: topicsData,
+                                },
+                            },
+                        ]
+                    },
+                ]
+            });
+            yield newEntry.addEntryUserRequestUserRequests(matchingRequests);
             return {
                 entry: yield models.Entry.findOne({
                     where: {

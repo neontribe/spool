@@ -44,7 +44,11 @@ export default class AddEntryMutation extends Relay.Mutation {
                 happyCount
                 sadCount
             }
-            entryEdge
+            entryEdge {
+                node {
+                    requests
+                }
+            }
         }`
     }
 

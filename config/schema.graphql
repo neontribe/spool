@@ -60,6 +60,7 @@ type Entry implements Node {
   topics: [Topic]
   created: String
   updated: String
+  requests: [EntryRequest]
 }
 
 # A connection to a list of items.
@@ -84,6 +85,11 @@ input EntryInput {
   media: MediaInput
   sentiment: String
   topics: [String]
+}
+
+type EntryRequest {
+  access: Boolean
+  userRequest: UserRequest
 }
 
 type Media {
