@@ -10,11 +10,11 @@ export class Signup extends React.Component {
     static propTypes = {
         defaultRole: React.PropTypes.string,
         // custom prop, this should be bool but router might chuck us a string
-        mode: React.PropTypes.string.required
+        mode: React.PropTypes.string
     }
     static defaultProps = {
         defaultRole: 'creator',
-        mode: true
+        mode: 'change'
     }
     constructor(props) {
         super(props);

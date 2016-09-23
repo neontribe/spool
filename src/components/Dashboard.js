@@ -89,6 +89,15 @@ export const DashboardContainer = Relay.createContainer(Dashboard, {
                     entryCount
                     creatorCount
                 }
+                requests(first: 100) {
+                    edges {
+                        node {
+                                from
+                                to
+                                region
+                        }
+                    }
+                }
             }
         `,
     }
