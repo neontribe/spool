@@ -8,10 +8,13 @@ import UpdateUserMutation from './mutations/UpdateUserMutation';
 
 export class Signup extends React.Component {
     static propTypes = {
-        defaultRole: React.PropTypes.string
+        defaultRole: React.PropTypes.string,
+        // custom prop, this should be bool but router might chuck us a string
+        mode: React.PropTypes.string.required
     }
     static defaultProps = {
-        defaultRole: 'creator'
+        defaultRole: 'creator',
+        mode: true
     }
     constructor(props) {
         super(props);
@@ -28,6 +31,14 @@ export class Signup extends React.Component {
         this.onChangeRole = this.onChangeRole.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.showRoleChooser = this.showRoleChooser.bind(this);
+    }
+
+    componentWillMount() {
+        // if we're using this component as a role consolidator
+        // then mode will be true and we should just send the user in the right direction
+        if (this.props.user.role && this.props.mode === "configure") {
+            this.handleRedirect(this.props.user.role);
+        }
     }
 
     componentWillReceiveProps({ keydown }) {

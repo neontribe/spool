@@ -29,7 +29,7 @@ const auth = new AuthService(
     {
         callbackURL: window.location.origin + '/callback',
         login: '/login',
-        loggedIn: '/home'
+        loggedIn: '/settings/configure'
     }
 );
 
@@ -66,8 +66,8 @@ setupRelayNetworkLayer();
 ReactDOM.render(
   <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
     <Route path="/" component={App} auth={auth}>
-        <IndexRedirect to="settings" />
-        <Route path="settings" component={SignupContainer} roleMap={{
+        <IndexRedirect to="settings/configure" />
+        <Route path="settings/:mode" component={SignupContainer} roleMap={{
             "consumer": "/dashboard",
             "creator": "/home",
         }} queries={SignupQueries} onEnter={auth.requireAuthOnEnter}/>
