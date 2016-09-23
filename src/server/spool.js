@@ -4,42 +4,28 @@ const _ = require('lodash');
 const moment = require('moment');
 const winston = require('winston');
 
-function makeRequest(request, topics) {
+function makeUserRequest (user, request) {
     return co(function* () {
-        // make a new request
-        var insertRequest = models.Request.create(request, {
-            returning: true,
-        });
-        var findTopics = models.Topic.findAll({
-            where: {
-                type: topics
-            },
-        });
-        var [newRequest, requestTopics] = yield [insertRequest, findTopics];
-        yield newRequest.addRequestTopicTopics(requestTopics);
-
-        // find each consumer user that is in the request region
-        var users = yield models.UserAccount.findAll({
-            where: {
-                regionId: request.regionId
-            },
-            include: helpers.includes.UserAccount.basicCreator
-        });
-
-        // for each of the users, create a user_request for that user
-        var userRequests = yield users.map((user) => models.UserRequest.create({
-            requestId: newRequest.requestId,
+        var existing = yield models.UserRequest.findOne({
+            requestId: request.requestId,
             userId: user.userId,
-        }, {
-            returning: true,
-        }));
-        yield userRequests.map(function* (userRequest) {
+        });
+        if (!existing) {
+            // for each of the users, create a user_request for that user
+            var userRequest = yield models.UserRequest.create({
+                requestId: request.requestId,
+                userId: user.userId,
+            }, {
+                returning: true,
+            });
             // find all entries that are in the bounds of the request
+            // they match the userId of the request maker
+            // and the entry was created between the request range
             var entries = yield models.Entry.findAll({
                 where: {
-                    ownerId: userRequest.userId,
+                    ownerId: user.userId,
                     createdAt: {
-                        gte: newRequest.from
+                        $between: [request.from, request.to]
                     }
                 },
                 include: [
@@ -47,14 +33,47 @@ function makeRequest(request, topics) {
                         model: models.Topic,
                         as: 'EntryTopicTopics',
                         where: {
-                            type: topics
+                            type: request.RequestTopicTopics.map((t) => t.type),
                         },
                     },
                 ]
             });
             // link the entries to the user request
-            yield entries.map(entry => entry.addEntryUserRequestUserRequest(userRequest));
+            yield entries.map((entry) => entry.addEntryUserRequestUserRequest(userRequest));
+        }
+    }).catch((e) => winston.warn(e));
+}
+
+function makeRequest(request, topics) {
+    return co(function* () {
+        //insert a new request, grab the insert id
+        var insertRequest = models.Request.create(request, {
+            returning: true,
         });
+        //find the list of topics that match this request
+        var findTopics = models.Topic.findAll({
+            where: {
+                type: topics
+            },
+        });
+        //wait for both tasks to complete
+        var [newRequest, requestTopics] = yield [insertRequest, findTopics];
+        //insert relation between request and topics
+        yield newRequest.addRequestTopicTopics(requestTopics);
+        //find the full request data
+        var fullRequest = yield models.Request.findOne({
+            where: {
+                requestId: newRequest.requestId
+            },
+            include: helpers.includes.Request.basic,
+        });
+        var users = yield models.UserAccount.findAll({
+            where: {
+                regionId: request.regionId
+            },
+            include: helpers.includes.UserAccount.basicCreator
+        });
+        yield users.map((user) => makeUserRequest(user, fullRequest));
     }).catch((e) => winston.warn(e));
 }
 
@@ -124,6 +143,30 @@ function updateUser(id, userRegion, roleSecret) {
                     userId: id
                 }
             });
+            // since we have region and role we should backdate requests
+            if (role.type === "creator") {
+                var now = moment().format();
+                // find all requests where the region matches this user and
+                // the range spans past (or is) the current date
+                var findRequests = models.Request.findAll({
+                    where: {
+                        regionId: region.regionId,
+                        to: {
+                            $gte: now,
+                        }
+                    },
+                    include: helpers.includes.Request.basic
+                });
+                //find the full user data
+                var findUser = models.UserAccount.findOne({
+                    where: {
+                        userId: id,
+                    },
+                    include: helpers.includes.UserAccount.basicCreator
+                });
+                var [requests, user] = yield [findRequests, findUser];
+                yield requests.map((request) => makeUserRequest(user, request));
+            }
         }
         return {};
     }).catch((e) => winston.warn(e));
@@ -133,5 +176,6 @@ module.exports = {
     makeRequest,
     getCreatorSentimentCount,
     makeEntry,
-    updateUser
+    updateUser,
+    makeUserRequest
 }

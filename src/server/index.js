@@ -59,8 +59,8 @@ function reconcileUser() {
                     userCreateCache[userId] = userCreateCache[userId] || models.UserAccount.create({
                         authHash: hash
                     });
-                    userCreateCache[userId].then(function(user) {
-                        resolve(user);
+                    return userCreateCache[userId].then(function(user) {
+                        return resolve(user);
                     });
                 }
             }).catch((e) => winston.warn(e));
@@ -68,7 +68,7 @@ function reconcileUser() {
         p.then(function handleFoundUser(user) {
             userCreateCache[userId] = undefined;
             req.user = user;
-            next();
+            return next();
         });
     }
 };

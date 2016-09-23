@@ -110,6 +110,18 @@ const helpers = {
                 },
             ],
         },
+        Request: {
+            basic: [
+                {
+                    model: models.Topic,
+                    as: 'RequestTopicTopics',
+                },
+                {
+                    model: models.Region,
+                    as: 'Region',
+                },
+            ]
+        },
         UserRequest: {
             basic: [
                 {
