@@ -82,6 +82,15 @@ const EntryInputType = new ql.GraphQLInputObjectType({
     }
 });
 
+const UserRequestInputType = new ql.GraphQLInputObjectType({
+    name: 'UserRequestInputType',
+    fields: {
+        id: { type: new ql.GraphQLNonNull(ql.GraphQLInt) },
+        access: { type: new ql.GraphQLNonNull(ql.GraphQLBoolean) },
+        hide: { type: new ql.GraphQLNonNull(ql.GraphQLBoolean) },
+    }
+});
+
 const DateRangeInputType = new ql.GraphQLInputObjectType({
     name: 'DateRangeInput',
     fields: {
@@ -159,4 +168,5 @@ module.exports = {
     DateRangeInputType,
     TopicCountType,
     UserInputType,
+    UserRequestInputType,
 };

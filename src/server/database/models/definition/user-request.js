@@ -34,7 +34,7 @@ module.exports = function(sequelize, DataTypes) {
         seen: {
             type: DataTypes.BOOLEAN,
             field: 'seen',
-            allowNull: true,
+            allowNull: false,
             defaultValue: false
         },
         createdAt: {

@@ -85,7 +85,8 @@ const UserType = new ql.GraphQLObjectType({
 
 const RequestType = new ql.GraphQLObjectType({
     name: 'Request',
-    fields: {
+    // function since we need circular structures here (utilizing var hoisting)
+    fields: () => ({
         id: relayql.globalIdField('Request', (root) => root.requestId),
         from: {
             type: ql.GraphQLString,
@@ -146,10 +147,19 @@ const RequestType = new ql.GraphQLObjectType({
             resolve: (root) => {
                 return moment(root.updatedAt).format();
             },
+        },
+        entries: {
+            type: entryConnectionDefinition.connectionType,
+            resolve: (root) => {
+                //fromPromiseArray
+                return relayql.connectionFromArray([], args);
+            },
         }
-    },
+    }),
     interfaces: [nodeInterface]
 });
+var requestConnectionDefinition =
+    relayql.connectionDefinitions({nodeType: RequestType});
 
 const UserRequestType = new ql.GraphQLObjectType({
     name: 'UserRequest',
@@ -333,6 +343,15 @@ const ConsumerType = new ql.GraphQLObjectType({
                 return models.Topic.findAll().catch((e) => winston.warn(e));
             },
         },
+        requests: {
+            type: requestConnectionDefinition.connectionType,
+            args: relayql.connectionArgs,
+            resolve: (root, args, context) => {
+                return relayql.connectionFromPromisedArray(models.Request.findAll({
+                    userId: root.userId
+                }).catch((e) => winston.warn(e)), args);
+            },
+        },
     }
 });
 const consumerField = {
@@ -481,6 +500,55 @@ const createEntry = relayql.mutationWithClientMutationId({
     }
 });
 
+const updateUserRequest = relayql.mutationWithClientMutationId({
+    name: 'UpdateUserRequest',
+    inputFields: {
+        userRequest: {
+            type: types.UserRequestInputType
+        },
+    },
+    outputFields: {
+        creator: creatorField,
+        userRequestEdge: {
+            type: userRequestConnectionDefinition.edgeType,
+            resolve: ({userRequest}, args, context) => {
+                models.UserRequest.findAll({
+                    where: {
+                        userId: root.userId,
+                        seen: false
+                    },
+                    include: helpers.includes.UserRequest.basic
+                }).then(function(requests) {
+                    var indexOfRequest = _.findIndex(requests, { userRequestId: userRequest.userRequestId });
+                    return {
+                        cursor: relayql.offsetToCursor(indexOfRequest),
+                        node: userRequest
+                    };
+                }).catch((e) => winston.warn(e));
+           },
+        },
+    },
+    mutateAndGetPayload: function mutateEntryPayload({userRequest}, context) {
+        if (context.Role.type !== "creator") {
+            return {};
+        }
+        return new Promise(function(resolve, reject) {
+            models.UserRequest.findOne({
+                where: {
+                    userRequestId: userRequest.id,
+                    userId: context.userId,
+                }
+            }).then(function (request) {
+                if(request) {
+                    resolve({});
+                } else {
+                    resolve(spool.updateUserRequest(userRequest.id, userRequest.hide, userRequest.access))
+                }
+            }).catch((e) => winston.warn(e));
+        }).catch((e) => winston.warn(e));
+    }
+});
+
 const updateUser = relayql.mutationWithClientMutationId({
     name: 'UpdateUser',
     inputFields: {
@@ -540,5 +608,6 @@ module.exports = {
         createEntry,
         createRequest,
         updateUser,
+        updateUserRequest,
     }
 }

@@ -202,10 +202,43 @@ function updateUser(id, userRegion, roleSecret) {
     }).catch((e) => winston.warn(e));
 }
 
+function updateUserRequest(id, hide, access) {
+    return co(function* () {
+        var updatePromise = models.UserRequest.update({
+            seen: hide,
+        }, {
+            where: {
+                userRequestId: id
+            }
+        });
+        var updateEntryPromise = Promise.resolve(true);
+        if (access) {
+            updateEntryPromise = models.EntryUserRequest.update({
+                access: true
+            }, {
+                where: {
+                    userRequestId: id
+                }
+            });
+        }
+        yield [updatePromise, updateEntryPromise];
+        var userRequest = yield models.UserRequest.findOne({
+            where: {
+                userRequestId: id,
+            },
+            include: helpers.includes.UserRequest.basic,
+        });
+        return {
+            userRequest,
+        };
+    }).catch((e) => winston.warn(e));
+}
+
 module.exports = {
     makeRequest,
     getCreatorSentimentCount,
     makeEntry,
     updateUser,
-    makeUserRequest
+    makeUserRequest,
+    updateUserRequest
 }

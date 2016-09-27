@@ -9,6 +9,7 @@ type Consumer {
   creatorActivityCount(range: DateRangeInput): CreatorActivityCount
   topicCounts(range: DateRangeInput): [TopicCount]
   topics: [Topic]
+  requests(after: String, first: Int, before: String, last: Int): RequestConnection
 }
 
 input CreateEntryInput {
@@ -117,6 +118,7 @@ type Mutations {
   createEntry(input: CreateEntryInput!): CreateEntryPayload
   createRequest(input: CreateRequestInput!): CreateRequestPayload
   updateUser(input: UpdateUserInput!): UpdateUserPayload
+  updateUserRequest(input: UpdateUserRequestInput!): UpdateUserRequestPayload
 }
 
 # An object with an ID
@@ -169,6 +171,25 @@ type Request implements Node {
   avatar: String
   created: String
   updated: String
+  entries: EntryConnection
+}
+
+# A connection to a list of items.
+type RequestConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [RequestEdge]
+}
+
+# An edge in a connection.
+type RequestEdge {
+  # The item at the end of the edge
+  node: Request
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 input RequestInput {
@@ -211,6 +232,17 @@ type UpdateUserPayload {
   clientMutationId: String!
 }
 
+input UpdateUserRequestInput {
+  userRequest: UserRequestInputType
+  clientMutationId: String!
+}
+
+type UpdateUserRequestPayload {
+  creator: Creator
+  userRequestEdge: UserRequestEdge
+  clientMutationId: String!
+}
+
 type User implements Node {
   # The ID of an object
   id: ID!
@@ -248,4 +280,10 @@ type UserRequestEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+input UserRequestInputType {
+  id: Int!
+  access: Boolean!
+  hide: Boolean!
 }
