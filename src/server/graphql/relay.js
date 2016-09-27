@@ -509,6 +509,10 @@ const updateUserRequest = relayql.mutationWithClientMutationId({
     },
     outputFields: {
         creator: creatorField,
+        userRequestId: {
+            type: ql.GraphQLString,
+            resolve: (root) => root.userRequestId,
+        },
     },
     mutateAndGetPayload: function mutateEntryPayload({userRequest}, context) {
         if (context.Role.type !== "creator") {
@@ -524,7 +528,10 @@ const updateUserRequest = relayql.mutationWithClientMutationId({
                 if(request) {
                     resolve({});
                 } else {
-                    resolve(spool.updateUserRequest(userRequest.id, userRequest.hide, userRequest.access))
+                    // The request will always be hidden, for now
+                    var hideRequest = true;
+                    resolve(spool.updateUserRequest(userRequest.id, true, userRequest.access)
+                            .then(() => ({userRequestId: userRequest.id})));
                 }
             }).catch((e) => winston.warn(e));
         }).catch((e) => winston.warn(e));
