@@ -283,7 +283,7 @@ type UserRequestEdge {
 }
 
 input UserRequestInputType {
-  id: Int!
+  id: String!
   access: Boolean!
   hide: Boolean!
 }

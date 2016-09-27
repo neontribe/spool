@@ -5,11 +5,11 @@ export default class UpdateUserRequestMutation extends Relay.Mutation {
         creator: () => Relay.QL`
         fragment on Creator {
             id
-        }`
+        }`,
         userRequest: () => Relay.QL`
         fragment on UserRequest {
             id
-        }`
+        }`,
     }
     getMutation() {
         return Relay.QL`mutation {updateUserRequest}`

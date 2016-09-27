@@ -90,7 +90,7 @@ export class RequestForm extends Component {
                           <HelpBlock>Let recipents of this request know which body the request originates from</HelpBlock>
                         </FormGroup>
                         <FormGroup>
-                            <ControlLabel>Because</ControlLabel>
+                            <ControlLabel>Because they are...</ControlLabel>
                             <FormControl componentClass="textarea"
                               maxLength={this.props.maxLength}
                               onChange={_.partial(this.handleInputChange, 'reason')} />
@@ -118,7 +118,7 @@ export class RequestForm extends Component {
                     <Col xsOffset={3} xs={6}>
                         <h3>Preview:</h3>
                         <Request
-                            {...this.state.request}
+                            userRequest={this.state.request}
                             allowMutation={false}
                              />
                     </Col>

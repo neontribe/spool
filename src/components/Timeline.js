@@ -32,14 +32,14 @@ export class Timeline extends Component {
 
     renderRequests() {
         if (this.props.creator.requests.edges.length) {
-            var request = _.first(this.props.creator.requests.edges).node.request
+            var request = _.first(this.props.creator.requests.edges).node
             if (this.props.relay) {
                 return (
-                    <RequestContainer {...request} />
+                    <RequestContainer userRequest={request} creator={this.props.creator} />
                 );
             } else {
                 return (
-                    <Request {...request} />
+                    <Request userRequest={request} creator={this.props.creator}/>
                 );
             }
         }
@@ -94,24 +94,11 @@ export const TimelineContainer = Relay.createContainer(Timeline, {
                 edges {
                     node {
                         id,
-                        request {
-                            id
-                            from
-                            to
-                            region
-                            org
-                            reason
-                            name
-                            avatar
-                            topics {
-                                type
-                                name
-                            }
-                        }
-                        seen
+                        ${RequestContainer.getFragment('userRequest')}
                     }
                 }
             }
+            ${RequestContainer.getFragment('creator')}
         }`,
     }
 });

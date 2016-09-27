@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, Button, Glyphicon, Image } from 'react-bootstrap';
 import Relay from 'react-relay';
+import UpdateUserRequestMutation from './mutations/UpdateUserRequestMutation.js';
 
 class Request extends Component {
     constructor(props) {
@@ -10,26 +11,46 @@ class Request extends Component {
             alertVisible: true
         }
 
-        this.handleAlertDismiss = this.handleAlertDismiss.bind(this);
+        this.hide = this.hide.bind(this);
+        this.accept = this.accept.bind(this);
+        this.deny = this.deny.bind(this);
     }
 
-    handleAlertDismiss() {
+    hide() {
         this.setState({
             alertVisible: false
         });
     }
 
+    accept() {
+        this.update(true);
+        this.hide();
+    }
+
+    deny() {
+        this.update(false);
+        this.hide();
+    }
+
+    update(access) {
+        var userRequest = this.props.userRequest;
+        var creator = this.props.creator;
+        this.props.relay.commitUpdate(
+            new UpdateUserRequestMutation({creator, userRequest, access})
+        );
+    }
+
     render() {
         if (this.state.alertVisible) {
             return (
-                <Alert bsStyle="info" onDismiss={this.props.allowMutation ? this.handleAlertDismiss : null} >
+                <Alert bsStyle="info" onDismiss={this.props.allowMutation ? this.deny : null} >
                     <Image
-                            src={this.props.avatar}
+                            src={this.props.userRequest.request.avatar}
                             className='profile-img'
                             circle
                             />
 
-                        <p><strong>{this.props.name}</strong> from <strong>{this.props.org}</strong> would like to be able to see your entries about <strong>{this.props.topics.map((t) => t.type || t).join(' and ')}</strong> because they are {this.props.reason}</p>
+                        <p><strong>{this.props.userRequest.request.name}</strong> from <strong>{this.props.userRequest.request.org}</strong> would like to be able to see your entries about <strong>{this.props.userRequest.request.topics.map((t) => t.type || t).join(' and ')}</strong> because they are <strong>{this.props.userRequest.request.reason}</strong></p>
                     {/**<div className="easyread">
                         <div>
                             <Image
@@ -54,10 +75,10 @@ class Request extends Component {
                         <div className="full-width centered">
                             <Button bsStyle="danger"
                                 disabled={!this.props.allowMutation}
-                                onClick={this.props.onDeny}><Glyphicon glyph="remove"/> No</Button>
+                                onClick={this.deny}><Glyphicon glyph="remove"/> No</Button>
                             <Button bsStyle="success"
                                 disabled={!this.props.allowMutation}
-                                onClick={this.props.onAccept}><Glyphicon glyph="ok"/> Yes</Button>
+                                onClick={this.accept}><Glyphicon glyph="ok"/> Yes</Button>
                         </div>
 
                 </Alert>
@@ -69,13 +90,7 @@ class Request extends Component {
 }
 
 Request.PropTypes = {
-    fromDate: React.PropTypes.string.isRequired,
-    toDate: React.PropTypes.string.isRequired,
-    reason: React.PropTypes.string.isRequired,
-    topics: React.PropTypes.array.isRequired,
-    name: React.PropTypes.string.isRequired,
-    avatar: React.PropTypes.string.isRequired,
-    org: React.PropTypes.string.isRequired,
+    userRequest: React.PropTypes.object.isRequired,
     allowMutation: React.PropTypes.bool
 }
 
@@ -86,5 +101,31 @@ Request.defaultProps = {
 export default Request;
 
 export const RequestContainer = Relay.createContainer(Request, {
-    fragments: {}
+    fragments: {
+        creator: () => Relay.QL`
+            fragment on Creator {
+                ${UpdateUserRequestMutation.getFragment('creator')}
+            }
+        `,
+        userRequest: () => Relay.QL`
+            fragment on UserRequest {
+                id
+                seen
+                request {
+                    from
+                    to
+                    region
+                    org
+                    reason
+                    name
+                    avatar
+                    topics {
+                        type
+                        name
+                    }
+                }
+                ${UpdateUserRequestMutation.getFragment('userRequest')}
+            }
+        `,
+    }
 });

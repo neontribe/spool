@@ -511,7 +511,9 @@ const updateUserRequest = relayql.mutationWithClientMutationId({
         creator: creatorField,
         userRequestId: {
             type: ql.GraphQLString,
-            resolve: (root) => root.userRequestId,
+            resolve: (root) => {
+                return root.userRequestId;
+            }
         },
     },
     mutateAndGetPayload: function mutateEntryPayload({userRequest}, context) {
@@ -519,19 +521,21 @@ const updateUserRequest = relayql.mutationWithClientMutationId({
             return {};
         }
         return new Promise(function(resolve, reject) {
+            var id = relayql.fromGlobalId(userRequest.id).id;
             models.UserRequest.findOne({
                 where: {
-                    userRequestId: userRequest.id,
+                    userRequestId: id,
                     userId: context.userId,
                 }
             }).then(function (request) {
-                if(request) {
+                if(!request) {
                     resolve({});
                 } else {
                     // The request will always be hidden, for now
-                    var hideRequest = true;
-                    resolve(spool.updateUserRequest(userRequest.id, true, userRequest.access)
-                            .then(() => ({userRequestId: userRequest.id})));
+                    resolve(spool.updateUserRequest(id, userRequest.hide, userRequest.access)
+                            .then(() => {
+                                return {userRequestId: userRequest.id};
+                            }));
                 }
             }).catch((e) => winston.warn(e));
         }).catch((e) => winston.warn(e));

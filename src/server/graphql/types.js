@@ -85,7 +85,7 @@ const EntryInputType = new ql.GraphQLInputObjectType({
 const UserRequestInputType = new ql.GraphQLInputObjectType({
     name: 'UserRequestInputType',
     fields: {
-        id: { type: new ql.GraphQLNonNull(ql.GraphQLInt) },
+        id: { type: new ql.GraphQLNonNull(ql.GraphQLString) },
         access: { type: new ql.GraphQLNonNull(ql.GraphQLBoolean) },
         hide: { type: new ql.GraphQLNonNull(ql.GraphQLBoolean) },
     }
