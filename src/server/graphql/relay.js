@@ -509,24 +509,6 @@ const updateUserRequest = relayql.mutationWithClientMutationId({
     },
     outputFields: {
         creator: creatorField,
-        userRequestEdge: {
-            type: userRequestConnectionDefinition.edgeType,
-            resolve: ({userRequest}, args, context) => {
-                models.UserRequest.findAll({
-                    where: {
-                        userId: root.userId,
-                        seen: false
-                    },
-                    include: helpers.includes.UserRequest.basic
-                }).then(function(requests) {
-                    var indexOfRequest = _.findIndex(requests, { userRequestId: userRequest.userRequestId });
-                    return {
-                        cursor: relayql.offsetToCursor(indexOfRequest),
-                        node: userRequest
-                    };
-                }).catch((e) => winston.warn(e));
-           },
-        },
     },
     mutateAndGetPayload: function mutateEntryPayload({userRequest}, context) {
         if (context.Role.type !== "creator") {

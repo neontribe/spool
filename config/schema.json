@@ -2323,18 +2323,6 @@
               "deprecationReason": null
             },
             {
-              "name": "userRequestEdge",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "UserRequestEdge",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "clientMutationId",
               "description": null,
               "args": [],

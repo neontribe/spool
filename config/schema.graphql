@@ -239,7 +239,6 @@ input UpdateUserRequestInput {
 
 type UpdateUserRequestPayload {
   creator: Creator
-  userRequestEdge: UserRequestEdge
   clientMutationId: String!
 }
 
