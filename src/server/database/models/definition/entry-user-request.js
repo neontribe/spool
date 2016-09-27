@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
         access: {
             type: DataTypes.BOOLEAN,
             field: 'access',
-            allowNull: true,
+            allowNull: false,
             defaultValue: false
         }
     }, {

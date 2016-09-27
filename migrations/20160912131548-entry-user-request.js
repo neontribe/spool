@@ -28,6 +28,7 @@ module.exports = {
          },
          access: {
              type: Sequelize.BOOLEAN,
+             allowNull: false,
              defaultValue: false
          }
     });
