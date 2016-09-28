@@ -44,25 +44,40 @@ export default class AddEntryMutation extends Relay.Mutation {
                 happyCount
                 sadCount
             }
-            entryEdge {
-                node {
-                    requests
-                }
-            }
+            entryEdge
         }`
     }
 
 
   getConfigs() {
     return [{
-      type: 'RANGE_ADD',
-      parentName: 'creator',
-      parentID: this.props.creator.id,
-      connectionName: 'entries',
-      edgeName: 'entryEdge',
-      rangeBehaviors: ({ status }) => (
-        status === 'completed' ? 'ignore' : 'prepend'
-      ),
+        type: 'RANGE_ADD',
+        parentName: 'creator',
+        parentID: this.props.creator.id,
+        connectionName: 'entries',
+        edgeName: 'entryEdge',
+        rangeBehaviors: ({ status }) => (
+            status === 'completed' ? 'ignore' : 'prepend'
+        ),
+    },
+    {
+        type: 'REQUIRED_CHILDREN',
+        children: [
+            Relay.QL`
+            fragment on CreateEntryPayload {
+                entryEdge {
+                    node {
+                        requests {
+                            access
+                            userRequest {
+                                id
+                                seen
+                            }
+                        }
+                    }
+                }
+            }`,
+        ],
     }];
   }
 }

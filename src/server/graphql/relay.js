@@ -252,7 +252,7 @@ const EntryType = new ql.GraphQLObjectType({
             resolve: (root) => {
                 return models.EntryUserRequest.findAll({
                     where: {
-                        entryId: root.entryId
+                        entryId: root.entryId,
                     },
                     include: [
                         {
@@ -542,6 +542,52 @@ const updateUserRequest = relayql.mutationWithClientMutationId({
     }
 });
 
+const updateEntryRequest = relayql.mutationWithClientMutationId({
+    name: 'UpdateEntryRequest',
+    inputFields: {
+        entryId: {
+            type: new ql.GraphQLNonNull(ql.GraphQLString),
+        },
+        userRequestId: {
+            type: new ql.GraphQLNonNull(ql.GraphQLString),
+        },
+        access: {
+            type: ql.GraphQLBoolean
+        },
+    },
+    outputFields: {
+      creator: creatorField,
+    },
+    mutateAndGetPayload: function mutateEntryPayload({entryId, userRequestId, access}, context) {
+        if (context.Role.type !== "creator") {
+            return {};
+        }
+        return new Promise(function(resolve, reject) {
+            userRequestId = relayql.fromGlobalId(userRequestId).id;
+            entryId = relayql.fromGlobalId(entryId).id;
+            models.Entry.findOne({
+                where: {
+                    entryId: entryId,
+                    ownerId: context.userId
+                }
+            }).then(function(entry) {
+                if(!entry) {
+                    resolve({});
+                } else {
+                    models.EntryUserRequest.update({
+                        access,
+                    }, {
+                        where: {
+                            entryId: entryId,
+                            userRequestId: userRequestId,
+                        }
+                    }).then(() => resolve({}));
+                }
+            }).catch((e) => winston.warn(e));
+        }).catch((e) => winston.warn(e));
+    }
+});
+
 const updateUser = relayql.mutationWithClientMutationId({
     name: 'UpdateUser',
     inputFields: {
@@ -602,5 +648,6 @@ module.exports = {
         createRequest,
         updateUser,
         updateUserRequest,
+        updateEntryRequest,
     }
 }

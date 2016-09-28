@@ -19,6 +19,7 @@ const MutationType = new ql.GraphQLObjectType({
         createRequest: relay.mutations.createRequest,
         updateUser: relay.mutations.updateUser,
         updateUserRequest: relay.mutations.updateUserRequest,
+        updateEntryRequest: relay.mutations.updateEntryRequest,
     },
 });
 

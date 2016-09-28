@@ -119,6 +119,7 @@ type Mutations {
   createRequest(input: CreateRequestInput!): CreateRequestPayload
   updateUser(input: UpdateUserInput!): UpdateUserPayload
   updateUserRequest(input: UpdateUserRequestInput!): UpdateUserRequestPayload
+  updateEntryRequest(input: UpdateEntryRequestInput!): UpdateEntryRequestPayload
 }
 
 # An object with an ID
@@ -220,6 +221,18 @@ type TopicCount {
   topic: Topic
   entryCount: Int
   creatorCount: Int
+}
+
+input UpdateEntryRequestInput {
+  entryId: String!
+  userRequestId: String!
+  access: Boolean
+  clientMutationId: String!
+}
+
+type UpdateEntryRequestPayload {
+  creator: Creator
+  clientMutationId: String!
 }
 
 input UpdateUserInput {

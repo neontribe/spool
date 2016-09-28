@@ -119,7 +119,7 @@ export class RequestForm extends Component {
                         <h3>Preview:</h3>
                         <Request
                             userRequest={this.state.request}
-                            allowMutation={false}
+                            inert={true}
                              />
                     </Col>
                 </Row>

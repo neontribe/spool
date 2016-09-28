@@ -2,8 +2,23 @@ import React, { Component } from 'react';
 import { Alert, Button, Glyphicon, Image } from 'react-bootstrap';
 import Relay from 'react-relay';
 import UpdateUserRequestMutation from './mutations/UpdateUserRequestMutation.js';
+import UpdateEntryRequestMutation from './mutations/UpdateEntryRequestMutation.js';
+import _ from 'lodash';
 
-class Request extends Component {
+export default class Request extends Component {
+    static PropTypes = {
+        userRequest: React.PropTypes.object.isRequired,
+        creator: React.PropTypes.object.isRequired,
+        inert: React.PropTypes.bool,
+        mutate: React.PropTypes.bool,
+        onUpdate: React.PropTypes.func
+    }
+
+    static defaultProps = {
+        inert: false,
+        mutate: true,
+    }
+
     constructor(props) {
         super(props);
 
@@ -35,15 +50,26 @@ class Request extends Component {
     update(access) {
         var userRequest = this.props.userRequest;
         var creator = this.props.creator;
-        this.props.relay.commitUpdate(
-            new UpdateUserRequestMutation({creator, userRequest, access})
-        );
+        var payload = {creator, userRequest, access};
+        if (this.props.mutate) {
+            this.props.relay.commitUpdate(
+                new UpdateUserRequestMutation(payload),
+                {
+                    onSuccess: function(response) {
+                        console.log(response);
+                    }
+                }
+            );
+        }
+        if(_.isFunction(this.props.onUpdate)) {
+            this.props.onUpdate(payload);
+        }
     }
 
     render() {
         if (this.state.alertVisible) {
             return (
-                <Alert bsStyle="info" onDismiss={this.props.allowMutation ? this.deny : null} >
+                <Alert bsStyle="info" onDismiss={!this.props.inert ? this.deny : null} >
                     <Image
                             src={this.props.userRequest.request.avatar}
                             className='profile-img'
@@ -51,33 +77,13 @@ class Request extends Component {
                             />
 
                         <p><strong>{this.props.userRequest.request.name}</strong> from <strong>{this.props.userRequest.request.org}</strong> would like to be able to see your entries about <strong>{this.props.userRequest.request.topics.map((t) => t.type || t).join(' and ')}</strong> because they are <strong>{this.props.userRequest.request.reason}</strong></p>
-                    {/**<div className="easyread">
-                        <div>
-                            <Image
-                                src={this.props.issuerAvatar}
-                                className='profile-img'
-                                circle
-                                />
-                        </div>
-                        <div>
-                            <IconCard icon="eye-open" />
-                        </div>
-
-                        { this.props.topics.map((topic, i) => {
-                            return (<div key={topic + '_' + i}><IconCard icon={topic} /></div>);
-                        })}
-
-                        <div>
-                            <IconCard icon="question-sign" />
-                        </div>
-                    </div>**/}
 
                         <div className="full-width centered">
                             <Button bsStyle="danger"
-                                disabled={!this.props.allowMutation}
+                                disabled={this.props.inert}
                                 onClick={this.deny}><Glyphicon glyph="remove"/> No</Button>
                             <Button bsStyle="success"
-                                disabled={!this.props.allowMutation}
+                                disabled={this.props.inert}
                                 onClick={this.accept}><Glyphicon glyph="ok"/> Yes</Button>
                         </div>
 
@@ -88,17 +94,6 @@ class Request extends Component {
         }
     }
 }
-
-Request.PropTypes = {
-    userRequest: React.PropTypes.object.isRequired,
-    allowMutation: React.PropTypes.bool
-}
-
-Request.defaultProps = {
-    allowMutation: true
-}
-
-export default Request;
 
 export const RequestContainer = Relay.createContainer(Request, {
     fragments: {
@@ -127,5 +122,63 @@ export const RequestContainer = Relay.createContainer(Request, {
                 ${UpdateUserRequestMutation.getFragment('userRequest')}
             }
         `,
+    }
+});
+
+export class EntryRequest extends Component {
+    static PropTypes = {
+        entry: React.PropTypes.object.isRequired,
+        creator: React.PropTypes.object.isRequired,
+        userRequest: React.PropTypes.object.isRequired,
+        onDone: React.PropTypes.func.isRequired,
+        mutate: React.PropTypes.bool,
+    }
+    constructor(props) {
+        super(props);
+        this.done = this.done.bind(this);
+    }
+    done(updatePayload) {
+        // right now we only deal with allowing access
+        // due to application flow and spec, no reason to implement the rest
+        if (updatePayload.access) {
+            var mutationProps = {
+                userRequest: this.props.userRequest,
+                entry: this.props.entry,
+                // right now
+                access: updatePayload.access,
+            };
+            this.props.relay.commitUpdate(
+                new UpdateEntryRequestMutation(mutationProps),
+                { onSuccess: () => this.props.onDone(this.props.userRequest.userRequestId) }
+            );
+        } else {
+            this.props.onDone(this.props.userRequest.id);
+        }
+    }
+    render() {
+        return (<RequestContainer 
+                    userRequest={this.props.userRequest} 
+                    creator={this.props.creator} 
+                    mutate={false}
+                    onUpdate={this.done}/>);
+    }
+}
+
+export const EntryRequestContainer = Relay.createContainer(EntryRequest, {
+    fragments: {
+        creator: () => Relay.QL`
+        fragment on Creator {
+            ${RequestContainer.getFragment('creator')}
+        }`,
+        entry: () => Relay.QL`
+        fragment on Entry {
+            ${UpdateEntryRequestMutation.getFragment('entry')}
+        }`,
+        userRequest: () => Relay.QL`
+        fragment on UserRequest {
+            id
+            ${UpdateEntryRequestMutation.getFragment('userRequest')}
+            ${RequestContainer.getFragment('userRequest')}
+        }`,
     }
 });

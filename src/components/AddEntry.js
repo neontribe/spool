@@ -20,8 +20,14 @@ class AddEntry extends Component {
 
     saveEntry(entry) {
         var creator = this.props.creator;
-        var onSuccess = () => {
-            this.props.router.push('/home');
+        var onSuccess = ({createEntry}) => {
+            var entry = createEntry.entryEdge.node;
+            if (entry.requests.length > 0) {
+                // we have a user request for this new entry
+                this.props.router.push('/entry/'+entry.id+'/requests');
+            } else {
+                this.props.router.push('/home');
+            }
         }
         this.props.relay.commitUpdate(
             new AddEntryMutation({creator, entry}),
@@ -30,9 +36,6 @@ class AddEntry extends Component {
     }
 
     getPathForNextStage(){
-        // Find our next route and calculate its path in order to navigate to it.
-        // This is all a bit of a faff, really.
-
         // Find the index of this components route in the routes
         var addIndex = this.props.routes.indexOf(this.props.route);
         // Use it to find the current route under this component (the stage)

@@ -18,6 +18,7 @@ import MediaForm from './components/MediaForm';
 import VideoForm from './components/VideoForm';
 import ImageForm from './components/ImageForm';
 import TextForm from './components/TextForm';
+import { RequestViewerContainer } from './components/RequestViewer';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './override-bootstrap.css';
@@ -61,6 +62,11 @@ const SignupQueries = {
     ...MetaQueries
 };
 
+const EntryQueries = {
+    entry: () => Relay.QL`query { node(id: $entryId) }`,
+    ...CreatorQueries
+};
+
 setupRelayNetworkLayer();
 
 ReactDOM.render(
@@ -76,6 +82,7 @@ ReactDOM.render(
         <Route path="requests/add" component={RequestFormContainer} queries={ConsumerQueries} auth={auth} onEnter={auth.requireAuthOnEnter}/>
 
         <Route path="home" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
+        <Route path="entry/:entryId/requests" component={RequestViewerContainer} queries={EntryQueries} onEnter={auth.requireAuthOnEnter}/>
         <Route path="add" component={AddEntryContainer} queries={CreatorQueries}>
             <IndexRedirect to="about"/>
             <Route path="about" component={TopicForm} />
@@ -86,7 +93,6 @@ ReactDOM.render(
                 <Route path="typing" component={TextForm}/>
             </Route>
         </Route>
-
         <Route path="login" component={SimpleLogin}/>
         <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter}/>
     </Route>
