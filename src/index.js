@@ -80,6 +80,7 @@ ReactDOM.render(
 
         <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
         <Route path="requests">
+            <Route path="all" component={RequestViewerContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
             <Route path="add" component={RequestFormContainer} queries={ConsumerQueries} auth={auth} onEnter={auth.requireAuthOnEnter}/>
         </Route>
         <Route path="home" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>

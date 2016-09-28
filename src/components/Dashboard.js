@@ -31,10 +31,9 @@ export class Dashboard extends Component {
         return (
             <Grid>
                 <Row>
-                    <Col xs={6}>
-                        <h1>Statistics</h1>
-                    </Col>
-                    <Col xs={4}>
+                    <Col xs={10}>
+                        <Link className="btn" to={'/requests/all'}>
+                            <Glyphicon glyph="th-list"/> All Requests</Link>
                         <Link className="btn" to={'/requests/add'}>
                             <Glyphicon glyph="plus"/> New Access Request</Link>
                     </Col>
