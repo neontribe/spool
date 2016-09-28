@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { Alert, Button, Glyphicon, Image } from 'react-bootstrap';
 import Relay from 'react-relay';
 import UpdateUserRequestMutation from './mutations/UpdateUserRequestMutation.js';
-import UpdateEntryRequestMutation from './mutations/UpdateEntryRequestMutation.js';
 import _ from 'lodash';
 
-export default class Request extends Component {
+export default class UserRequest extends Component {
     static PropTypes = {
         userRequest: React.PropTypes.object.isRequired,
         creator: React.PropTypes.object.isRequired,
@@ -70,7 +69,7 @@ export default class Request extends Component {
         if (this.state.alertVisible) {
             return (
                 <Alert bsStyle="info" onDismiss={!this.props.inert ? this.deny : null} >
-                    <Image
+                        <Image
                             src={this.props.userRequest.request.avatar}
                             className='profile-img'
                             circle
@@ -86,7 +85,6 @@ export default class Request extends Component {
                                 disabled={this.props.inert}
                                 onClick={this.accept}><Glyphicon glyph="ok"/> Yes</Button>
                         </div>
-
                 </Alert>
             );
         } else {
@@ -95,7 +93,7 @@ export default class Request extends Component {
     }
 }
 
-export const RequestContainer = Relay.createContainer(Request, {
+export const UserRequestContainer = Relay.createContainer(UserRequest, {
     fragments: {
         creator: () => Relay.QL`
             fragment on Creator {
@@ -122,63 +120,5 @@ export const RequestContainer = Relay.createContainer(Request, {
                 ${UpdateUserRequestMutation.getFragment('userRequest')}
             }
         `,
-    }
-});
-
-export class EntryRequest extends Component {
-    static PropTypes = {
-        entry: React.PropTypes.object.isRequired,
-        creator: React.PropTypes.object.isRequired,
-        userRequest: React.PropTypes.object.isRequired,
-        onDone: React.PropTypes.func.isRequired,
-        mutate: React.PropTypes.bool,
-    }
-    constructor(props) {
-        super(props);
-        this.done = this.done.bind(this);
-    }
-    done(updatePayload) {
-        // right now we only deal with allowing access
-        // due to application flow and spec, no reason to implement the rest
-        if (updatePayload.access) {
-            var mutationProps = {
-                userRequest: this.props.userRequest,
-                entry: this.props.entry,
-                // right now
-                access: updatePayload.access,
-            };
-            this.props.relay.commitUpdate(
-                new UpdateEntryRequestMutation(mutationProps),
-                { onSuccess: () => this.props.onDone(this.props.userRequest.userRequestId) }
-            );
-        } else {
-            this.props.onDone(this.props.userRequest.id);
-        }
-    }
-    render() {
-        return (<RequestContainer 
-                    userRequest={this.props.userRequest} 
-                    creator={this.props.creator} 
-                    mutate={false}
-                    onUpdate={this.done}/>);
-    }
-}
-
-export const EntryRequestContainer = Relay.createContainer(EntryRequest, {
-    fragments: {
-        creator: () => Relay.QL`
-        fragment on Creator {
-            ${RequestContainer.getFragment('creator')}
-        }`,
-        entry: () => Relay.QL`
-        fragment on Entry {
-            ${UpdateEntryRequestMutation.getFragment('entry')}
-        }`,
-        userRequest: () => Relay.QL`
-        fragment on UserRequest {
-            id
-            ${UpdateEntryRequestMutation.getFragment('userRequest')}
-            ${RequestContainer.getFragment('userRequest')}
-        }`,
     }
 });

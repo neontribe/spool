@@ -7,7 +7,7 @@ import AddControls from './AddControls';
 import IconChooser from './IconChooser';
 import Relay from 'react-relay';
 import AddRequestMutation from './mutations/AddRequestMutation.js';
-import Request from './Request';
+import UserRequest from './UserRequest';
 import { withRouter } from 'react-router';
 
 export class RequestForm extends Component {
@@ -117,8 +117,8 @@ export class RequestForm extends Component {
                 <Row>
                     <Col xsOffset={3} xs={6}>
                         <h3>Preview:</h3>
-                        <Request
-                            userRequest={this.state.request}
+                        <UserRequest
+                            userRequest={{request: this.state.request}}
                             inert={true}
                              />
                     </Col>

@@ -18,7 +18,7 @@ import MediaForm from './components/MediaForm';
 import VideoForm from './components/VideoForm';
 import ImageForm from './components/ImageForm';
 import TextForm from './components/TextForm';
-import { RequestViewerContainer } from './components/RequestViewer';
+import { EntryRequestViewerContainer } from './components/EntryRequestViewer';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './override-bootstrap.css';
@@ -79,10 +79,11 @@ ReactDOM.render(
         }} queries={SignupQueries} onEnter={auth.requireAuthOnEnter}/>
 
         <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
-        <Route path="requests/add" component={RequestFormContainer} queries={ConsumerQueries} auth={auth} onEnter={auth.requireAuthOnEnter}/>
-
+        <Route path="requests">
+            <Route path="add" component={RequestFormContainer} queries={ConsumerQueries} auth={auth} onEnter={auth.requireAuthOnEnter}/>
+        </Route>
         <Route path="home" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
-        <Route path="entry/:entryId/requests" component={RequestViewerContainer} queries={EntryQueries} onEnter={auth.requireAuthOnEnter}/>
+        <Route path="entry/:entryId/requests" component={EntryRequestViewerContainer} queries={EntryQueries} onEnter={auth.requireAuthOnEnter}/>
         <Route path="add" component={AddEntryContainer} queries={CreatorQueries}>
             <IndexRedirect to="about"/>
             <Route path="about" component={TopicForm} />

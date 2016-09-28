@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { ListGroup, Glyphicon } from 'react-bootstrap';
 import { EntryContainer, Entry } from './Entry';
 import Intro from './Intro';
-import Request, { RequestContainer } from './Request';
+import UserRequest, { UserRequestContainer } from './UserRequest';
 import _ from 'lodash';
 
 export class Timeline extends Component {
@@ -35,11 +35,11 @@ export class Timeline extends Component {
             var request = _.first(this.props.creator.requests.edges).node
             if (this.props.relay) {
                 return (
-                    <RequestContainer userRequest={request} creator={this.props.creator} />
+                    <UserRequestContainer userRequest={request} creator={this.props.creator} />
                 );
             } else {
                 return (
-                    <Request userRequest={request} creator={this.props.creator}/>
+                    <UserRequest userRequest={request} creator={this.props.creator}/>
                 );
             }
         }
@@ -94,11 +94,11 @@ export const TimelineContainer = Relay.createContainer(Timeline, {
                 edges {
                     node {
                         id,
-                        ${RequestContainer.getFragment('userRequest')}
+                        ${UserRequestContainer.getFragment('userRequest')}
                     }
                 }
             }
-            ${RequestContainer.getFragment('creator')}
+            ${UserRequestContainer.getFragment('creator')}
         }`,
     }
 });

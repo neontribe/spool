@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { Button, Glyphicon } from 'react-bootstrap';
-import {EntryRequestContainer} from './Request';
+import {EntryRequestContainer} from './EntryRequest';
 import { withRouter } from 'react-router';
 
-class RequestViewer extends Component {
+class EntryRequestViewer extends Component {
     constructor(props) {
         super(props);
         this.handleDone = this.handleDone.bind(this);
@@ -24,7 +24,7 @@ class RequestViewer extends Component {
                     entry={self.props.entry}
                     onDone={self.handleRequestDone} />);
             }
-            return
+            return null;
         });
     }
     render() {
@@ -55,10 +55,10 @@ class RequestViewer extends Component {
     }
 }
 
-RequestViewer = withRouter(RequestViewer);
-export default RequestViewer;
+EntryRequestViewer = withRouter(EntryRequestViewer);
+export default EntryRequestViewer;
 
-export const RequestViewerContainer = Relay.createContainer(RequestViewer, {
+export const EntryRequestViewerContainer = Relay.createContainer(EntryRequestViewer, {
     fragments: {
         creator: () => Relay.QL`
         fragment on Creator {
