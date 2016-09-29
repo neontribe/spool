@@ -43,6 +43,7 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
                     requestId: id,
                     userId: context.userId,
                 },
+                include: helpers.includes.Request.basic
             });
         }
     },
@@ -150,9 +151,28 @@ const RequestType = new ql.GraphQLObjectType({
         },
         entries: {
             type: entryConnectionDefinition.connectionType,
-            resolve: (root) => {
-                //fromPromiseArray
-                return relayql.connectionFromArray([], args);
+            args: relayql.connectionArgs,
+            resolve: (root, args, context) => {
+                var entries = models.EntryUserRequest.findAll({
+                    where: {
+                        access: true,
+                    },
+                    include: [
+                        {
+                            model: models.UserRequest,
+                            as: 'UserRequest',
+                            where: {
+                                requestId: root.requestId,
+                            },
+                        },
+                        {
+                            model: models.Entry,
+                            as: 'Entry',
+                            include: helpers.includes.Entry.basic,
+                        },
+                    ],
+                }).then((results) => results.map((result) => result.Entry));
+                return relayql.connectionFromPromisedArray(entries, args);
             },
         }
     }),
@@ -348,7 +368,10 @@ const ConsumerType = new ql.GraphQLObjectType({
             args: relayql.connectionArgs,
             resolve: (root, args, context) => {
                 return relayql.connectionFromPromisedArray(models.Request.findAll({
-                    userId: root.userId
+                    where: {
+                        userId: root.userId
+                    },
+                    include: helpers.includes.Request.basic
                 }).catch((e) => winston.warn(e)), args);
             },
         },

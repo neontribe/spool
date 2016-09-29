@@ -18,6 +18,7 @@ import MediaForm from './components/MediaForm';
 import VideoForm from './components/VideoForm';
 import ImageForm from './components/ImageForm';
 import TextForm from './components/TextForm';
+import { RequestViewerContainer } from './components/RequestViewer';
 import { EntryRequestViewerContainer } from './components/EntryRequestViewer';
 
 import 'bootstrap/dist/css/bootstrap.css';

@@ -172,7 +172,7 @@ type Request implements Node {
   avatar: String
   created: String
   updated: String
-  entries: EntryConnection
+  entries(after: String, first: Int, before: String, last: Int): EntryConnection
 }
 
 # A connection to a list of items.
