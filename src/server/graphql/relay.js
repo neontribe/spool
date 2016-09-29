@@ -14,38 +14,92 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
         // eslint-disable-next-line no-unused-vars
         var {type, id} = relayql.fromGlobalId(globalId);
         if (type === 'Creator' || type === 'Consumer' || type === 'User') {
+            // if we are a generic user type just go ahead and grab it
             return models.UserAccount.findOne({
                 where: {
                     userId: context.userId,
                 },
                 include: [{ model: models.Role }, { model: models.Region }],
-            });
+            }).catch((e) => winston.warn(e));
         }
         if (type === 'Entry') {
-            return models.Entry.findOne({
-                where: {
-                    entryId: id,
-                    ownerId: context.userId,
-                },
-            });
+            if(!context.Role) {
+                return null;
+            }
+
+            if(context.Role.type === 'creator') {
+                // if we are a creator, get the entry directly
+                return models.Entry.findOne({
+                    where: {
+                        entryId: id,
+                        ownerId: context.userId,
+                    },
+                    include: helpers.includes.Entry.basic
+                }).catch((e) => winston.warn(e));
+            }
+
+            if(context.Role.type === 'consumer') {
+                // only return an Entry node if it part of a user request
+                // whos parent request is owned by the consumer
+                return models.Entry.findOne({
+                    where: {
+                        entryId: id,
+                    },
+                    include: [
+                        {
+                            model: models.EntryUserRequest,
+                            as: 'EntryUserRequest',
+                            include: [
+                                {
+                                    model: models.UserRequest,
+                                    as: 'UserRequest',
+                                    include: [
+                                        {
+                                            model: models.Request,
+                                            as: 'Request',
+                                            where: {
+                                                userId: context.userId
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        ...helpers.includes.Entry.basic
+                    ],
+                }).catch((e) => winston.warn(e));
+            }
         }
         if (type === 'UserRequest') {
-            return models.UserRequest.findOne({
-                where: {
-                    userRequestId: id,
-                    userId: context.userId,
-                },
-            });
+            if(!context.Role) {
+                return null;
+            }
+            // only creators can access user request for themselves
+            if(context.Role.type === 'creator') {
+                return models.UserRequest.findOne({
+                    where: {
+                        userRequestId: id,
+                        userId: context.userId,
+                    },
+                }).catch((e) => winston.warn(e));
+            }
         }
         if (type === 'Request') {
-            return models.Request.findOne({
-                where: {
-                    requestId: id,
-                    userId: context.userId,
-                },
-                include: helpers.includes.Request.basic
-            });
+            if(!context.Role) {
+                return null;
+            }
+            // only consumers can access requests for themselves
+            if(context.Role.type === 'consumer') {
+                return models.Request.findOne({
+                    where: {
+                        requestId: id,
+                        userId: context.userId,
+                    },
+                    include: helpers.includes.Request.basic
+                }).catch((e) => winston.warn(e));
+            }
         }
+        return null;
     },
     /* resolve given an object */
     (obj) => {
@@ -153,6 +207,10 @@ const RequestType = new ql.GraphQLObjectType({
             type: entryConnectionDefinition.connectionType,
             args: relayql.connectionArgs,
             resolve: (root, args, context) => {
+                // if they are not a consumer, they can't see entries attached to this
+                if(!context.Role || context.Role.type !== 'consumer') {
+                    return relayql.connectionFromArray([], args);
+                }
                 var entries = models.EntryUserRequest.findAll({
                     where: {
                         access: true,
@@ -171,7 +229,9 @@ const RequestType = new ql.GraphQLObjectType({
                             include: helpers.includes.Entry.basic,
                         },
                     ],
-                }).then((results) => results.map((result) => result.Entry));
+                })
+                .then((results) => results.map((result) => result.Entry))
+                .catch((e) => winston.warn(e));
                 return relayql.connectionFromPromisedArray(entries, args);
             },
         }
@@ -269,7 +329,11 @@ const EntryType = new ql.GraphQLObjectType({
         },
         requests: {
             type: new ql.GraphQLList(EntryRequest),
-            resolve: (root) => {
+            resolve: (root, args, context) => {
+                //if they are not a creator, they can't see requests attached to this
+                if(!context.Role || context.Role.type !== 'creator') {
+                    return [];
+                }
                 return models.EntryUserRequest.findAll({
                     where: {
                         entryId: root.entryId,
@@ -281,7 +345,7 @@ const EntryType = new ql.GraphQLObjectType({
                             include: helpers.includes.UserRequest.basic
                         }
                     ]
-                });
+                }).catch((e) => winston.warn(e));
             }
         }
     },
@@ -513,7 +577,7 @@ const createEntry = relayql.mutationWithClientMutationId({
         },
     },
     mutateAndGetPayload: function mutateEntryPayload({entry}, context) {
-        if (context.Role.type !== "creator") {
+        if (!context.Role || context.Role.type !== "creator") {
             return {};
         }
         var media = entry.media;
@@ -540,7 +604,7 @@ const updateUserRequest = relayql.mutationWithClientMutationId({
         },
     },
     mutateAndGetPayload: function mutateEntryPayload({userRequest}, context) {
-        if (context.Role.type !== "creator") {
+        if (!context.Role || context.Role.type !== "creator") {
             return {};
         }
         return new Promise(function(resolve, reject) {
@@ -582,7 +646,7 @@ const updateEntryRequest = relayql.mutationWithClientMutationId({
       creator: creatorField,
     },
     mutateAndGetPayload: function mutateEntryPayload({entryId, userRequestId, access}, context) {
-        if (context.Role.type !== "creator") {
+        if (!context.Role || context.Role.type !== "creator") {
             return {};
         }
         return new Promise(function(resolve, reject) {
@@ -637,7 +701,7 @@ const createRequest = relayql.mutationWithClientMutationId({
         consumer: consumerField
     },
     mutateAndGetPayload: function mutateRequestPayload({request}, context) {
-        if (context.Role.type !== "consumer") {
+        if (!context.Role || context.Role.type !== "consumer") {
             return {};
         }
         var requestData = {
