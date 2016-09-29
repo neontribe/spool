@@ -36,7 +36,7 @@ export class Signup extends React.Component {
     componentWillMount() {
         // if we're using this component as a role consolidator
         // then mode will be true and we should just send the user in the right direction
-        if (this.props.user.role && this.props.mode === "configure") {
+        if (this.shouldSkipConfiguration()) {
             this.handleRedirect(this.props.user.role);
         }
     }
@@ -47,6 +47,10 @@ export class Signup extends React.Component {
                 this.showRoleChooser();
             }
         }
+    }
+
+    shouldSkipConfiguration() {
+        return this.props.user.role && this.props.mode === "configure";
     }
 
     onChange(key, event) {
@@ -99,6 +103,9 @@ export class Signup extends React.Component {
 
     render() {
         var currentRole = this.getRole();
+        if(this.shouldSkipConfiguration()) {
+            return (<div></div>);
+        }
         return (
             <Grid>
                 <Row>
