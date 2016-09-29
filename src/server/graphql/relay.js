@@ -24,6 +24,7 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
         }
         if (type === 'Entry') {
             if(!context.Role) {
+                winston.info(`Failed to resolve ${type} node due to missing role`);
                 return null;
             }
 
@@ -73,6 +74,7 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
         if (type === 'UserRequest') {
             if(!context.Role) {
                 return null;
+                winston.info(`Failed to resolve ${type} node due to missing role`);
             }
             // only creators can access user request for themselves
             if(context.Role.type === 'creator') {
@@ -86,6 +88,7 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
         }
         if (type === 'Request') {
             if(!context.Role) {
+                winston.info(`Failed to resolve ${type} node due to missing role`);
                 return null;
             }
             // only consumers can access requests for themselves
@@ -99,6 +102,7 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
                 }).catch((e) => winston.warn(e));
             }
         }
+        winston.info(`Failed to resolve ${type} node for ${id}`);
         return null;
     },
     /* resolve given an object */
@@ -209,6 +213,7 @@ const RequestType = new ql.GraphQLObjectType({
             resolve: (root, args, context) => {
                 // if they are not a consumer, they can't see entries attached to this
                 if(!context.Role || context.Role.type !== 'consumer') {
+                    winston.info(`Failed to resolve entries field on Request due to role mismatch`);
                     return relayql.connectionFromArray([], args);
                 }
                 var entries = models.EntryUserRequest.findAll({
@@ -332,6 +337,7 @@ const EntryType = new ql.GraphQLObjectType({
             resolve: (root, args, context) => {
                 //if they are not a creator, they can't see requests attached to this
                 if(!context.Role || context.Role.type !== 'creator') {
+                    winston.info(`Failed to resolve requests field on Entry due to role mismatch`);
                     return [];
                 }
                 return models.EntryUserRequest.findAll({
@@ -578,6 +584,7 @@ const createEntry = relayql.mutationWithClientMutationId({
     },
     mutateAndGetPayload: function mutateEntryPayload({entry}, context) {
         if (!context.Role || context.Role.type !== "creator") {
+            winston.info(`Failed createEntry mutation due to role mismatch`);
             return {};
         }
         var media = entry.media;
@@ -605,6 +612,7 @@ const updateUserRequest = relayql.mutationWithClientMutationId({
     },
     mutateAndGetPayload: function mutateEntryPayload({userRequest}, context) {
         if (!context.Role || context.Role.type !== "creator") {
+            winston.info(`Failed updateUserRequest mutation due to role mismatch`);
             return {};
         }
         return new Promise(function(resolve, reject) {
@@ -616,6 +624,7 @@ const updateUserRequest = relayql.mutationWithClientMutationId({
                 }
             }).then(function (request) {
                 if(!request) {
+                    winston.info(`Failed updateUserRequest mutation due to missing request`);
                     resolve({});
                 } else {
                     // The request will always be hidden, for now
@@ -647,6 +656,7 @@ const updateEntryRequest = relayql.mutationWithClientMutationId({
     },
     mutateAndGetPayload: function mutateEntryPayload({entryId, userRequestId, access}, context) {
         if (!context.Role || context.Role.type !== "creator") {
+            winston.info(`Failed updateEntryRequest mutation due to role mismatch`);
             return {};
         }
         return new Promise(function(resolve, reject) {
@@ -659,6 +669,7 @@ const updateEntryRequest = relayql.mutationWithClientMutationId({
                 }
             }).then(function(entry) {
                 if(!entry) {
+                    winston.info(`Failed updateEntryRequest mutation due to missing entry`);
                     resolve({});
                 } else {
                     models.EntryUserRequest.update({
@@ -702,6 +713,7 @@ const createRequest = relayql.mutationWithClientMutationId({
     },
     mutateAndGetPayload: function mutateRequestPayload({request}, context) {
         if (!context.Role || context.Role.type !== "consumer") {
+            winston.info(`Failed createRequest mutation due to role mismatch`);
             return {};
         }
         var requestData = {
