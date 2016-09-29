@@ -9,6 +9,7 @@ import Relay from 'react-relay';
 import AddRequestMutation from './mutations/AddRequestMutation.js';
 import UserRequest from './UserRequest';
 import { withRouter } from 'react-router';
+import withRoles from '../auth/withRoles.js';
 
 export class RequestForm extends Component {
 
@@ -148,8 +149,15 @@ RequestForm = withRouter(RequestForm);
 
 export default RequestForm;
 
-export const RequestFormContainer = Relay.createContainer(RequestForm, {
+export const RequestFormContainer = Relay.createContainer(withRoles(RequestForm, {
+    roles: ['consumer'],
+    fallback: '/settings/configure',
+}), {
     fragments: {
+        user: () => Relay.QL`
+        fragment on User {
+            role
+        }`,
         consumer: () => Relay.QL`
             fragment on Consumer {
                 id

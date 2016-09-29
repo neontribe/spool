@@ -50,22 +50,29 @@ const MetaQueries = {
     meta: () => Relay.QL`query { meta }`,
 };
 
+const UserQueries = {
+    user: () => Relay.QL`query { user }`,
+};
+
 const ConsumerQueries = {
     consumer: () => Relay.QL`query { consumer }`,
+    ...UserQueries,
 };
 
 const CreatorQueries = {
     creator: () => Relay.QL`query { creator }`,
+    ...UserQueries,
 };
 
 const SignupQueries = {
-    user: () => Relay.QL`query { user }`,
-    ...MetaQueries
+    ...UserQueries,
+    ...MetaQueries,
 };
 
 const EntryQueries = {
     entry: () => Relay.QL`query { node(id: $entryId) }`,
-    ...CreatorQueries
+    ...CreatorQueries,
+    ...UserQueries,
 };
 
 setupRelayNetworkLayer();

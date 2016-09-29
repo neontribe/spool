@@ -4,6 +4,7 @@ import TopicsOverview from './TopicsOverview';
 import Relay from 'react-relay';
 import moment from 'moment';
 import { Link } from 'react-router';
+import withRoles from '../auth/withRoles.js';
 
 export class Dashboard extends Component {
     constructor(props) {
@@ -66,7 +67,10 @@ export class Dashboard extends Component {
     }
 };
 
-export const DashboardContainer = Relay.createContainer(Dashboard, {
+export const DashboardContainer = Relay.createContainer(withRoles(Dashboard, {
+    roles: ['consumer'],
+    fallback: '/settings/configure',
+}), {
     initialVariables: {
         range: {
             from: moment().add(-1, 'months').startOf('date').format(),
@@ -74,6 +78,10 @@ export const DashboardContainer = Relay.createContainer(Dashboard, {
         }
     },
     fragments: {
+        user: () => Relay.QL`
+            fragment on User {
+                role
+            }`,
         consumer: () => Relay.QL`
             fragment on Consumer {
                 creatorActivityCount(range: $range) {

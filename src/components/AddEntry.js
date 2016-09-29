@@ -4,6 +4,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import AddEntryMutation from './mutations/AddEntryMutation';
 import _ from 'lodash';
 import { withRouter } from 'react-router';
+import withRoles from '../auth/withRoles.js';
 
 class AddEntry extends Component {
 
@@ -91,8 +92,15 @@ AddEntry.defaultProps = {
 
 export default withRouter(AddEntry);
 
-export const AddEntryContainer = Relay.createContainer(withRouter(AddEntry), {
+export const AddEntryContainer = Relay.createContainer(withRoles(withRouter(AddEntry), {
+    roles: ['creator'],
+    fallback: '/settings/configure',
+}), {
     fragments: {
+        user: () => Relay.QL`
+        fragment on User {
+            role
+        }`,
         creator: () => Relay.QL`
             fragment on Creator {
                 id

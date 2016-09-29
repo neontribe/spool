@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
+import withRoles from '../auth/withRoles.js';
 import {RequestContainer} from './Request';
-
-//import { Button, Glyphicon } from 'react-bootstrap';
-//import { withRouter } from 'react-router';
 
 class RequestViewer extends Component {
     renderRequestContainers() {
@@ -21,8 +19,15 @@ class RequestViewer extends Component {
 //RequestViewer = withRouter(RequestViewer);
 export default RequestViewer;
 
-export const RequestViewerContainer = Relay.createContainer(RequestViewer, {
+export const RequestViewerContainer = Relay.createContainer(withRoles(RequestViewer,{
+    roles: ['consumer'],
+    fallback: '/settings/configure',
+}), {
     fragments: {
+        user: () => Relay.QL`
+        fragment on User {
+            role
+        }`,
         consumer: () => Relay.QL`
         fragment on Consumer {
             requests(first: 100) {

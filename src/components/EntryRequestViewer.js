@@ -3,6 +3,7 @@ import Relay from 'react-relay';
 import { Button, Glyphicon } from 'react-bootstrap';
 import {EntryRequestContainer} from './EntryRequest';
 import { withRouter } from 'react-router';
+import withRoles from '../auth/withRoles.js';
 
 class EntryRequestViewer extends Component {
     constructor(props) {
@@ -58,8 +59,15 @@ class EntryRequestViewer extends Component {
 EntryRequestViewer = withRouter(EntryRequestViewer);
 export default EntryRequestViewer;
 
-export const EntryRequestViewerContainer = Relay.createContainer(EntryRequestViewer, {
+export const EntryRequestViewerContainer = Relay.createContainer(withRoles(EntryRequestViewer, {
+    roles: ['creator'],
+    fallback: '/settings/configure',
+}), {
     fragments: {
+        user: () => Relay.QL`
+        fragment on User {
+            role
+        }`,
         creator: () => Relay.QL`
         fragment on Creator {
             ${EntryRequestContainer.getFragment('creator')}

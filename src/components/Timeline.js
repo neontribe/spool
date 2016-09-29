@@ -6,6 +6,7 @@ import { EntryContainer, Entry } from './Entry';
 import Intro from './Intro';
 import UserRequest, { UserRequestContainer } from './UserRequest';
 import _ from 'lodash';
+import withRoles from '../auth/withRoles.js';
 
 export class Timeline extends Component {
     static propTypes = {
@@ -73,11 +74,18 @@ export class Timeline extends Component {
     }
 }
 
-export const TimelineContainer = Relay.createContainer(Timeline, {
+export const TimelineContainer = Relay.createContainer(withRoles(Timeline, {
+    roles: ['creator'],
+    fallback: '/settings/configure',
+}), {
     initialVariables: {
         first: 100,
     },
     fragments: {
+        user: () => Relay.QL`
+        fragment on User {
+            role
+        }`,
         creator: () => Relay.QL`
         fragment on Creator {
             happyCount
