@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Relay from 'react-relay';
 import withRoles from '../auth/withRoles.js';
 import {RequestContainer} from './Request';
+import { Glyphicon } from 'react-bootstrap';
+import { Link } from 'react-router';
 
 class RequestViewer extends Component {
     renderRequestContainers() {
@@ -11,6 +13,9 @@ class RequestViewer extends Component {
         return (
             <div>
                 <h2>Your Requests</h2>
+                <Link className="btn" to={'/dashboard'}>
+                    <Glyphicon glyph="remove"/> Quit
+                </Link>
                 {this.renderRequestContainers()}
             </div>);
     }
