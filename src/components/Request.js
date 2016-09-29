@@ -17,6 +17,7 @@ export class Request extends Component {
     renderViewEntries() {
         if(!this.state.showEntries) {
             return (<Button bsStyle="success"
+                            disabled={this.props.request.entries.edges.length === 0}
                             onClick={this.toggleEntries}><Glyphicon glyph="chevron-down"/> View {this.props.request.entries.edges.length} Entries</Button>);
         }
     }
