@@ -33,11 +33,22 @@ export default class AddRequestMutation extends Relay.Mutation {
         fragment on CreateRequestPayload {
             consumer {
                 id
+                requests
             }
+            requestEdge
         }`
     }
 
     getConfigs() {
-        return [];
+        return [{
+            type: 'RANGE_ADD',
+            parentName: 'consumer',
+            parentID: this.props.consumer.id,
+            connectionName: 'requests',
+            edgeName: 'requestEdge',
+            rangeBehaviors: ({ status }) => (
+                status === 'completed' ? 'ignore' : 'prepend'
+            ),
+        }];
     }
 }

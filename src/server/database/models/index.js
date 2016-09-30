@@ -1,5 +1,3 @@
-'use strict';
-
 var model = {};
 var initialized = false;
 

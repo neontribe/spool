@@ -74,6 +74,7 @@ function makeRequest(request, topics) {
             include: helpers.includes.UserAccount.basicCreator
         });
         yield users.map((user) => makeUserRequest(user, fullRequest));
+        return fullRequest;
     }).catch((e) => winston.warn(e));
 }
 

@@ -52,12 +52,7 @@ export default class UserRequest extends Component {
         var payload = {creator, userRequest, access};
         if (this.props.mutate) {
             this.props.relay.commitUpdate(
-                new UpdateUserRequestMutation(payload),
-                {
-                    onSuccess: function(response) {
-                        console.log(response);
-                    }
-                }
+                new UpdateUserRequestMutation(payload)
             );
         }
         if(_.isFunction(this.props.onUpdate)) {

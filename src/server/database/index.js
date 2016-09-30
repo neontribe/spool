@@ -1,4 +1,3 @@
-const pg = require('pg');
 const SQL = require('sql-template-strings');
 const url = require('url')
 const Sequelize = require('sequelize');

@@ -29,7 +29,7 @@ if(process.env.NODE_ENV !== 'production') {
         locations: error.locations,
         stack: error.stack
     });
-    winston.level = 'debug';
+    winston.level = 'warn';
 }
 
 /*

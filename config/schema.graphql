@@ -3,7 +3,7 @@ schema {
   mutation: Mutations
 }
 
-type Consumer {
+type Consumer implements Node {
   # The ID of an object
   id: ID!
   creatorActivityCount(range: DateRangeInput): CreatorActivityCount
@@ -14,23 +14,24 @@ type Consumer {
 
 input CreateEntryInput {
   entry: EntryInput
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type CreateEntryPayload {
   creator: Creator
   entryEdge: EntryEdge
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 input CreateRequestInput {
   request: RequestInput
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type CreateRequestPayload {
   consumer: Consumer
-  clientMutationId: String!
+  requestEdge: RequestEdge
+  clientMutationId: String
 }
 
 type Creator implements Node {
@@ -227,33 +228,33 @@ input UpdateEntryRequestInput {
   entryId: String!
   userRequestId: String!
   access: Boolean
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type UpdateEntryRequestPayload {
   creator: Creator
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 input UpdateUserInput {
   user: UserInput
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type UpdateUserPayload {
   user: User
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 input UpdateUserRequestInput {
   userRequest: UserRequestInputType
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type UpdateUserRequestPayload {
   creator: Creator
   userRequestId: String
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type User implements Node {

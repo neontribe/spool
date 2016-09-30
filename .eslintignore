@@ -1,3 +1,7 @@
 coverage/*
 build
 migrations
+config/models/*
+config/sequelize-template/*
+seeders/*
+src/server/database/models/definition/*
