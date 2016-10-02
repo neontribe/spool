@@ -45,7 +45,7 @@
     "enzyme": "^2.4.1",
     "http-proxy-middleware": "0.17.1",
     "jest": "15.1.1",
-    "jsdom": "^9.4.1",
+    "jsdom": "^9.6.0",
     "mocha": "^3.0.1",
     "nyc": "^8.1.0",
     "react-addons-test-utils": "^15.3.0",
