@@ -31,7 +31,7 @@ const entriesWithRequest = {
             edges: entries.map((e) => {return {node:e}})
         },
         requests: {
-            edges: [{node: request}]
+            edges: [{node: {request}}]
         }
     }
 }
