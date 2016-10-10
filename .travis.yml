@@ -3,6 +3,7 @@ sudo: false
 services:
 - postgresql
 before_install:
+- sudo apt-get install libpq-dev -y
 - psql -c 'create database spool;' -U postgres
 script: npm test
 after_success:
