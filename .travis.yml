@@ -3,7 +3,7 @@ sudo: false
 addons:
   apt:
     packages:
-    - libpg-dev
+    - libpq-dev
 services:
 - postgresql
 before_install:
