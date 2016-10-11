@@ -173,7 +173,7 @@ const helpers = {
             LEFT JOIN
                 entry ON entry.owner_id = user_account.user_id AND entry.created_at BETWEEN ${from} AND ${to}
             WHERE
-                user_account.created_at <= ${from}
+                user_account.created_at >= ${from}
             AND
                 user_account.region_id = ${regionId}
             GROUP BY
