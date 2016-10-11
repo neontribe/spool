@@ -31,7 +31,6 @@ export default class UpdateUserRequestMutation extends Relay.Mutation {
         fragment on UpdateUserRequestPayload {
             userRequestId
             creator {
-                entries
                 requests
             }
         }`
@@ -46,9 +45,6 @@ export default class UpdateUserRequestMutation extends Relay.Mutation {
             parentID: this.props.creator.id,
             connectionName: 'requests',
             deletedIDFieldName: 'userRequestId',
-        }, {
-            type: 'FIELDS_CHANGE',
-            fieldIDs: {creator: this.props.creator.id},
         }];
     }
 }

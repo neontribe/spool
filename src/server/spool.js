@@ -7,8 +7,10 @@ const winston = require('winston');
 function makeUserRequest (user, request) {
     return co(function* () {
         var existing = yield models.UserRequest.findOne({
-            requestId: request.requestId,
-            userId: user.userId,
+            where: {
+                requestId: request.requestId,
+                userId: user.userId,
+            },
         });
         if (!existing) {
             // for each of the users, create a user_request for that user
