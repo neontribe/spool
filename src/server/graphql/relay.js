@@ -506,7 +506,10 @@ const CreatorType = new ql.GraphQLObjectType({
                     where: {
                         ownerId: context.userId,
                     },
-                    include: helpers.includes.Entry.basic
+                    include: helpers.includes.Entry.basic,
+                    order: [
+                        ['createdAt', 'DESC']
+                    ],
                 }).catch((e) => winston.warn(e)), args);
             },
         },
