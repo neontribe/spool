@@ -42,6 +42,16 @@ function makeUserRequest (user, request) {
             });
             // link the entries to the user request
             yield entries.map((entry) => entry.addEntryUserRequestUserRequest(userRequest));
+
+            if(entries.length === 0) {
+                yield models.UserRequest.update({
+                    seen: true,
+                }, {
+                    where: {
+                        userRequestId: userRequest.userRequestId
+                    }
+                });
+            }
         }
     }).catch((e) => winston.warn(e));
 }
