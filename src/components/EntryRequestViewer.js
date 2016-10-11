@@ -49,8 +49,10 @@ class EntryRequestViewer extends Component {
         if((this.state.ignore.length + 1) === this.props.entry.requests.length) {
             this.handleDone();
         } else {
+            let newIgnore = this.state.ignore.slice(0);
+            newIgnore.push(userRequestId);
             this.setState({
-                ignore: this.state.ignore.slice(0).push(userRequestId),
+                ignore: newIgnore,
             });
         }
     }

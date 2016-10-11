@@ -22,12 +22,22 @@ export default class UserRequest extends Component {
         super(props);
 
         this.state = {
-            alertVisible: true
-        }
+            alertVisible: true,
+            activeRequestId: props.userRequest.id,
+        };
 
         this.hide = this.hide.bind(this);
         this.accept = this.accept.bind(this);
         this.deny = this.deny.bind(this);
+    }
+
+    componentWillReceiveProps(newProps) {
+        var newActiveRequestId = newProps.userRequest.id;
+        if(newActiveRequestId !== this.state.activeRequestId) {
+            this.setState({
+                alertVisible: true,
+                activeRequestId: newActiveRequestId });
+        }
     }
 
     hide() {

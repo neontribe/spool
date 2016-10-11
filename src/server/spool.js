@@ -7,8 +7,10 @@ const winston = require('winston');
 function makeUserRequest (user, request) {
     return co(function* () {
         var existing = yield models.UserRequest.findOne({
-            requestId: request.requestId,
-            userId: user.userId,
+            where: {
+                requestId: request.requestId,
+                userId: user.userId,
+            },
         });
         if (!existing) {
             // for each of the users, create a user_request for that user
@@ -40,6 +42,16 @@ function makeUserRequest (user, request) {
             });
             // link the entries to the user request
             yield entries.map((entry) => entry.addEntryUserRequestUserRequest(userRequest));
+
+            if(entries.length === 0) {
+                yield models.UserRequest.update({
+                    seen: true,
+                }, {
+                    where: {
+                        userRequestId: userRequest.userRequestId
+                    }
+                });
+            }
         }
     }).catch((e) => winston.warn(e));
 }
