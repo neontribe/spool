@@ -9,23 +9,29 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
       */
-     return queryInterface.createTable('x_entry_topics', {
-         entry_id: {
+     
+    return queryInterface.createTable('media', {
+        media_id: {
             type: Sequelize.INTEGER,
-            references: {
-                model: 'entry',
-                key: 'entry_id'
-            },
-            onDelete: 'CASCADE'
-         },
-         topic_type_id: {
-             type: Sequelize.INTEGER,
-             references: {
-                model: 'topic_type',
-                key: 'topic_type_id'
-             }
-         }
-    })
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        text: {
+            type: Sequelize.STRING,
+        },
+        video: {
+            type: Sequelize.STRING,
+        },
+        video_thumbnail: {
+            type: Sequelize.STRING,
+        },
+        image: {
+            type: Sequelize.STRING,
+        },
+        image_thumbnail: {
+            type: Sequelize.STRING,
+        }
+    });
   },
 
   down: function (queryInterface, Sequelize) {
@@ -36,6 +42,6 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
     */
-     return queryInterface.dropTable('x_entry_topics');
+    return queryInterface.dropTable('media');
   }
 };

@@ -63,7 +63,7 @@ export class Entry extends Component {
                         <div className='entry--meta'>
                             <div className="entry--time">{this.formatTimestamp()}</div>
                             <div className="entry--tags">
-                                {this.props.entry.topic.map((t) => t.name).join(', ')}
+                                {this.props.entry.topics.map((t) => t.name).join(', ')}
                             </div>
                         </div>
 
@@ -98,7 +98,6 @@ export const EntryContainer = Relay.createContainer(Entry, {
         entry: () => Relay.QL`
         fragment on Entry {
             id
-            _id
             media {
                 text
                 video
@@ -106,13 +105,14 @@ export const EntryContainer = Relay.createContainer(Entry, {
                 image
                 imageThumbnail
             }
-            topic {
+            topics {
                 name
             }
             sentiment {
                 type
             },
-            timestamp
+            created
+            updated
         }`,
     }
 });

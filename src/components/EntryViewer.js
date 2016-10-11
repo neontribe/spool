@@ -40,7 +40,7 @@ class EntryViewer extends Component {
                                     <ResponsiveEmbed a4by3>
                                         <Image
                                             src={this.props.entry.media.image}
-                                            alt={this.props.entry.media.text || this.props.entry.topic.type}
+                                            alt={this.props.entry.media.text || this.props.entry.topics.type}
                                         />
                                     </ResponsiveEmbed>
                                 }
@@ -62,7 +62,7 @@ class EntryViewer extends Component {
                                             <div className='entry--meta'>
                                                 <div className="entry--time">{this.formatTimestamp()}</div>
                                                 <div className="entry--tags">
-                                                    <span className="entry--tag">{this.props.entry.topic.map((t) => t.name).join(' ')}</span>
+                                                    <span className="entry--tag">{this.props.entry.topics.map((t) => t.name).join(' ')}</span>
                                                 </div>
                                             </div>
                                         </div>

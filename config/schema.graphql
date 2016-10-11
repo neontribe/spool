@@ -3,9 +3,13 @@ schema {
   mutation: Mutations
 }
 
-type Consumer {
+type Consumer implements Node {
+  # The ID of an object
+  id: ID!
   creatorActivityCount(range: DateRangeInput): CreatorActivityCount
   topicCounts(range: DateRangeInput): [TopicCount]
+  topics: [Topic]
+  requests(after: String, first: Int, before: String, last: Int): RequestConnection
 }
 
 input CreateEntryInput {
@@ -14,7 +18,7 @@ input CreateEntryInput {
 }
 
 type CreateEntryPayload {
-  viewer: Viewer
+  creator: Creator
   entryEdge: EntryEdge
   clientMutationId: String
 }
@@ -25,11 +29,15 @@ input CreateRequestInput {
 }
 
 type CreateRequestPayload {
-  viewer: Viewer
+  consumer: Consumer
+  requestEdge: RequestEdge
   clientMutationId: String
 }
 
-type Creator {
+type Creator implements Node {
+  # The ID of an object
+  id: ID!
+  topics: [Topic]
   entries(after: String, first: Int, before: String, last: Int): EntryConnection
   requests(after: String, first: Int, before: String, last: Int): UserRequestConnection
   happyCount: Int
@@ -49,13 +57,12 @@ input DateRangeInput {
 type Entry implements Node {
   # The ID of an object
   id: ID!
-  _id: Int
   media: Media
-  author: User
-  owner: User
   sentiment: Sentiment
-  topic: [Topic]
-  timestamp: String
+  topics: [Topic]
+  created: String
+  updated: String
+  requests: [EntryRequest]
 }
 
 # A connection to a list of items.
@@ -79,7 +86,12 @@ type EntryEdge {
 input EntryInput {
   media: MediaInput
   sentiment: String
-  topic: [String]
+  topics: [String]
+}
+
+type EntryRequest {
+  access: Boolean
+  userRequest: UserRequest
 }
 
 type Media {
@@ -99,18 +111,16 @@ input MediaInput {
 }
 
 type Meta {
-  regions: [String]
+  regions: [RegionDefinitionType]
   roles: [RoleDefinition]
-}
-
-type Missing {
-  information: [String]
 }
 
 type Mutations {
   createEntry(input: CreateEntryInput!): CreateEntryPayload
   createRequest(input: CreateRequestInput!): CreateRequestPayload
   updateUser(input: UpdateUserInput!): UpdateUserPayload
+  updateUserRequest(input: UpdateUserRequestInput!): UpdateUserRequestPayload
+  updateEntryRequest(input: UpdateEntryRequestInput!): UpdateEntryRequestPayload
 }
 
 # An object with an ID
@@ -140,23 +150,48 @@ type Query {
     # The ID of an object
     id: ID!
   ): Node
-  viewer: Viewer
+  creator: Creator
+  consumer: Consumer
+  user: User
   meta: Meta
+}
+
+type RegionDefinitionType {
+  type: String
 }
 
 type Request implements Node {
   # The ID of an object
   id: ID!
-  _id: Int
   from: String
   to: String
   region: String
-  user: User
   topics: [Topic]
   reason: String
   name: String
   org: String
   avatar: String
+  created: String
+  updated: String
+  entries(after: String, first: Int, before: String, last: Int): EntryConnection
+}
+
+# A connection to a list of items.
+type RequestConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [RequestEdge]
+}
+
+# An edge in a connection.
+type RequestEdge {
+  # The item at the end of the edge
+  node: Request
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 input RequestInput {
@@ -167,8 +202,6 @@ input RequestInput {
   avatar: String
   topics: [String]
 }
-
-union Role = Creator | Consumer | Missing
 
 type RoleDefinition {
   type: String
@@ -191,18 +224,44 @@ type TopicCount {
   creatorCount: Int
 }
 
+input UpdateEntryRequestInput {
+  entryId: String!
+  userRequestId: String!
+  access: Boolean
+  clientMutationId: String
+}
+
+type UpdateEntryRequestPayload {
+  creator: Creator
+  clientMutationId: String
+}
+
 input UpdateUserInput {
   user: UserInput
   clientMutationId: String
 }
 
 type UpdateUserPayload {
-  viewer: Viewer
+  user: User
   clientMutationId: String
 }
 
-type User {
-  id: Int
+input UpdateUserRequestInput {
+  userRequest: UserRequestInputType
+  clientMutationId: String
+}
+
+type UpdateUserRequestPayload {
+  creator: Creator
+  userRequestId: String
+  clientMutationId: String
+}
+
+type User implements Node {
+  # The ID of an object
+  id: ID!
+  role: String
+  region: String
 }
 
 input UserInput {
@@ -213,9 +272,10 @@ input UserInput {
 type UserRequest implements Node {
   # The ID of an object
   id: ID!
-  _id: Int
   request: Request
   seen: Boolean
+  created: String
+  updated: String
 }
 
 # A connection to a list of items.
@@ -236,10 +296,8 @@ type UserRequestEdge {
   cursor: String!
 }
 
-type Viewer implements Node {
-  # The ID of an object
-  id: ID!
-  role: Role
-  region: String
-  topics: [Topic]
+input UserRequestInputType {
+  id: String!
+  access: Boolean!
+  hide: Boolean!
 }

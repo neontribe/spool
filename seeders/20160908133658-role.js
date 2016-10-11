@@ -12,14 +12,20 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert('sentiment_type', [
+      return queryInterface.bulkInsert('role', [
           {
-              type: 'happy'
+              type: 'creator',
+              name: 'Creator',
+              secret: 'creator',
+              hidden: false,
           },
           {
-              type: 'sad'
+              type: 'consumer',
+              name: 'Consumer',
+              secret: 'test123',
+              hidden: false,
           }
-      ], {});
+      ]);
   },
 
   down: function (queryInterface, Sequelize) {
@@ -30,6 +36,6 @@ module.exports = {
       Example:
       return queryInterface.bulkDelete('Person', null, {});
     */
-    return queryInterface.bulkDelete('sentiment_type', null, {});
+      return queryInterface.bulkDelete('role', null, {});
   }
 };

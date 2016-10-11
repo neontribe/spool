@@ -3,8 +3,8 @@ import moment from 'moment';
 
 export default class AddRequestMutation extends Relay.Mutation {
     static fragments = {
-        viewer: () => Relay.QL`
-        fragment on Viewer {
+        consumer: () => Relay.QL`
+        fragment on Consumer {
             id
         }`
     }
@@ -31,13 +31,24 @@ export default class AddRequestMutation extends Relay.Mutation {
     getFatQuery() {
         return Relay.QL`
         fragment on CreateRequestPayload {
-            viewer {
+            consumer {
                 id
+                requests
             }
+            requestEdge
         }`
     }
 
     getConfigs() {
-        return [];
+        return [{
+            type: 'RANGE_ADD',
+            parentName: 'consumer',
+            parentID: this.props.consumer.id,
+            connectionName: 'requests',
+            edgeName: 'requestEdge',
+            rangeBehaviors: ({ status }) => (
+                status === 'completed' ? 'ignore' : 'prepend'
+            ),
+        }];
     }
 }

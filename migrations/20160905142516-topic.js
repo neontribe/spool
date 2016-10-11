@@ -9,8 +9,8 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
-    return queryInterface.createTable('topic_type', {
-        topic_type_id: {
+    return queryInterface.createTable('topic', {
+        topic_id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
@@ -32,6 +32,6 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
     */
-    return queryInterface.dropTable('topic_type');
+    return queryInterface.dropTable('topic');
   }
 };

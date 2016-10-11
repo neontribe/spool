@@ -9,20 +9,20 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
       */
-     return queryInterface.createTable('x_request_topics', {
-         request_id: {
+     return queryInterface.createTable('entry_topic', {
+         entry_id: {
             type: Sequelize.INTEGER,
             references: {
-                model: 'request',
-                key: 'request_id'
+                model: 'entry',
+                key: 'entry_id'
             },
             onDelete: 'CASCADE'
          },
-         topic_type_id: {
+         topic_id: {
              type: Sequelize.INTEGER,
              references: {
-                model: 'topic_type',
-                key: 'topic_type_id'
+                model: 'topic',
+                key: 'topic_id'
              }
          }
     })
@@ -36,6 +36,6 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
     */
-     return queryInterface.dropTable('x_request_topics');
+     return queryInterface.dropTable('entry_topic');
   }
 };

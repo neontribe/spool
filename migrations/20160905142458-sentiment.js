@@ -8,9 +8,9 @@ module.exports = {
 
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
-    */
-      return queryInterface.createTable('region_type', {
-          region_type_id: {
+      */
+      return queryInterface.createTable('sentiment', {
+          sentiment_id: {
               type: Sequelize.INTEGER,
               primaryKey: true,
               autoIncrement: true
@@ -29,6 +29,6 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
     */
-     return queryInterface.dropTable('region_type');
+     return queryInterface.dropTable('sentiment');
   }
 };

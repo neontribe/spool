@@ -4,6 +4,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import AddEntryMutation from './mutations/AddEntryMutation';
 import _ from 'lodash';
 import { withRouter } from 'react-router';
+import withRoles from '../auth/withRoles.js';
 
 class AddEntry extends Component {
 
@@ -19,20 +20,23 @@ class AddEntry extends Component {
     }
 
     saveEntry(entry) {
-        var viewer = this.props.viewer;
-        var onSuccess = () => {
-            this.props.router.push('/home');
+        var creator = this.props.creator;
+        var onSuccess = ({createEntry}) => {
+            var entry = createEntry.entryEdge.node;
+            if (entry.requests.length > 0) {
+                // we have a user request for this new entry
+                this.props.router.push('/entry/'+entry.id+'/requests');
+            } else {
+                this.props.router.push('/home');
+            }
         }
         this.props.relay.commitUpdate(
-            new AddEntryMutation({viewer, entry}),
+            new AddEntryMutation({creator, entry}),
             {onSuccess}
         );
     }
 
     getPathForNextStage(){
-        // Find our next route and calculate its path in order to navigate to it.
-        // This is all a bit of a faff, really.
-
         // Find the index of this components route in the routes
         var addIndex = this.props.routes.indexOf(this.props.route);
         // Use it to find the current route under this component (the stage)
@@ -65,7 +69,7 @@ class AddEntry extends Component {
         if (this.props.children) {
             children = React.cloneElement(this.props.children, {
                 save: this.setEntryData,
-                topics: this.props.viewer.topics
+                topics: this.props.creator.topics
             });
         }
         return (
@@ -88,16 +92,23 @@ AddEntry.defaultProps = {
 
 export default withRouter(AddEntry);
 
-export const AddEntryContainer = Relay.createContainer(withRouter(AddEntry), {
+export const AddEntryContainer = Relay.createContainer(withRoles(withRouter(AddEntry), {
+    roles: ['creator'],
+    fallback: '/settings/configure',
+}), {
     fragments: {
-        viewer: () => Relay.QL`
-            fragment on Viewer {
+        user: () => Relay.QL`
+        fragment on User {
+            role
+        }`,
+        creator: () => Relay.QL`
+            fragment on Creator {
                 id
                 topics {
                     type,
                     name
                 }
-                ${AddEntryMutation.getFragment('viewer')}
+                ${AddEntryMutation.getFragment('creator')}
             }
         `,
     }

@@ -7,8 +7,9 @@ import AddControls from './AddControls';
 import IconChooser from './IconChooser';
 import Relay from 'react-relay';
 import AddRequestMutation from './mutations/AddRequestMutation.js';
-import Request from './Request';
+import UserRequest from './UserRequest';
 import { withRouter } from 'react-router';
+import withRoles from '../auth/withRoles.js';
 
 export class RequestForm extends Component {
 
@@ -36,10 +37,10 @@ export class RequestForm extends Component {
     }
 
     save() {
-        var onSuccess = () => this.props.router.push('/home');
-        var viewer = this.props.viewer;
+        var onSuccess = () => this.props.router.push('/dashboard');
+        var consumer = this.props.consumer;
         this.props.relay.commitUpdate(
-            new AddRequestMutation({request: this.state.request, viewer}),
+            new AddRequestMutation({request: this.state.request, consumer}),
             {onSuccess}
         );
     }
@@ -78,18 +79,9 @@ export class RequestForm extends Component {
                 </Row>
                 <Row>
                     <Col xsOffset={3} xs={6}>
-                        <h3>Preview:</h3>
-                        <Request
-                            {...this.state.request}
-                            allowMutation={false}
-                             />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xsOffset={3} xs={6}>
                         <IconChooser
                             label="Entries tagged with topic"
-                            choices={this.props.viewer.topics}
+                            choices={this.props.consumer.topics}
                             maxSelections={1}
                             onChange={_.partial(this.handleChange, 'topics')} />
                         <FormGroup>
@@ -99,7 +91,7 @@ export class RequestForm extends Component {
                           <HelpBlock>Let recipents of this request know which body the request originates from</HelpBlock>
                         </FormGroup>
                         <FormGroup>
-                            <ControlLabel>Because</ControlLabel>
+                            <ControlLabel>Because they are...</ControlLabel>
                             <FormControl componentClass="textarea"
                               maxLength={this.props.maxLength}
                               onChange={_.partial(this.handleInputChange, 'reason')} />
@@ -125,6 +117,15 @@ export class RequestForm extends Component {
                 </Row>
                 <Row>
                     <Col xsOffset={3} xs={6}>
+                        <h3>Preview:</h3>
+                        <UserRequest
+                            userRequest={{request: this.state.request}}
+                            inert={true}
+                             />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xsOffset={3} xs={6}>
                         <AddControls
                             disableNext={!this.state.requestIsComplete}
                             onNext={this.save}
@@ -138,26 +139,33 @@ export class RequestForm extends Component {
 
 RequestForm.propTypes = {
     maxLength: React.PropTypes.number
-}
+};
 
 RequestForm.defaultProps = {
     maxLength: 240
-}
+};
 
 RequestForm = withRouter(RequestForm);
 
 export default RequestForm;
 
-export const RequestFormContainer = Relay.createContainer(RequestForm, {
+export const RequestFormContainer = Relay.createContainer(withRoles(RequestForm, {
+    roles: ['consumer'],
+    fallback: '/settings/configure',
+}), {
     fragments: {
-        viewer: () => Relay.QL`
-            fragment on Viewer {
+        user: () => Relay.QL`
+        fragment on User {
+            role
+        }`,
+        consumer: () => Relay.QL`
+            fragment on Consumer {
                 id
                 topics {
                     type,
                     name
                 }
-                ${AddRequestMutation.getFragment('viewer')}
+                ${AddRequestMutation.getFragment('consumer')}
             }
         `,
     }

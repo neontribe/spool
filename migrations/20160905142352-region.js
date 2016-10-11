@@ -9,24 +9,14 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
-      return queryInterface.createTable('role_type', {
-          role_type_id: {
+      return queryInterface.createTable('region', {
+          region_id: {
               type: Sequelize.INTEGER,
               primaryKey: true,
               autoIncrement: true
           },
           type: {
               type: Sequelize.STRING
-          },
-          name: {
-              type: Sequelize.STRING
-          },
-          secret: {
-              type: Sequelize.STRING,
-              unique: true
-          },
-          hidden: {
-              type: Sequelize.BOOLEAN
           }
       });
   },
@@ -39,6 +29,6 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
     */
-     return queryInterface.dropTable('role_type');
+     return queryInterface.dropTable('region');
   }
 };

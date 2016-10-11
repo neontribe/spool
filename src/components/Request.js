@@ -1,90 +1,83 @@
 import React, { Component } from 'react';
 import { Alert, Button, Glyphicon, Image } from 'react-bootstrap';
 import Relay from 'react-relay';
+import {EntryContainer} from './Entry.js';
 
-class Request extends Component {
+export class Request extends Component {
+    static PropTypes = {
+        request: React.PropTypes.object.isRequired,
+    }
     constructor(props) {
         super(props);
-
         this.state = {
-            alertVisible: true
-        }
-
-        this.handleAlertDismiss = this.handleAlertDismiss.bind(this);
+            showEntries: false,
+        };
+        this.toggleEntries = this.toggleEntries.bind(this);
     }
-
-    handleAlertDismiss() {
+    renderViewEntries() {
+        if(!this.state.showEntries) {
+            return (<Button bsStyle="success"
+                            disabled={this.props.request.entries.edges.length === 0}
+                            onClick={this.toggleEntries}><Glyphicon glyph="chevron-down"/> View {this.props.request.entries.edges.length} Entries</Button>);
+        }
+    }
+    renderHideEntries() {
+        if(this.state.showEntries) {
+            return (<Button bsStyle="success"
+                            onClick={this.toggleEntries}><Glyphicon glyph="chevron-up"/> Hide Entries</Button>);
+        }
+    }
+    toggleEntries() {
         this.setState({
-            alertVisible: false
+            showEntries: !this.state.showEntries,
         });
     }
-
-    render() {
-        if (this.state.alertVisible) {
-            return (
-                <Alert bsStyle="info" onDismiss={this.props.allowMutation ? this.handleAlertDismiss : null} >
-                    <Image
-                            src={this.props.avatar}
-                            className='profile-img'
-                            circle
-                            />
-
-                        <p><strong>{this.props.name}</strong> from <strong>{this.props.org}</strong> would like to be able to see your entries about <strong>{this.props.topics.map((t) => t.type || t).join(' and ')}</strong> because they are {this.props.reason}</p>
-                    {/**<div className="easyread">
-                        <div>
-                            <Image
-                                src={this.props.issuerAvatar}
-                                className='profile-img'
-                                circle
-                                />
-                        </div>
-                        <div>
-                            <IconCard icon="eye-open" />
-                        </div>
-
-                        { this.props.topics.map((topic, i) => {
-                            return (<div key={topic + '_' + i}><IconCard icon={topic} /></div>);
-                        })}
-
-                        <div>
-                            <IconCard icon="question-sign" />
-                        </div>
-                    </div>**/}
-
-                        <div className="full-width centered">
-                            <Button bsStyle="danger"
-                                disabled={!this.props.allowMutation}
-                                onClick={this.props.onDeny}><Glyphicon glyph="remove"/> No</Button>
-                            <Button bsStyle="success"
-                                disabled={!this.props.allowMutation}
-                                onClick={this.props.onAccept}><Glyphicon glyph="ok"/> Yes</Button>
-                        </div>
-
-                </Alert>
-            );
-        } else {
-            return null;
+    renderEntries() {
+        if(this.state.showEntries) {
+            return this.props.request.entries.edges.map((edge, i) => (<EntryContainer key={i} entry={edge.node} />));
         }
+    }
+    render() {
+        return (
+            <Alert bsStyle="info">
+                    <h3>You said...</h3>
+                    <Image
+                        src={this.props.request.avatar}
+                        className='profile-img'
+                        circle
+                        />
+                        <p>&ldquo;<strong>{this.props.request.name}</strong> from <strong>{this.props.request.org}</strong> would like to be able to see your entries about <strong>{this.props.request.topics.map((t) => t.type || t).join(' and ')}</strong> because they are <strong>{this.props.request.reason}</strong>&rdquo;</p>
+                    <div className="full-width centered">
+                        {this.renderHideEntries()}
+                        {this.renderViewEntries()}
+                    </div>
+                    {this.renderEntries()}
+            </Alert>
+        );
     }
 }
 
-Request.PropTypes = {
-    fromDate: React.PropTypes.string.isRequired,
-    toDate: React.PropTypes.string.isRequired,
-    reason: React.PropTypes.string.isRequired,
-    topics: React.PropTypes.array.isRequired,
-    name: React.PropTypes.string.isRequired,
-    avatar: React.PropTypes.string.isRequired,
-    org: React.PropTypes.string.isRequired,
-    allowMutation: React.PropTypes.bool
-}
-
-Request.defaultProps = {
-    allowMutation: true
-}
-
-export default Request;
-
 export const RequestContainer = Relay.createContainer(Request, {
-    fragments: {}
+    fragments: {
+        request: () => Relay.QL`
+        fragment on Request {
+            from
+            to
+            topics {
+                type
+                name
+            }
+            reason
+            name
+            avatar
+            org
+            entries(first: 100) {
+                edges {
+                    node {
+                        ${EntryContainer.getFragment('entry')}
+                    }
+                }
+            }
+        }`,
+    }
 });

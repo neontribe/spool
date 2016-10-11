@@ -18,21 +18,24 @@ module.exports = {
           auth_hash: {
               type: Sequelize.STRING,
           },
-          role_type_id: {
+          role_id: {
             type: Sequelize.INTEGER,
             references: {
-                model: 'role_type',
-                key: 'role_type_id'
+                model: 'role',
+                key: 'role_id'
             }
           },
-          region_type_id: {
+          region_id: {
             type: Sequelize.INTEGER,
             references: {
-                model: 'region_type',
-                key: 'region_type_id'
+                model: 'region',
+                key: 'region_id'
             }
           },
-          timestamp: { 
+          created_at: { 
+              type: Sequelize.DATE
+          },
+          updated_at: { 
               type: Sequelize.DATE
           }
       });

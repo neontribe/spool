@@ -9,7 +9,7 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
-     return queryInterface.createTable('x_entries_user_requests', {
+     return queryInterface.createTable('entry_user_request', {
          entry_id: {
              type: Sequelize.INTEGER,
              references: {
@@ -28,6 +28,7 @@ module.exports = {
          },
          access: {
              type: Sequelize.BOOLEAN,
+             allowNull: false,
              defaultValue: false
          }
     });
@@ -41,6 +42,6 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
       */
-     return queryInterface.dropTable('x_entries_user_requests');
+     return queryInterface.dropTable('entry_user_request');
   }
 };

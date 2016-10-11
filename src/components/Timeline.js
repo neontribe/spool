@@ -4,23 +4,24 @@ import { Link } from 'react-router';
 import { ListGroup, Glyphicon } from 'react-bootstrap';
 import { EntryContainer, Entry } from './Entry';
 import Intro from './Intro';
-import Request, { RequestContainer } from './Request';
+import UserRequest, { UserRequestContainer } from './UserRequest';
 import _ from 'lodash';
+import withRoles from '../auth/withRoles.js';
 
 export class Timeline extends Component {
     static propTypes = {
-        viewer: React.PropTypes.object.isRequired,
+        creator: React.PropTypes.object.isRequired,
     }
 
     constructor(props) {
         super(props);
         this.state = {
-            hasEntries: props.viewer.role.entries.edges.length
+            hasEntries: props.creator.entries.edges.length
         };
     }
 
     renderEntries() {
-        return this.props.viewer.role.entries.edges.map((entry) => {
+        return this.props.creator.entries.edges.map((entry) => {
             if (this.props.relay) {
                 return (<EntryContainer key={entry.node.id} entry={entry.node} />);
             } else {
@@ -31,15 +32,15 @@ export class Timeline extends Component {
     }
 
     renderRequests() {
-        if (this.props.viewer.role.requests.edges.length) {
-            var request = _.first(this.props.viewer.role.requests.edges).node.request
+        if (this.props.creator.requests.edges.length) {
+            var request = _.first(this.props.creator.requests.edges).node
             if (this.props.relay) {
                 return (
-                    <RequestContainer {...request} />
+                    <UserRequestContainer userRequest={request} creator={this.props.creator} />
                 );
             } else {
                 return (
-                    <Request {...request} />
+                    <UserRequest userRequest={request} creator={this.props.creator}/>
                 );
             }
         }
@@ -73,50 +74,39 @@ export class Timeline extends Component {
     }
 }
 
-export const TimelineContainer = Relay.createContainer(Timeline, {
+export const TimelineContainer = Relay.createContainer(withRoles(Timeline, {
+    roles: ['creator'],
+    fallback: '/settings/configure',
+}), {
     initialVariables: {
         first: 100,
     },
     fragments: {
-        viewer: () => Relay.QL`
-        fragment on Viewer {
-            role {
-                ... on Creator {
-                    happyCount
-                    sadCount
-                    entries(first: $first) {
-                        edges {
-                            node {
-                                id,
-                                ${EntryContainer.getFragment('entry')}
-                            }
-                        }
-                    }
-                    requests(first: $first) {
-                        edges {
-                            node {
-                                id,
-                                _id,
-                                request {
-                                    id
-                                    from
-                                    to
-                                    region
-                                    org
-                                    reason
-                                    name
-                                    avatar
-                                    topics {
-                                        type
-                                        name
-                                    }
-                                }
-                                seen
-                            }
-                        }
+        user: () => Relay.QL`
+        fragment on User {
+            role
+        }`,
+        creator: () => Relay.QL`
+        fragment on Creator {
+            happyCount
+            sadCount
+            entries(first: $first) {
+                edges {
+                    node {
+                        id,
+                        ${EntryContainer.getFragment('entry')}
                     }
                 }
             }
+            requests(first: $first) {
+                edges {
+                    node {
+                        id,
+                        ${UserRequestContainer.getFragment('userRequest')}
+                    }
+                }
+            }
+            ${UserRequestContainer.getFragment('creator')}
         }`,
     }
 });

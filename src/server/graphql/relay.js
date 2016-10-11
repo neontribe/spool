@@ -1,205 +1,414 @@
 const ql = require('graphql');
 const relayql = require('graphql-relay');
 const types = require('./types.js');
-const db = require('../database/database.js');
-const models = require('../database/models.js');
+const {sequelize, models, helpers} = require('../database');
 const moment = require('moment');
 const _ = require('lodash');
 const spool = require('../spool.js');
+const winston = require('winston');
 
 var {nodeInterface, nodeField} = relayql.nodeDefinitions(
     /* retrieve given an id and type */
-    (globalId) => {
+    (globalId, context) => {
         // keeping unusde 'type' here since it is important later and easy to forget
         // eslint-disable-next-line no-unused-vars
         var {type, id} = relayql.fromGlobalId(globalId);
-        if (type === 'Entry') {
-            return models.Entry.findById(db, id).then((entries) => entries.shift());
-        } else if (type === 'Viewer') {
-            return models.User.findById(db, id).then((users) => users.shift());
-        } else if (type === 'UserRequest') {
-            return models.UserRequest.findById(db, id).then((userRequests) => userRequests.shift());
-        } else if (type === 'Request') {
-            return models.Request.findById(db, id).then((requests) => requests.shift());
+        if (type === 'Creator') {
+            return models.UserAccount.findOne({
+                where: {
+                    userId: context.userId,
+                },
+                include: helpers.includes.UserAccount.basicCreator,
+            }).then((user) => user ? { creator: true } : null).catch((e) => winston.warn(e));
         }
+        if (type === 'Consumer') {
+            return models.UserAccount.findOne({
+                where: {
+                    userId: context.userId,
+                },
+                include: helpers.includes.UserAccount.basicConsumer,
+            }).then((user) => user ? { consumer: true } : null).catch((e) => winston.warn(e));
+        }
+        if (type === 'User') {
+            return models.UserAccount.findOne({
+                where: {
+                    userId: context.userId,
+                },
+                include: helpers.includes.UserAccount.leftRoleAndRegion,
+            }).catch((e) => winston.warn(e));
+        }
+        if (type === 'Entry') {
+            if(!context.Role) {
+                winston.info(`Failed to resolve ${type} node due to missing role`);
+                return null;
+            }
+
+            if(context.Role.type === 'creator') {
+                // if we are a creator, get the entry directly
+                return models.Entry.findOne({
+                    where: {
+                        entryId: id,
+                        ownerId: context.userId,
+                    },
+                    include: helpers.includes.Entry.basic
+                }).catch((e) => winston.warn(e));
+            }
+
+            if(context.Role.type === 'consumer') {
+                // only return an Entry node if it part of a user request
+                // whos parent request is owned by the consumer
+                return models.Entry.findOne({
+                    where: {
+                        entryId: id,
+                    },
+                    include: [
+                        {
+                            model: models.EntryUserRequest,
+                            as: 'EntryUserRequest',
+                            include: [
+                                {
+                                    model: models.UserRequest,
+                                    as: 'UserRequest',
+                                    include: [
+                                        {
+                                            model: models.Request,
+                                            as: 'Request',
+                                            where: {
+                                                userId: context.userId
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        ...helpers.includes.Entry.basic
+                    ],
+                }).catch((e) => winston.warn(e));
+            }
+        }
+        if (type === 'UserRequest') {
+            if(!context.Role) {
+                winston.info(`Failed to resolve ${type} node due to missing role`);
+                return null;
+            }
+            // only creators can access user request for themselves
+            if(context.Role.type === 'creator') {
+                return models.UserRequest.findOne({
+                    where: {
+                        userRequestId: id,
+                        userId: context.userId,
+                    },
+                }).catch((e) => winston.warn(e));
+            }
+        }
+        if (type === 'Request') {
+            if(!context.Role) {
+                winston.info(`Failed to resolve ${type} node due to missing role`);
+                return null;
+            }
+            // only consumers can access requests for themselves
+            if(context.Role.type === 'consumer') {
+                return models.Request.findOne({
+                    where: {
+                        requestId: id,
+                        userId: context.userId,
+                    },
+                    include: helpers.includes.Request.basic
+                }).catch((e) => winston.warn(e));
+            }
+        }
+        winston.info(`Failed to resolve ${type} node for ${id}`);
+        return null;
     },
     /* resolve given an object */
     (obj) => {
-        if (obj instanceof models.Entry) {
+        if (obj instanceof models.Entry.Instance) {
             // eslint-disable-next-line no-use-before-define
-            return EntryType
-        } else if (obj instanceof models.UserRequest) {
+            return EntryType;
+        }
+        if (obj instanceof models.UserRequest.Instance) {
             // eslint-disable-next-line no-use-before-define
-            return UserRequestType
-        } else if (obj instanceof models.Request) {
+            return UserRequestType;
+        }
+        if (obj instanceof models.Request.Instance) {
             // eslint-disable-next-line no-use-before-define
-            return RequestType
-        } else {
+            return RequestType;
+        }
+        if (obj instanceof models.UserAccount.Instance){
             // eslint-disable-next-line no-use-before-define
-            return ViewerType
+            return UserType;
+        }
+        if (obj.consumer) {
+            // eslint-disable-next-line no-use-before-define
+            return ConsumerType;
+        }
+        if (obj.creator) {
+            // eslint-disable-next-line no-use-before-define
+            return CreatorType;
         }
     });
 
-const EntryType = new ql.GraphQLObjectType({
-    name: 'Entry',
+const UserType = new ql.GraphQLObjectType({
+    name: 'User',
     fields: {
-        id: relayql.globalIdField(),
-        _id: { type: ql.GraphQLInt },
-        media: {
-            type: types.MediaType,
-            resolve: (entry) =>  entry.media
-        },
-        author: {
-            type: types.UserType,
-            resolve: (entry) => entry.author
-        },
-        owner: {
-            type: types.UserType,
-            resolve: (entry) => entry.owner
-        },
-        sentiment: {
-            type: types.SentimentType,
-            resolve: (entry) => entry.sentiment
-        },
-        topic: {
-            type: new ql.GraphQLList(types.TopicType),
-            resolve: (entry) => models.Topic.findByEntryId(db, entry.id)
-        },
-        timestamp: {
+        id: relayql.globalIdField('User', (root) => root.userId),
+        role: {
             type: ql.GraphQLString,
-            resolve: (entry) => entry.timestamp.format()
-        }
-    },
-    interfaces: [nodeInterface]
-});
-
-var entryConnectionDefinition =
-    relayql.connectionDefinitions({nodeType: EntryType});
-
-const getSentimentCount = function (sentimentType, userId) {
-    return models.Entry.findByOwnerId(db, userId).then(function(result) {
-        return result.reduce(function(reduction, entry) {
-            if (entry.sentiment.type === sentimentType) {
-                reduction++;
-            }
-            return reduction;
-        }, 0);
-    });
-}
-
-const RequestType = new ql.GraphQLObjectType({
-    name: 'Request',
-    fields: {
-        id: relayql.globalIdField(),
-        _id: {
-            type: ql.GraphQLInt,
-            resolve: (request) => request._id
-        },
-        from: {
-            type: ql.GraphQLString,
-            resolve: (request) => request.from
-        },
-        to: {
-            type: ql.GraphQLString,
-            resolve: (request) => request.to
+            resolve: (root) => {
+                return root.Role && root.Role.type;
+            },
         },
         region: {
             type: ql.GraphQLString,
-            resolve: (request) => request.region
-        },
-        user: {
-            type: types.UserType,
-            resolve: (request) => request.user
-        },
-        topics: {
-            type: new ql.GraphQLList(types.TopicType),
-            resolve: (request) => models.Topic.findByRequestId(db, request._id)
-        },
-        reason: {
-            type: ql.GraphQLString,
-            resolve: (request) => request.reason
-        },
-        name: {
-            type: ql.GraphQLString,
-            resolve: (request) => request.name
-        },
-        org: {
-            type: ql.GraphQLString,
-            resolve: (request) => request.org
-        },
-        avatar: {
-            type: ql.GraphQLString,
-            resolve: (request) => request.avatar
+            resolve: (root) => {
+                return root.Region && root.Region.type;
+            },
         }
-        //userRequests ? :-)
     },
     interfaces: [nodeInterface]
 });
+
+const RequestType = new ql.GraphQLObjectType({
+    name: 'Request',
+    // function since we need circular structures here (utilizing var hoisting)
+    fields: () => ({
+        id: relayql.globalIdField('Request', (root) => root.requestId),
+        from: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return moment(root.from).format();
+            },
+        },
+        to: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return moment(root.to).format();
+            },
+        },
+        region: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return root.Region && root.Region.type;
+            },
+        },
+        topics: {
+            type: new ql.GraphQLList(types.TopicType),
+            resolve: (root) => {
+                return root.RequestTopicTopics;
+            },
+        },
+        reason: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return root.reason;
+            },
+        },
+        name: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return root.name;
+            },
+        },
+        org: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return root.org;
+            },
+        },
+        avatar: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return root.avatar;
+            },
+        },
+        created: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return moment(root.createdAt).format();
+            },
+        },
+        updated: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return moment(root.updatedAt).format();
+            },
+        },
+        entries: {
+            // eslint-disable-next-line no-use-before-define
+            type: entryConnectionDefinition.connectionType,
+            args: relayql.connectionArgs,
+            resolve: (root, args, context) => {
+                // if they are not a consumer, they can't see entries attached to this
+                if(!context.Role || context.Role.type !== 'consumer') {
+                    winston.info(`Failed to resolve entries field on Request due to role mismatch`);
+                    return relayql.connectionFromArray([], args);
+                }
+                var entries = models.EntryUserRequest.findAll({
+                    where: {
+                        access: true,
+                    },
+                    include: [
+                        {
+                            model: models.UserRequest,
+                            as: 'UserRequest',
+                            where: {
+                                requestId: root.requestId,
+                            },
+                        },
+                        {
+                            model: models.Entry,
+                            as: 'Entry',
+                            include: helpers.includes.Entry.basic,
+                        },
+                    ],
+                })
+                .then((results) => results.map((result) => result.Entry))
+                .catch((e) => winston.warn(e));
+                return relayql.connectionFromPromisedArray(entries, args);
+            },
+        }
+    }),
+    interfaces: [nodeInterface]
+});
+var requestConnectionDefinition =
+    relayql.connectionDefinitions({nodeType: RequestType});
 
 const UserRequestType = new ql.GraphQLObjectType({
     name: 'UserRequest',
     fields: {
-        id: relayql.globalIdField(),
-        _id: {
-            type: ql.GraphQLInt,
-            resolve: (userRequest) => userRequest._id
-        },
+        id: relayql.globalIdField('UserRequest', (root) => root.userRequestId),
         request: {
             type: RequestType,
-            resolve: (userRequest) => userRequest.request
+            resolve: (root) => {
+                return root.Request;
+            },
         },
         seen: {
             type: ql.GraphQLBoolean,
-            resolve: (userRequest) => userRequest.seen
+            resolve: (root) => {
+                return root.seen;
+            },
+        },
+        created: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return moment(root.createdAt).format();
+            },
+        },
+        updated: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return moment(root.updatedAt).format();
+            },
         }
     },
     interfaces: [nodeInterface]
 });
-
 var userRequestConnectionDefinition =
     relayql.connectionDefinitions({nodeType: UserRequestType});
 
-const CreatorRoleType = new ql.GraphQLObjectType({
-    name: 'Creator',
+const EntryRequest = new ql.GraphQLObjectType({
+    name: 'EntryRequest',
     fields: {
-        entries: {
-            type: entryConnectionDefinition.connectionType,
-            args: relayql.connectionArgs,
-            resolve: (creator, args, context) => relayql.connectionFromPromisedArray(models.Entry.findByOwnerId(db, creator.id), args)
+        access: {
+            type: ql.GraphQLBoolean,
+            resolve: (root) => {
+                return root.access;
+            },
+        },
+        userRequest: {
+            type: UserRequestType,
+            resolve: (root) => {
+                return root.UserRequest
+            }
+        }
+    },
+});
+
+const EntryType = new ql.GraphQLObjectType({
+    name: 'Entry',
+    fields: {
+        id: relayql.globalIdField('Entry', (root) => root.entryId),
+        media: {
+            type: types.MediaType,
+            resolve: (root) => {
+                return root.Medium;
+            },
+        },
+        sentiment: {
+            type: types.SentimentType,
+            resolve: (root) => {
+                return root.Sentiment;
+            },
+        },
+        topics: {
+            type: new ql.GraphQLList(types.TopicType),
+            resolve: (root) => {
+                return root.EntryTopicTopics;
+            },
+        },
+        created: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return moment(root.createdAt).format();
+            },
+        },
+        updated: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return moment(root.updatedAt).format();
+            },
         },
         requests: {
-            type: userRequestConnectionDefinition.connectionType,
-            args: relayql.connectionArgs,
-            resolve: (creator, args, context) => relayql.connectionFromPromisedArray(models.UserRequest.findByUserNotSeen(db, creator.id), args)
-        },
-        happyCount: {
-            type: ql.GraphQLInt,
-            resolve: (creator, args, context) => getSentimentCount("happy", creator.id)
-        },
-        sadCount: {
-            type: ql.GraphQLInt,
-            resolve: (creator, args, context) => getSentimentCount("sad", creator.id)
+            type: new ql.GraphQLList(EntryRequest),
+            resolve: (root, args, context) => {
+                //if they are not a creator, they can't see requests attached to this
+                if(!context.Role || context.Role.type !== 'creator') {
+                    winston.info(`Failed to resolve requests field on Entry due to role mismatch`);
+                    return [];
+                }
+                return models.EntryUserRequest.findAll({
+                    where: {
+                        entryId: root.entryId,
+                    },
+                    include: [
+                        {
+                            model: models.UserRequest,
+                            as: 'UserRequest',
+                            include: helpers.includes.UserRequest.basic
+                        }
+                    ]
+                }).catch((e) => winston.warn(e));
+            }
         }
-    }
+    },
+    interfaces: [nodeInterface]
 });
+var entryConnectionDefinition =
+    relayql.connectionDefinitions({nodeType: EntryType});
 
 const CreatorActivityCountType = new ql.GraphQLObjectType({
     name: 'CreatorActivityCount',
     fields: {
         active: {
             type: ql.GraphQLInt,
-            resolve: (counts) => counts.active
+            resolve: (root) => {
+                return root.active;
+            },
         },
         stale: {
             type: ql.GraphQLInt,
-            resolve: (counts) => counts.stale
+            resolve: (root) => {
+                return root.stale;
+            },
         }
     }
 });
 
-const ConsumerRoleType = new ql.GraphQLObjectType({
+const ConsumerType = new ql.GraphQLObjectType({
     name: 'Consumer',
     fields: {
+        id: relayql.globalIdField('Consumer', (root, args, context) => context.userId),
         creatorActivityCount: {
             type: CreatorActivityCountType,
             args: {
@@ -207,11 +416,26 @@ const ConsumerRoleType = new ql.GraphQLObjectType({
                     type: types.DateRangeInputType,
                 }
             },
-            resolve: function(consumer, {range}) {
-                var fromDate = moment(range.from);
-                var toDate = moment(range.to);
-                return models.Count.findCreatorActivity(db, fromDate, toDate)
-            }
+            resolve: function(root, {range}, context) {
+                var from = moment(range.from);
+                var to = moment(range.to);
+                var regionId = context.regionId
+                return sequelize.query(helpers.queries.UserAccount.entryActivity(from.format(), to.format(), regionId))
+                .then(([results, metadata]) => results)
+                .then(function(results) {
+                    return results.reduce(function(reduction, row) {
+                        if(row.count >= 1) {
+                            reduction.active++;
+                        } else {
+                            reduction.stale++;
+                        }
+                        return reduction;
+                    }, {
+                        active: 0,
+                        stale: 0
+                    });
+                }).catch((e) => winston.warn(e));
+            },
         },
         topicCounts: {
             type: new ql.GraphQLList(types.TopicCountType),
@@ -220,83 +444,146 @@ const ConsumerRoleType = new ql.GraphQLObjectType({
                     type: types.DateRangeInputType,
                 }
             },
-            resolve: function(consumer, {range}) {
-                var fromDate = moment(range.from);
-                var toDate = moment(range.to);
-                return models.Count.findTopicCounts(db, fromDate, toDate)
-            }
-        }
-    }
-});
+            resolve: function(root, {range}, context) {
+                var from = moment(range.from);
+                var to = moment(range.to);
+                var regionId = context.regionId;
 
-const MissingRoleType = new ql.GraphQLObjectType({
-    name: 'Missing',
-    fields: {
-        information: {
-            type: new ql.GraphQLList(ql.GraphQLString),
-            resolve: () => ['location', 'role']
-        }
-    }
-});
-
-const RoleType = new ql.GraphQLUnionType({
-    name: 'Role',
-    types: [ CreatorRoleType, ConsumerRoleType, MissingRoleType ],
-    resolveType(user) {
-        if (!user.role) {
-            return MissingRoleType;
-        }
-        if (user.role === 'creator') {
-            return CreatorRoleType;
-        }
-        if (user.role === 'consumer') {
-            return ConsumerRoleType;
-        }
-    }
-});
-
-const ViewerType = new ql.GraphQLObjectType({
-    name: 'Viewer',
-    fields: {
-        id: relayql.globalIdField(),
-        role: {
-            type: RoleType,
-            resolve: (viewer, args, context) => viewer,
-        },
-        region: {
-            type: ql.GraphQLString,
-            resolve: (viewer, args, context) => viewer.region,
+                return sequelize.query(helpers.queries.Topic.countsByRange(from.format(), to.format(), regionId))
+                .then(([results, metadata]) => results)
+                .catch((e) => winston.warn(e));
+            },
         },
         topics: {
             type: new ql.GraphQLList(types.TopicType),
-            resolve: () => models.Topic.findAll(db)
-        }
+            resolve: () => {
+                return models.Topic.findAll().catch((e) => winston.warn(e));
+            },
+        },
+        requests: {
+            type: requestConnectionDefinition.connectionType,
+            args: relayql.connectionArgs,
+            resolve: (root, args, context) => {
+                return relayql.connectionFromPromisedArray(models.Request.findAll({
+                    where: {
+                        userId: context.userId
+                    },
+                    include: helpers.includes.Request.basic
+                }).catch((e) => winston.warn(e)), args);
+            },
+        },
     },
     interfaces: [nodeInterface]
 });
 
-const viewerField = {
-    type: ViewerType,
-    resolve: (root, args, context) =>  models.User.findById(db, context.id).then((users) => users.shift())
+const consumerField = {
+    type: ConsumerType,
+    resolve: (root, args, context) => {
+        return models.UserAccount.findOne({
+            where: {
+                userId: context.userId,
+            },
+            include: helpers.includes.UserAccount.basicConsumer,
+        }).then((user) => user ? { consumer: true } : null).catch((e) => winston.warn(e));
+    },
+}
+
+const CreatorType = new ql.GraphQLObjectType({
+    name: 'Creator',
+    fields: {
+        id: relayql.globalIdField('Creator', (root, args, context) => context.userId),
+        topics: {
+            type: new ql.GraphQLList(types.TopicType),
+            resolve: () => {
+                return models.Topic.findAll().catch((e) => winston.warn(e));
+            },
+        },
+        entries: {
+            type: entryConnectionDefinition.connectionType,
+            args: relayql.connectionArgs,
+            resolve: (root, args, context) => {
+                return relayql.connectionFromPromisedArray(models.Entry.findAll({
+                    where: {
+                        ownerId: context.userId,
+                    },
+                    include: helpers.includes.Entry.basic
+                }).catch((e) => winston.warn(e)), args);
+            },
+        },
+        requests: {
+            type: userRequestConnectionDefinition.connectionType,
+            args: relayql.connectionArgs,
+            resolve: (root, args, context) => {
+                return relayql.connectionFromPromisedArray(models.UserRequest.findAll({
+                    where: {
+                        userId: context.userId,
+                        seen: false
+                    },
+                    include: helpers.includes.UserRequest.basic
+                }).catch((e) => winston.warn(e)), args);
+            },
+        },
+        happyCount: {
+            type: ql.GraphQLInt,
+            resolve: (root, args, context) => {
+                return spool.getCreatorSentimentCount("happy", context.userId);
+            },
+        },
+        sadCount: {
+            type: ql.GraphQLInt,
+            resolve: (root, args, context) => {
+                return spool.getCreatorSentimentCount("sad", context.userId);
+            },
+        },
+    },
+    interfaces: [nodeInterface]
+});
+
+const creatorField = {
+    type: CreatorType,
+    resolve: (root, args, context) => {
+        return models.UserAccount.findOne({
+            where: {
+                userId: context.userId,
+            },
+            include: helpers.includes.UserAccount.basicCreator,
+        }).then((user) => user ? { creator: true } : null).catch((e) => winston.warn(e));
+    },
+}
+
+const userField = {
+    type: UserType,
+    resolve: (root, args, context) => {
+        return models.UserAccount.findOne({
+            where: {
+                userId: context.userId,
+            },
+            include: helpers.includes.UserAccount.leftRoleAndRegion,
+        }).catch((e) => winston.warn(e));
+    },
 }
 
 const MetaType = new ql.GraphQLObjectType({
     name: 'Meta',
     fields: {
         regions: {
-            type: new ql.GraphQLList(ql.GraphQLString),
-            resolve: () => models.Region.findAll(db)
+            type: new ql.GraphQLList(types.RegionDefinitionType),
+            resolve: () => {
+                return models.Region.findAll().catch((e) => winston.warn(e));
+            },
         },
         roles: {
             type: new ql.GraphQLList(types.RoleDefinitionType),
-            resolve: () => models.Role.findAll(db)
-        }
-    }
+            resolve: () => {
+                return models.Role.findAll().catch((e) => winston.warn(e));
+            },
+        },
+    },
 });
 
 const metaField = {
     type: MetaType,
-    resolve: () => true
+    resolve: () => true,
 }
 
 const createEntry = relayql.mutationWithClientMutationId({
@@ -307,24 +594,127 @@ const createEntry = relayql.mutationWithClientMutationId({
         }
     },
     outputFields: {
-        viewer: viewerField,
+        creator: creatorField,
         entryEdge: {
             type: entryConnectionDefinition.edgeType,
-            resolve: (entry, args, context) => {
-                return models.Entry.findByOwnerId(db, context.id).then(function(rows) {
-                    var indexOfEntry = _.findIndex(rows, { '_id': entry._id });
+            resolve: ({entry}, args, context) => {
+                return models.Entry.findAll({
+                    where: {
+                        ownerId: context.userId,
+                    }
+                }).then(function(entries) {
+                    var indexOfEntry = _.findIndex(entries, { entryId: entry.entryId });
                     return {
                         cursor: relayql.offsetToCursor(indexOfEntry),
                         node: entry,
-                    }
-                });
-           }
-        }
+                    };
+                }).catch((e) => winston.warn(e));
+           },
+        },
     },
     mutateAndGetPayload: function mutateEntryPayload({entry}, context) {
-        entry.author = context.id;
-        entry.owner = context.id;
-        return models.Entry.create(db, entry);
+        if (!context.Role || context.Role.type !== "creator") {
+            winston.info(`Failed createEntry mutation due to role mismatch`);
+            return {};
+        }
+        var media = entry.media;
+        var topics = entry.topics;
+        var sentiment = entry.sentiment;
+        return spool.makeEntry(context.userId, media, sentiment, topics)
+    }
+});
+
+const updateUserRequest = relayql.mutationWithClientMutationId({
+    name: 'UpdateUserRequest',
+    inputFields: {
+        userRequest: {
+            type: types.UserRequestInputType
+        },
+    },
+    outputFields: {
+        creator: creatorField,
+        userRequestId: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return root.userRequestId;
+            }
+        },
+    },
+    mutateAndGetPayload: function mutateEntryPayload({userRequest}, context) {
+        if (!context.Role || context.Role.type !== "creator") {
+            winston.info(`Failed updateUserRequest mutation due to role mismatch`);
+            return {};
+        }
+        return new Promise(function(resolve, reject) {
+            var id = relayql.fromGlobalId(userRequest.id).id;
+            models.UserRequest.findOne({
+                where: {
+                    userRequestId: id,
+                    userId: context.userId,
+                }
+            }).then(function (request) {
+                if(!request) {
+                    winston.info(`Failed updateUserRequest mutation due to missing request`);
+                    resolve({});
+                    return null;
+                } else {
+                    // The request will always be hidden, for now
+                    resolve(spool.updateUserRequest(id, userRequest.hide, userRequest.access)
+                            .then(() => {
+                                return {userRequestId: userRequest.id};
+                            }));
+                    return null;
+                }
+            }).catch((e) => winston.warn(e));
+        }).catch((e) => winston.warn(e));
+    }
+});
+
+const updateEntryRequest = relayql.mutationWithClientMutationId({
+    name: 'UpdateEntryRequest',
+    inputFields: {
+        entryId: {
+            type: new ql.GraphQLNonNull(ql.GraphQLString),
+        },
+        userRequestId: {
+            type: new ql.GraphQLNonNull(ql.GraphQLString),
+        },
+        access: {
+            type: ql.GraphQLBoolean
+        },
+    },
+    outputFields: {
+      creator: creatorField,
+    },
+    mutateAndGetPayload: function mutateEntryPayload({entryId, userRequestId, access}, context) {
+        if (!context.Role || context.Role.type !== "creator") {
+            winston.info(`Failed updateEntryRequest mutation due to role mismatch`);
+            return {};
+        }
+        return new Promise(function(resolve, reject) {
+            userRequestId = relayql.fromGlobalId(userRequestId).id;
+            entryId = relayql.fromGlobalId(entryId).id;
+            models.Entry.findOne({
+                where: {
+                    entryId: entryId,
+                    ownerId: context.userId
+                }
+            }).then(function(entry) {
+                if(!entry) {
+                    winston.info(`Failed updateEntryRequest mutation due to missing entry`);
+                    resolve({});
+                } else {
+                    models.EntryUserRequest.update({
+                        access,
+                    }, {
+                        where: {
+                            entryId: entryId,
+                            userRequestId: userRequestId,
+                        }
+                    }).then(() => resolve({}));
+                }
+            }).catch((e) => winston.warn(e));
+        }).catch((e) => winston.warn(e));
     }
 });
 
@@ -336,14 +726,12 @@ const updateUser = relayql.mutationWithClientMutationId({
         }
     },
     outputFields: {
-        viewer: viewerField
+        user: userField
     },
     mutateAndGetPayload: function mutateUserPayload({user}, context) {
-        return models.User.updateById(db, context.id, user.roleSecret, user.region).then(function() {
-            return {};
-        });
+        return spool.updateUser(context.userId, user.region, user.roleSecret);
     }
-});
+}); 
 
 const createRequest = relayql.mutationWithClientMutationId({
     name: 'CreateRequest',
@@ -353,19 +741,44 @@ const createRequest = relayql.mutationWithClientMutationId({
         }
     },
     outputFields: {
-        viewer: viewerField
+        consumer: consumerField,
+        requestEdge: {
+            type: requestConnectionDefinition.edgeType,
+            resolve: ({request}, args, context) => {
+                return models.Request.findAll({
+                    where: {
+                        userId: context.userId
+                    },
+                    include: helpers.includes.Request.basic
+                }).then(function(requests) {
+                    var indexOfRequest = _.findIndex(requests, { requestId: request.requestId });
+                    return {
+                        cursor: relayql.offsetToCursor(indexOfRequest),
+                        node: request
+                    }
+                }).catch((e) => winston.warn(e));
+           },
+        },
     },
     mutateAndGetPayload: function mutateRequestPayload({request}, context) {
-        if (context.role !== "consumer") {
+        if (!context.Role || context.Role.type !== "consumer") {
+            winston.info(`Failed createRequest mutation due to role mismatch`);
             return {};
         }
-        request.userId = context.id;
-        request.range.from = moment(request.range.from);
-        request.range.to = moment(request.range.to);
-        request.region = context.region;
+        var requestData = {
+            userId: context.userId,
+            regionId: context.regionId,
+            from: moment(request.range.from).format(),
+            to: moment(request.range.to).format(),
+            avatar: request.avatar,
+            name: request.name,
+            org: request.org,
+            reason: request.reason,
+        };
+        var topics = request.topics;
         // make new request
-        return spool.makeRequest(request).then(function() {
-            return {};
+        return spool.makeRequest(requestData, topics).then(function(request) {
+            return {request};
         });
     }
 });
@@ -373,12 +786,16 @@ const createRequest = relayql.mutationWithClientMutationId({
 module.exports = {
     fields: {
         nodeField,
-        viewerField,
+        creatorField,
+        consumerField,
+        userField,
         metaField,
     },
     mutations: {
         createEntry,
         createRequest,
         updateUser,
+        updateUserRequest,
+        updateEntryRequest,
     }
 }

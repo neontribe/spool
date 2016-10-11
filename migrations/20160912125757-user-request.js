@@ -33,8 +33,15 @@ module.exports = {
         },
         seen: {
             type: Sequelize.BOOLEAN,
+            allowNull: false,
             defaultValue: false
-        }
+        },
+        created_at: { 
+            type: Sequelize.DATE
+        },
+        updated_at: { 
+            type: Sequelize.DATE
+        },
     });
   },
 
