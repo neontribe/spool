@@ -32,6 +32,7 @@ var sequelize = new Sequelize(config.database, config.user, config.password, {
     },
     /* Disabling native postgres */
     //    native: true,
+    ssl: config.ssl,
     logging: sequelizeLog,
 });
 models.init(sequelize);
