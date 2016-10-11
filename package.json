@@ -52,7 +52,7 @@
     "pg-generator": "^3.4.2",
     "react-addons-test-utils": "^15.3.0",
     "supertest": "^2.0.0",
-    "webpack-dev-server": "1.16.1"
+    "webpack-dev-server": "1.16.2"
   },
   "dependencies": {
     "auth0-js": "^7.1.0",
