@@ -27,7 +27,7 @@ export class EntryRequest extends Component {
             };
             this.props.relay.commitUpdate(
                 new UpdateEntryRequestMutation(mutationProps),
-                { onSuccess: () => this.props.onDone(this.props.userRequest.userRequestId) }
+                { onSuccess: () => this.props.onDone(this.props.userRequest.id) }
             );
         } else {
             this.props.onDone(this.props.userRequest.id);
