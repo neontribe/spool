@@ -16,7 +16,7 @@ export class Entry extends Component {
     }
 
     formatTimestamp() {
-        return moment(this.props.entry.timestamp).fromNow();
+        return moment(this.props.entry.created).fromNow();
     }
 
     getStyles() {
