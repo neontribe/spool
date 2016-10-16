@@ -115,7 +115,7 @@
     "opn": "4.0.2",
     "path-exists": "3.0.0",
     "pg": "^6.1.0",
-    "postcss-loader": "0.13.0",
+    "postcss-loader": "1.0.0",
     "promise": "7.1.1",
     "react": "^15.2.1",
     "react-bootstrap": "^0.30.2",
