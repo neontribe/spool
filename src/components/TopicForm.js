@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
+
 import AddControls from './AddControls';
 import IconChooser from './IconChooser';
 
 class TopicForm extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
@@ -15,35 +15,35 @@ class TopicForm extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    continue() {
+    continue () {
         this.props.save(this.props.saveKey, this.state.value);
     }
 
-    handleChange(value) {
-        this.setState({ value })
+    handleChange (value) {
+        this.setState({
+            value
+        });
     }
 
-    render() {
+    render () {
         return (
+            <div>
+                <div>
+                    <IconChooser
+                        label="Add some labels..."
+                        choices={this.props.topics}
+                        onChange={this.handleChange}
+                        initialValue={this.props.initialValue}
+                    />
+                </div>
 
-
-                <Grid>
-                    <Row>
-                        <IconChooser
-                            label="Add some labels..."
-                            choices={this.props.topics}
-                            onChange={this.handleChange}
-                            initialValue={this.props.initialValue} />
-                    </Row>
-                    <Row>
-                        <Col>
-                            <AddControls
-                                onNext={this.continue}
-                                disableNext={this.state.value.length === 0}
-                                />
-                        </Col>
-                    </Row>
-                </Grid>
+                <div>
+                    <AddControls
+                        onNext={this.continue}
+                        disableNext={this.state.value.length === 0}
+                    />
+                </div>
+            </div>
         );
     }
 }

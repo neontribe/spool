@@ -4,6 +4,7 @@ import Relay from 'react-relay';
 import { RelayNetworkLayer, urlMiddleware, authMiddleware } from 'react-relay-network-layer';
 import { Router, Route, IndexRedirect, browserHistory, applyRouterMiddleware } from 'react-router';
 import useRelay from 'react-router-relay';
+
 import AuthService from './auth/AuthService';
 import App from './App';
 import { TimelineContainer } from './components/Timeline';
@@ -21,8 +22,6 @@ import TextForm from './components/TextForm';
 import { RequestViewerContainer } from './components/RequestViewer';
 import { EntryRequestViewerContainer } from './components/EntryRequestViewer';
 
-import 'bootstrap/dist/css/bootstrap.css';
-import './override-bootstrap.css';
 import './index.css';
 
 const auth = new AuthService(
@@ -78,34 +77,34 @@ const EntryQueries = {
 setupRelayNetworkLayer();
 
 ReactDOM.render(
-  <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
-    <Route path="/" component={App} auth={auth}>
-        <IndexRedirect to="settings/configure" />
-        <Route path="settings/:mode" component={SignupContainer} roleMap={{
-            "consumer": "/dashboard",
-            "creator": "/home",
-        }} queries={SignupQueries} onEnter={auth.requireAuthOnEnter}/>
+    <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
+        <Route path="/" component={App} auth={auth}>
+            <IndexRedirect to="settings/configure" />
+            <Route path="settings/:mode" component={SignupContainer} roleMap={{
+                "consumer": "/dashboard",
+                "creator": "/home",
+            }} queries={SignupQueries} onEnter={auth.requireAuthOnEnter}/>
 
-        <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
-        <Route path="requests">
-            <Route path="all" component={RequestViewerContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
-            <Route path="add" component={RequestFormContainer} queries={ConsumerQueries} auth={auth} onEnter={auth.requireAuthOnEnter}/>
-        </Route>
-        <Route path="home" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
-        <Route path="entry/:entryId/requests" component={EntryRequestViewerContainer} queries={EntryQueries} onEnter={auth.requireAuthOnEnter}/>
-        <Route path="add" component={AddEntryContainer} queries={CreatorQueries}>
-            <IndexRedirect to="about"/>
-            <Route path="about" component={TopicForm} />
-            <Route path="feeling" component={SentimentForm} />
-            <Route path="message" component={MediaForm}>
-                <Route path="video" component={VideoForm}/>
-                <Route path="photo" component={ImageForm}/>
-                <Route path="typing" component={TextForm}/>
+            <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
+            <Route path="requests">
+                <Route path="all" component={RequestViewerContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
+                <Route path="add" component={RequestFormContainer} queries={ConsumerQueries} auth={auth} onEnter={auth.requireAuthOnEnter}/>
             </Route>
+            <Route path="home" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
+            <Route path="entry/:entryId/requests" component={EntryRequestViewerContainer} queries={EntryQueries} onEnter={auth.requireAuthOnEnter}/>
+            <Route path="add" component={AddEntryContainer} queries={CreatorQueries}>
+                <IndexRedirect to="about"/>
+                <Route path="about" component={TopicForm} />
+                <Route path="feeling" component={SentimentForm} />
+                <Route path="message" component={MediaForm}>
+                    <Route path="video" component={VideoForm}/>
+                    <Route path="photo" component={ImageForm}/>
+                    <Route path="typing" component={TextForm}/>
+                </Route>
+            </Route>
+            <Route path="login" component={SimpleLogin}/>
+            <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter}/>
         </Route>
-        <Route path="login" component={SimpleLogin}/>
-        <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter}/>
-    </Route>
-  </Router>,
-  document.getElementById('root')
+    </Router>,
+    document.getElementById('root')
 );

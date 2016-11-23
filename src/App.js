@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { Grid, Row, Col } from 'react-bootstrap';
+
 import ProfileLink from './components/ProfileLink';
 
 class App extends Component {
 
-  constructor(props, context) {
+  constructor (props, context) {
       super(props, context);
 
       this.state = {
@@ -13,21 +13,25 @@ class App extends Component {
       };
 
       props.route.auth.on('profile_updated', (newProfile) => {
-        this.setState({ profile: newProfile });
+        this.setState({
+          profile: newProfile
+        });
       });
 
       this.logout = this.logout.bind(this);
   }
 
-  logout(e){
+  logout (e) {
     e.preventDefault();
-    // destroys the session data
+
+    // Destroys the session data
     this.props.route.auth.logout();
-    // redirects to login page
+
+    // Redirects to login page
     this.props.router.push('/login');
   }
 
-  render() {
+  render () {
     let children = null;
 
     if (this.props.children) {
@@ -37,26 +41,23 @@ class App extends Component {
     }
 
     return (
-        <Grid>
-            <Row>
-                <Col xs={12}>
-                    <div className='page-header'>
-                      <h1>
-                        <img src='/static/logo.png' alt='Speak out on-line' className='logo'></img>
-                      </h1>
+        <div>
+          <div>
+            <h1>SPOOL</h1>
 
-                      <ProfileLink profile={this.state.profile} disabled={!this.props.route.auth.loggedIn()} />
+            <ProfileLink
+              profile={this.state.profile}
+              disabled={!this.props.route.auth.loggedIn()}
+            />
 
-                      {this.props.route.auth.loggedIn() && <a href='/logout' role='button' className='logout' onClick={this.logout}>Log out</a>}
-                    </div>
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={12}>
-                    { children }
-                </Col>
-            </Row>
-        </Grid>
+            {this.props.route.auth.loggedIn() && (
+              <a href='/logout' role='button' onClick={this.logout}>Log out</a>
+            )}
+          </div>
+          <div>
+            {children}
+          </div>
+        </div>
     );
   }
 }

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import { Image, Modal } from 'react-bootstrap';
-import EntryViewer from './EntryViewer';
 import moment from 'moment';
 
+import EntryViewer from './EntryViewer';
+
 export class Entry extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {};
@@ -15,69 +15,60 @@ export class Entry extends Component {
         this.hideViewer = this.hideViewer.bind(this);
     }
 
-    formatTimestamp() {
+    formatTimestamp () {
         return moment(this.props.entry.created).fromNow();
     }
 
-    getStyles() {
-        var thumb = this.props.entry.media.videoThumbnail || this.props.entry.media.imageThumbnail;
-        return (thumb)
-            ? { backgroundImage: 'url('+ thumb + ')' }
-            : {};
-    }
-
-    showViewer(e) {
+    showViewer (e) {
         e.preventDefault();
+
         if (this.props.withViewer) {
-            this.setState({showEntryViewer: true});
+            this.setState({
+                showEntryViewer: true
+            });
         }
     }
 
-    hideViewer() {
-        this.setState({showEntryViewer: false});
+    hideViewer () {
+        this.setState({
+            showEntryViewer: false
+        });
     }
 
-    render() {
-        var hasMedia = this.props.entry.media.image || this.props.entry.media.video;
-        var className = 'entry entry--' + this.props.entry.sentiment.type;
-
-        if (hasMedia) {
-            className += ' entry--has-media';
-        }
+    render () {
+        // var hasMedia = this.props.entry.media.image || this.props.entry.media.video;
+        // var className = 'entry entry--' + this.props.entry.sentiment.type;
 
         return (
-            <a className="entry" href="/entry" onClick={this.showViewer}>
-                <div className={className} style={this.getStyles()}>
-                    <div className='entry-content'>
-                        <div className='entry-quote-container'>
-                            { this.props.entry.media.text &&
-                                <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
-                            }
-                        </div>
-
-                        <Image
-                            src={'/static/' + this.props.entry.sentiment.type + '.png'}
-                            alt={this.props.entry.sentiment.type}
-                        />
-
-                        <div className='entry--meta'>
-                            <div className="entry--time">{this.formatTimestamp()}</div>
-                            <div className="entry--tags">
-                                {this.props.entry.topics.map((t) => t.name).join(', ')}
-                            </div>
-                        </div>
-
-                        { this.props.withViewer &&
-                            <Modal
-                                show={this.state.showEntryViewer}
-                                bsSize="large"
-                                backdrop={true}
-                                onHide={this.hideViewer}
-                            >
-                                <EntryViewer entry={this.props.entry} />
-                            </Modal>
-                        }
+            <a href="/entry" onClick={this.showViewer}>
+                <div>
+                    <div>
+                        {this.props.entry.media.text && (
+                            <blockquote>{this.props.entry.media.text}</blockquote>
+                        )}
                     </div>
+
+                    <img
+                        src={'/static/' + this.props.entry.sentiment.type + '.png'}
+                        alt={this.props.entry.sentiment.type}
+                    />
+
+                    <div>
+                        <div>{this.formatTimestamp()}</div>
+                        <div>{this.props.entry.topics.map((t) => t.name).join(', ')}</div>
+                    </div>
+
+                    {/*<Modal
+                        show={this.state.showEntryViewer}
+                        bsSize="large"
+                        backdrop={true}
+                        onHide={this.hideViewer}
+                    >*/}
+                    {this.props.withViewer && (
+                        <div>
+                            <EntryViewer entry={this.props.entry} />
+                        </div>
+                    )}
                 </div>
             </a>
         );

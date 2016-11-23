@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { FormGroup, ControlLabel, Grid, Row, Col } from 'react-bootstrap';
+
 import { IconCard } from './IconCard';
 
 class IconChooser extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
@@ -13,9 +13,10 @@ class IconChooser extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(event) {
+    handleChange (event) {
         var valueExists = this.state.value.indexOf(event.target.value);
         var values = this.state.value.slice(0);
+
         if (valueExists === -1) {
             values.push(event.target.value);
         } else {
@@ -35,32 +36,28 @@ class IconChooser extends Component {
         this.props.onChange(values);
     }
 
-    renderCheckboxes() {
+    renderCheckboxes () {
         return this.props.choices.map((t, i) => (
-            <Col xs={6} sm={3} key={'col_' + i}>
-                <IconCard
-                    key={i}
-                    onChange={this.handleChange}
-                    checked={(this.state.value.indexOf(t.type) !== -1)}
-                    icon={t.type}
-                    message={t.name}
-                    value={t.type} />
-            </Col>
+            <IconCard
+                key={i}
+                onChange={this.handleChange}
+                checked={(this.state.value.indexOf(t.type) !== -1)}
+                icon={t.type}
+                message={t.name}
+                value={t.type}
+            />
         ));
     }
 
-    render() {
+    render () {
         return (
-            <Grid>
-                <Row>
-                    <FormGroup controlId="choice">
-                        <Row>
-                            <ControlLabel>{this.props.label}</ControlLabel>
-                        </Row>
-                        {this.renderCheckboxes()}
-                    </FormGroup>
-                </Row>
-            </Grid>
+            <div>
+                {/*<FormGroup controlId='choice'>*/}
+                <div>
+                    <div>{this.props.label}</div>
+                    <div>{this.renderCheckboxes()}</div>
+                </div>
+            </div>
         );
     }
 }

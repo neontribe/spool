@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Alert, Button, Glyphicon, Image } from 'react-bootstrap';
 import Relay from 'react-relay';
-import UpdateUserRequestMutation from './mutations/UpdateUserRequestMutation.js';
 import _ from 'lodash';
+
+import UpdateUserRequestMutation from './mutations/UpdateUserRequestMutation.js';
 
 export default class UserRequest extends Component {
     static PropTypes = {
@@ -19,7 +19,7 @@ export default class UserRequest extends Component {
     }
 
     constructor(props) {
-        super(props);
+        super (props);
 
         this.state = {
             alertVisible: true,
@@ -31,70 +31,76 @@ export default class UserRequest extends Component {
         this.deny = this.deny.bind(this);
     }
 
-    componentWillReceiveProps(newProps) {
+    componentWillReceiveProps (newProps) {
         var newActiveRequestId = newProps.userRequest.id;
-        if(newActiveRequestId !== this.state.activeRequestId) {
+
+        if (newActiveRequestId !== this.state.activeRequestId) {
             this.setState({
                 alertVisible: true,
-                activeRequestId: newActiveRequestId });
+                activeRequestId: newActiveRequestId
+            });
         }
     }
 
-    hide() {
+    hide () {
         this.setState({
             alertVisible: false
         });
     }
 
-    accept() {
+    accept () {
         this.update(true);
         this.hide();
     }
 
-    deny() {
+    deny () {
         this.update(false);
         this.hide();
     }
 
-    update(access) {
+    update (access) {
         var userRequest = this.props.userRequest;
         var creator = this.props.creator;
-        var payload = {creator, userRequest, access};
+        var payload = {
+            creator,
+            userRequest,
+            access
+        };
+
         if (this.props.mutate) {
             this.props.relay.commitUpdate(
                 new UpdateUserRequestMutation(payload)
             );
         }
-        if(_.isFunction(this.props.onUpdate)) {
+
+        if (_.isFunction(this.props.onUpdate)) {
             this.props.onUpdate(payload);
         }
     }
 
-    render() {
+    render () {
         if (this.state.alertVisible) {
+            // <Alert bsStyle="info" onDismiss={!this.props.inert ? this.deny : null} >
             return (
-                <Alert bsStyle="info" onDismiss={!this.props.inert ? this.deny : null} >
-                        <Image
-                            src={this.props.userRequest.request.avatar}
-                            className='profile-img'
-                            circle
-                            />
+                <div>
+                    <img src={this.props.userRequest.request.avatar} alt="avatar" />
 
-                        <p><strong>{this.props.userRequest.request.name}</strong> from <strong>{this.props.userRequest.request.org}</strong> would like to be able to see your entries about <strong>{this.props.userRequest.request.topics.map((t) => t.type || t).join(' and ')}</strong> because they are <strong>{this.props.userRequest.request.reason}</strong></p>
+                    <p>
+                        <strong>{this.props.userRequest.request.name}</strong> from <strong>
+                        {this.props.userRequest.request.org}</strong> would like to be able to see your entries about
+                        <strong>{this.props.userRequest.request.topics.map((t) => t.type || t).join(' and ')}</strong>
+                        because they are <strong>{this.props.userRequest.request.reason}</strong>
+                    </p>
 
-                        <div className="full-width centered">
-                            <Button bsStyle="danger"
-                                disabled={this.props.inert}
-                                onClick={this.deny}><Glyphicon glyph="remove"/> No</Button>
-                            <Button bsStyle="success"
-                                disabled={this.props.inert}
-                                onClick={this.accept}><Glyphicon glyph="ok"/> Yes</Button>
-                        </div>
-                </Alert>
+                    <div>
+                        <button disabled={this.props.inert} onClick={this.deny} >No</button>
+                        <button disabled={this.props.inert} onClick={this.accept} >Yes</button>
+                    </div>
+                </div>
             );
-        } else {
-            return null;
         }
+
+        return null;
     }
 }
 

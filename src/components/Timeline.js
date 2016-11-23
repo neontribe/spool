@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { Link } from 'react-router';
-import { ListGroup, Glyphicon } from 'react-bootstrap';
-import { EntryContainer, Entry } from './Entry';
-import Intro from './Intro';
-import UserRequest, { UserRequestContainer } from './UserRequest';
 import _ from 'lodash';
+
+import { EntryContainer, Entry } from './Entry';
+import UserRequest, { UserRequestContainer } from './UserRequest';
+import Intro from './Intro';
 import withRoles from '../auth/withRoles.js';
 
 export class Timeline extends Component {
@@ -13,61 +13,71 @@ export class Timeline extends Component {
         creator: React.PropTypes.object.isRequired,
     }
 
-    constructor(props) {
+    constructor (props) {
         super(props);
+
         this.state = {
             hasEntries: props.creator.entries.edges.length
         };
     }
 
-    renderEntries() {
+    renderEntries () {
         return this.props.creator.entries.edges.map((entry) => {
             if (this.props.relay) {
-                return (<EntryContainer key={entry.node.id} entry={entry.node} />);
+                return (
+                    <EntryContainer
+                        key={entry.node.id}
+                        entry={entry.node} 
+                    />
+                );
             } else {
-                return (<Entry key={entry.node.id} entry={entry.node} />);
+                return (
+                    <Entry
+                        key={entry.node.id}
+                        entry={entry.node}
+                    />
+                );
             }
-
         });
     }
 
-    renderRequests() {
+    renderRequests () {
         if (this.props.creator.requests.edges.length) {
-            var request = _.first(this.props.creator.requests.edges).node
+            var request = _.first(this.props.creator.requests.edges).node;
+
             if (this.props.relay) {
                 return (
-                    <UserRequestContainer userRequest={request} creator={this.props.creator} />
-                );
-            } else {
-                return (
-                    <UserRequest userRequest={request} creator={this.props.creator}/>
+                    <UserRequestContainer
+                        userRequest={request}
+                        creator={this.props.creator}
+                    />
                 );
             }
+
+            return (
+                <UserRequest
+                    userRequest={request}
+                    creator={this.props.creator}
+                />
+            );
         }
     }
 
-    render() {
+    render () {
         return (
             <div>
-
-                <div className="centered" >
-                    <div style={{width: '60%', margin:'auto'}}>
-                        {this.renderRequests()}
-                    </div>
+                <div>
+                    {this.renderRequests()}
                 </div>
 
-                <div className="centered">
-                    <Link className="btn" to={'/add'}>
-                        <Glyphicon glyph="plus"/> {this.state.hasEntries ? 'Add New Entry' : 'Get Started'}
-                    </Link>
+                <div>
+                    <Link to={'/add'}>{(this.state.hasEntries) ? 'Add New Entry' : 'Get Started'}</Link>
                 </div>
 
-                <ListGroup componentClass="div">
+                <div>
                     {this.renderEntries()}
-                    {!this.state.hasEntries &&
-                        <Intro />
-                    }
-                </ListGroup>
+                    {!this.state.hasEntries && <Intro />}
+                </div>
             </div>
 
         );

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
+
 import UpdateEntryRequestMutation from './mutations/UpdateEntryRequestMutation.js';
-import {UserRequestContainer} from './UserRequest.js';
+import { UserRequestContainer } from './UserRequest.js';
 
 export class EntryRequest extends Component {
     static PropTypes = {
@@ -11,11 +12,14 @@ export class EntryRequest extends Component {
         onDone: React.PropTypes.func.isRequired,
         mutate: React.PropTypes.bool,
     }
-    constructor(props) {
+
+    constructor (props) {
         super(props);
+
         this.done = this.done.bind(this);
     }
-    done(updatePayload) {
+
+    done (updatePayload) {
         // right now we only deal with allowing access
         // due to application flow and spec, no reason to implement the rest
         if (updatePayload.access) {
@@ -25,20 +29,27 @@ export class EntryRequest extends Component {
                 // right now
                 access: updatePayload.access,
             };
+
             this.props.relay.commitUpdate(
                 new UpdateEntryRequestMutation(mutationProps),
-                { onSuccess: () => this.props.onDone(this.props.userRequest.id) }
+                {
+                    onSuccess: () => this.props.onDone(this.props.userRequest.id)
+                }
             );
         } else {
             this.props.onDone(this.props.userRequest.id);
         }
     }
-    render() {
-        return (<UserRequestContainer 
-                    userRequest={this.props.userRequest} 
-                    creator={this.props.creator} 
-                    mutate={false}
-                    onUpdate={this.done}/>);
+
+    render () {
+        return (
+            <UserRequestContainer 
+                userRequest={this.props.userRequest} 
+                creator={this.props.creator} 
+                mutate={false}
+                onUpdate={this.done}
+            />
+        );
     }
 }
 

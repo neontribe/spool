@@ -1,56 +1,66 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import { Button, Glyphicon } from 'react-bootstrap';
-import {EntryRequestContainer} from './EntryRequest';
 import { withRouter } from 'react-router';
+
+import { EntryRequestContainer } from './EntryRequest';
 import withRoles from '../auth/withRoles.js';
 
 class EntryRequestViewer extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
+
         this.handleDone = this.handleDone.bind(this);
         this.handleRequestDone = this.handleRequestDone.bind(this);
+
         this.state = {
             ignore: []
         };
     }
-    renderRequestContainers() {
+
+    renderRequestContainers () {
         var self = this;
+
         return this.props.entry.requests.map(function (request, i) {
-            if(self.state.ignore.indexOf(request.userRequest.id) === -1) {
-                return (<EntryRequestContainer
-                    key={i}
-                    userRequest={request.userRequest}
-                    creator={self.props.creator}
-                    entry={self.props.entry}
-                    onDone={self.handleRequestDone} />);
+            if (self.state.ignore.indexOf(request.userRequest.id) === -1) {
+                return (
+                    <EntryRequestContainer
+                        key={i}
+                        userRequest={request.userRequest}
+                        creator={self.props.creator}
+                        entry={self.props.entry}
+                        onDone={self.handleRequestDone}
+                    />
+                );
             }
+
             return null;
         });
     }
-    render() {
+
+    render () {
         return (
             <div>
                 {this.renderRequestContainers()}
-                <div className="full-width">
-                    <div className="group-right">
-                        <Button
-                            onClick={this.handleDone}>
-                            <Glyphicon glyph="ok" /> DONE
-                       </Button>
-                    </div>
+                <div>
+                    <button
+                        onClick={this.handleDone}
+                    >Done</button>
                 </div>
             </div>);
     }
-    handleDone() {
+
+    handleDone () {
         this.props.router.push('/home');
     }
-    handleRequestDone(userRequestId) {
-        if((this.state.ignore.length + 1) === this.props.entry.requests.length) {
+
+    handleRequestDone (userRequestId) {
+        if ((this.state.ignore.length + 1) === this.props.entry.requests.length) {
             this.handleDone();
         } else {
             let newIgnore = this.state.ignore.slice(0);
+
             newIgnore.push(userRequestId);
+
             this.setState({
                 ignore: newIgnore,
             });
@@ -59,6 +69,7 @@ class EntryRequestViewer extends Component {
 }
 
 EntryRequestViewer = withRouter(EntryRequestViewer);
+
 export default EntryRequestViewer;
 
 export const EntryRequestViewerContainer = Relay.createContainer(withRoles(EntryRequestViewer, {

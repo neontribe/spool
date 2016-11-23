@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Image } from 'react-bootstrap';
-import AddControls from './AddControls';
 import _ from 'lodash';
 
+import AddControls from './AddControls';
+
 class SentimentForm extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
@@ -15,62 +15,39 @@ class SentimentForm extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    continue() {
+    continue () {
         this.props.save(this.props.saveKey, this.state.value);
     }
 
-    handleChange(value) {
+    handleChange (value) {
         this.setState({
             value: value
         })
     }
 
-    render() {
+    render () {
         return (
-            <Grid>
-                <Row>
-                    <Col>
-                        <p><strong>Does it make you happy or sad?</strong></p>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={6}>
-                        <div
-                            className="happy-container"
-                            onClick={_.partial(this.handleChange, 'happy')}
-                        >
-                            <div className={this.state.value === 'happy' ? 'selected-emoji' : ''}>
-                                <Image
-                                    src="/static/happy.png"
-                                    alt="Happy"
-                                />
-                            </div>
-                        </div>
-                    </Col>
-                    <Col xs={6}>
-                        <div
-                            className="sad-container"
-                            onClick={_.partial(this.handleChange, 'sad')}
-                        >
-                            <div className={this.state.value === 'sad' ? 'selected-emoji' : ''}>
-                                <Image
-                                    src="/static/sad.png"
-                                    alt="Sad"
-                                />
-                            </div>
-                        </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <AddControls
-                            onNext={this.continue}
-                            disableNext={!this.state.value}
-                            />
-                    </Col>
-                </Row>
-            </Grid>
+            <div>
+                <div>
+                    <p><strong>Does it make you happy or sad?</strong></p>
+                </div>
 
+                <div>
+                    <a role="button" onClick={_.partial(this.handleChange, 'happy')} >
+                        <img src="/static/happy.png" alt="Happy" />
+                    </a>
+
+                    <a role="button" onClick={_.partial(this.handleChange, 'sad')}>
+                        <img src="/static/sad.png" alt="Sad" />
+                    </a>
+                </div>
+                <div>
+                    <AddControls
+                        onNext={this.continue}
+                        disableNext={!this.state.value}
+                    />
+                </div>
+            </div>
         );
     }
 }

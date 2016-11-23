@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 
 class Intro extends Component {
-
-    render() {
+    render () {
         return (
-            <div className='intro'>
+            <div>
                 <h2>Welcome!</h2>
                 <p>We would really like to know about the things you do.</p>
                 <p>What you like.  What you don't like.</p>

@@ -1,9 +1,9 @@
 import React from 'react';
 import Relay from 'react-relay';
-import { Grid, Row, Col, Form, FormGroup, FormControl, ControlLabel, Radio, Button, Glyphicon, HelpBlock } from 'react-bootstrap';
 import _ from 'lodash';
 import keydown from 'react-keydown';
 import { withRouter } from 'react-router';
+
 import UpdateUserMutation from './mutations/UpdateUserMutation';
 
 export class Signup extends React.Component {
@@ -12,14 +12,18 @@ export class Signup extends React.Component {
         // custom prop, this should be bool but router might chuck us a string
         mode: React.PropTypes.string
     }
+
     static defaultProps = {
         defaultRole: 'creator',
         mode: 'change'
     }
-    constructor(props) {
+
+    constructor (props) {
         super(props);
+
         let role = this.getRole();
-        let currentRole = _.find(props.meta.roles, {type: role});
+        let currentRole = _.find(props.meta.roles, { type: role });
+
         this.state = {
             role,
             secret: currentRole && currentRole.secret,
@@ -27,13 +31,14 @@ export class Signup extends React.Component {
             requireSecret: false,
             changed: false,
         };
+
         this.onChange = this.onChange.bind(this);
         this.onChangeRole = this.onChangeRole.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.showRoleChooser = this.showRoleChooser.bind(this);
     }
 
-    componentWillMount() {
+    componentWillMount () {
         // if we're using this component as a role consolidator
         // then mode will be true and we should just send the user in the right direction
         if (this.shouldSkipConfiguration()) {
@@ -49,146 +54,149 @@ export class Signup extends React.Component {
         }
     }
 
-    shouldSkipConfiguration() {
+    shouldSkipConfiguration () {
         return this.props.user.role && this.props.mode === "configure";
     }
 
-    onChange(key, event) {
-        this.setState({[key]: event.target.value, changed: true});
+    onChange (key, event) {
+        this.setState({
+            [key]: event.target.value,
+            changed: true
+        });
     }
 
-    onChangeRole(event) {
+    onChangeRole (event) {
         let role = event.target.value;
+
         this.setState({
             role: role,
-            secret: _.find(this.props.meta.roles, {type: role}).secret,
+            secret: _.find(this.props.meta.roles, { type: role }).secret,
             requireSecret: !!role,
             changed: true,
         });
     }
 
-    handleRedirect(role) {
+    handleRedirect (role) {
         role = role || this.getRole();
+
         var redirectTo = this.props.route.roleMap[role];
+
         if(redirectTo) {
             return this.props.router.push(redirectTo);
         }
     }
 
-    getRole() {
+    getRole () {
         return (this.state && this.state.role) || this.props.user.role || this.props.defaultRole;
     }
 
-    onSubmit(event) {
+    onSubmit (event) {
         event.preventDefault();
+
         var success = () => this.handleRedirect();
+
         if (this.state.changed) {
             var user = this.props.user;
+
             // Perform Mutation
             this.props.relay.commitUpdate(
-                new UpdateUserMutation({user, ...this.state}),
-                {onSuccess: success},
+                new UpdateUserMutation({
+                    user, ...this.state
+                }),
+                {
+                    onSuccess: success
+                },
             );
         } else {
             success();
         }
     }
 
-    showRoleChooser() {
+    showRoleChooser () {
         this.setState({
             showRoleChooser: true,
             changed: true,
         });
     }
 
-    render() {
+    render () {
         var currentRole = this.getRole();
-        if(this.shouldSkipConfiguration()) {
+
+        if (this.shouldSkipConfiguration()) {
+            // Todo: Huh?
             return (<div></div>);
         }
+
         return (
-            <Grid>
-                <Row>
-                    <Col xs={6} xsOffset={3}>
-                        <h2>Getting to know you</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={6} xsOffset={3}>
-                        <Form horizontal onSubmit={this.onSubmit}>
-                            <FormGroup controlId="region">
-                                <Col componentClass={ControlLabel}>
-                                    Where do you live?
-                                </Col>
-                                <Col>
-                                    <FormControl componentClass="select"
-                                        placeholder="I live in..."
-                                        value={this.state.region || ""}
-                                        onChange={_.partial(this.onChange, 'region')}
-                                        >
-                                        <option value="" disabled={true}>I live in&hellip;</option>
-                                        {this.props.meta.regions.map(({type}) => {
-                                            return <option key={'region_' + type}
-                                                        value={type}
-                                                        >{type}</option>;
-                                        })}
-                                    </FormControl>
-                                </Col>
-                            </FormGroup>
-                            {this.state.showRoleChooser &&
-                                <FormGroup controlId="role">
-                                    <Col componentClass={ControlLabel}>
-                                        What kind of access do you need?
-                                    </Col>
-                                    <Col>
-                                        {this.props.meta.roles.map(({type, name}) => {
-                                            return <Radio key={'role_' + type}
-                                                        value={type}
-                                                        checked={currentRole === type}
-                                                        onChange={this.onChangeRole}>{name}</Radio>;
-                                        })}
-                                    </Col>
-                                </FormGroup>
-                            }
-                            { (this.state.requireSecret && this.state.showRoleChooser) &&
-                                <FormGroup controlId="unlockCode">
-                                    <Col componentClass={ControlLabel}>
-                                        Unlock Code
-                                    </Col>
-                                    <Col>
-                                        <FormControl type="text"
-                                            placeholder="We'll ask for an unlock code here in the future"
-                                            onChange={_.partial(this.onChange, 'secret')}
-                                            value={this.state.secret || ''} />
-                                    </Col>
-                                    <Col>
-                                        <HelpBlock>An unlock code is required to enable access to the dashboard</HelpBlock>
-                                    </Col>
-                                </FormGroup>
-                            }
-                            <FormGroup>
-                                <Col>
-                                    <div className="full-width">
-                                        <div className="group-right">
-                                            <Button
-                                                type="submit"
-                                                disabled={!(this.state.region && this.state.role)}>
-                                                <Glyphicon glyph="ok" /> OK
-                                             </Button>
-                                        </div>
-                                    </div>
-                                </Col>
-                            </FormGroup>
-                        </Form>
-                    </Col>
-                </Row>
-            </Grid>
+            <div>
+                <h2>Getting to know you</h2>
+
+                <div>
+                    <form onSubmit={this.onSubmit}>
+                        <form>
+                            Where do you live?
+                            <select
+                                placeholder='I live in...'
+                                value={this.state.region || ''}
+                                onChange={_.partial(this.onChange, 'region')}
+                            >
+                                <option value="" disabled={true}>I live in&hellip;</option>
+
+                                {this.props.meta.regions.map(({type}) => {
+                                    return (
+                                        <option value={type}>{type}</option>
+                                    );
+                                })}
+                            </select>
+                        </form>
+
+                        {this.state.showRoleChooser && (
+                            <form>
+                                What kind of access do you need?
+                                {this.props.meta.roles.map(({ type, name }) => {
+                                    return (
+                                        <input
+                                            type="radio"
+                                            value={type}
+                                            checked={currentRole === type}
+                                            onChange={this.onChangeRole}
+                                        />
+                                    );
+                                })}
+                            </form>
+                        )}
+
+                        {(this.state.requireSecret && this.state.showRoleChooser) &&
+                            <form>
+                                Unlock Code
+                                <input
+                                    type="text"
+                                    placeholder="We'll ask for an unlock code here in the future"
+                                    onChange={_.partial(this.onChange, 'secret')}
+                                    value={this.state.secret || ''}
+                                />
+
+                                {/*<HelpBlock>An unlock code is required to enable access to the dashboard</HelpBlock>*/}
+                                <p>An unlock code is required to enable access to the dashboard</p>
+                            </form>
+                        }
+
+                        <form>
+                            <button
+                                type="submit"
+                                disabled={!(this.state.region && this.state.role)}
+                            >OK</button>
+                        </form>
+                    </form>
+                </div>
+            </div>
         );
     }
 }
 
 Signup = keydown(Signup);
 Signup = withRouter(Signup);
+
 export const SignupContainer = Relay.createContainer(Signup, {
     fragments: {
         meta: () => Relay.QL`
