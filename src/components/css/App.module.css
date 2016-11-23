@@ -1,0 +1,37 @@
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 50px;
+	width: 100%;
+	padding: 0 1rem;
+	background-color: #eee;
+}
+
+.contentMenuToggle {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 50px;
+	width: 50px;
+}
+
+.contextMenuContent {
+	position: absolute;
+	top: 50px;
+	right: 0;
+	height: 100%;
+	background: #eee;
+}
+
+.contextMenu {
+	list-style: none;
+}
+
+.contextMenuItem {
+	padding: .5rem 1rem;
+}
+
+.content {
+	padding: 1rem;
+}

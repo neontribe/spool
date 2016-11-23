@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router';
 
 import ProfileLink from './components/ProfileLink';
+import Hamburger from './components/Hamburger';
+
+import styles from './components/css/App.module.css';
 
 class App extends Component {
-
   constructor (props, context) {
-      super(props, context);
+    super(props, context);
 
-      this.state = {
-          profile: props.route.auth.getProfile()
-      };
+    this.state = {
+        profile: props.route.auth.getProfile()
+    };
 
-      props.route.auth.on('profile_updated', (newProfile) => {
-        this.setState({
-          profile: newProfile
-        });
+    props.route.auth.on('profile_updated', (newProfile) => {
+      this.setState({
+        profile: newProfile
       });
+    });
 
-      this.logout = this.logout.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   logout (e) {
@@ -35,29 +38,49 @@ class App extends Component {
     let children = null;
 
     if (this.props.children) {
-        children = React.cloneElement(this.props.children, {
-            auth: this.props.route.auth
-        });
+      children = React.cloneElement(this.props.children, {
+        auth: this.props.route.auth
+      });
     }
 
     return (
+      <div>
         <div>
-          <div>
-            <h1>SPOOL</h1>
+          <div className={styles.header}>
+            <h1>
+              <Link to={'/'}>SPOOL</Link>
+            </h1>
 
-            <ProfileLink
-              profile={this.state.profile}
-              disabled={!this.props.route.auth.loggedIn()}
-            />
+            <Hamburger
+              toggleClassName={styles.contextMenuToggle}
+              contentClassName={styles.contextMenuContent}
+            >
+              <ul className={styles.contextMenu}>
+                <li className={styles.contextMenuItem}>
+                  <Link to={'/'}>Home</Link>
+                </li>
 
-            {this.props.route.auth.loggedIn() && (
-              <a href='/logout' role='button' onClick={this.logout}>Log out</a>
-            )}
+                <li className={styles.contextMenuItem}>
+                  {/* Todo: Need to format the render of ProfileLink*/}
+                  <ProfileLink
+                    profile={this.state.profile}
+                    disabled={!this.props.route.auth.loggedIn()}
+                  />
+                </li>
+
+                <li className={styles.contextMenuItem}>
+                  {this.props.route.auth.loggedIn() && (
+                    <a href='/logout' onClick={this.logout}>Log out</a>
+                  )}
+                </li>
+              </ul>
+            </Hamburger>
           </div>
-          <div>
-            {children}
-          </div>
+
         </div>
+
+        <div className={styles.content}>{children}</div>
+      </div>
     );
   }
 }

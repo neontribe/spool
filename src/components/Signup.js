@@ -6,6 +6,8 @@ import { withRouter } from 'react-router';
 
 import UpdateUserMutation from './mutations/UpdateUserMutation';
 
+import headings from '../css/Headings.module.css';
+
 export class Signup extends React.Component {
     static propTypes = {
         defaultRole: React.PropTypes.string,
@@ -101,7 +103,8 @@ export class Signup extends React.Component {
             // Perform Mutation
             this.props.relay.commitUpdate(
                 new UpdateUserMutation({
-                    user, ...this.state
+                    user,
+                    ...this.state
                 }),
                 {
                     onSuccess: success
@@ -129,52 +132,64 @@ export class Signup extends React.Component {
 
         return (
             <div>
-                <h2>Getting to know you</h2>
+                <h2 className={headings.large}>Getting to know you</h2>
 
                 <div>
                     <form onSubmit={this.onSubmit}>
                         <form>
-                            Where do you live?
-                            <select
-                                placeholder='I live in...'
-                                value={this.state.region || ''}
-                                onChange={_.partial(this.onChange, 'region')}
-                            >
-                                <option value="" disabled={true}>I live in&hellip;</option>
+                            <label>
+                                Where do you live?
+                                <div>
+                                    <select
+                                        placeholder='I live in...'
+                                        value={this.state.region || ''}
+                                        onChange={_.partial(this.onChange, 'region')}
+                                    >
+                                        <option value='' disabled={true}>I live in&hellip;</option>
 
-                                {this.props.meta.regions.map(({type}) => {
-                                    return (
-                                        <option value={type}>{type}</option>
-                                    );
-                                })}
-                            </select>
+                                        {this.props.meta.regions.map(({type}) => {
+                                            return (
+                                                <option value={type}>{type}</option>
+                                            );
+                                        })}
+                                    </select>
+                                </div>
+                            </label>
                         </form>
 
                         {this.state.showRoleChooser && (
                             <form>
-                                What kind of access do you need?
-                                {this.props.meta.roles.map(({ type, name }) => {
-                                    return (
-                                        <input
-                                            type="radio"
-                                            value={type}
-                                            checked={currentRole === type}
-                                            onChange={this.onChangeRole}
-                                        />
-                                    );
-                                })}
+                                <label>
+                                    What kind of access do you need?
+                                    <div>
+                                        {this.props.meta.roles.map(({ type, name }) => {
+                                            return (
+                                                <input
+                                                    type='radio'
+                                                    value={type}
+                                                    checked={currentRole === type}
+                                                    onChange={this.onChangeRole}
+                                                />
+                                            );
+                                        })}
+                                    </div>
+                                </label>
                             </form>
                         )}
 
                         {(this.state.requireSecret && this.state.showRoleChooser) &&
                             <form>
-                                Unlock Code
-                                <input
-                                    type="text"
-                                    placeholder="We'll ask for an unlock code here in the future"
-                                    onChange={_.partial(this.onChange, 'secret')}
-                                    value={this.state.secret || ''}
-                                />
+                                <label>
+                                    Unlock Code
+                                    <div>
+                                        <input
+                                            type='text'
+                                            placeholder="We'll ask for an unlock code here in the future"
+                                            onChange={_.partial(this.onChange, 'secret')}
+                                            value={this.state.secret || ''}
+                                        />
+                                    </div>
+                                </label>
 
                                 {/*<HelpBlock>An unlock code is required to enable access to the dashboard</HelpBlock>*/}
                                 <p>An unlock code is required to enable access to the dashboard</p>
@@ -183,8 +198,9 @@ export class Signup extends React.Component {
 
                         <form>
                             <button
-                                type="submit"
+                                type='submit'
                                 disabled={!(this.state.region && this.state.role)}
+                                className='button'
                             >OK</button>
                         </form>
                     </form>

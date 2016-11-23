@@ -30,14 +30,14 @@ export class Timeline extends Component {
                         entry={entry.node} 
                     />
                 );
-            } else {
-                return (
-                    <Entry
-                        key={entry.node.id}
-                        entry={entry.node}
-                    />
-                );
             }
+
+            return (
+                <Entry
+                    key={entry.node.id}
+                    entry={entry.node}
+                />
+            );
         });
     }
 
@@ -70,16 +70,13 @@ export class Timeline extends Component {
                     {this.renderRequests()}
                 </div>
 
-                <div>
-                    <Link to={'/add'}>{(this.state.hasEntries) ? 'Add New Entry' : 'Get Started'}</Link>
-                </div>
+                <Link to={'/add'} className='button'>{(this.state.hasEntries) ? 'Add New Entry' : 'Get Started'}</Link>
 
                 <div>
                     {this.renderEntries()}
                     {!this.state.hasEntries && <Intro />}
                 </div>
             </div>
-
         );
     }
 }

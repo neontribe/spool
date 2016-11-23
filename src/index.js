@@ -22,7 +22,7 @@ import TextForm from './components/TextForm';
 import { RequestViewerContainer } from './components/RequestViewer';
 import { EntryRequestViewerContainer } from './components/EntryRequestViewer';
 
-import './index.css';
+import './css/global.css';
 
 const auth = new AuthService(
     process.env.AUTH0_CLIENT_ID,

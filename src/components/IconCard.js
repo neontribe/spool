@@ -11,25 +11,23 @@ export class IconCard extends Component {
 
     renderStatic () {
         return (
-            <div>{this.props.message}</div>
+            <p>{this.props.message}</p>
         );
     }
 
     renderCheckbox () {
         return (
-            <div>
-                <label>
-                    <input
-                        type='checkbox'
-                        className='vh'
-                        checked={this.props.checked}
-                        value={this.props.value}
-                        onChange={this.props.onChange}
-                    />
+            <label>
+                <input
+                    type='checkbox'
+                    className='vh'
+                    checked={this.props.checked}
+                    value={this.props.value}
+                    onChange={this.props.onChange}
+                />
 
-                    {this.props.message}
-                </label>
-            </div>
+                <p className='button'>{this.props.message}</p>
+            </label>
         );
     }
 

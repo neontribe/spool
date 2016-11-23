@@ -30,7 +30,7 @@ class TopicForm extends Component {
             <div>
                 <div>
                     <IconChooser
-                        label="Add some labels..."
+                        label='Add some labels&hellip;'
                         choices={this.props.topics}
                         onChange={this.handleChange}
                         initialValue={this.props.initialValue}

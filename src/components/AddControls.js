@@ -27,6 +27,7 @@ class AddControls extends Component {
                         <button
                             onClick={this.onBack}
                             disabled={this.props.disableBack}
+                            className='button'
                         >Back</button>
                     )}
 
@@ -34,6 +35,7 @@ class AddControls extends Component {
                         <button
                             onClick={this.onQuit}
                             disabled={this.props.disableQuit}
+                            className='button'
                         >Quit</button>
                     )}
                 </div>
@@ -42,6 +44,7 @@ class AddControls extends Component {
                         <button
                             onClick={this.onNext}
                             disabled={this.props.disableNext}
+                            className='button'
                         >OK</button>
                     )}
                 </div>

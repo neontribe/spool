@@ -48,32 +48,24 @@ class ProfileLink extends Component {
         return (
             <div>
                 {/*<Modal show={this.state.showProfile} onHide={this.hideProfile} bsSize='large' backdrop={true}>*/}
+                <button onClick={this.navigateToSettings}>Edit My Settings</button>
+
                 <div>
-                    <h3>My SPOOL Profile</h3>
+                    <button
+                        onClick={() => this.setState({ showTechDetails: !this.state.showTechDetails })}
+                    >Show Technical Info</button>
 
-                    <div>
-                        <button onClick={this.navigateToSettings}>Edit My Settings</button>
-
+                    {/*<Panel collapsible expanded={this.state.showTechDetails}>*/}
+                    {this.state.showTechDetails && (
                         <div>
-                            <button
-                                onClick={() => this.setState({ showTechDetails: !this.state.showTechDetails })}
-                            >Show Technical Info</button>
-
-                            {/*<Panel collapsible expanded={this.state.showTechDetails}>*/}
-                            {this.state.showTechDetails && (
-                                <div>
-                                    <h3>SPOOL Version: {process.env.VERSION}</h3>
-                                    <h3>Social Profile Data</h3>
-                                    <pre>{JSON.stringify(this.props.profile, null, '\t')}</pre>
-                                </div>
-                            )}
+                            <h3>SPOOL Version: {process.env.VERSION}</h3>
+                            <h3>Social Profile Data</h3>
+                            <pre>{JSON.stringify(this.props.profile, null, '\t')}</pre>
                         </div>
-                    </div>
-
-                    <div>
-                        <button onClick={this.hideProfile}>Close</button>
-                    </div>
+                    )}
                 </div>
+
+                <button onClick={this.hideProfile}>Close</button>
             </div>
         );
     }

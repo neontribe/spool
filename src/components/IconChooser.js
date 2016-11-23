@@ -53,10 +53,8 @@ class IconChooser extends Component {
         return (
             <div>
                 {/*<FormGroup controlId='choice'>*/}
-                <div>
-                    <div>{this.props.label}</div>
-                    <div>{this.renderCheckboxes()}</div>
-                </div>
+                <div>{this.props.label}</div>
+                <div>{this.renderCheckboxes()}</div>
             </div>
         );
     }

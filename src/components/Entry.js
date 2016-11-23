@@ -10,7 +10,6 @@ export class Entry extends Component {
 
         this.state = {};
 
-        this.getStyles = this.getStyles.bind(this);
         this.showViewer = this.showViewer.bind(this);
         this.hideViewer = this.hideViewer.bind(this);
     }
