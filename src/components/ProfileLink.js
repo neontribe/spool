@@ -43,8 +43,6 @@ class ProfileLink extends Component {
             return false;
         }
 
-        // href='/view-profile'
-        // this.props.profile.name
         return (
             <div>
                 {/*<Modal show={this.state.showProfile} onHide={this.hideProfile} bsSize='large' backdrop={true}>*/}

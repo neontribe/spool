@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
-import AddControls from './AddControls';
+import Grid from './Grid';
+
+import styles from './css/SentimentForm.module.css';
+import headings from '../css/Headings.module.css';
 
 class SentimentForm extends Component {
     constructor (props) {
@@ -12,41 +15,21 @@ class SentimentForm extends Component {
         };
 
         this.continue = this.continue.bind(this);
-        this.handleChange = this.handleChange.bind(this);
     }
 
-    continue () {
-        this.props.save(this.props.saveKey, this.state.value);
-    }
-
-    handleChange (value) {
-        this.setState({
-            value: value
-        })
+    continue (value) {
+        this.props.save(this.props.saveKey, value);
     }
 
     render () {
         return (
-            <div>
-                <div>
-                    <p><strong>Does it make you happy or sad?</strong></p>
-                </div>
+            <div className={styles.wrapper}>
+                <h2 className={headings.large}>How does it make you feel?</h2>
 
-                <div>
-                    <a role="button" onClick={_.partial(this.handleChange, 'happy')} >
-                        <img src="/static/happy.png" alt="Happy" />
-                    </a>
-
-                    <a role="button" onClick={_.partial(this.handleChange, 'sad')}>
-                        <img src="/static/sad.png" alt="Sad" />
-                    </a>
-                </div>
-                <div>
-                    <AddControls
-                        onNext={this.continue}
-                        disableNext={!this.state.value}
-                    />
-                </div>
+                <Grid enforceConsistentSize={true}>
+                    <a role='button' className={styles.option} onClick={_.partial(this.continue, 'happy')}>😄</a>
+                    <a role='button' className={styles.option} onClick={_.partial(this.continue, 'sad')}>😡</a>
+                </Grid>
             </div>
         );
     }

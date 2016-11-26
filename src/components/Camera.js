@@ -148,11 +148,11 @@ class Camera extends Component {
         return (
             <div>
                 <div>
-                    {this.state.connecting && (
-                        {/*<ResponsiveEmbed a4by3>
+                    {/*this.state.connecting && (
+                        {<ResponsiveEmbed a4by3>
                             <div className='connecting' />
-                        </ResponsiveEmbed>*/}
-                    )}
+                        </ResponsiveEmbed>}
+                    )*/}
 
                     {/*<ResponsiveEmbed a4by3>*/}
                     {this.state.streaming && (

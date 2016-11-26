@@ -5,8 +5,12 @@ import _ from 'lodash';
 
 import { EntryContainer, Entry } from './Entry';
 import UserRequest, { UserRequestContainer } from './UserRequest';
-import Intro from './Intro';
+// import Intro from './Intro';
+import Grid from './Grid';
 import withRoles from '../auth/withRoles.js';
+
+import styles from './css/Timeline.module.css';
+import controls from '../css/Controls.module.css';
 
 export class Timeline extends Component {
     static propTypes = {
@@ -64,18 +68,43 @@ export class Timeline extends Component {
     }
 
     render () {
+        // return (
+        //     <div>
+        //         <div>
+        //             {this.renderRequests()}
+        //         </div>
+
+        //         <Link to={'/add'} className='btn'>{(this.state.hasEntries) ? 'Add New Entry' : 'Get Started'}</Link>
+
+        //         <div>
+        //             {this.renderEntries()}
+        //             {!this.state.hasEntries && <Intro />}
+        //         </div>
+        //     </div>
+        // );
+
+        var addEntryControl = (
+            <Link to={'/add'} className={controls.btnNew}>
+                <span role="presentation">+</span>
+                Add New Entry
+            </Link>
+        );
+
         return (
-            <div>
-                <div>
-                    {this.renderRequests()}
-                </div>
+            <div className={styles.wrapper}>
+                {/* Todo: Filter controls */}
+                <ul className={styles.filters}>
+                    <li className={styles.filter}>
+                        <button className={styles.filterControl}>😄</button>
+                    </li>
+                    <li className={styles.filter}>
+                        <button className={styles.filterControl}>😡</button>
+                    </li>
+                </ul>
 
-                <Link to={'/add'} className='button'>{(this.state.hasEntries) ? 'Add New Entry' : 'Get Started'}</Link>
-
-                <div>
+                <Grid callToAction={addEntryControl}>
                     {this.renderEntries()}
-                    {!this.state.hasEntries && <Intro />}
-                </div>
+                </Grid>
             </div>
         );
     }

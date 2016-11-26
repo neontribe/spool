@@ -1,0 +1,26 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.filters {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 1rem;
+}
+
+.filter + .filter {
+	margin-left: 1rem;
+}
+
+.filterControl {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 50px;
+	width: 50px;
+	color: #fff;
+	font-size: 2rem;
+	background-color: rgba(0, 0, 0, .5);
+}

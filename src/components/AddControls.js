@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
+import controls from '../css/Controls.module.css';
+
 class AddControls extends Component {
     constructor (props) {
         super(props);
@@ -16,18 +18,17 @@ class AddControls extends Component {
         if (this.props.onQuit) {
             this.onQuit = _.debounce(this.props.onQuit, 500, { leading: true, trailing: false });
         }
-
     }
 
     render () {
         return (
-            <div>
+            <div className={controls.btnToolbar}>
                 <div>
                     {this.onBack && (
                         <button
                             onClick={this.onBack}
                             disabled={this.props.disableBack}
-                            className='button'
+                            className={controls.btn}
                         >Back</button>
                     )}
 
@@ -35,7 +36,7 @@ class AddControls extends Component {
                         <button
                             onClick={this.onQuit}
                             disabled={this.props.disableQuit}
-                            className='button'
+                            className={controls.btn}
                         >Quit</button>
                     )}
                 </div>
@@ -44,7 +45,7 @@ class AddControls extends Component {
                         <button
                             onClick={this.onNext}
                             disabled={this.props.disableNext}
-                            className='button'
+                            className={controls.btn}
                         >OK</button>
                     )}
                 </div>

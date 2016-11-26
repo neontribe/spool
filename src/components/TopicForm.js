@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import AddControls from './AddControls';
 import IconChooser from './IconChooser';
 
+import styles from './css/TopicForm.module.css';
+
 class TopicForm extends Component {
     constructor (props) {
         super(props);
@@ -27,22 +29,18 @@ class TopicForm extends Component {
 
     render () {
         return (
-            <div>
-                <div>
-                    <IconChooser
-                        label='Add some labels&hellip;'
-                        choices={this.props.topics}
-                        onChange={this.handleChange}
-                        initialValue={this.props.initialValue}
-                    />
-                </div>
+            <div className={styles.wrapper}>
+                <IconChooser
+                    label='What do you want to talk about?'
+                    choices={this.props.topics}
+                    onChange={this.handleChange}
+                    initialValue={this.props.initialValue}
+                />
 
-                <div>
-                    <AddControls
-                        onNext={this.continue}
-                        disableNext={this.state.value.length === 0}
-                    />
-                </div>
+                <AddControls
+                    onNext={this.continue}
+                    disableNext={this.state.value.length === 0}
+                />
             </div>
         );
     }

@@ -204,9 +204,9 @@ class VideoRecorder extends Component {
         return (
             <div>
                 <div>
-                    {this.state.connecting && (
-                        {/*<div className='connecting' />*/}
-                    )}
+                    {/*this.state.connecting && (
+                        <div className='connecting' />
+                    )*/}
 
                     {this.state.streaming && (
                         <video

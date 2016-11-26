@@ -1,0 +1,23 @@
+.field {
+	composes: vh from '../../css/A11y.module.css';
+}
+
+.wrapper {
+	display: flex;
+	align-self: stretch;
+	flex: 1;
+}
+
+.option {
+	display: flex;
+	justify-content: center;
+	align-self: stretch;
+	align-items: center;
+	flex: 1;
+	cursor: pointer;
+}
+
+.field:checked + .option {
+	color: #212121;
+	background-color: #ffeb3b;
+}

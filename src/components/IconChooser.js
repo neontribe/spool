@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 
 import { IconCard } from './IconCard';
+import Grid from './Grid';
+
+import styles from './css/IconChooser.module.css';
+import headings from '../css/Headings.module.css';
 
 class IconChooser extends Component {
     constructor (props) {
@@ -37,24 +41,28 @@ class IconChooser extends Component {
     }
 
     renderCheckboxes () {
-        return this.props.choices.map((t, i) => (
-            <IconCard
-                key={i}
-                onChange={this.handleChange}
-                checked={(this.state.value.indexOf(t.type) !== -1)}
-                icon={t.type}
-                message={t.name}
-                value={t.type}
-            />
-        ));
+        return (
+            <Grid enforceConsistentSize={true}>
+                {this.props.choices.map((t, i) => (
+                    <IconCard
+                        key={i}
+                        onChange={this.handleChange}
+                        checked={(this.state.value.indexOf(t.type) !== -1)}
+                        icon={t.type}
+                        message={t.name}
+                        value={t.type}
+                    />
+                ))}
+            </Grid>
+        );
     }
 
     render () {
         return (
-            <div>
+            <div className={styles.wrapper}>
                 {/*<FormGroup controlId='choice'>*/}
-                <div>{this.props.label}</div>
-                <div>{this.renderCheckboxes()}</div>
+                <h2 className={headings.large}>{this.props.label}</h2>
+                {this.renderCheckboxes()}
             </div>
         );
     }

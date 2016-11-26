@@ -28,7 +28,9 @@ class VideoForm extends Component {
     componentDidMount () {
         VideoRecorder.mediaCheck()
             .then(() => {
-                this.setState({mode: 'record'});
+                this.setState({
+                    mode: 'record'
+                });
             })
             .catch((error) => {
                 this.setState({

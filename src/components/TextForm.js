@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 
 import AddControls from './AddControls';
 
+import styles from './css/TextForm.module.css';
+import a11y from '../css/A11y.module.css';
+
 class TextForm extends Component {
     constructor (props) {
         super(props);
@@ -28,24 +31,24 @@ class TextForm extends Component {
 
     render () {
         return (
-            <div>
-                <form>
-                    <h2>I just want to say...</h2>
-                    <textarea
-                        maxLength={this.props.maxLength}
-                        placeholder=""
-                        onChange={this.handleChange}
-                    >{this.state.value}</textarea>
+            <form className={styles.wrapper}>
+                <h2 className={a11y.vh}>I just want to say...</h2>
 
-                    {/*<HelpBlock>{this.state.value.length} of {this.props.maxLength} letters used</HelpBlock>*/}
-                    <p>{this.state.value.length} of {this.props.maxLength} letters used</p>
-                </form>
+                <textarea
+                    maxLength={this.props.maxLength}
+                    placeholder='I just want to say...'
+                    onChange={this.handleChange}
+                    className={styles.textarea}
+                >{this.state.value}</textarea>
+
+                {/*<HelpBlock>{this.state.value.length} of {this.props.maxLength} letters used</HelpBlock>*/}
+                <p>{this.state.value.length} of {this.props.maxLength} letters used</p>
 
                 <AddControls
                     onNext={this.continue}
                     disableNext={!this.state.value}
                 />
-            </div>
+            </form>
         );
     }
 }

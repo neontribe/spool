@@ -1,3 +1,7 @@
+.text {
+	padding-right: 1rem;
+}
+
 /*!
  * Hamburgers
  * @description Tasty CSS-animated hamburgers
@@ -6,7 +10,8 @@
  * @link https://github.com/jonsuh/hamburgers
  */
 .hamburger {
-	display: inline-block;
+	display: flex;
+    align-items: center;
 	cursor: pointer;
 	transition-property: opacity, filter;
 	transition-duration: 0.15s;
@@ -22,8 +27,8 @@
 }
 
 .hamburgerBox {
-	width: 2rem;
 	height: 24px;
+	min-width: 2rem;
 	display: inline-block;
 	position: relative;
 }
@@ -41,7 +46,7 @@
 .hamburgerInner::after {
 	width: 2rem;
 	height: 4px;
-	background-color: #000;
+	background-color: #fff;
 	border-radius: 4px;
 	position: absolute;
 	transition-property: transform;

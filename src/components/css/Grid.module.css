@@ -1,0 +1,29 @@
+.gridWrapper {
+	display: flex;
+	flex: 1;
+	margin: -.5rem;
+}
+
+.grid {
+	display: flex;
+	justify-content: center;
+	align-self: center;
+	flex: 1;
+	list-style: none;
+	color: #fff;
+}
+
+.item {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	padding: .5rem;
+}
+
+.content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1;
+	background-color: rgba(0, 0, 0, .5);
+}

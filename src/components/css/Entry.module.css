@@ -1,0 +1,18 @@
+.entry {
+	position: relative;
+	display: flex;
+	flex: 1;
+	justify-content: center;
+	align-self: stretch;
+	align-items: center;
+	color: #fff;
+	text-align: center;
+}
+
+.sentiment {
+	position: absolute;
+	top: 0;
+	left: 1rem;
+	font-family: 'Lucida Sans Unicode', 'Arial Unicode MS';
+	font-size: 5rem;
+}

@@ -44,39 +44,40 @@ class App extends Component {
     }
 
     return (
-      <div>
-        <div>
-          <div className={styles.header}>
-            <h1>
-              <Link to={'/'}>SPOOL</Link>
-            </h1>
+      <div className={styles.app}>
+        <div className={styles.header}>
+          <h1>
+            <Link to={'/'}>SPOOL</Link>
+          </h1>
 
-            <Hamburger
-              toggleClassName={styles.contextMenuToggle}
-              contentClassName={styles.contextMenuContent}
-            >
-              <ul className={styles.contextMenu}>
-                <li className={styles.contextMenuItem}>
-                  <Link to={'/'}>Home</Link>
-                </li>
+          {/* Todo */}
+          <div className={styles.headerMeta}>(Todo) Progress bar / Entry view details</div>
 
-                <li className={styles.contextMenuItem}>
-                  {/* Todo: Need to format the render of ProfileLink*/}
-                  <ProfileLink
-                    profile={this.state.profile}
-                    disabled={!this.props.route.auth.loggedIn()}
-                  />
-                </li>
+          <Hamburger
+            text={this.state.profile.name}
+            toggleClassName={styles.contextMenuToggle}
+            contentClassName={styles.contextMenuContent}
+          >
+            <ul className={styles.contextMenu}>
+              <li className={styles.contextMenuItem}>
+                <Link to={'/'}>Home</Link>
+              </li>
 
-                <li className={styles.contextMenuItem}>
-                  {this.props.route.auth.loggedIn() && (
-                    <a href='/logout' onClick={this.logout}>Log out</a>
-                  )}
-                </li>
-              </ul>
-            </Hamburger>
-          </div>
+              <li className={styles.contextMenuItem}>
+                {/* Todo: Need to format the render of ProfileLink*/}
+                <ProfileLink
+                  profile={this.state.profile}
+                  disabled={!this.props.route.auth.loggedIn()}
+                />
+              </li>
 
+              <li className={styles.contextMenuItem}>
+                {this.props.route.auth.loggedIn() && (
+                  <a href='/logout' onClick={this.logout}>Log out</a>
+                )}
+              </li>
+            </ul>
+          </Hamburger>
         </div>
 
         <div className={styles.content}>{children}</div>

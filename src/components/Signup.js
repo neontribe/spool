@@ -7,6 +7,7 @@ import { withRouter } from 'react-router';
 import UpdateUserMutation from './mutations/UpdateUserMutation';
 
 import headings from '../css/Headings.module.css';
+import controls from '../css/Controls.module.css';
 
 export class Signup extends React.Component {
     static propTypes = {
@@ -200,7 +201,7 @@ export class Signup extends React.Component {
                             <button
                                 type='submit'
                                 disabled={!(this.state.region && this.state.role)}
-                                className='button'
+                                className={controls.btn}
                             >OK</button>
                         </form>
                     </form>

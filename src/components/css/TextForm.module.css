@@ -1,0 +1,10 @@
+.wrapper {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.textarea {
+	flex: 1;
+}

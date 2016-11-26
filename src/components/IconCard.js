@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import styles from './css/IconCard.module.css';
+
 export class IconCard extends Component {
     static propTypes = {
         /* If no `onChange` is provided the IconCard is rendered as a static UI component */
@@ -17,16 +19,18 @@ export class IconCard extends Component {
 
     renderCheckbox () {
         return (
-            <label>
+            <label className={styles.wrapper}>
                 <input
                     type='checkbox'
-                    className='vh'
+                    className={styles.field}
                     checked={this.props.checked}
                     value={this.props.value}
                     onChange={this.props.onChange}
                 />
 
-                <p className='button'>{this.props.message}</p>
+                <div className={styles.option}>
+                    <span>{this.props.message}</span>
+                </div>
             </label>
         );
     }

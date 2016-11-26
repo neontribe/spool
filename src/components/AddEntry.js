@@ -6,6 +6,8 @@ import { withRouter } from 'react-router';
 import AddEntryMutation from './mutations/AddEntryMutation';
 import withRoles from '../auth/withRoles.js';
 
+import styles from './css/AddEntry.module.css';
+
 class AddEntry extends Component {
     constructor (props) {
         super(props);
@@ -92,7 +94,7 @@ class AddEntry extends Component {
         }
 
         return (
-            <div>{children}</div>
+            <div className={styles.wrapper}>{children}</div>
         );
     }
 };

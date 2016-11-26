@@ -1,0 +1,14 @@
+.wrapper {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+}
+
+.option {
+	display: flex;
+	flex: 1;
+	justify-content: center;
+	align-self: stretch;
+	align-items: center;
+	font-size: 5rem;
+}

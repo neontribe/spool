@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import Relay from 'react-relay';
 import moment from 'moment';
 
-import EntryViewer from './EntryViewer';
+// import EntryViewer from './EntryViewer';
+
+import styles from './css/Entry.module.css';
 
 export class Entry extends Component {
     constructor (props) {
@@ -35,11 +37,8 @@ export class Entry extends Component {
     }
 
     render () {
-        // var hasMedia = this.props.entry.media.image || this.props.entry.media.video;
-        // var className = 'entry entry--' + this.props.entry.sentiment.type;
-
         return (
-            <a href="/entry" onClick={this.showViewer}>
+            <a href="/entry" className={styles.entry} onClick={this.showViewer}>
                 <div>
                     <div>
                         {this.props.entry.media.text && (
@@ -47,27 +46,25 @@ export class Entry extends Component {
                         )}
                     </div>
 
-                    <img
-                        src={'/static/' + this.props.entry.sentiment.type + '.png'}
-                        alt={this.props.entry.sentiment.type}
-                    />
+                    <div className={styles.sentiment}>
+                        {(this.props.entry.sentiment.type === 'happy') ? '😄' : '😡'}
+                    </div>
 
                     <div>
                         <div>{this.formatTimestamp()}</div>
                         <div>{this.props.entry.topics.map((t) => t.name).join(', ')}</div>
                     </div>
 
-                    {/*<Modal
-                        show={this.state.showEntryViewer}
-                        bsSize="large"
-                        backdrop={true}
-                        onHide={this.hideViewer}
-                    >*/}
-                    {this.props.withViewer && (
-                        <div>
+                    {/*this.props.withViewer && (
+                        <Modal
+                            show={this.state.showEntryViewer}
+                            bsSize="large"
+                            backdrop={true}
+                            onHide={this.hideViewer}
+                        >
                             <EntryViewer entry={this.props.entry} />
-                        </div>
-                    )}
+                        </Modal>
+                    )*/}
                 </div>
             </a>
         );

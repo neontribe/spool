@@ -3,20 +3,21 @@ import { withRouter } from 'react-router';
 import _ from 'lodash';
 
 import IconChooser from './IconChooser';
-import AddControls from './AddControls';
+
+import styles from './css/MediaForm.module.css';
 
 const choices = [
   {
-      type: 'video',
-      name: 'Video'
+    type: 'video',
+    name: 'Video'
   },
   {
-      type: 'photo',
-      name: 'Photo'
+    type: 'photo',
+    name: 'Picture'
   },
   {
-      type: 'typing',
-      name: 'Typing'
+    type: 'typing',
+    name: 'Write'
   }
 ];
 
@@ -24,46 +25,25 @@ class MediaForm extends Component {
   constructor (props) {
     super(props);
 
-    this.state = {
-      types: []
-    };
-
     this.handleNext = this.handleNext.bind(this);
-    this.handleChoice = this.handleChoice.bind(this);
   }
 
-  handleNext () {
-    this.props.router.push('/add/message/' + this.state.types[0]);
-  }
-
-  handleChoice (values) {
-    this.setState({
-      types: values
-    });
+  handleNext (values) {
+    this.props.router.push('/add/message/' + values[0]);
   }
 
   renderChooser () {
     return (
-      <div>
-        <div>
-          <IconChooser
-            label='How would you like to make your message?'
-            choices={choices}
-            maxSelections={1}
-            onChange={this.handleChoice}
-          />
-        </div>
-        <div>
-          <AddControls
-            onNext={this.handleNext}
-            disableNext={!this.state.types.length}
-          />
-        </div>
-      </div>
+      <IconChooser
+        label='How would you like to create the entry?'
+        choices={choices}
+        maxSelections={1}
+        onChange={this.handleNext}
+      />
     );
   }
 
-  render() {
+  render () {
     let children = null;
 
     if (this.props.children) {
@@ -73,7 +53,7 @@ class MediaForm extends Component {
     }
 
     return (
-      <div>
+      <div className={styles.wrapper}>
         {children && children}
         {!children && this.renderChooser()}
       </div>

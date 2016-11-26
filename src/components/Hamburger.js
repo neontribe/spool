@@ -24,6 +24,10 @@ class Hamburger extends Component {
             <div>
                 <span className={this.props.toggleClassName}>
                     <button className={styles.hamburger} onClick={this.toggleContent}>
+                        {this.props.text && (
+                            <span className={styles.text}>{this.props.text}</span>
+                        )}
+
                         <span className={styles.hamburgerBox}>
                             <span className={(this.state.expanded) ? styles.hamburgerActive : styles.hamburgerInner}></span>
                         </span>
@@ -39,6 +43,7 @@ class Hamburger extends Component {
 }
 
 Hamburger.propTypes = {
+    text: React.PropTypes.string,
     contentClassName: React.PropTypes.string,
     toggleClassName: React.PropTypes.string
 }
