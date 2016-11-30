@@ -9,6 +9,64 @@
 	text-align: center;
 }
 
+.entryVariantA {
+	composes: entry;
+	background-color: #e91e63;
+}
+
+.entryVariantB {
+	composes: entry;
+	background-color: #2196f3;
+}
+
+.entryVariantC {
+	composes: entry;
+	background-color: #009688;
+}
+
+.entryVariantD {
+	composes: entry;
+	color: #212121;
+	background-color: #ffeb3b;
+}
+
+.entryVariantE {
+	composes: entry;
+	background-color: #9c27b0;
+}
+
+.entryVariantF {
+	composes: entry;
+	background-color: #3f51b5;
+}
+
+.entryVariantG {
+	composes: entry;
+	color: #212121;
+	background-color: #ffc107;
+}
+
+.entryVariantH {
+	composes: entry;
+	background-color: #f44336;
+}
+
+.entryVariantI {
+	composes: entry;
+	background-color: #673ab7;
+}
+
+.entryVariantJ {
+	composes: entry;
+	color: #fff;
+	background-color: #cddc39;
+}
+
+.entryVariantK {
+	composes: entry;
+	background-color: #4caf50;
+}
+
 .sentiment {
 	position: absolute;
 	top: 0;
