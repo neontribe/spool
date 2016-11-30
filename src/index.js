@@ -65,12 +65,6 @@ const SignupQueries = {
     ...MetaQueries,
 };
 
-const EntryQueries = {
-    entry: () => Relay.QL`query { node(id: $entryId) }`,
-    ...CreatorQueries,
-    ...UserQueries,
-};
-
 setupRelayNetworkLayer();
 
 ReactDOM.render(

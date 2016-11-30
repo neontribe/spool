@@ -1,7 +1,6 @@
 const co = require('co');
 const {models, helpers} = require('./database');
 const _ = require('lodash');
-const moment = require('moment');
 const winston = require('winston');
 
 function getCreatorSentimentCount (sentimentType, userId) {

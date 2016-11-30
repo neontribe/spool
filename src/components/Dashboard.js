@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import moment from 'moment';
-import { Link } from 'react-router';
 
 import TopicsOverview from './TopicsOverview';
 import withRoles from '../auth/withRoles.js';

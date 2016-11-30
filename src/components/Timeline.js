@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { Link } from 'react-router';
-import _ from 'lodash';
 
 import { EntryContainer, Entry } from './Entry';
 // import Intro from './Intro';
