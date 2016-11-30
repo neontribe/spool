@@ -2,21 +2,24 @@ import React, { Component } from 'react';
 
 import styles from './css/Grid.module.css';
 
-// Todo: Make responsive to viewport size changes
-
 export default class Grid extends Component {
     constructor (props) {
         super(props);
 
         this.state = {
             height: 0,
-            width: 0
+            width: 0,
+
+            // Boolean hack which allows us to determine an appropriate wrapper
+            // class to apply during the render
+            rendered: false
         };
 
         this.getStyle = this.getStyle.bind(this);
+        this.onResize = this.onResize.bind(this);
         this.updateDimentions = this.updateDimentions.bind(this);
 
-        window.addEventListener('resize', this.updateDimentions);
+        window.addEventListener('resize', this.onResize, false);
     }
 
     componentDidMount () {
@@ -24,13 +27,33 @@ export default class Grid extends Component {
         this.updateDimentions();
     }
 
-    updateDimentions () {
-        this.setState({
-            height: this.refs.grid.offsetHeight,
-            width: this.refs.grid.offsetWidth
-        });
+    componentWillUnmount () {
+        window.removeEventListener('resize', this.onResize, false);
     }
 
+    onResize () {
+        this.setState({
+            rendered: false
+        });
+
+        this.updateDimentions();
+    }
+
+    updateDimentions () {
+        if (this.refs.grid) {
+            this.setState({
+                height: this.refs.grid.offsetHeight,
+                width: this.refs.grid.offsetWidth
+            });
+
+            this.setState({
+                rendered: true
+            });
+        }
+    }
+
+    // Determine the grid item dimentions and position, based on how many items
+    // we need to display
     getStyle () {
         var containerHeight = this.state.height;
         var containerWidth = this.state.width;
@@ -42,6 +65,8 @@ export default class Grid extends Component {
             contentLength++;
         }
 
+        // Packing algorithm to determine the most efficient way to fit N items
+        // inside the container
         function calculateMaxCellSize (itemCount) {
             var maxSize = Math.sqrt((containerHeight * containerWidth) / itemCount);
             var numberOfPossibleWholeTilesH = Math.floor(containerHeight / maxSize);
@@ -58,13 +83,9 @@ export default class Grid extends Component {
             return maxSize;
         }
 
-        // Determine the grid item dimentions and position, based on how
-        // many items we need to display
         switch (contentLength) {
             case 1:
             default: {
-                // length = _.min(containerHeight, containerWidth) / 2;
-
                 length = calculateMaxCellSize(2);
 
                 for (; i < contentLength; i++) {
@@ -78,8 +99,6 @@ export default class Grid extends Component {
             }
 
             case 2: {
-                // length = containerWidth / 2;
-
                 length = calculateMaxCellSize(2);
 
                 for (; i < contentLength; i++) {
@@ -97,8 +116,6 @@ export default class Grid extends Component {
             }
 
             case 3: {
-                // length = containerHeight / 2;
-
                 length = calculateMaxCellSize(6);
 
                 for (; i < contentLength; i++) {
@@ -119,8 +136,6 @@ export default class Grid extends Component {
             }
 
             case 4: {
-                // length = containerHeight / 2;
-
                 length = calculateMaxCellSize(4);
 
                 for (; i < contentLength; i++) {
@@ -137,8 +152,6 @@ export default class Grid extends Component {
             }
 
             case 5: {
-                // length = containerWidth / 3;
-
                 length = calculateMaxCellSize(6);
 
                 for (; i < contentLength; i++) {
@@ -160,8 +173,6 @@ export default class Grid extends Component {
             }
 
             case 6: {
-                // length = containerWidth / 3;
-
                 length = calculateMaxCellSize(6);
 
                 for (; i < contentLength; i++) {
@@ -180,11 +191,7 @@ export default class Grid extends Component {
             }
 
             case 8: {
-                length = containerWidth / 4;
-
-                // Todo: Won't work until the container dimentions are set (CSS)
-                // for the /add/about screen:
-                // length = calculateMaxCellSize(8);
+                length = calculateMaxCellSize(8);
 
                 for (; i < contentLength; i++) {
                     itemStyle[i] = {
@@ -208,8 +215,15 @@ export default class Grid extends Component {
         var itemStyle = this.getStyle();
         var childrenCount = React.Children.count(this.props.children);
 
+        // Sets the `flex` style property back to its default once the grid has
+        // determined how best to utilise the available screen real-estate.
+        // This allows us to vertically re-center the page content.
+        var className = (this.refs.grid && this.state.rendered)
+            ? styles.gridWrapperNext
+            : styles.gridWrapper;
+
         return (
-            <div ref='grid' className={styles.gridWrapper}>
+            <div ref='grid' className={className}>
                 <ul className={styles.grid}>
                     {React.Children.map(this.props.children, (content, i) => (
                         <li key={i} className={styles.item} style={itemStyle[i]}>
