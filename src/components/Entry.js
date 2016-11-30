@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import moment from 'moment';
+import _ from 'lodash';
 
 // import EntryViewer from './EntryViewer';
 
 import styles from './css/Entry.module.css';
 
 export class Entry extends Component {
+    static colourVariants = [
+        styles.entryVariantA,
+        styles.entryVariantB,
+        styles.entryVariantC,
+        styles.entryVariantD,
+        styles.entryVariantE,
+        styles.entryVariantF,
+        styles.entryVariantG
+    ];
+
     constructor (props) {
         super(props);
 
@@ -37,8 +48,12 @@ export class Entry extends Component {
     }
 
     render () {
+        var styleVariant = (this.props.entry.media.text)
+            ? this.constructor.colourVariants[_.random(0, this.constructor.colourVariants.length)]
+            : styles.entry;
+
         return (
-            <a href="/entry" className={styles.entry} onClick={this.showViewer}>
+            <a href="/entry" className={styleVariant} onClick={this.showViewer}>
                 <div>
                     <div>
                         {this.props.entry.media.text && (

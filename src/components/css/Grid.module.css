@@ -4,6 +4,11 @@
 	margin: -.5rem;
 }
 
+.gridWrapperNext {
+	composes: gridWrapper;
+	flex: 0 1 auto;
+}
+
 .grid {
 	display: flex;
 	justify-content: center;
