@@ -111,36 +111,6 @@ const helpers = {
                 },
             ],
         },
-        Request: {
-            basic: [
-                {
-                    model: models.Topic,
-                    as: 'RequestTopicTopics',
-                },
-                {
-                    model: models.Region,
-                    as: 'Region',
-                },
-            ]
-        },
-        UserRequest: {
-            basic: [
-                {
-                    model: models.Request,
-                    as: 'Request',
-                    include: [
-                        {
-                            model: models.Topic,
-                            as: 'RequestTopicTopics',
-                        },
-                        {
-                            model: models.Region,
-                            as: 'Region',
-                        },
-                    ]
-                }
-            ],
-        },
     },
     queries: {
         Topic: {
