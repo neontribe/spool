@@ -15,7 +15,5 @@ require('./AddControls');
 require('./Signup');
 require('./Dashboard');
 require('./IconCard');
-require('./RequestForm');
-require('./Request');
 require('./TopicsOverview');
 require('./IconChooser');

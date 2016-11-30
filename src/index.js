@@ -9,7 +9,6 @@ import AuthService from './auth/AuthService';
 import App from './App';
 import { TimelineContainer } from './components/Timeline';
 import { DashboardContainer } from './components/Dashboard';
-import { RequestFormContainer } from './components/RequestForm';
 import SimpleLogin from './components/SimpleLogin';
 import { SignupContainer } from './components/Signup';
 import { AddEntryContainer } from './components/AddEntry';
@@ -19,8 +18,6 @@ import MediaForm from './components/MediaForm';
 import VideoForm from './components/VideoForm';
 import ImageForm from './components/ImageForm';
 import TextForm from './components/TextForm';
-import { RequestViewerContainer } from './components/RequestViewer';
-import { EntryRequestViewerContainer } from './components/EntryRequestViewer';
 
 import './css/global.css';
 
@@ -68,12 +65,6 @@ const SignupQueries = {
     ...MetaQueries,
 };
 
-const EntryQueries = {
-    entry: () => Relay.QL`query { node(id: $entryId) }`,
-    ...CreatorQueries,
-    ...UserQueries,
-};
-
 setupRelayNetworkLayer();
 
 ReactDOM.render(
@@ -86,12 +77,7 @@ ReactDOM.render(
             }} queries={SignupQueries} onEnter={auth.requireAuthOnEnter}/>
 
             <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
-            <Route path="requests">
-                <Route path="all" component={RequestViewerContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
-                <Route path="add" component={RequestFormContainer} queries={ConsumerQueries} auth={auth} onEnter={auth.requireAuthOnEnter}/>
-            </Route>
             <Route path="home" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
-            <Route path="entry/:entryId/requests" component={EntryRequestViewerContainer} queries={EntryQueries} onEnter={auth.requireAuthOnEnter}/>
             <Route path="add" component={AddEntryContainer} queries={CreatorQueries}>
                 <IndexRedirect to="about"/>
                 <Route path="about" component={TopicForm} />

@@ -9,7 +9,6 @@ type Consumer implements Node {
   creatorActivityCount(range: DateRangeInput): CreatorActivityCount
   topicCounts(range: DateRangeInput): [TopicCount]
   topics: [Topic]
-  requests(after: String, first: Int, before: String, last: Int): RequestConnection
 }
 
 input CreateEntryInput {
@@ -23,23 +22,12 @@ type CreateEntryPayload {
   clientMutationId: String
 }
 
-input CreateRequestInput {
-  request: RequestInput
-  clientMutationId: String
-}
-
-type CreateRequestPayload {
-  consumer: Consumer
-  requestEdge: RequestEdge
-  clientMutationId: String
-}
-
 type Creator implements Node {
   # The ID of an object
   id: ID!
   topics: [Topic]
   entries(after: String, first: Int, before: String, last: Int): EntryConnection
-  requests(after: String, first: Int, before: String, last: Int): UserRequestConnection
+  sharing: Boolean
   happyCount: Int
   sadCount: Int
 }
@@ -62,7 +50,6 @@ type Entry implements Node {
   topics: [Topic]
   created: String
   updated: String
-  requests: [EntryRequest]
 }
 
 # A connection to a list of items.
@@ -89,11 +76,6 @@ input EntryInput {
   topics: [String]
 }
 
-type EntryRequest {
-  access: Boolean
-  userRequest: UserRequest
-}
-
 type Media {
   text: String
   video: String
@@ -117,10 +99,7 @@ type Meta {
 
 type Mutations {
   createEntry(input: CreateEntryInput!): CreateEntryPayload
-  createRequest(input: CreateRequestInput!): CreateRequestPayload
   updateUser(input: UpdateUserInput!): UpdateUserPayload
-  updateUserRequest(input: UpdateUserRequestInput!): UpdateUserRequestPayload
-  updateEntryRequest(input: UpdateEntryRequestInput!): UpdateEntryRequestPayload
 }
 
 # An object with an ID
@@ -160,49 +139,6 @@ type RegionDefinitionType {
   type: String
 }
 
-type Request implements Node {
-  # The ID of an object
-  id: ID!
-  from: String
-  to: String
-  region: String
-  topics: [Topic]
-  reason: String
-  name: String
-  org: String
-  avatar: String
-  created: String
-  updated: String
-  entries(after: String, first: Int, before: String, last: Int): EntryConnection
-}
-
-# A connection to a list of items.
-type RequestConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [RequestEdge]
-}
-
-# An edge in a connection.
-type RequestEdge {
-  # The item at the end of the edge
-  node: Request
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-input RequestInput {
-  range: DateRangeInput
-  reason: String
-  name: String
-  org: String
-  avatar: String
-  topics: [String]
-}
-
 type RoleDefinition {
   type: String
   name: String
@@ -224,18 +160,6 @@ type TopicCount {
   creatorCount: Int
 }
 
-input UpdateEntryRequestInput {
-  entryId: String!
-  userRequestId: String!
-  access: Boolean
-  clientMutationId: String
-}
-
-type UpdateEntryRequestPayload {
-  creator: Creator
-  clientMutationId: String
-}
-
 input UpdateUserInput {
   user: UserInput
   clientMutationId: String
@@ -243,17 +167,6 @@ input UpdateUserInput {
 
 type UpdateUserPayload {
   user: User
-  clientMutationId: String
-}
-
-input UpdateUserRequestInput {
-  userRequest: UserRequestInputType
-  clientMutationId: String
-}
-
-type UpdateUserRequestPayload {
-  creator: Creator
-  userRequestId: String
   clientMutationId: String
 }
 
@@ -267,37 +180,4 @@ type User implements Node {
 input UserInput {
   region: String!
   roleSecret: String!
-}
-
-type UserRequest implements Node {
-  # The ID of an object
-  id: ID!
-  request: Request
-  seen: Boolean
-  created: String
-  updated: String
-}
-
-# A connection to a list of items.
-type UserRequestConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [UserRequestEdge]
-}
-
-# An edge in a connection.
-type UserRequestEdge {
-  # The item at the end of the edge
-  node: UserRequest
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-input UserRequestInputType {
-  id: String!
-  access: Boolean!
-  hide: Boolean!
 }
