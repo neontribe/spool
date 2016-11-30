@@ -273,11 +273,11 @@ const CreatorType = new ql.GraphQLObjectType({
             },
         },
         sharing: {
-            ql.GraphQLBoolean,
+            type: ql.GraphQLBoolean,
             resolve: (root, args, context) => {
-                return context.sharing,
+                return context.sharing;
             },
-        }
+        },
         happyCount: {
             type: ql.GraphQLInt,
             resolve: (root, args, context) => {

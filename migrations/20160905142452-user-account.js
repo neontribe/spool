@@ -18,6 +18,9 @@ module.exports = {
           auth_hash: {
               type: Sequelize.STRING,
           },
+          sharing: {
+              type: Sequelize.BOOLEAN,
+          },
           role_id: {
             type: Sequelize.INTEGER,
             references: {
