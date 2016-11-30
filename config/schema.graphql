@@ -28,6 +28,8 @@ type Creator implements Node {
   topics: [Topic]
   entries(after: String, first: Int, before: String, last: Int): EntryConnection
   sharing: Boolean
+  seenSharing: Boolean
+  seenIntroduction: Boolean
   happyCount: Int
   sadCount: Int
 }
