@@ -137,7 +137,7 @@ export class Signup extends React.Component {
 
                 <div>
                     <form onSubmit={this.onSubmit}>
-                        <form>
+                        <div>
                             <label>
                                 Where do you live?
                                 <div>
@@ -150,16 +150,16 @@ export class Signup extends React.Component {
 
                                         {this.props.meta.regions.map(({type}) => {
                                             return (
-                                                <option value={type}>{type}</option>
+                                                <option value={type} key={type}>{type}</option>
                                             );
                                         })}
                                     </select>
                                 </div>
                             </label>
-                        </form>
+                        </div>
 
                         {this.state.showRoleChooser && (
-                            <form>
+                            <div>
                                 <label>
                                     What kind of access do you need?
                                     <div>
@@ -175,11 +175,11 @@ export class Signup extends React.Component {
                                         })}
                                     </div>
                                 </label>
-                            </form>
+                            </div>
                         )}
 
                         {(this.state.requireSecret && this.state.showRoleChooser) &&
-                            <form>
+                            <div>
                                 <label>
                                     Unlock Code
                                     <div>
@@ -194,16 +194,16 @@ export class Signup extends React.Component {
 
                                 {/*<HelpBlock>An unlock code is required to enable access to the dashboard</HelpBlock>*/}
                                 <p>An unlock code is required to enable access to the dashboard</p>
-                            </form>
+                            </div>
                         }
 
-                        <form>
+                        <div>
                             <button
                                 type='submit'
                                 disabled={!(this.state.region && this.state.role)}
                                 className={controls.btn}
                             >OK</button>
-                        </form>
+                        </div>
                     </form>
                 </div>
             </div>

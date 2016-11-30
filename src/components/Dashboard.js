@@ -36,8 +36,6 @@ export class Dashboard extends Component {
         return (
             <div>
                 <div>
-                    <Link to={'/requests/all'}>All Requests</Link>
-                    <Link to={'/requests/add'}>New Access Request</Link>
 
                     {/*<FormGroup controlId="dateRange">*/}
                     <div>
@@ -93,15 +91,6 @@ export const DashboardContainer = Relay.createContainer(withRoles(Dashboard, {
                     }
                     entryCount
                     creatorCount
-                }
-                requests(first: 100) {
-                    edges {
-                        node {
-                                from
-                                to
-                                region
-                        }
-                    }
                 }
             }
         `,

@@ -24,15 +24,8 @@ class AddEntry extends Component {
     saveEntry (entry) {
         var creator = this.props.creator;
 
-        var onSuccess = ({createEntry}) => {
-            var entry = createEntry.entryEdge.node;
-
-            if (entry.requests.length > 0) {
-                // We have a user request for this new entry
-                this.props.router.push('/entry/' + entry.id + '/requests');
-            } else {
-                this.props.router.push('/home');
-            }
+        var onSuccess = () => {
+            this.props.router.push('/home');
         }
 
         this.props.relay.commitUpdate(

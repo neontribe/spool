@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import _ from 'lodash';
 
 import { EntryContainer, Entry } from './Entry';
-import UserRequest, { UserRequestContainer } from './UserRequest';
 // import Intro from './Intro';
 import Grid from './Grid';
 import withRoles from '../auth/withRoles.js';
@@ -45,33 +44,11 @@ export class Timeline extends Component {
         });
     }
 
-    renderRequests () {
-        if (this.props.creator.requests.edges.length) {
-            var request = _.first(this.props.creator.requests.edges).node;
-
-            if (this.props.relay) {
-                return (
-                    <UserRequestContainer
-                        userRequest={request}
-                        creator={this.props.creator}
-                    />
-                );
-            }
-
-            return (
-                <UserRequest
-                    userRequest={request}
-                    creator={this.props.creator}
-                />
-            );
-        }
-    }
 
     render () {
         // return (
         //     <div>
         //         <div>
-        //             {this.renderRequests()}
         //         </div>
 
         //         <Link to={'/add'} className='btn'>{(this.state.hasEntries) ? 'Add New Entry' : 'Get Started'}</Link>
@@ -134,15 +111,6 @@ export const TimelineContainer = Relay.createContainer(withRoles(Timeline, {
                     }
                 }
             }
-            requests(first: $first) {
-                edges {
-                    node {
-                        id,
-                        ${UserRequestContainer.getFragment('userRequest')}
-                    }
-                }
-            }
-            ${UserRequestContainer.getFragment('creator')}
         }`,
     }
 });
