@@ -410,12 +410,13 @@ const deleteEntry = relayql.mutationWithClientMutationId({
     },
     mutateAndGetPayload: function mutateUserPayload({entryId}, context) {
         const ownerId = context.userId;
+        const { id } = relayql.fromGlobalId(entryId);
         return models.Entry.destroy({
             where: {
-                entryId,
+                entryId: id,
                 ownerId,
             },
-        });
+        }).catch((e) => winston.warn(e));
     }
 }); 
 
