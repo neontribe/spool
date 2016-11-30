@@ -84,10 +84,7 @@ export class Timeline extends Component {
         // );
 
         var addEntryControl = (
-            <Link to={'/add'} className={controls.btnNew}>
-                <span role="presentation">+</span>
-                Add New Entry
-            </Link>
+            <Link to={'/add'} className={styles.addEntryControl}>Add New Entry</Link>
         );
 
         return (
@@ -95,10 +92,40 @@ export class Timeline extends Component {
                 {/* Todo: Filter controls */}
                 <ul className={styles.filters}>
                     <li className={styles.filter}>
-                        <button className={styles.filterControl}>😄</button>
+                        <a role='button' className={styles.filterControl}>😄</a>
                     </li>
                     <li className={styles.filter}>
-                        <button className={styles.filterControl}>😡</button>
+                        <a role='button' className={styles.filterControl}>😡</a>
+                    </li>
+                    <li className={styles.filter}>
+                        <a role='button' className={styles.filterControl}>&times;</a>
+                    </li>
+                    <li className={styles.filter}>
+                        <a role='button' className={styles.filterControl}>&times;</a>
+                    </li>
+                    <li className={styles.filter}>
+                        <a role='button' className={styles.filterControl}>&times;</a>
+                    </li>
+                    <li className={styles.filter}>
+                        <a role='button' className={styles.filterControl}>&times;</a>
+                    </li>
+                    <li className={styles.filter}>
+                        <a role='button' className={styles.filterControl}>&times;</a>
+                    </li>
+                    <li className={styles.filter}>
+                        <a role='button' className={styles.filterControl}>&times;</a>
+                    </li>
+                    <li className={styles.filter}>
+                        <a role='button' className={styles.filterControl}>&times;</a>
+                    </li>
+                    <li className={styles.filter}>
+                        <a role='button' className={styles.filterControl}>&times;</a>
+                    </li>
+                    <li className={styles.filter}>
+                        <a role='button' className={styles.filterControl}>&times;</a>
+                    </li>
+                    <li className={styles.filter}>
+                        <a role='button' className={styles.filterControl}>&times;</a>
                     </li>
                 </ul>
 

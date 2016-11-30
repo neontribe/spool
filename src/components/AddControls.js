@@ -23,32 +23,32 @@ class AddControls extends Component {
     render () {
         return (
             <div className={controls.btnToolbar}>
-                <div>
-                    {this.onBack && (
-                        <button
-                            onClick={this.onBack}
-                            disabled={this.props.disableBack}
-                            className={controls.btn}
-                        >Back</button>
-                    )}
+                {this.onBack && (
+                    <a
+                        role='button'
+                        onClick={this.onBack}
+                        disabled={this.props.disableBack}
+                        className={controls.btnRaised}
+                    >Back</a>
+                )}
 
-                    {this.onQuit && (
-                        <button
-                            onClick={this.onQuit}
-                            disabled={this.props.disableQuit}
-                            className={controls.btn}
-                        >Quit</button>
-                    )}
-                </div>
-                <div>
-                    {this.onNext && (
-                        <button
-                            onClick={this.onNext}
-                            disabled={this.props.disableNext}
-                            className={controls.btn}
-                        >OK</button>
-                    )}
-                </div>
+                {this.onQuit && (
+                    <a
+                        role='button'
+                        onClick={this.onQuit}
+                        disabled={this.props.disableQuit}
+                        className={controls.btnRaised}
+                    >Quit</a>
+                )}
+
+                {this.onNext && (
+                    <a
+                        role='button'
+                        onClick={this.onNext}
+                        disabled={this.props.disableNext}
+                        className={controls.btnRaised}
+                    >OK</a>
+                )}
             </div>
         );
     }

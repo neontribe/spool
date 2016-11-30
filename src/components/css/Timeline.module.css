@@ -16,12 +16,17 @@
 }
 
 .filterControl {
+	composes: btnRaised from '../../css/Controls.module.css';
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	height: 50px;
 	width: 50px;
-	color: #fff;
+	padding: 1.75rem;
 	font-size: 2rem;
-	background-color: rgba(0, 0, 0, .5);
+}
+
+.addEntryControl {
+	composes: btnRaised from '../../css/Controls.module.css';
+	width: 100%;
 }

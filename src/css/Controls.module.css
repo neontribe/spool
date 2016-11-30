@@ -1,32 +1,108 @@
 .btnToolbar {
-	margin-top: 1rem;
+	display: flex;
+	justify-content: center;
+	margin: 1rem 0;
 	text-align: center;
 }
 
 .btn {
-    display: inline-block;
-    min-width: 200px;
-    color: #fff;
-    padding: 3rem 5rem;
-    border-radius: 3rem;
-    background: rgba(0, 0, 0, .5);
+	display: inline-block;
+	min-width: 200px;
+	color: #fff;
+	padding: 3rem 5rem;
+	border-radius: 3rem;
+	background: rgba(0, 0, 0, .5);
 }
 
-.btnNew {
-	display: flex;
-	flex-direction: column;
-	flex: 1;
-	align-self: stretch;
-	align-items: center;
-	justify-content: center;
-    font-size: 1.25rem;
-	text-shadow: 0 0 1px rgba(0, 0, 0, .6);
-	background-color: #8bc34a;
-}
-
-.btnNew > span {
-	display: block;
-	font-size: 5rem;
+.btnRaised {
+	min-width: 200px;
+	position: relative;
+	min-width: 2.5rem;
+	padding: 2rem 3.5rem;
 	font-weight: bold;
-	line-height: 1;
+	color: #fff;
+	text-shadow: 0 0 1px rgba(0, 0, 0, .6);
+	text-align: center;
+	text-decoration: none;
+	outline: none;
+	cursor: pointer;
+	background-color: #bbb;
+
+	border: rgba(0, 0, 0, 0.3) 1px solid;
+	border-top-color: rgba(0, 0, 0, 0.1);
+	border-left-color: rgba(0, 0, 0, 0.2);
+	border-right-color: rgba(0, 0, 0, 0.2);
+	border-bottom-color: rgba(0, 0, 0, 0.3);
+
+	box-shadow:
+		inset rgb(179, 179, 179) -5px -50px 10px,
+		inset rgba(149, 146, 146, 0.34) 0px 30px 10px,
+		inset rgba(125, 125, 125, 0.34) 0px 2px 1px,
+		rgba(31, 31, 31, 0.4) 0px 10px 15px;
+}
+
+.btnRaised:before {
+	background-color: #0a845a;
+}
+
+.btnRaised,
+.btnRaised:before {
+	border-radius: 50px;
+}
+
+.btnRaised:before,
+.btnRaised:after {
+	content: '';
+	display: block;
+	position: absolute;
+	width: 100%;
+}
+
+.btnRaised:before {
+	top: 10px;
+	left: 0;
+	right: 0;
+	height: calc(100%);
+	margin: -1rem auto;
+	background: linear-gradient(to left, #666666 0%, #bbbbbb 50%, #666666 100%);
+	box-shadow: #000 0px 0px 2px;
+	z-index: -50;
+}
+
+.btnRaised:after {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: calc(100% + 10px);
+	margin: -10px auto;
+	border-radius: 55px;
+	background-color: rgba(0, 0, 0, 0.1);
+	z-index: -100;
+
+	box-shadow:
+		inset rgba(255, 255, 255, 0.1) 0px -5px 5px,
+		rgba(0, 0, 0, 0.1) 0px 3px 3px,
+		rgba(255, 255, 255, 0.05) 0px -3px 3px;
+}
+
+.btnRaised:active {
+	top: -3px;
+	color: #fff;
+	text-shadow: 0 0 2px rgba(0, 0, 0, .3);
+
+	box-shadow:
+		inset rgba(255, 255, 255, 0.2) 0px -30px 15px,
+		inset rgba(255, 255, 255, 0.1) -25px 25px 10px,
+		inset rgba(255, 255, 255, 1) 0px 2px 1px,
+		rgba(0, 0, 0, 0.2) 0px 2px 3px;
+}
+
+.btnRaised:active:before {
+	top: 15px;
+	height: 100%;
+}
+
+.btnRaised:active:after {
+	display: none;
 }

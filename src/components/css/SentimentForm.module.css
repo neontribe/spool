@@ -12,4 +12,5 @@
 	align-self: stretch;
 	align-items: center;
 	font-size: 5rem;
+	background-color: rgba(0, 0, 0, .5);
 }

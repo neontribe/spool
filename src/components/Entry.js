@@ -49,7 +49,7 @@ export class Entry extends Component {
 
     render () {
         var styleVariant = (this.props.entry.media.text)
-            ? this.constructor.colourVariants[_.random(0, this.constructor.colourVariants.length)]
+            ? this.constructor.colourVariants[_.random(0, this.constructor.colourVariants.length - 1)]
             : styles.entry;
 
         return (
