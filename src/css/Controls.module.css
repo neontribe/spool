@@ -8,9 +8,9 @@
 .btn {
 	display: inline-block;
 	min-width: 200px;
-	color: #fff;
 	padding: 3rem 5rem;
 	border-radius: 3rem;
+	color: #fff;
 	background: rgba(0, 0, 0, .5);
 }
 
@@ -20,6 +20,7 @@
 	min-width: 2.5rem;
 	padding: 2rem 3.5rem;
 	font-weight: bold;
+	font-size: 1.25rem;
 	color: #fff;
 	text-shadow: 0 0 1px rgba(0, 0, 0, .6);
 	text-align: center;

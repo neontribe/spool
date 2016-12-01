@@ -43,10 +43,7 @@ export default class Grid extends Component {
         if (this.refs.grid) {
             this.setState({
                 height: this.refs.grid.offsetHeight,
-                width: this.refs.grid.offsetWidth
-            });
-
-            this.setState({
+                width: this.refs.grid.offsetWidth,
                 rendered: true
             });
         }

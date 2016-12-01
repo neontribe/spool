@@ -47,7 +47,7 @@ class AddControls extends Component {
                         onClick={this.onNext}
                         disabled={this.props.disableNext}
                         className={controls.btnRaised}
-                    >OK</a>
+                    >Next</a>
                 )}
             </div>
         );

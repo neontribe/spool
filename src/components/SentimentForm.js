@@ -27,8 +27,12 @@ class SentimentForm extends Component {
                 <h2 className={headings.large}>How does it make you feel?</h2>
 
                 <Grid enforceConsistentSize={true}>
-                    <a role='button' className={styles.option} onClick={_.partial(this.continue, 'happy')}>😄</a>
-                    <a role='button' className={styles.option} onClick={_.partial(this.continue, 'sad')}>😡</a>
+                    <a role='button' className={styles.optionHappy} onClick={_.partial(this.continue, 'happy')}>
+                        {/* Todo: Add hidden text (a11y) */}
+                    </a>
+                    <a role='button' className={styles.optionSad} onClick={_.partial(this.continue, 'sad')}>
+                        {/* Todo: Add hidden text (a11y) */}
+                    </a>
                 </Grid>
             </div>
         );
