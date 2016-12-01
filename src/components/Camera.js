@@ -48,10 +48,10 @@ class Camera extends Component {
 
     startMediaStream () {
         // First get a hold of getUserMedia, if present
-		const getUserMedia = (navigator.getUserMedia ||
-				navigator.webkitGetUserMedia ||
-				navigator.mozGetUserMedia ||
-				navigator.msGetUserMedia);
+        const getUserMedia = (navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia);
 
         if (!getUserMedia) {
             this.setState({ mediaFailure: { name: 'getUserMediaUnsupported' }});
@@ -167,7 +167,7 @@ class Camera extends Component {
                     {this.state.thumbnail && (
                         <div>
                             {/*<ResponsiveEmbed a4by3>*/}
-                            <Image
+                            <img
                                 src={this.state.thumbnail.dataUri}
                                 alt="The photo you just took"
                             />
@@ -237,10 +237,10 @@ Camera.mediaCheck = function () {
         }
 
         // First get a hold of getUserMedia, if present
-    	const getUserMedia = (navigator.getUserMedia ||
-    			navigator.webkitGetUserMedia ||
-    			navigator.mozGetUserMedia ||
-    			navigator.msGetUserMedia);
+        const getUserMedia = (navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia);
 
         if (!getUserMedia) {
             reject({ name: 'getUserMediaUnsupported' });
