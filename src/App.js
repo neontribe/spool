@@ -53,31 +53,33 @@ class App extends Component {
           {/* Todo */}
           <div className={styles.headerMeta}>(Todo) Progress bar / Entry view details</div>
 
-          <Hamburger
-            text={this.state.profile.name}
-            toggleClassName={styles.contextMenuToggle}
-            contentClassName={styles.contextMenuContent}
-          >
-            <ul className={styles.contextMenu}>
-              <li className={styles.contextMenuItem}>
-                <Link to={'/'}>Home</Link>
-              </li>
+          {this.state.profile && (
+            <Hamburger
+              text={this.state.profile.name}
+              toggleClassName={styles.contextMenuToggle}
+              contentClassName={styles.contextMenuContent}
+            >
+              <ul className={styles.contextMenu}>
+                <li className={styles.contextMenuItem}>
+                  <Link to={'/'}>Home</Link>
+                </li>
 
-              <li className={styles.contextMenuItem}>
-                {/* Todo: Need to format the render of ProfileLink*/}
-                <ProfileLink
-                  profile={this.state.profile}
-                  disabled={!this.props.route.auth.loggedIn()}
-                />
-              </li>
+                <li className={styles.contextMenuItem}>
+                  {/* Todo: Need to format the render of ProfileLink*/}
+                  <ProfileLink
+                    profile={this.state.profile}
+                    disabled={!this.props.route.auth.loggedIn()}
+                  />
+                </li>
 
-              <li className={styles.contextMenuItem}>
-                {this.props.route.auth.loggedIn() && (
-                  <a href='/logout' onClick={this.logout}>Log out</a>
-                )}
-              </li>
-            </ul>
-          </Hamburger>
+                <li className={styles.contextMenuItem}>
+                  {this.props.route.auth.loggedIn() && (
+                    <a href='/logout' onClick={this.logout}>Log out</a>
+                  )}
+                </li>
+              </ul>
+            </Hamburger>
+          )}
         </div>
 
         <div className={styles.content}>{children}</div>
