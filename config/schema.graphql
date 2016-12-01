@@ -28,6 +28,8 @@ type Creator implements Node {
   topics: [Topic]
   entries(after: String, first: Int, before: String, last: Int): EntryConnection
   sharing: Boolean
+  seenSharing: Boolean
+  seenIntroduction: Boolean
   happyCount: Int
   sadCount: Int
 }
@@ -40,6 +42,17 @@ type CreatorActivityCount {
 input DateRangeInput {
   from: String!
   to: String!
+}
+
+input DeleteEntryInput {
+  entryId: Int
+  clientMutationId: String
+}
+
+type DeleteEntryPayload {
+  creator: Creator
+  deletedEntryId: Int
+  clientMutationId: String
 }
 
 type Entry implements Node {
@@ -100,6 +113,7 @@ type Meta {
 type Mutations {
   createEntry(input: CreateEntryInput!): CreateEntryPayload
   updateUser(input: UpdateUserInput!): UpdateUserPayload
+  deleteEntry(input: DeleteEntryInput!): DeleteEntryPayload
 }
 
 # An object with an ID
