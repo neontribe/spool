@@ -118,6 +118,9 @@
 	padding: 1rem;
 	text-align: left;
 	background-color: rgba(0, 0, 0, .1);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .videoOverlay {

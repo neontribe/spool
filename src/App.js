@@ -46,7 +46,7 @@ class App extends Component {
     return (
       <div className={styles.app}>
         <div className={styles.header}>
-          <h1>
+          <h1 className={styles.logo}>
             <Link to={'/'}>SPOOL</Link>
           </h1>
 

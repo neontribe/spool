@@ -44,8 +44,8 @@
 .hamburgerInner,
 .hamburgerInner::before,
 .hamburgerInner::after {
-	width: 2rem;
-	height: 4px;
+	width: 1.75rem;
+	height: 3px;
 	background-color: #fff;
 	border-radius: 4px;
 	position: absolute;
@@ -61,11 +61,11 @@
 }
 
 .hamburgerInner::before {
-	top: -10px;
+	top: -8px;
 }
 
 .hamburgerInner::after {
-	bottom: -10px;
+	bottom: -8px;
 }
 
 .hamburgerInner::before {
