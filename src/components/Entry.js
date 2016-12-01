@@ -86,7 +86,7 @@ export class Entry extends Component {
                     </div>
 
                     <div className={styles.topics}>
-                        {this.props.entry.topics.map((t) => t.name).join(', ')}
+                        {this.props.entry.topics.map((t) => t.name).join(' • ')}
                     </div>
 
                     {/*this.props.withViewer && (
