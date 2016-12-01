@@ -5,65 +5,72 @@
 	justify-content: center;
 	align-self: stretch;
 	align-items: center;
-	color: #fff;
 	text-align: center;
+	color: #212121;
+
+	box-shadow:
+		0 10px 20px rgba(0, 0, 0, 0.19),
+		0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.entryLight {
+	composes: entry;
+	color: #fff;
+	text-shadow: 0 0 1px rgba(0, 0, 0, .6);
 }
 
 .entryVariantA {
-	composes: entry;
+	composes: entryLight;
 	background-color: #e91e63;
 }
 
 .entryVariantB {
-	composes: entry;
+	composes: entryLight;
 	background-color: #2196f3;
 }
 
 .entryVariantC {
-	composes: entry;
+	composes: entryLight;
 	background-color: #009688;
 }
 
 .entryVariantD {
 	composes: entry;
-	color: #212121;
 	background-color: #ffeb3b;
 }
 
 .entryVariantE {
-	composes: entry;
+	composes: entryLight;
 	background-color: #9c27b0;
 }
 
 .entryVariantF {
-	composes: entry;
+	composes: entryLight;
 	background-color: #3f51b5;
 }
 
 .entryVariantG {
 	composes: entry;
-	color: #212121;
 	background-color: #ffc107;
 }
 
 .entryVariantH {
-	composes: entry;
+	composes: entryLight;
 	background-color: #f44336;
 }
 
 .entryVariantI {
-	composes: entry;
+	composes: entryLight;
 	background-color: #673ab7;
 }
 
 .entryVariantJ {
 	composes: entry;
-	color: #fff;
 	background-color: #cddc39;
 }
 
 .entryVariantK {
-	composes: entry;
+	composes: entryLight;
 	background-color: #4caf50;
 }
 
@@ -72,5 +79,41 @@
 	top: 0;
 	left: 1rem;
 	font-family: 'Lucida Sans Unicode', 'Arial Unicode MS';
-	font-size: 5rem;
+	font-size: 4rem;
+}
+
+.text {
+	font-family: 'Roboto Slab';
+	font-size: 3vw;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	overflow: auto;
+	width: 75%;
+	padding: 0 1rem;
+	margin: auto;
+
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+.date {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+}
+
+.topics {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	padding: 1rem;
+	text-align: left;
+	background-color: rgba(0, 0, 0, .1);
 }

@@ -15,7 +15,9 @@ export class Entry extends Component {
         styles.entryVariantD,
         styles.entryVariantE,
         styles.entryVariantF,
-        styles.entryVariantG
+        styles.entryVariantG,
+        styles.entryVariantI,
+        styles.entryVariantJ
     ];
 
     constructor (props) {
@@ -25,10 +27,6 @@ export class Entry extends Component {
 
         this.showViewer = this.showViewer.bind(this);
         this.hideViewer = this.hideViewer.bind(this);
-    }
-
-    formatTimestamp () {
-        return moment(this.props.entry.created).fromNow();
     }
 
     showViewer (e) {
@@ -48,7 +46,10 @@ export class Entry extends Component {
     }
 
     render () {
-        var styleVariant = (this.props.entry.media.text)
+        var created = moment(this.props.entry.created);
+        var text = this.props.entry.media.text;
+
+        var styleVariant = (text)
             ? this.constructor.colourVariants[_.random(0, this.constructor.colourVariants.length - 1)]
             : styles.entry;
 
@@ -56,8 +57,11 @@ export class Entry extends Component {
             <a href="/entry" className={styleVariant} onClick={this.showViewer}>
                 <div>
                     <div>
-                        {this.props.entry.media.text && (
-                            <blockquote>{this.props.entry.media.text}</blockquote>
+                        {text && (
+                            <blockquote className={styles.text}>
+                                {text.substring(0, 30)}
+                                {(text.length > 30) && '...'}
+                            </blockquote>
                         )}
                     </div>
 
@@ -65,9 +69,12 @@ export class Entry extends Component {
                         {(this.props.entry.sentiment.type === 'happy') ? '😄' : '😡'}
                     </div>
 
-                    <div>
-                        <div>{this.formatTimestamp()}</div>
-                        <div>{this.props.entry.topics.map((t) => t.name).join(', ')}</div>
+                    <div className={styles.date}>
+                        {created.format('Do MMMM')}
+                    </div>
+
+                    <div className={styles.topics}>
+                        {this.props.entry.topics.map((t) => t.name).join(', ')}
                     </div>
 
                     {/*this.props.withViewer && (
