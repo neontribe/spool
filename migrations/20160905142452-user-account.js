@@ -16,7 +16,7 @@ module.exports = {
               autoIncrement: true
           },
           auth_hash: {
-              type: Sequelize.STRING,
+              type: Sequelize.STRING(256),
           },
           seen_introduction: {
               type: Sequelize.BOOLEAN,

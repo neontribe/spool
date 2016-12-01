@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
             autoIncrement: true
         },
         authHash: {
-            type: DataTypes.STRING(255),
+            type: DataTypes.STRING(256),
             field: 'auth_hash',
             allowNull: true
         },
