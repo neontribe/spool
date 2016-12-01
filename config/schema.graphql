@@ -44,6 +44,17 @@ input DateRangeInput {
   to: String!
 }
 
+input DeleteEntryInput {
+  entryId: Int
+  clientMutationId: String
+}
+
+type DeleteEntryPayload {
+  creator: Creator
+  deletedEntryId: Int
+  clientMutationId: String
+}
+
 type Entry implements Node {
   # The ID of an object
   id: ID!
@@ -102,6 +113,7 @@ type Meta {
 type Mutations {
   createEntry(input: CreateEntryInput!): CreateEntryPayload
   updateUser(input: UpdateUserInput!): UpdateUserPayload
+  deleteEntry(input: DeleteEntryInput!): DeleteEntryPayload
 }
 
 # An object with an ID

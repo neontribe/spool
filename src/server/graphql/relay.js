@@ -406,6 +406,32 @@ const updateUser = relayql.mutationWithClientMutationId({
     }
 }); 
 
+const deleteEntry = relayql.mutationWithClientMutationId({
+    name: 'DeleteEntry',
+    inputFields: {
+        entryId: {
+            type: ql.GraphQLInt,
+        }
+    },
+    outputFields: {
+        creator: creatorField,
+        deletedEntryId: {
+            type: ql.GraphQLInt,
+            resolve: (entryId) => entryId,
+        }
+    },
+    mutateAndGetPayload: function mutateUserPayload({entryId}, context) {
+        const ownerId = context.userId;
+        const { id } = relayql.fromGlobalId(entryId);
+        return models.Entry.destroy({
+            where: {
+                entryId: id,
+                ownerId,
+            },
+        }).catch((e) => winston.warn(e));
+    }
+}); 
+
 module.exports = {
     fields: {
         nodeField,
@@ -417,5 +443,6 @@ module.exports = {
     mutations: {
         createEntry,
         updateUser,
+        deleteEntry,
     }
 }
