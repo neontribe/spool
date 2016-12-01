@@ -18,6 +18,12 @@ module.exports = {
           auth_hash: {
               type: Sequelize.STRING,
           },
+          seen_introduction: {
+              type: Sequelize.BOOLEAN,
+          },
+          seen_sharing: {
+              type: Sequelize.BOOLEAN,
+          },
           sharing: {
               type: Sequelize.BOOLEAN,
           },

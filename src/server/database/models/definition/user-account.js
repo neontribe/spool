@@ -12,6 +12,18 @@ module.exports = function(sequelize, DataTypes) {
             field: 'auth_hash',
             allowNull: true
         },
+        seenIntroduction: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            field: 'seen_introduction',
+            allowNull: false,
+        },
+        seenSharing: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            field: 'seen_sharing',
+            allowNull: false,
+        },
         sharing: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
