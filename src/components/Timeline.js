@@ -24,7 +24,8 @@ export class Timeline extends Component {
     }
 
     renderEntries () {
-        return this.props.creator.entries.edges.map((entry) => {
+        console.log(this.props.creator.entries);
+        return this.props.creator.entries.edges.slice(0, 5).map((entry) => { ////////////// Todo: Remove slice
             if (this.props.relay) {
                 return (
                     <EntryContainer
@@ -42,7 +43,6 @@ export class Timeline extends Component {
             );
         });
     }
-
 
     render () {
         // return (

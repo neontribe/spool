@@ -48,22 +48,34 @@ export class Entry extends Component {
     render () {
         var created = moment(this.props.entry.created);
         var text = this.props.entry.media.text;
+        var image = this.props.entry.media.imageThumbnail;
+        var video = this.props.entry.media.videoThumbnail;
+        var backgroundImage = image || video;
 
         var styleVariant = (text)
             ? this.constructor.colourVariants[_.random(0, this.constructor.colourVariants.length - 1)]
             : styles.entry;
 
         return (
-            <a href="/entry" className={styleVariant} onClick={this.showViewer}>
+            <a
+                href='/entry'
+                className={styleVariant}
+                onClick={this.showViewer}
+                style={backgroundImage && { backgroundImage: `url(${backgroundImage})` }}
+            >
                 <div>
-                    <div>
-                        {text && (
-                            <blockquote className={styles.text}>
-                                {text.substring(0, 30)}
-                                {(text.length > 30) && '...'}
-                            </blockquote>
-                        )}
-                    </div>
+                    {text && (
+                        <blockquote className={styles.text}>
+                            {text.substring(0, 30)}
+                            {(text.length > 30) && '...'}
+                        </blockquote>
+                    )}
+
+                    {video && (
+                        <div className={styles.videoOverlay}>
+                            <div className={styles.videoOverlayPlay}></div>
+                        </div>
+                    )}
 
                     <div className={styles.sentiment}>
                         {(this.props.entry.sentiment.type === 'happy') ? '😄' : '😡'}
