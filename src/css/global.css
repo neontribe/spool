@@ -5,6 +5,7 @@
 *:before,
 *:after {
     box-sizing: border-box;
+    outline: none;
 }
 
 html {
@@ -16,8 +17,8 @@ body {
     padding: 0;
     font-size: 1rem;
     font-family: 'Open Sans', sans-serif;
-    color: #212121;
-    background-color: #607d8b;
+    color: #fff;
+    background-color: #354c56;
 }
 
 button {
