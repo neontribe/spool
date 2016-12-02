@@ -5,27 +5,6 @@
 	justify-content: center;
 }
 
-.filters {
-	display: flex;
-	justify-content: center;
-	margin-bottom: 1rem;
-}
-
-.filter + .filter {
-	margin-left: 1rem;
-}
-
-.filterControl {
-	composes: btnRaised from '../../css/Controls.module.css';
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 50px;
-	width: 50px;
-	padding: 1.75rem;
-	font-size: 2rem;
-}
-
 .addEntryControl {
 	composes: btnRaised from '../../css/Controls.module.css';
 	width: 100%;

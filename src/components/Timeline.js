@@ -64,46 +64,6 @@ export class Timeline extends Component {
 
         return (
             <div className={styles.wrapper}>
-                {/* Todo: Filter controls */}
-                <ul className={styles.filters}>
-                    <li className={styles.filter}>
-                        <a role='button' className={styles.filterControl}>😄</a>
-                    </li>
-                    <li className={styles.filter}>
-                        <a role='button' className={styles.filterControl}>😡</a>
-                    </li>
-                    <li className={styles.filter}>
-                        <a role='button' className={styles.filterControl}>&times;</a>
-                    </li>
-                    <li className={styles.filter}>
-                        <a role='button' className={styles.filterControl}>&times;</a>
-                    </li>
-                    <li className={styles.filter}>
-                        <a role='button' className={styles.filterControl}>&times;</a>
-                    </li>
-                    <li className={styles.filter}>
-                        <a role='button' className={styles.filterControl}>&times;</a>
-                    </li>
-                    <li className={styles.filter}>
-                        <a role='button' className={styles.filterControl}>&times;</a>
-                    </li>
-                    <li className={styles.filter}>
-                        <a role='button' className={styles.filterControl}>&times;</a>
-                    </li>
-                    <li className={styles.filter}>
-                        <a role='button' className={styles.filterControl}>&times;</a>
-                    </li>
-                    <li className={styles.filter}>
-                        <a role='button' className={styles.filterControl}>&times;</a>
-                    </li>
-                    <li className={styles.filter}>
-                        <a role='button' className={styles.filterControl}>&times;</a>
-                    </li>
-                    <li className={styles.filter}>
-                        <a role='button' className={styles.filterControl}>&times;</a>
-                    </li>
-                </ul>
-
                 <Grid callToAction={addEntryControl}>
                     {this.renderEntries()}
                 </Grid>

@@ -35,7 +35,6 @@ export class Dashboard extends Component {
         return (
             <div>
                 <div>
-
                     {/*<FormGroup controlId="dateRange">*/}
                     <div>
                         {/*<ControlLabel>Scope</ControlLabel>*/}

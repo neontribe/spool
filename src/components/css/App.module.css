@@ -48,10 +48,14 @@
 }
 
 .contextMenuContent {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	position: absolute;
 	top: 50px; /* .header->height */
 	right: 0;
 	height: calc(100vh - 50px); /* .header->height */
+	box-shadow: -5px 15px 38px 0px rgba(0, 0, 0, .25);
 	background-color: #455a64;
 	z-index: 1;
 
@@ -64,6 +68,8 @@
 
 .contextMenuItem {
 	padding: .5rem 1rem;
+	margin-bottom: 1px;
+	background-color: rgba(0, 0, 0, .2);
 }
 
 .content {
@@ -89,4 +95,25 @@
 	.content {
 		height: calc(100vw - 50px); /* .header->height */
 	}
+}
+
+/* Filters. Todo: These styles will need moving */
+
+.filterControl {
+	display: flex;
+	justify-content: space-between;
+	padding: .5rem 1rem;
+	margin-top: 1px;
+}
+
+.filterOn {
+	composes: filterControl;
+	color: #212121;
+	background-color: #8bc34a;
+}
+
+.filterOff {
+	composes: filterControl;
+	color: #fff;
+	background-color: #f44336;
 }
