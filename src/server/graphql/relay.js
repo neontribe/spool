@@ -64,7 +64,7 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
                     include: [
                         {
                             model: models.UserAccount,
-                            as: 'EntryOwner',
+                            as: 'Owner',
                             where: {
                                 sharing: true,
                                 regionId: context.regionId
@@ -185,6 +185,45 @@ const EntryAccessType = new ql.GraphQLObjectType({
             resolve: ({range, topics, regionId}, args) => {
                 var from = moment(range.from);
                 var to = moment(range.to);
+
+                return relayql.connectionFromPromisedArray(models.Entry.findAll({
+                    where: {
+                        createdAt: {
+                            $between: [range.from, range.to]
+                        }
+                    },
+                    include: [
+                        {
+                            model: models.Medium,
+                            as: 'Medium',
+                        },
+                        {
+                            model: models.Sentiment,
+                            as: 'Sentiment',
+                        },
+                        {
+                            model: models.Topic,
+                            as: 'EntryTopicTopics',
+                            where: {
+                                //excluding entries which don't have a matching topic
+                                type: {
+                                    $in: topics
+                                },
+                            }
+                        },
+                        {
+                            model: models.UserAccount,
+                            as: 'Owner',
+                            where: {
+                                //and avoiding any entries whos sharing is diabled
+                                //or their origin region is not part of the request
+                                sharing: true,
+                                regionId: regionId
+                            }
+                        },
+                    ]
+                }).catch((e) => winston.warn(e)), args);
+
                 // find all matching entries
                 return relayql.connectionFromPromisedArray(models.Entry.findAll({
                     where: {
@@ -209,7 +248,7 @@ const EntryAccessType = new ql.GraphQLObjectType({
                         },
                         {
                             model: models.UserAccount,
-                            as: 'EntryOwner',
+                            as: 'Owner',
                             where: {
                                 //and avoiding any entries whos sharing is diabled
                                 //or their origin region is not part of the request
@@ -289,7 +328,9 @@ const ConsumerType = new ql.GraphQLObjectType({
                     type: types.TopicsInputType,
                 }
             },
-            resolve: ({regionId}, {range, topics}) => ({range, topics, regionId})
+            resolve: (root, {range, topics}, {regionId}) => {
+                return {range, topics, regionId}
+            }
         }
     },
     interfaces: [nodeInterface]
