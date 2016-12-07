@@ -29,7 +29,8 @@ export class IconCard extends Component {
                 />
 
                 <div className={styles.option}>
-                    <span>{this.props.message}</span>
+                    <div className={styles[`icon${this.props.icon}`]}></div>
+                    <div className={styles.message}>{this.props.message}</div>
                 </div>
             </label>
         );

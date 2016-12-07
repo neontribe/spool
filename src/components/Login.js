@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import AuthService from '../auth/AuthService';
 
+import controls from '../css/Controls.module.css';
+
 class Login extends Component {
   constructor (props) {
     super(props);
@@ -73,8 +75,8 @@ class Login extends Component {
             {/*<ControlLabel>E-mail</ControlLabel>*/}
             <h3>E-mail</h3>
             <input
-              type="email"
-              placeholder="yours@example.com"
+              type='email'
+              placeholder='yours@example.com'
               required={true}
               value={this.state.email}
               onChange={this.handleChange}
@@ -85,9 +87,9 @@ class Login extends Component {
             {/*<ControlLabel>Password</ControlLabel>*/}
             <h3>Password</h3>
             <input
-              type="text"
-              name="password"
-              placeholder="Password"
+              type='text'
+              name='password'
+              placeholder='Password'
               required={true}
               value={this.state.password}
               onChange={this.handleChange}
@@ -95,9 +97,9 @@ class Login extends Component {
           </div>
 
           <div>
-            <button type="submit">Sign In</button>
-            <button onClick={this.signUp}>Sign Up</button>
-            <button onClick={this.googleLogin}>Login with Google</button>
+            <button className={controls.btnRaised} type='submit'>Sign In</button>
+            <button className={controls.btnRaised} onClick={this.signUp}>Sign Up</button>
+            <button className={controls.btnRaised} onClick={this.googleLogin}>Login with Google</button>
           </div>
         </form>
       </div>
