@@ -158,8 +158,8 @@ const EntryType = new ql.GraphQLObjectType({
 var entryConnectionDefinition =
     relayql.connectionDefinitions({nodeType: EntryType});
 
-const CreatorActivityCountType = new ql.GraphQLObjectType({
-    name: 'CreatorActivityCount',
+const CreatorActivityType = new ql.GraphQLObjectType({
+    name: 'CreatorActivity',
     fields: {
         active: {
             type: ql.GraphQLInt,
@@ -176,20 +176,118 @@ const CreatorActivityCountType = new ql.GraphQLObjectType({
     }
 });
 
-const EntryAccessType = new ql.GraphQLObjectType({
-    name: 'EntryAccess',
+const CreatorSentimentType = new ql.GraphQLObjectType({
+    name: 'CreatorSentiment',
     fields: {
+        happy: {
+            type: ql.GraphQLInt,
+            resolve: (root) => {
+                return root.happy;
+            },
+        },
+        sad: {
+            type: ql.GraphQLInt,
+            resolve: (root) => {
+                return root.sad;
+            },
+        }
+    }
+});
+
+const DataAccessType = new ql.GraphQLObjectType({
+    name: 'DataAccess',
+    fields: {
+        sentiment: {
+            type: CreatorSentimentType,
+            resolve: function({range, regionId}) {
+                var from = moment(range.from);
+                var to = moment(range.to);
+                return models.Entry.findAll({
+                    where: {
+                        createdAt: {
+                            $between: [from.format(), to.format()]
+                        }
+                    },
+                    include: [
+                        {
+                            model: models.Sentiment,
+                            as: 'Sentiment',
+                        },
+                        {
+                            model: models.UserAccount,
+                            as: 'Owner',
+                            where: {
+                                regionId: regionId,
+                                createdAt: {
+                                    $gte: from.format()
+                                },
+                            }
+                        },
+                    ]
+                }).then(function(results) {
+                    return results.reduce(function(reduction, row) {
+                        reduction[row.Sentiment.type]++;
+                        return reduction;
+                    }, {
+                        happy: 0,
+                        sad: 0
+                    });
+                }).catch((e) => winston.warn(e));
+            }
+        },
+        topics: {
+            type: new ql.GraphQLList(types.TopicCountType),
+            args: {
+                range: {
+                    type: types.DateRangeInputType,
+                }
+            },
+            resolve: function({range, regionId}) {
+                var from = moment(range.from);
+                var to = moment(range.to);
+                return sequelize.query(helpers.queries.Topic.countsByRange(from.format(), to.format(), regionId))
+                .then(([results, metadata]) => results)
+                .catch((e) => winston.warn(e));
+            },
+        },
+        activity: {
+            type: CreatorActivityType,
+            resolve: function({range, regionId}, args) {
+                var from = moment(range.from);
+                var to = moment(range.to);
+                return sequelize.query(helpers.queries.UserAccount.entryActivity(from.format(), to.format(), regionId))
+                .then(([results, metadata]) => results)
+                .then(function(results) {
+                    return results.reduce(function(reduction, row) {
+                        if(row.count >= 1) {
+                            reduction.active++;
+                        } else {
+                            reduction.stale++;
+                        }
+                        return reduction;
+                    }, {
+                        active: 0,
+                        stale: 0
+                    });
+                }).catch((e) => winston.warn(e));
+            },
+        },
         entries: {
             type: entryConnectionDefinition.connectionType,
-            args: relayql.connectionArgs,
-            resolve: ({range, topics, regionId}, args) => {
+            args: Object.assign({
+                topics: {
+                    type: types.TopicsInputType,
+                },
+            }, relayql.connectionArgs),
+            resolve: ({range, regionId}, args) => {
+                const { topics } = args;
                 var from = moment(range.from);
                 var to = moment(range.to);
 
                 return relayql.connectionFromPromisedArray(models.Entry.findAll({
                     where: {
                         createdAt: {
-                            $between: [range.from, range.to]
+                            $between: [from.format(), to.format()]
                         }
                     },
                     include: [
@@ -223,41 +321,6 @@ const EntryAccessType = new ql.GraphQLObjectType({
                         },
                     ]
                 }).catch((e) => winston.warn(e)), args);
-
-                // find all matching entries
-                return relayql.connectionFromPromisedArray(models.Entry.findAll({
-                    where: {
-                        // which were created between the range parameters
-                        createdAt: {
-                            $between: [from, to]
-                        }
-                    },
-                    order: [
-                        ['createdAt', 'DESC']
-                    ],
-                    include: [
-                        {
-                            model: models.Topic,
-                            as: 'EntryTopicTopics',
-                            where: {
-                                //excluding entries which don't have a matching topic
-                                type: {
-                                    $in: topics
-                                }
-                            }
-                        },
-                        {
-                            model: models.UserAccount,
-                            as: 'Owner',
-                            where: {
-                                //and avoiding any entries whos sharing is diabled
-                                //or their origin region is not part of the request
-                                sharing: true,
-                                regionId: regionId
-                            }
-                        },
-                    ]
-                }).catch((e) => winston.warn(e)), args);
             }
         }
     }
@@ -267,51 +330,6 @@ const ConsumerType = new ql.GraphQLObjectType({
     name: 'Consumer',
     fields: {
         id: relayql.globalIdField('Consumer', (root, args, context) => context.userId),
-        creatorActivityCount: {
-            type: CreatorActivityCountType,
-            args: {
-                range: {
-                    type: types.DateRangeInputType,
-                }
-            },
-            resolve: function(root, {range}, context) {
-                var from = moment(range.from);
-                var to = moment(range.to);
-                var regionId = context.regionId
-                return sequelize.query(helpers.queries.UserAccount.entryActivity(from.format(), to.format(), regionId))
-                .then(([results, metadata]) => results)
-                .then(function(results) {
-                    return results.reduce(function(reduction, row) {
-                        if(row.count >= 1) {
-                            reduction.active++;
-                        } else {
-                            reduction.stale++;
-                        }
-                        return reduction;
-                    }, {
-                        active: 0,
-                        stale: 0
-                    });
-                }).catch((e) => winston.warn(e));
-            },
-        },
-        topicCounts: {
-            type: new ql.GraphQLList(types.TopicCountType),
-            args: {
-                range: {
-                    type: types.DateRangeInputType,
-                }
-            },
-            resolve: function(root, {range}, context) {
-                var from = moment(range.from);
-                var to = moment(range.to);
-                var regionId = context.regionId;
-
-                return sequelize.query(helpers.queries.Topic.countsByRange(from.format(), to.format(), regionId))
-                .then(([results, metadata]) => results)
-                .catch((e) => winston.warn(e));
-            },
-        },
         topics: {
             type: new ql.GraphQLList(types.TopicType),
             resolve: () => {
@@ -319,17 +337,14 @@ const ConsumerType = new ql.GraphQLObjectType({
             },
         },
         access: {
-            type: EntryAccessType,
+            type: DataAccessType,
             args: {
                 range: {
                     type: types.DateRangeInputType,
                 },
-                topics: {
-                    type: types.TopicsInputType,
-                }
             },
-            resolve: (root, {range, topics}, {regionId}) => {
-                return {range, topics, regionId}
+            resolve: (root, {range}, {regionId}) => {
+                return {range, regionId}
             }
         }
     },

@@ -33,6 +33,7 @@ export class Dashboard extends Component {
     }
 
     render () {
+        const { access } = this.props.consumer;
         return (
             <div>
                 <div>
@@ -52,11 +53,15 @@ export class Dashboard extends Component {
                     {/*</FormGroup>*/}
                 </div>
                 <div>
-                    <p>Active Creators: {this.props.consumer.creatorActivityCount.active}</p>
-                    <p>Stale: {this.props.consumer.creatorActivityCount.stale}</p>
+                    <p>Active Creators: {access.activity.active}</p>
+                    <p>Stale: {access.activity.stale}</p>
+                </div>
+                <div>
+                    <p>Happy Entries: {access.sentiment.happy}</p>
+                    <p>Sad Entries: {access.sentiment.sad}</p>
                 </div>
                <div>
-                   <TopicsOverview topics={this.props.consumer.topicCounts} />
+                   <TopicsOverview topics={access.topics} />
                </div>
             </div>
         );
@@ -80,19 +85,24 @@ export const DashboardContainer = Relay.createContainer(withRoles(Dashboard, {
             }`,
         consumer: () => Relay.QL`
             fragment on Consumer {
-                creatorActivityCount(range: $range) {
-                    active
-                    stale
-                }
-                topicCounts(range: $range) {
-                    topic {
-                        type
-                        name
+                access(range: $range) {
+                    activity {
+                        active
+                        stale
                     }
-                    entryCount
-                    creatorCount
+                    topics {
+                        topic {
+                            type
+                            name
+                        }
+                        entryCount
+                        creatorCount
+                    }
+                    sentiment {
+                        happy
+                        sad
+                    }
                 }
-            }
-        `,
+            }`,
     }
 });
