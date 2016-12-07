@@ -3,6 +3,7 @@ import Relay from 'react-relay';
 import { Link } from 'react-router';
 
 import { EntryContainer, Entry } from './Entry';
+import Layout, { Container, Header } from './Layout';
 // import Intro from './Intro';
 import Grid from './Grid';
 import withRoles from '../auth/withRoles.js';
@@ -63,11 +64,18 @@ export class Timeline extends Component {
         );
 
         return (
-            <div className={styles.wrapper}>
-                <Grid callToAction={addEntryControl}>
-                    {this.renderEntries()}
-                </Grid>
-            </div>
+            <Layout>
+                <Header>
+                    <p>I am a progress bar controlled by the Timeline component</p>
+                </Header> 
+                <Content>
+                    <div className={styles.wrapper}>
+                        <Grid callToAction={addEntryControl}>
+                            {this.renderEntries()}
+                        </Grid>
+                    </div>
+                </Content>
+            </Layout>
         );
     }
 }
