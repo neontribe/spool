@@ -4,35 +4,74 @@ import withRoles from '../auth/withRoles.js';
 import { AccessFormContainer } from './AccessForm.js';
 import { EntryContainer } from './Entry.js';
 import moment from 'moment';
+import Papa from 'papaparse';
 
 const AccessList = ({children}) => (<ul>{children}</ul>);
+const link = document.createElement('a')
 export default class Access extends Component {
     constructor(props) {
         super(props);
         this.handleFormSuccess = this.handleFormSuccess.bind(this);
+        // todo debounce this
+        this.handleCSVClick = this.handleCSVClick.bind(this);
+        this.state = {
+            form: {},
+        };
     }
     handleFormSuccess({from, to, topics}) {
-        this.props.relay.setVariables({
+        const form = {
             range: {
                 from,
                 to,
             },
             topics: topics,
             ready: true,
-        })
+        };
+        // not much need for this in state, but the contents are helpful
+        this.setState({
+            form
+        });
+        this.props.relay.setVariables(form)
+    }
+    handleCSVClick() {
+        const data = this.props.consumer.access.entries.edges.map(({node}) => {
+            const row = {
+                text: node.media.text,
+                topics: node.topics.map(({name}) => name).join(', '),
+                sentiment: node.sentiment.type,
+                creationDate: node.created,
+            };
+            return row;
+        });
+        if(data.length) {
+            var csv = Papa.unparse(data);
+            if (!csv.match(/^data:text\/csv/i)) {
+                csv = 'data:text/csv;charset=utf-8,' + csv;
+            }
+            link.setAttribute('download', 'spool-entry-access.csv');
+            link.setAttribute('href', encodeURI(csv));
+            link.click();
+        }
     }
     renderAccessList() {
         const { access } = this.props.consumer;
         if (access && access.entries.edges.length) {
-            return access.entries.edges.map(({node}) => <EntryContainer entry={node}/>);
+            return access.entries.edges.map(({node}) => <EntryContainer key={node.id} entry={node}/>);
+        }
+        return null;
+    }
+    renderCSVButton() {
+        if (this.state.form.ready) {
+            return (<button onClick={this.handleCSVClick}>Download as CSV</button>)
         }
         return null;
     }
     render () {
-        console.log(this.props, this.props.consumer);
         return (<div>
             <AccessFormContainer onSuccess={this.handleFormSuccess} consumer={this.props.consumer}/>
+            { this.renderCSVButton() }
             { this.renderAccessList() }
+            { this.renderCSVButton() }
         </div>);
     }
 }
@@ -57,10 +96,23 @@ export const AccessContainer = Relay.createContainer(withRoles(Access, {
             }`,
         consumer: () => Relay.QL`
             fragment on Consumer {
-                access(range: $range) {
-                    entries(first: $first, topics: $topics) @include(if: $ready){
+                access(range: $range) @include(if: $ready) {
+                    entries(first: $first, topics: $topics){
                         edges {
                             node {
+                                id
+                                media {
+                                    text
+                                }
+                                topics {
+                                    name
+                                }
+                                sentiment {
+                                    type
+                                }
+                                created
+                                updated
+
                                 ${EntryContainer.getFragment('entry')}
                             }
                         }
