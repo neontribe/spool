@@ -65,13 +65,15 @@ class App extends Component {
                   <Link to={'/'}>Home</Link>
                 </li>
 
-                <li className={styles.contextMenuItem}>
-                  {/* Todo: Need to format the render of ProfileLink*/}
-                  <ProfileLink
-                    profile={this.state.profile}
-                    disabled={!this.props.route.auth.loggedIn()}
-                  />
-                </li>
+                {this.props.route.auth.loggedIn() && (
+                  <li className={styles.contextMenuItem}>
+                    {/* Todo: Need to format the render of ProfileLink*/}
+                    <ProfileLink
+                      profile={this.state.profile}
+                      disabled={!this.props.route.auth.loggedIn()}
+                    />
+                  </li>
+                )}
 
                 <li className={styles.contextMenuItem}>
                   {this.props.route.auth.loggedIn() && (
