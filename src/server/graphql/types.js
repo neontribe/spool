@@ -72,12 +72,13 @@ const MediaInputType = new ql.GraphQLInputObjectType({
     }
 });
 
+const TopicsInputType = new ql.GraphQLList(ql.GraphQLString);
 const EntryInputType = new ql.GraphQLInputObjectType({
     name: 'EntryInput',
     fields: {
         media: { type: MediaInputType },
         sentiment: { type: ql.GraphQLString },
-        topics: { type: new ql.GraphQLList(ql.GraphQLString) }
+        topics: { type: TopicsInputType }
     }
 });
 
@@ -143,4 +144,5 @@ module.exports = {
     DateRangeInputType,
     TopicCountType,
     UserInputType,
+    TopicsInputType,
 };

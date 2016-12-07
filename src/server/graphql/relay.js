@@ -64,7 +64,7 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
                     include: [
                         {
                             model: models.UserAccount,
-                            as: 'EntryAuthor',
+                            as: 'Owner',
                             where: {
                                 sharing: true,
                                 regionId: context.regionId
@@ -176,6 +176,93 @@ const CreatorActivityCountType = new ql.GraphQLObjectType({
     }
 });
 
+const EntryAccessType = new ql.GraphQLObjectType({
+    name: 'EntryAccess',
+    fields: {
+        entries: {
+            type: entryConnectionDefinition.connectionType,
+            args: relayql.connectionArgs,
+            resolve: ({range, topics, regionId}, args) => {
+                var from = moment(range.from);
+                var to = moment(range.to);
+
+                return relayql.connectionFromPromisedArray(models.Entry.findAll({
+                    where: {
+                        createdAt: {
+                            $between: [range.from, range.to]
+                        }
+                    },
+                    include: [
+                        {
+                            model: models.Medium,
+                            as: 'Medium',
+                        },
+                        {
+                            model: models.Sentiment,
+                            as: 'Sentiment',
+                        },
+                        {
+                            model: models.Topic,
+                            as: 'EntryTopicTopics',
+                            where: {
+                                //excluding entries which don't have a matching topic
+                                type: {
+                                    $in: topics
+                                },
+                            }
+                        },
+                        {
+                            model: models.UserAccount,
+                            as: 'Owner',
+                            where: {
+                                //and avoiding any entries whos sharing is diabled
+                                //or their origin region is not part of the request
+                                sharing: true,
+                                regionId: regionId
+                            }
+                        },
+                    ]
+                }).catch((e) => winston.warn(e)), args);
+
+                // find all matching entries
+                return relayql.connectionFromPromisedArray(models.Entry.findAll({
+                    where: {
+                        // which were created between the range parameters
+                        createdAt: {
+                            $between: [from, to]
+                        }
+                    },
+                    order: [
+                        ['createdAt', 'DESC']
+                    ],
+                    include: [
+                        {
+                            model: models.Topic,
+                            as: 'EntryTopicTopics',
+                            where: {
+                                //excluding entries which don't have a matching topic
+                                type: {
+                                    $in: topics
+                                }
+                            }
+                        },
+                        {
+                            model: models.UserAccount,
+                            as: 'Owner',
+                            where: {
+                                //and avoiding any entries whos sharing is diabled
+                                //or their origin region is not part of the request
+                                sharing: true,
+                                regionId: regionId
+                            }
+                        },
+                    ]
+                }).catch((e) => winston.warn(e)), args);
+            }
+        }
+    }
+});
+
 const ConsumerType = new ql.GraphQLObjectType({
     name: 'Consumer',
     fields: {
@@ -230,6 +317,20 @@ const ConsumerType = new ql.GraphQLObjectType({
             resolve: () => {
                 return models.Topic.findAll().catch((e) => winston.warn(e));
             },
+        },
+        access: {
+            type: EntryAccessType,
+            args: {
+                range: {
+                    type: types.DateRangeInputType,
+                },
+                topics: {
+                    type: types.TopicsInputType,
+                }
+            },
+            resolve: (root, {range, topics}, {regionId}) => {
+                return {range, topics, regionId}
+            }
         }
     },
     interfaces: [nodeInterface]

@@ -12,6 +12,7 @@ import { DashboardContainer } from './components/Dashboard';
 import SimpleLogin from './components/SimpleLogin';
 import { SignupContainer } from './components/Signup';
 import { AddEntryContainer } from './components/AddEntry';
+import { AccessContainer } from './components/Access';
 import TopicForm from './components/TopicForm';
 import SentimentForm from './components/SentimentForm';
 import MediaForm from './components/MediaForm';
@@ -77,6 +78,8 @@ ReactDOM.render(
             }} queries={SignupQueries} onEnter={auth.requireAuthOnEnter}/>
 
             <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
+            <Route path="access" component={AccessContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
+
             <Route path="home" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
             <Route path="add" component={AddEntryContainer} queries={CreatorQueries}>
                 <IndexRedirect to="about"/>
