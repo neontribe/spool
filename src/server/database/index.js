@@ -148,7 +148,7 @@ const helpers = {
                 user_account.region_id = ${regionId}
             GROUP BY
                 user_account.user_id
-            `.useBind(),
+            `.useBind()
         }
     }
 }

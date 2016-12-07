@@ -10,7 +10,7 @@ class TopicsOverview extends Component {
 
                 <div>
                     {this.props.topics.map((item, i) => (
-                        <div>
+                        <div key={i}>
                             <IconCard
                                 message={item.topic.name}
                                 icon={item.topic.type}
