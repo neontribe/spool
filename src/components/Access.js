@@ -57,8 +57,8 @@ export const AccessContainer = Relay.createContainer(withRoles(Access, {
             }`,
         consumer: () => Relay.QL`
             fragment on Consumer {
-                access(range: $range, topics: $topics) @include(if: $ready){
-                    entries(first: $first) {
+                access(range: $range) {
+                    entries(first: $first, topics: $topics) @include(if: $ready){
                         edges {
                             node {
                                 ${EntryContainer.getFragment('entry')}
