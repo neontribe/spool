@@ -4,6 +4,8 @@ import _ from 'lodash';
 import uploadToS3 from '../s3';
 import Camera from './Camera';
 
+import styles from './css/ImageForm.module.css';
+
 const errorMap = {
     PermissionDeniedError: 'You\'ve sensibly blocked access to your camera.',
     getUserMediaUnsupported: 'We\'re unable to take pictures on this device.'
@@ -98,7 +100,7 @@ class ImageForm extends Component {
 
     render () {
         return (
-            <div>
+            <div className={styles.wrapper}>
                 {({
                     loading: <h2>Loading</h2>,
                     record: <Camera save={this.save} onFailure={this.onMediaFailure} />,

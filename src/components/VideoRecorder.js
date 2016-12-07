@@ -4,6 +4,7 @@ import MediaStreamRecorder from 'msr';
 import captureVideoFrame from 'capture-video-frame';
 import _ from 'lodash';
 
+import Grid from './Grid';
 import AddControls from './AddControls';
 
 import styles from './css/VideoRecorder.module.css';
@@ -33,9 +34,9 @@ class VideoRecorder extends Component {
 
         this.startMediaStream = this.startMediaStream.bind(this);
         this.stopMediaStream = this.stopMediaStream.bind(this);
-        this.startCountdown = _.debounce(this.startCountdown.bind(this), 500, {leading: true, trailing: false});
+        this.startCountdown = _.debounce(this.startCountdown.bind(this), 500, { leading: true, trailing: false });
         this.startRecording = this.startRecording.bind(this);
-        this.stopRecording = _.debounce(this.stopRecording.bind(this), 500, {leading: true, trailing: false});
+        this.stopRecording = _.debounce(this.stopRecording.bind(this), 500, { leading: true, trailing: false });
         this.onMediaSuccess = this.onMediaSuccess.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
         this.onRecordingFinished = this.onRecordingFinished.bind(this);
@@ -45,7 +46,7 @@ class VideoRecorder extends Component {
         this.onMediaFailure = this.onMediaFailure.bind(this);
         this.getVideoDevices = this.getVideoDevices.bind(this);
         this.getCountdownSize = this.getCountdownSize.bind(this);
-        this.switchVideoDevices = _.debounce(this.switchVideoDevices.bind(this), 500, {leading: true, trailing: false});
+        this.switchVideoDevices = _.debounce(this.switchVideoDevices.bind(this), 500, { leading: true, trailing: false });
     }
 
     componentWillMount () {
@@ -205,7 +206,7 @@ class VideoRecorder extends Component {
 
     render () {
         return (
-            <div>
+            <Grid enforceConsistentSize={true}>
                 <div className={styles.outputWrapper}>
                     {/*this.state.connecting && (
                         <div className='connecting' />
@@ -213,11 +214,23 @@ class VideoRecorder extends Component {
 
                     {this.state.streaming && (
                         <video
+                            className={styles.video}
                             ref={(ref) => { this._recorder = ref }}
                             src={this.state.streamURL}
                             muted={true}
                             autoPlay={true}
                         />
+                    )}
+
+                    {this.state.streaming && !this.state.countdown && (
+                        <button
+                            className={styles.videoOverlay}
+                            onClick={this.startCountdown}
+                        >
+                            <span className={styles.btnTakePictureWrapper}>
+                                <span className={styles.btnTakePicture}>Press Here To Record</span>
+                            </span>
+                        </button>
                     )}
 
                     {this.state.playing && (
@@ -230,40 +243,46 @@ class VideoRecorder extends Component {
                     )}
 
                     {this.state.countdown && (
-                        <ReactCountdownClock
-                            seconds={this.props.countdownSeconds}
-                            size={this.getCountdownSize()}
-                            color='#a3dfef'
-                            alpha={0.9}
-                            showMilliseconds={false}
-                            onComplete={this.startRecording}
-                        />
+                        <div className={styles.countdown}>
+                            <ReactCountdownClock
+                                seconds={this.props.countdownSeconds}
+                                size={this.getCountdownSize()}
+                                color='#a3dfef'
+                                alpha={0.9}
+                                showMilliseconds={false}
+                                onComplete={this.startRecording}
+                            />
+                        </div>
                     )}
                 </div>
 
-                <div>
-                    <button
-                        className={controls.btnRaised}
-                        disabled={this.state.recording}
-                        onClick={this.startCountdown}
-                    >Record</button>
+                <div className={styles.btnStack}>
+                    {this.state.recording && (
+                        <button
+                            className={controls.btnRaised}
+                            disabled={!this.state.recording}
+                            onClick={this.stopRecording}
+                        >Stop</button>
+                    )}
 
-                    <button
-                        className={controls.btnRaised}
-                        disabled={!this.state.recording}
-                        onClick={this.stopRecording}
-                    >Stop</button>
-
-                    {(this.state.devices.length) > 1 && (
+                    {(this.state.devices.length > 1) && (
                         <button onClick={this.switchVideoDevices}>Switch Camera</button>
                     )}
 
-                    <AddControls
-                        onNext={this.save}
-                        disableNext={!this.state.lastTakeURL && !this.state.playing}
-                    />
+                    {/* Todo */}
+                    {this.state.lastTakeURL && (
+                        <button className={controls.btnRaised}>Add Description</button>
+                    )}
+
+                    {/* Todo: Re-word to 'Save' */}
+                    {this.state.lastTakeURL && (
+                        <AddControls
+                            onNext={this.save}
+                            disableNext={!this.state.lastTakeURL && !this.state.playing}
+                        />
+                    )}
                 </div>
-            </div>
+            </Grid>
         );
     }
 }

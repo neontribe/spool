@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 
 import styles from './css/Grid.module.css';
 
@@ -54,12 +55,15 @@ export default class Grid extends Component {
     getStyle () {
         var containerHeight = this.state.height;
         var containerWidth = this.state.width;
-        var contentLength = React.Children.count(this.props.children);
         var itemStyle = [];
         var length, i = 0;
 
+        var children = _.filter(React.Children.toArray(this.props.children), (child) => {
+            return child !== false;
+        })
+
         if (this.props.callToAction) {
-            contentLength++;
+            children.length++;
         }
 
         // Packing algorithm to determine the most efficient way to fit N items
@@ -80,16 +84,14 @@ export default class Grid extends Component {
             return maxSize;
         }
 
-        switch (contentLength) {
+        switch (children.length) {
             case 1:
             default: {
                 length = calculateMaxCellSize(2);
 
-                for (; i < contentLength; i++) {
-                    itemStyle[i] = {
-                        height: length,
-                        width: length
-                    }
+                itemStyle[0] = {
+                    height: length,
+                    width: length
                 }
 
                 break;
@@ -98,7 +100,7 @@ export default class Grid extends Component {
             case 2: {
                 length = calculateMaxCellSize(2);
 
-                for (; i < contentLength; i++) {
+                for (; i < children.length; i++) {
                     itemStyle[i] = {
                         height: length,
                         width: length
@@ -115,7 +117,7 @@ export default class Grid extends Component {
             case 3: {
                 length = calculateMaxCellSize(6);
 
-                for (; i < contentLength; i++) {
+                for (; i < children.length; i++) {
                     itemStyle[i] = {
                         height: length,
                         width: length
@@ -135,7 +137,7 @@ export default class Grid extends Component {
             case 4: {
                 length = calculateMaxCellSize(4);
 
-                for (; i < contentLength; i++) {
+                for (; i < children.length; i++) {
                     itemStyle[i] = {
                         height: length,
                         width: length
@@ -151,7 +153,7 @@ export default class Grid extends Component {
             case 5: {
                 length = calculateMaxCellSize(6);
 
-                for (; i < contentLength; i++) {
+                for (; i < children.length; i++) {
                     itemStyle[i] = {
                         height: length,
                         width: length
@@ -172,7 +174,7 @@ export default class Grid extends Component {
             case 6: {
                 length = calculateMaxCellSize(6);
 
-                for (; i < contentLength; i++) {
+                for (; i < children.length; i++) {
                     itemStyle[i] = {
                         height: length,
                         width: length
@@ -190,7 +192,7 @@ export default class Grid extends Component {
             case 8: {
                 length = calculateMaxCellSize(8);
 
-                for (; i < contentLength; i++) {
+                for (; i < children.length; i++) {
                     itemStyle[i] = {
                         height: length,
                         width: length
@@ -210,7 +212,9 @@ export default class Grid extends Component {
 
     render () {
         var itemStyle = this.getStyle();
-        var childrenCount = React.Children.count(this.props.children);
+        var children = _.filter(React.Children.toArray(this.props.children), (child) => {
+            return child !== false;
+        })
 
         // Sets the `flex` style property back to its default once the grid has
         // determined how best to utilise the available screen real-estate.
@@ -231,7 +235,7 @@ export default class Grid extends Component {
                     ))}
 
                     {this.props.callToAction && (
-                        <li className={styles.item} style={itemStyle[childrenCount]}>
+                        <li className={styles.item} style={itemStyle[children.length]}>
                             <div className={styles.content}>
                                 {this.props.callToAction}
                             </div>

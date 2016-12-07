@@ -4,6 +4,8 @@ import _ from 'lodash';
 import uploadToS3 from '../s3';
 import VideoRecorder from './VideoRecorder';
 
+import styles from './css/VideoForm.module.css';
+
 const errorMap = {
     PermissionDeniedError: 'You\'ve sensibly blocked access to your camera and microphone.',
     getUserMediaUnsupported: 'We\'re unable to record video on this device.'
@@ -101,7 +103,7 @@ class VideoForm extends Component {
 
     render () {
         return (
-            <div>
+            <div className={styles.wrapper}>
                 {({
                     loading: <h2>Loading</h2>,
                     record: <VideoRecorder save={this.save} onFailure={this.onMediaFailure} />,

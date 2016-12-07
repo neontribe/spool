@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
+import styles from './css/AddControls.module.css';
 import controls from '../css/Controls.module.css';
 
 class AddControls extends Component {
@@ -22,7 +23,7 @@ class AddControls extends Component {
 
     render () {
         return (
-            <div className={controls.btnToolbar}>
+            <div className={styles.wrapper}>
                 {this.onBack && (
                     <a
                         role='button'

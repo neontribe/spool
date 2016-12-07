@@ -3,6 +3,7 @@ import captureVideoFrame from 'capture-video-frame';
 import ReactCountdownClock from 'react-countdown-clock';
 import _ from 'lodash';
 
+import Grid from './Grid';
 import AddControls from './AddControls';
 
 import styles from './css/Camera.module.css';
@@ -77,7 +78,6 @@ class Camera extends Component {
 
             getUserMedia.call(navigator, mediaConstraints, this.onMediaSuccess, this.onMediaFailure);
         });
-
     }
 
     getVideoDevices () {
@@ -149,7 +149,7 @@ class Camera extends Component {
 
     render () {
         return (
-            <div>
+            <Grid enforceConsistentSize={true}>
                 <div className={styles.outputWrapper}>
                     {/*this.state.connecting && (
                         {<ResponsiveEmbed a4by3>
@@ -159,12 +159,34 @@ class Camera extends Component {
 
                     {this.state.streaming && (
                         <video
+                            className={styles.video}
                             ref={(ref) => { this._viewfinder = ref; }}
                             src={this.state.streamURL}
                             muted={true}
                             autoPlay={true}
                         />
                     )}
+
+                    {this.state.streaming && !this.state.countdown && (
+                        <button
+                            className={styles.videoOverlay}
+                            onClick={this.startCountdown}
+                        >
+                            <span className={styles.btnTakePictureWrapper}>
+                                <span className={styles.btnTakePicture}>Press Here To Take Picture</span>
+                            </span>
+                        </button>
+                    )}
+
+                    {this.state.playing &&
+                        <video
+                            className={styles.video}
+                            ref={(ref) => { this._player = ref }}
+                            src={this.state.lastTakeURL}
+                            controls
+                            autoPlay
+                        />
+                    }
 
                     {this.state.thumbnail && (
                         <img
@@ -188,13 +210,7 @@ class Camera extends Component {
                     )}
                 </div>
 
-                <div>
-                    <button
-                        className={controls.btnRaised}
-                        disabled={!this.state.streaming}
-                        onClick={this.startCountdown}
-                    >Take Picture</button>
-
+                <div className={styles.btnStack}>
                     {(this.state.devices.length > 1) && (
                         <button
                             className={controls.btnRaised}
@@ -202,12 +218,27 @@ class Camera extends Component {
                         >Switch Cameras</button>
                     )}
 
-                    <AddControls
-                        onNext={this.save}
-                        disableNext={!this.state.image}
-                    />
+                    {this.state.image && (
+                        <button
+                            className={controls.btnRaised}
+                            onClick={this.startCountdown}
+                        >Try Again</button>
+                    )}
+
+                    {/* Todo */}
+                    {this.state.image && (
+                        <button className={controls.btnRaised}>Add Description</button>
+                    )}
+
+                    {/* Todo: Re-word to 'Save' */}
+                    {this.state.image && (
+                        <AddControls
+                            onNext={this.save}
+                            disableNext={!this.state.image}
+                        />
+                    )}
                 </div>
-            </div>
+            </Grid>
         );
     }
 }
