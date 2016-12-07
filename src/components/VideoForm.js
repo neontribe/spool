@@ -55,7 +55,9 @@ class VideoForm extends Component {
         var savers = _.toPairs(data).map((item) => {
             return uploadToS3(item[1])
                 .then((s3Info) => {
-                    return { [item[0]]: s3Info }
+                    return {
+                        [item[0]]: s3Info
+                    }
                 });
         });
 

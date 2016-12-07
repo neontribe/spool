@@ -82,43 +82,43 @@ class App extends Component {
 
               {/* Todo: Inject a component from the router, e.g. filter controls */}
               <h2 className={a11y.vh}>Filter content</h2>
-              <ul className={styles.filters}>
-                  <li className={styles.filter}>
-                      <a role='button' className={styles.filterOn}>😄 <span>Hide happy entries</span></a>
-                  </li>
-                  <li className={styles.filter}>
-                      <a role='button' className={styles.filterOn}>😡 <span>Hide sad entries</span></a>
-                  </li>
-                  <li className={styles.filter}>
-                      <a role='button' className={styles.filterOn}>&times; <span>Toggle some filter</span></a>
-                  </li>
-                  <li className={styles.filter}>
-                      <a role='button' className={styles.filterOn}>&times; <span>Toggle some filter</span></a>
-                  </li>
-                  <li className={styles.filter}>
-                      <a role='button' className={styles.filterOn}>&times; <span>Toggle some filter</span></a>
-                  </li>
-                  <li className={styles.filter}>
-                      <a role='button' className={styles.filterOff}>&times; <span>Toggle some filter</span></a>
-                  </li>
-                  <li className={styles.filter}>
-                      <a role='button' className={styles.filterOff}>&times; <span>Toggle some filter</span></a>
-                  </li>
-                  <li className={styles.filter}>
-                      <a role='button' className={styles.filterOn}>&times; <span>Toggle some filter</span></a>
-                  </li>
-                  <li className={styles.filter}>
-                      <a role='button' className={styles.filterOn}>&times; <span>Toggle some filter</span></a>
-                  </li>
-                  <li className={styles.filter}>
-                      <a role='button' className={styles.filterOff}>&times; <span>Toggle some filter</span></a>
-                  </li>
-                  <li className={styles.filter}>
-                      <a role='button' className={styles.filterOn}>&times; <span>Toggle some filter</span></a>
-                  </li>
-                  <li className={styles.filter}>
-                      <a role='button' className={styles.filterOn}>&times; <span>Toggle some filter</span></a>
-                  </li>
+              <ul>
+                <li className={styles.filter}>
+                  <a role='button' className={styles.filterHappyOn}>Hide happy</a>
+                </li>
+                <li className={styles.filter}>
+                  <a role='button' className={styles.filterSadOn}>Hide sad</a>
+                </li>
+                <li className={styles.filter}>
+                  <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+                </li>
+                <li className={styles.filter}>
+                  <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+                </li>
+                <li className={styles.filter}>
+                  <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+                </li>
+                <li className={styles.filter}>
+                  <a role='button' className={styles.filterControl}>&times; <span>Show filter</span></a>
+                </li>
+                <li className={styles.filter}>
+                  <a role='button' className={styles.filterControl}>&times; <span>Show filter</span></a>
+                </li>
+                <li className={styles.filter}>
+                  <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+                </li>
+                <li className={styles.filter}>
+                  <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+                </li>
+                <li className={styles.filter}>
+                  <a role='button' className={styles.filterControl}>&times; <span>Hide filter</span></a>
+                </li>
+                <li className={styles.filter}>
+                  <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+                </li>
+                <li className={styles.filter}>
+                  <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+                </li>
               </ul>
             </Hamburger>
           )}

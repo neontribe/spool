@@ -9,15 +9,15 @@ import styles from './css/Entry.module.css';
 
 export class Entry extends Component {
     static colourVariants = [
-        styles.entryVariantA,
-        styles.entryVariantB,
-        styles.entryVariantC,
-        styles.entryVariantD,
-        styles.entryVariantE,
-        styles.entryVariantF,
-        styles.entryVariantG,
-        styles.entryVariantI,
-        styles.entryVariantJ
+        { className: styles.entryVariantA, dark: false },
+        { className: styles.entryVariantB, dark: false },
+        { className: styles.entryVariantC, dark: false },
+        { className: styles.entryVariantD, dark: true },
+        { className: styles.entryVariantE, dark: false },
+        { className: styles.entryVariantF, dark: false },
+        { className: styles.entryVariantG, dark: true },
+        { className: styles.entryVariantI, dark: false },
+        { className: styles.entryVariantJ, dark: true }
     ];
 
     constructor (props) {
@@ -46,15 +46,29 @@ export class Entry extends Component {
     }
 
     render () {
-        var created = moment(this.props.entry.created);
-        var text = this.props.entry.media.text;
-        var image = this.props.entry.media.imageThumbnail;
-        var video = this.props.entry.media.videoThumbnail;
+        var entry = this.props.entry;
+        var sentiment = entry.sentiment.type;
+        var text = entry.media.text;
+        var image = entry.media.imageThumbnail;
+        var video = entry.media.videoThumbnail;
         var backgroundImage = image || video;
+        var styleVariant = styles.entry;
+        var randomisedStyle;
 
-        var styleVariant = (text)
-            ? this.constructor.colourVariants[_.random(0, this.constructor.colourVariants.length - 1)]
-            : styles.entry;
+        var styleSentiment = (entry.sentiment.type === 'happy')
+            ? styles.sentimentHappyLight
+            : styles.sentimentSadLight;
+
+        if (text) {
+            randomisedStyle = this.constructor.colourVariants[_.random(0, this.constructor.colourVariants.length - 1)];
+            styleVariant = randomisedStyle.className;
+
+            if (entry.sentiment.type === 'happy' && randomisedStyle.dark) {
+                styleSentiment = styles.sentimentHappy;
+            } else if (entry.sentiment.type === 'sad' && randomisedStyle.dark) {
+                styleSentiment = styles.sentimentSad;
+            }
+        }
 
         return (
             <a
@@ -77,12 +91,10 @@ export class Entry extends Component {
                         </div>
                     )}
 
-                    <div className={styles.sentiment}>
-                        {(this.props.entry.sentiment.type === 'happy') ? '😄' : '😡'}
-                    </div>
+                    <div className={styleSentiment}></div>
 
                     <div className={styles.date}>
-                        {created.format('Do MMMM')}
+                        {moment(entry.created).format('Do MMMM')}
                     </div>
 
                     <div className={styles.topics}>

@@ -78,10 +78,32 @@
 
 .sentiment {
 	position: absolute;
-	top: 0;
+	top: 1rem;
 	left: 1rem;
-	font-family: 'Lucida Sans Unicode', 'Arial Unicode MS';
-	font-size: 4rem;
+	height: 4rem;
+	width: 4rem;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.sentimentHappy {
+	composes: sentiment;
+	background-image: url('/static/icon-happy.svg');
+}
+
+.sentimentSad {
+	composes: sentiment;
+	background-image: url('/static/icon-sad.svg');
+}
+
+.sentimentHappyLight {
+	composes: sentiment;
+	background-image: url('/static/icon-happy-light.svg');
+}
+
+.sentimentSadLight {
+	composes: sentiment;
+	background-image: url('/static/icon-sad-light.svg');
 }
 
 .text {

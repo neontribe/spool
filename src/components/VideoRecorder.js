@@ -6,6 +6,9 @@ import _ from 'lodash';
 
 import AddControls from './AddControls';
 
+import styles from './css/VideoRecorder.module.css';
+import controls from '../css/Controls.module.css';
+
 var mediaConstraints = {
     audio: true,
     video: true
@@ -203,7 +206,7 @@ class VideoRecorder extends Component {
     render () {
         return (
             <div>
-                <div>
+                <div className={styles.outputWrapper}>
                     {/*this.state.connecting && (
                         <div className='connecting' />
                     )*/}
@@ -227,35 +230,33 @@ class VideoRecorder extends Component {
                     )}
 
                     {this.state.countdown && (
-                        <div>
-                            <ReactCountdownClock
-                                seconds={this.props.countdownSeconds}
-                                size={this.getCountdownSize()}
-                                color='#a3dfef'
-                                alpha={0.9}
-                                showMilliseconds={false}
-                                onComplete={this.startRecording}
-                            />
-                        </div>
+                        <ReactCountdownClock
+                            seconds={this.props.countdownSeconds}
+                            size={this.getCountdownSize()}
+                            color='#a3dfef'
+                            alpha={0.9}
+                            showMilliseconds={false}
+                            onComplete={this.startRecording}
+                        />
                     )}
                 </div>
 
                 <div>
-                    <div>
-                        <button
-                            disabled={this.state.recording}
-                            onClick={this.startCountdown}
-                        >Record</button>
+                    <button
+                        className={controls.btnRaised}
+                        disabled={this.state.recording}
+                        onClick={this.startCountdown}
+                    >Record</button>
 
-                        <button
-                            disabled={!this.state.recording}
-                            onClick={this.stopRecording}
-                        >Stop</button>
+                    <button
+                        className={controls.btnRaised}
+                        disabled={!this.state.recording}
+                        onClick={this.stopRecording}
+                    >Stop</button>
 
-                        {this.state.devices.length > 1 && (
-                            <button onClick={this.switchVideoDevices}>Switch Camera</button>
-                        )}
-                    </div>
+                    {(this.state.devices.length) > 1 && (
+                        <button onClick={this.switchVideoDevices}>Switch Camera</button>
+                    )}
 
                     <AddControls
                         onNext={this.save}

@@ -19,10 +19,10 @@
 
 .optionHappy {
 	composes: option;
-	background-image: url('/static/emoji/happy.svg');
+	background-image: url('/static/icon-happy-light.svg');
 }
 
 .optionSad {
 	composes: option;
-	background-image: url('/static/emoji/sad.svg');
+	background-image: url('/static/icon-sad-light.svg');
 }

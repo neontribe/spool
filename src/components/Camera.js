@@ -5,6 +5,9 @@ import _ from 'lodash';
 
 import AddControls from './AddControls';
 
+import styles from './css/Camera.module.css';
+import controls from '../css/Controls.module.css';
+
 const mediaConstraints = {
     audio: false,
     video: true
@@ -147,14 +150,13 @@ class Camera extends Component {
     render () {
         return (
             <div>
-                <div>
+                <div className={styles.outputWrapper}>
                     {/*this.state.connecting && (
                         {<ResponsiveEmbed a4by3>
                             <div className='connecting' />
                         </ResponsiveEmbed>}
                     )*/}
 
-                    {/*<ResponsiveEmbed a4by3>*/}
                     {this.state.streaming && (
                         <video
                             ref={(ref) => { this._viewfinder = ref; }}
@@ -165,17 +167,15 @@ class Camera extends Component {
                     )}
 
                     {this.state.thumbnail && (
-                        <div>
-                            {/*<ResponsiveEmbed a4by3>*/}
-                            <img
-                                src={this.state.thumbnail.dataUri}
-                                alt="The photo you just took"
-                            />
-                        </div>
+                        <img
+                            className={styles.thumbnail}
+                            src={this.state.thumbnail.dataUri}
+                            alt='The photo you just took'
+                        />
                     )}
 
                     {this.state.countdown && (
-                        <div>
+                        <div className={styles.countdown}>
                             <ReactCountdownClock
                                 seconds={this.props.countdownSeconds}
                                 size={this.getCountdownSize()}
@@ -187,22 +187,21 @@ class Camera extends Component {
                         </div>
                     )}
                 </div>
+
                 <div>
-                    <div>
-                        <button
-                            disabled={!this.state.streaming}
-                            onClick={this.startCountdown}
-                        >Take Picture</button>
-                    </div>
+                    <button
+                        className={controls.btnRaised}
+                        disabled={!this.state.streaming}
+                        onClick={this.startCountdown}
+                    >Take Picture</button>
+
                     {(this.state.devices.length > 1) && (
-                        <div>
-                            <button
-                                onClick={this.switchVideoDevices}
-                            >Switch Cameras</button>
-                        </div>
+                        <button
+                            className={controls.btnRaised}
+                            onClick={this.switchVideoDevices}
+                        >Switch Cameras</button>
                     )}
-                </div>
-                <div>
+
                     <AddControls
                         onNext={this.save}
                         disableNext={!this.state.image}

@@ -39,7 +39,8 @@ class TextForm extends Component {
                     placeholder='I just want to say...'
                     onChange={this.handleChange}
                     className={styles.textarea}
-                >{this.state.value}</textarea>
+                    value={this.state.value}
+                ></textarea>
 
                 {/*<HelpBlock>{this.state.value.length} of {this.props.maxLength} letters used</HelpBlock>*/}
                 <p>{this.state.value.length} of {this.props.maxLength} letters used</p>
