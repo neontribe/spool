@@ -37,10 +37,9 @@ class TopicForm extends Component {
                     initialValue={this.props.initialValue}
                 />
 
-                <AddControls
-                    onNext={this.continue}
-                    disableNext={this.state.value.length === 0}
-                />
+                {!!this.state.value.length && (
+                    <AddControls onNext={this.continue} />
+                )}
             </div>
         );
     }
