@@ -138,3 +138,105 @@
 }
 
 /* Progress bar. Todo: These styles will need moving */
+
+.progressSteps {
+	display: flex;
+	flex: 1;
+	align-self: stretch;
+	align-items: center;
+	justify-content: center;
+	background-color: #293b42;
+}
+
+.progressStep {
+	/*display: flex;*/
+	/*flex: 1;*/
+	/*justify-content: center;*/
+	/*align-self: stretch;*/
+	/*align-items: center;*/
+
+	/*position: relative;*/
+	/*margin-right: 10px;*/
+	/*background-color: rgba(0, 0, 0, .2);*/
+
+	display: inline;
+}
+
+.progressStepContent {
+	/*display: block;*/
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	float: left;
+	height: 50px;
+	background: #30454e;
+	text-align: center;
+	/*padding: 30px 40px 0 80px;*/
+	padding-left: calc(30px + 1rem);
+	padding-right: 1rem;
+	position: relative;
+	margin: 0 10px 0 0;
+	text-decoration: none;
+	color: #fff;
+	min-width: 100px;
+}
+
+.progressStepContent:before {
+	content: '';
+	border-top: 25px solid transparent;
+	border-bottom: 25px solid transparent;
+	border-left: 25px solid #293b42;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.progressStepContent:after {
+	content: '';
+	border-top: 25px solid transparent;
+	border-bottom: 25px solid transparent;
+	border-left: 25px solid #30454e;
+	position: absolute;
+	right: -25px;
+	top: 0;
+	z-index: 1;
+}
+
+.progressIcon {
+	display: flex;
+	align-items: center;
+	height: 2rem;
+	width: 2rem;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+}
+
+.progressIcon + .progressIcon {
+	margin-left: 1rem;
+}
+
+.progressHappy {
+	composes: progressIcon;
+	background-image: url('/static/icon-happy-light.svg');
+}
+
+.progressWork {
+	composes: progressIcon;
+	background-image: url('/static/icon-work-light.svg');
+}
+
+.progressFood {
+	composes: progressIcon;
+	background-image: url('/static/icon-food-light.svg');
+}
+
+.progressHome {
+	composes: progressIcon;
+	background-image: url('/static/icon-home-light.svg');
+}
+
+.progressVideo {
+	composes: progressIcon;
+	background-image: url('/static/icon-video-light.svg');
+}

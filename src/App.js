@@ -52,7 +52,27 @@ class App extends Component {
           </h1>
 
           {/* Todo */}
-          <div className={styles.headerMeta}>(Todo) Progress bar / Entry view details</div>
+          <div className={styles.headerMeta}>
+            <ul className={styles.progressSteps}>
+              <li className={styles.progressStep}>
+                <div className={styles.progressStepContent}>
+                  <div className={styles.progressHappy}></div>
+                </div>
+              </li>
+              <li className={styles.progressStep}>
+                <div className={styles.progressStepContent}>
+                  <div className={styles.progressWork}></div>
+                  <div className={styles.progressFood}></div>
+                  <div className={styles.progressHome}></div>
+                </div>
+              </li>
+              <li className={styles.progressStep}>
+                <div className={styles.progressStepContent}>
+                  <div className={styles.progressVideo}></div>
+                </div>
+              </li>
+            </ul>
+          </div>
 
           {this.state.profile && (
             <Hamburger
