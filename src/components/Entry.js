@@ -4,6 +4,7 @@ import moment from 'moment';
 import _ from 'lodash';
 
 // import EntryViewer from './EntryViewer';
+import Icon from './Icon';
 
 import styles from './css/Entry.module.css';
 
@@ -55,18 +56,14 @@ export class Entry extends Component {
         var styleVariant = styles.entry;
         var randomisedStyle;
 
-        var styleSentiment = (entry.sentiment.type === 'happy')
-            ? styles.sentimentHappyLight
-            : styles.sentimentSadLight;
+        var lightIcon = true;
 
         if (text) {
             randomisedStyle = this.constructor.colourVariants[_.random(0, this.constructor.colourVariants.length - 1)];
             styleVariant = randomisedStyle.className;
 
-            if (entry.sentiment.type === 'happy' && randomisedStyle.dark) {
-                styleSentiment = styles.sentimentHappy;
-            } else if (entry.sentiment.type === 'sad' && randomisedStyle.dark) {
-                styleSentiment = styles.sentimentSad;
+            if (randomisedStyle.dark) {
+                lightIcon = false;
             }
         }
 
@@ -91,14 +88,20 @@ export class Entry extends Component {
                         </div>
                     )}
 
-                    <div className={styleSentiment}></div>
+                    <Icon
+                        icon={entry.sentiment.type}
+                        light={lightIcon}
+                        size={4}
+                        className={styles.sentiment}
+                    />
 
                     <div className={styles.date}>
-                        {moment(entry.created).format('Do MMMM')}
+                        Created {moment(entry.created).format('Do MMMM')}
                     </div>
 
                     <div className={styles.topics}>
-                        {this.props.entry.topics.map((t) => t.name).join(' • ')}
+                        {/* Todo: Need topic identifiers to pass to <Icon /> */}
+                        <Icon icon='home' light={lightIcon} />
                     </div>
 
                     {/*this.props.withViewer && (

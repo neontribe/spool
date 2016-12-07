@@ -3,6 +3,7 @@ import { withRouter } from 'react-router';
 import { Link } from 'react-router';
 
 import ProfileLink from './components/ProfileLink';
+import Icon from './components/Icon';
 import Hamburger from './components/Hamburger';
 
 import styles from './components/css/App.module.css';
@@ -55,21 +56,14 @@ class App extends Component {
           <div className={styles.headerMeta}>
             <ul className={styles.progressSteps}>
               <li className={styles.progressStep}>
-                <div className={styles.progressStepContent}>
-                  <div className={styles.progressHappy}></div>
-                </div>
+                <Icon icon='happy' light={true} className={styles.progressIcon} />
               </li>
               <li className={styles.progressStep}>
-                <div className={styles.progressStepContent}>
-                  <div className={styles.progressWork}></div>
-                  <div className={styles.progressFood}></div>
-                  <div className={styles.progressHome}></div>
-                </div>
+                <Icon icon='food' light={true} className={styles.progressIcon} />
+                <Icon icon='home' light={true} className={styles.progressIcon} />
               </li>
               <li className={styles.progressStep}>
-                <div className={styles.progressStepContent}>
-                  <div className={styles.progressVideo}></div>
-                </div>
+                <Icon icon='video' light={true} className={styles.progressIcon} />
               </li>
             </ul>
           </div>

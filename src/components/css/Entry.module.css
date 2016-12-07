@@ -80,30 +80,6 @@
 	position: absolute;
 	top: 1rem;
 	left: 1rem;
-	height: 4rem;
-	width: 4rem;
-	background-repeat: no-repeat;
-	background-size: cover;
-}
-
-.sentimentHappy {
-	composes: sentiment;
-	background-image: url('/static/icon-happy.svg');
-}
-
-.sentimentSad {
-	composes: sentiment;
-	background-image: url('/static/icon-sad.svg');
-}
-
-.sentimentHappyLight {
-	composes: sentiment;
-	background-image: url('/static/icon-happy-light.svg');
-}
-
-.sentimentSadLight {
-	composes: sentiment;
-	background-image: url('/static/icon-sad-light.svg');
 }
 
 .text {
@@ -126,13 +102,13 @@
 	overflow: hidden;
 }
 
-.date {
+.topics {
 	position: absolute;
 	top: 1rem;
 	right: 1rem;
 }
 
-.topics {
+.date {
 	position: absolute;
 	left: 0;
 	bottom: 0;
