@@ -174,6 +174,7 @@ export class Signup extends React.Component {
                                                     <input
                                                         type='radio'
                                                         value={type}
+                                                        key={type}
                                                         checked={currentRole === type}
                                                         onChange={this.onChangeRole}
                                                     />
