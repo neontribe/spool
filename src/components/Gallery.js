@@ -9,10 +9,10 @@ const { Content, Header } = Layout;
 import Grid from './Grid';
 import withRoles from '../auth/withRoles.js';
 
-import styles from './css/Timeline.module.css';
+import styles from './css/Gallery.module.css';
 import controls from '../css/Controls.module.css';
 
-export class Timeline extends Component {
+export class Gallery extends Component {
     static propTypes = {
         creator: React.PropTypes.object.isRequired,
     }
@@ -66,7 +66,7 @@ export class Timeline extends Component {
     }
 }
 
-export const TimelineContainer = Relay.createContainer(withRoles(Timeline, {
+export const GalleryContainer = Relay.createContainer(withRoles(Gallery, {
     roles: ['creator'],
     fallback: '/settings/configure',
 }), {

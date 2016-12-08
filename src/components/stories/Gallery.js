@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
-import { Timeline } from '../Timeline';
+import { Gallery } from '../Gallery';
 import { entries } from './fixtures';
 
 const initialData = {
@@ -19,10 +19,10 @@ const entriesData = {
     }
 }
 
-storiesOf('Timeline', module)
+storiesOf('Gallery', module)
   .add('Initial View', () => (
-    <Timeline viewer={initialData} />
+    <Gallery viewer={initialData} />
   ))
   .add('With entries', () => (
-    <Timeline viewer={entriesData} />
+    <Gallery viewer={entriesData} />
   ));

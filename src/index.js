@@ -7,7 +7,7 @@ import useRelay from 'react-router-relay';
 
 import AuthService from './auth/AuthService';
 import App from './App';
-import { TimelineContainer } from './components/Timeline';
+import { GalleryContainer } from './components/Gallery';
 import { DashboardContainer } from './components/Dashboard';
 import SimpleLogin from './components/SimpleLogin';
 import { SignupContainer } from './components/Signup';
@@ -80,7 +80,7 @@ ReactDOM.render(
             <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
             <Route path="access" component={AccessContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
 
-            <Route path="home" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
+            <Route path="home" component={GalleryContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
             <Route path="add" component={AddEntryContainer} queries={CreatorQueries}>
                 <IndexRedirect to="about"/>
                 <Route path="about" component={TopicForm} />
