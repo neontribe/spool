@@ -5,6 +5,8 @@ import keydown from 'react-keydown';
 import { withRouter } from 'react-router';
 
 import UpdateUserMutation from './mutations/UpdateUserMutation';
+import Layout from './Layout';
+const { Content, Header } = Layout;
 
 import headings from '../css/Headings.module.css';
 import controls from '../css/Controls.module.css';
@@ -132,81 +134,86 @@ export class Signup extends React.Component {
         }
 
         return (
-            <div>
-                <h2 className={headings.large}>Getting to know you</h2>
+            <Layout>
+                <Header auth={this.props.auth}>
+                    <p>Example</p>
+                </Header>
+                <Content>
+                    <h2 className={headings.large}>Getting to know you</h2>
 
-                <div>
-                    <form onSubmit={this.onSubmit}>
-                        <div>
-                            <label>
-                                Where do you live?
+                    <div>
+                        <form onSubmit={this.onSubmit}>
+                            <div>
+                                <label>
+                                    Where do you live?
+                                    <div>
+                                        <select
+                                            placeholder='I live in...'
+                                            value={this.state.region || ''}
+                                            onChange={_.partial(this.onChange, 'region')}
+                                        >
+                                            <option value='' disabled={true}>I live in&hellip;</option>
+
+                                            {this.props.meta.regions.map(({type}) => {
+                                                return (
+                                                    <option value={type} key={type}>{type}</option>
+                                                );
+                                            })}
+                                        </select>
+                                    </div>
+                                </label>
+                            </div>
+
+                            {this.state.showRoleChooser && (
                                 <div>
-                                    <select
-                                        placeholder='I live in...'
-                                        value={this.state.region || ''}
-                                        onChange={_.partial(this.onChange, 'region')}
-                                    >
-                                        <option value='' disabled={true}>I live in&hellip;</option>
-
-                                        {this.props.meta.regions.map(({type}) => {
-                                            return (
-                                                <option value={type} key={type}>{type}</option>
-                                            );
-                                        })}
-                                    </select>
+                                    <label>
+                                        What kind of access do you need?
+                                        <div>
+                                            {this.props.meta.roles.map(({ type, name }) => {
+                                                return (
+                                                    <input
+                                                        type='radio'
+                                                        value={type}
+                                                        checked={currentRole === type}
+                                                        onChange={this.onChangeRole}
+                                                    />
+                                                );
+                                            })}
+                                        </div>
+                                    </label>
                                 </div>
-                            </label>
-                        </div>
+                            )}
 
-                        {this.state.showRoleChooser && (
+                            {(this.state.requireSecret && this.state.showRoleChooser) &&
+                                <div>
+                                    <label>
+                                        Unlock Code
+                                        <div>
+                                            <input
+                                                type='text'
+                                                placeholder="We'll ask for an unlock code here in the future"
+                                                onChange={_.partial(this.onChange, 'secret')}
+                                                value={this.state.secret || ''}
+                                            />
+                                        </div>
+                                    </label>
+
+                                    {/*<HelpBlock>An unlock code is required to enable access to the dashboard</HelpBlock>*/}
+                                    <p>An unlock code is required to enable access to the dashboard</p>
+                                </div>
+                            }
+
                             <div>
-                                <label>
-                                    What kind of access do you need?
-                                    <div>
-                                        {this.props.meta.roles.map(({ type, name }) => {
-                                            return (
-                                                <input
-                                                    type='radio'
-                                                    value={type}
-                                                    checked={currentRole === type}
-                                                    onChange={this.onChangeRole}
-                                                />
-                                            );
-                                        })}
-                                    </div>
-                                </label>
+                                <button
+                                    type='submit'
+                                    disabled={!(this.state.region && this.state.role)}
+                                    className={controls.btn}
+                                >OK</button>
                             </div>
-                        )}
-
-                        {(this.state.requireSecret && this.state.showRoleChooser) &&
-                            <div>
-                                <label>
-                                    Unlock Code
-                                    <div>
-                                        <input
-                                            type='text'
-                                            placeholder="We'll ask for an unlock code here in the future"
-                                            onChange={_.partial(this.onChange, 'secret')}
-                                            value={this.state.secret || ''}
-                                        />
-                                    </div>
-                                </label>
-
-                                {/*<HelpBlock>An unlock code is required to enable access to the dashboard</HelpBlock>*/}
-                                <p>An unlock code is required to enable access to the dashboard</p>
-                            </div>
-                        }
-
-                        <div>
-                            <button
-                                type='submit'
-                                disabled={!(this.state.region && this.state.role)}
-                                className={controls.btn}
-                            >OK</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                        </form>
+                    </div>
+                </Content>
+            </Layout>
         );
     }
 }

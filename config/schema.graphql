@@ -6,10 +6,8 @@ schema {
 type Consumer implements Node {
   # The ID of an object
   id: ID!
-  creatorActivityCount(range: DateRangeInput): CreatorActivityCount
-  topicCounts(range: DateRangeInput): [TopicCount]
   topics: [Topic]
-  access(range: DateRangeInput, topics: [String]): EntryAccess
+  access(range: DateRangeInput): DataAccess
 }
 
 input CreateEntryInput {
@@ -35,9 +33,21 @@ type Creator implements Node {
   sadCount: Int
 }
 
-type CreatorActivityCount {
+type CreatorActivity {
   active: Int
   stale: Int
+}
+
+type CreatorSentiment {
+  happy: Int
+  sad: Int
+}
+
+type DataAccess {
+  sentiment: CreatorSentiment
+  topics(range: DateRangeInput): [TopicCount]
+  activity: CreatorActivity
+  entries(topics: [String], after: String, first: Int, before: String, last: Int): EntryConnection
 }
 
 input DateRangeInput {
@@ -64,10 +74,6 @@ type Entry implements Node {
   topics: [Topic]
   created: String
   updated: String
-}
-
-type EntryAccess {
-  entries(after: String, first: Int, before: String, last: Int): EntryConnection
 }
 
 # A connection to a list of items.

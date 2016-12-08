@@ -3,6 +3,8 @@ import Relay from 'react-relay';
 import _ from 'lodash';
 import { withRouter } from 'react-router';
 
+import Layout from './Layout';
+const { Content, Header } = Layout;
 import AddEntryMutation from './mutations/AddEntryMutation';
 import withRoles from '../auth/withRoles.js';
 
@@ -87,7 +89,12 @@ class AddEntry extends Component {
         }
 
         return (
-            <div className={styles.wrapper}>{children}</div>
+            <Layout className={styles.wrapper}>
+                <Header auth={this.props.auth}>
+                    <p>Foo</p>
+                </Header>
+                <Content>{children}</Content>
+            </Layout>
         );
     }
 };
