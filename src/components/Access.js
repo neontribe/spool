@@ -5,6 +5,8 @@ import { AccessFormContainer } from './AccessForm.js';
 import { EntryContainer } from './Entry.js';
 import moment from 'moment';
 import Papa from 'papaparse';
+import Layout from './Layout';
+const { Content, Header } = Layout;
 
 const AccessList = ({children}) => (<ul>{children}</ul>);
 const link = document.createElement('a')
@@ -67,12 +69,17 @@ export default class Access extends Component {
         return null;
     }
     render () {
-        return (<div>
-            <AccessFormContainer onSuccess={this.handleFormSuccess} consumer={this.props.consumer}/>
-            { this.renderCSVButton() }
-            { this.renderAccessList() }
-            { this.renderCSVButton() }
-        </div>);
+        return (<Layout>
+            <Header auth={this.props.auth}>
+                <p>Test</p>
+            </Header>
+            <Content>
+                <AccessFormContainer onSuccess={this.handleFormSuccess} consumer={this.props.consumer}/>
+                { this.renderCSVButton() }
+                { this.renderAccessList() }
+                { this.renderCSVButton() }
+            </Content>
+        </Layout>);
     }
 }
 

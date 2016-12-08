@@ -5,6 +5,8 @@ import moment from 'moment';
 
 import TopicsOverview from './TopicsOverview';
 import withRoles from '../auth/withRoles.js';
+import Layout from './Layout';
+const { Content, Header } = Layout;
 
 export class Dashboard extends Component {
     constructor (props) {
@@ -35,34 +37,39 @@ export class Dashboard extends Component {
     render () {
         const { access } = this.props.consumer;
         return (
-            <div>
-                <div>
-                    {/*<FormGroup controlId="dateRange">*/}
+            <Layout>
+                <Header auth={this.props.auth}>
+                    <p>test</p>
+                </Header>
+                <Content>
                     <div>
-                        {/*<ControlLabel>Scope</ControlLabel>*/}
-                        <h2>Scope</h2>
-                        <Link to="/access"><span style={{color: 'red'}}>Access (click me)</span></Link>
-                        <select value={this.state.rangeFrom} onChange={this.changeRange}>
-                            <option value="0,days">Today</option>
-                            <option value="-1,months">30 Days</option>
-                            <option value="-3,months">3 Months</option>
-                            <option value="-1,years">Year</option>
-                        </select>
+                        {/*<FormGroup controlId="dateRange">*/}
+                        <div>
+                            {/*<ControlLabel>Scope</ControlLabel>*/}
+                            <h2>Scope</h2>
+                            <Link to="/access"><span style={{color: 'red'}}>Access (click me)</span></Link>
+                            <select value={this.state.rangeFrom} onChange={this.changeRange}>
+                                <option value="0,days">Today</option>
+                                <option value="-1,months">30 Days</option>
+                                <option value="-3,months">3 Months</option>
+                                <option value="-1,years">Year</option>
+                            </select>
+                        </div>
+                        {/*</FormGroup>*/}
                     </div>
-                    {/*</FormGroup>*/}
-                </div>
-                <div>
-                    <p>Active Creators: {access.activity.active}</p>
-                    <p>Stale: {access.activity.stale}</p>
-                </div>
-                <div>
-                    <p>Happy Entries: {access.sentiment.happy}</p>
-                    <p>Sad Entries: {access.sentiment.sad}</p>
-                </div>
-               <div>
-                   <TopicsOverview topics={access.topics} />
-               </div>
-            </div>
+                    <div>
+                        <p>Active Creators: {access.activity.active}</p>
+                        <p>Stale: {access.activity.stale}</p>
+                    </div>
+                    <div>
+                        <p>Happy Entries: {access.sentiment.happy}</p>
+                        <p>Sad Entries: {access.sentiment.sad}</p>
+                    </div>
+                   <div>
+                       <TopicsOverview topics={access.topics} />
+                   </div>
+               </Content>
+            </Layout>
         );
     }
 };

@@ -3,6 +3,8 @@ import Relay from 'react-relay';
 import { Link } from 'react-router';
 
 import { EntryContainer, Entry } from './Entry';
+import Layout from './Layout';
+const { Content, Header } = Layout;
 // import Intro from './Intro';
 import Grid from './Grid';
 import withRoles from '../auth/withRoles.js';
@@ -44,30 +46,22 @@ export class Timeline extends Component {
     }
 
     render () {
-        // return (
-        //     <div>
-        //         <div>
-        //         </div>
-
-        //         <Link to={'/add'} className='btn'>{(this.state.hasEntries) ? 'Add New Entry' : 'Get Started'}</Link>
-
-        //         <div>
-        //             {this.renderEntries()}
-        //             {!this.state.hasEntries && <Intro />}
-        //         </div>
-        //     </div>
-        // );
-
         var addEntryControl = (
             <Link to={'/add'} className={styles.addEntryControl}>Add New Entry</Link>
         );
-
         return (
-            <div className={styles.wrapper}>
-                <Grid callToAction={addEntryControl}>
-                    {this.renderEntries()}
-                </Grid>
-            </div>
+            <Layout>
+                <Header auth={this.props.auth}>
+                    <p>This is a progess bar</p>
+                </Header> 
+                <Content>
+                    <div className={styles.wrapper}>
+                        <Grid callToAction={addEntryControl}>
+                            {this.renderEntries()}
+                        </Grid>
+                    </div>
+                </Content>
+            </Layout>
         );
     }
 }
