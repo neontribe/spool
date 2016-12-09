@@ -25,15 +25,16 @@ export default class EntryViewer extends Component {
                             light={true}
                         />
 
-                        <div className={styles.topics}>
+                        <ul className={styles.topics}>
                             {entry.topics.map((topic, i) => (
-                                <Icon
-                                    key={i}
-                                    icon={topic.type}
-                                    light={true}
-                                />
+                                <li key={i}>
+                                    <Icon
+                                        icon={topic.type}
+                                        light={true}
+                                    />
+                                </li>
                             ))}
-                        </div>
+                        </ul>
 
                         {/* Todo: Add view counter */}
                         <span>8 views</span>

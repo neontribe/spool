@@ -3,3 +3,33 @@
 	flex: 1;
 	flex-direction: column;
 }
+
+.header {
+	display: flex;
+	flex: 1;
+	align-items: stretch;
+}
+
+.header > * {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+	padding: 0 1rem;
+}
+
+.header > *:nth-child(odd) {
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.topics {
+	display: flex;
+}
+
+.topics > * {
+	margin: 0 .5rem;
+}
+
+.stepDone {
+	background-color: #cddc39;
+}
