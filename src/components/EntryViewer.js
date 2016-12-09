@@ -1,49 +1,28 @@
 import React, { Component } from 'react';
+import Relay from 'react-relay';
 import moment from 'moment';
+import { EntryContainer } from './Entry';
 
-class EntryViewer extends Component {
-    formatTimestamp () {
-        return moment(this.props.entry.timestamp).fromNow();
+export default class EntryViewer extends Component {
+    static propTypes = {
     }
-
     render () {
+        console.log(this.props);
         return (
             <div>
-                {this.props.entry.media.video && (
-                    <video
-                        src={this.props.entry.media.video}
-                        controls={true}
-                        autoPlay={true}
-                    />
-                )}
-
-                {this.props.entry.media.image && (
-                    <img
-                        src={this.props.entry.media.image}
-                        alt={this.props.entry.media.text || this.props.entry.topics.type}
-                    />
-                )}
-
-                <div>
-                    {this.props.entry.media.text && (
-                        <blockquote>{this.props.entry.media.text}</blockquote>
-                    )}
-
-                    <img
-                        src={'/static/' + this.props.entry.sentiment.type + '.png'}
-                        alt={this.props.entry.sentiment.type}
-                    />
-
-                    <div>{this.formatTimestamp()}</div>
-                    <div>{this.props.entry.topics.map((t) => t.name).join(' ')}</div>
-                </div>
+                <EntryContainer entry={this.props.node} />
             </div>
         );
     }
 }
 
-EntryViewer.propTypes = {
-    entry: React.PropTypes.object.isRequired
-}
-
-export default EntryViewer;
+export const EntryViewerContainer = Relay.createContainer(EntryViewer, {
+    fragments: {
+        node: () => Relay.QL`
+        fragment on Entry {
+            id
+            ${EntryContainer.getFragment('entry')}
+        }
+        `,
+    }
+});

@@ -13,6 +13,7 @@ import SimpleLogin from './components/SimpleLogin';
 import { SignupContainer } from './components/Signup';
 import { AddEntryContainer } from './components/AddEntry';
 import { AccessContainer } from './components/Access';
+import { EntryViewerContainer } from './components/EntryViewer';
 import TopicForm from './components/TopicForm';
 import SentimentForm from './components/SentimentForm';
 import MediaForm from './components/MediaForm';
@@ -66,6 +67,10 @@ const SignupQueries = {
     ...MetaQueries,
 };
 
+const EntryViewerQueries = {
+    node: () => Relay.QL`query { node(id: $id) }`,
+}
+
 setupRelayNetworkLayer();
 
 ReactDOM.render(
@@ -91,6 +96,7 @@ ReactDOM.render(
                     <Route path="typing" component={TextForm}/>
                 </Route>
             </Route>
+            <Route path="entry/:id" component={EntryViewerContainer} queries={EntryViewerQueries} onEnter={auth.requireAuthOnEnter} />
             <Route path="login" component={SimpleLogin}/>
             <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter}/>
         </Route>
