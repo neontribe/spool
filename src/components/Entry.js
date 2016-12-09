@@ -88,26 +88,30 @@ export class Entry extends Component {
                         </div>
                     )}
 
-                    <Icon
-                        icon={entry.sentiment.type}
-                        light={lightIcon}
-                        size={4}
-                        className={styles.sentiment}
-                    />
+                    {this.props.showSentimentOverlay && (
+                        <Icon
+                            icon={entry.sentiment.type}
+                            light={lightIcon}
+                            size={4}
+                            className={styles.sentiment}
+                        />
+                    )}
 
                     <div className={styles.date}>
                         Created {moment(entry.created).format('Do MMMM')}
                     </div>
 
-                    <div className={styles.topics}>
-                        {entry.topics.map((topic, i) => (
-                            <Icon
-                                key={i}
-                                icon={topic.type}
-                                light={lightIcon}
-                            />
-                        ))}
-                    </div>
+                    {this.props.showTopicOverlay && (
+                        <div className={styles.topics}>
+                            {entry.topics.map((topic, i) => (
+                                <Icon
+                                    key={i}
+                                    icon={topic.type}
+                                    light={lightIcon}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </Link>
         );
@@ -116,10 +120,14 @@ export class Entry extends Component {
 
 Entry.propTypes = {
     entry: React.PropTypes.object.isRequired,
+    showSentimentOverlay: React.PropTypes.bool,
+    showTopicOverlay: React.PropTypes.bool,
     withViewer: React.PropTypes.bool
 }
 
 Entry.defaultProps = {
+    showSentimentOverlay: true,
+    showTopicOverlay: true,
     withViewer: true
 }
 

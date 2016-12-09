@@ -42,12 +42,16 @@ export default class EntryViewer extends Component {
                 <Content>
                     <div className={styles.wrapper}>
                         <Grid enforceConsistentSize={true}>
-                            <EntryContainer entry={entry} />
+                            <EntryContainer
+                                entry={entry}
+                                showSentimentOverlay={false}
+                                showTopicOverlay={false}
+                            />
 
                             <div className={styles.contentWrapper}>
                                 {entry.media.text && (
                                     <div className={styles.content}>
-                                        <div className={styles.text}>{entry.media.text}{entry.media.text}{entry.media.text}{entry.media.text}{entry.media.text}{entry.media.text}</div>
+                                        <div className={styles.text}>{entry.media.text}</div>
                                     </div>
                                 )}
 
