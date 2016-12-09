@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
+import { Link } from 'react-router';
 import moment from 'moment';
 import _ from 'lodash';
 
@@ -68,10 +69,9 @@ export class Entry extends Component {
         }
 
         return (
-            <a
-                href='/entry'
+            <Link
+                to={`/entry/${entry.id}`}
                 className={styleVariant}
-                onClick={this.showViewer}
                 style={backgroundImage && { backgroundImage: `url(${backgroundImage})` }}
             >
                 <div>
@@ -100,22 +100,16 @@ export class Entry extends Component {
                     </div>
 
                     <div className={styles.topics}>
-                        {/* Todo: Need topic identifiers to pass to <Icon /> */}
-                        <Icon icon='home' light={lightIcon} />
+                        {entry.topics.map((topic, i) => (
+                            <Icon
+                                key={i}
+                                icon={topic.type}
+                                light={lightIcon}
+                            />
+                        ))}
                     </div>
-
-                    {/*this.props.withViewer && (
-                        <Modal
-                            show={this.state.showEntryViewer}
-                            bsSize="large"
-                            backdrop={true}
-                            onHide={this.hideViewer}
-                        >
-                            <EntryViewer entry={this.props.entry} />
-                        </Modal>
-                    )*/}
                 </div>
-            </a>
+            </Link>
         );
     }
 }
@@ -142,7 +136,7 @@ export const EntryContainer = Relay.createContainer(Entry, {
                 imageThumbnail
             }
             topics {
-                name
+                type
             }
             sentiment {
                 type

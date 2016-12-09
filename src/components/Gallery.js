@@ -4,13 +4,14 @@ import { Link } from 'react-router';
 
 import { EntryContainer, Entry } from './Entry';
 import Layout from './Layout';
-const { Content, Header } = Layout;
 // import Intro from './Intro';
 import Grid from './Grid';
 import withRoles from '../auth/withRoles.js';
 
 import styles from './css/Gallery.module.css';
 import controls from '../css/Controls.module.css';
+
+const { Content, Header } = Layout;
 
 export class Gallery extends Component {
     static propTypes = {
@@ -26,7 +27,7 @@ export class Gallery extends Component {
     }
 
     renderEntries () {
-        return this.props.creator.entries.edges.slice(0, 5).map((entry) => {
+        return this.props.creator.entries.edges.slice(1, 6).map((entry) => {
             if (this.props.relay) {
                 return (
                     <EntryContainer
@@ -49,11 +50,10 @@ export class Gallery extends Component {
         var addEntryControl = (
             <Link to={'/add'} className={styles.addEntryControl}>Add New Entry</Link>
         );
+
         return (
             <Layout>
-                <Header auth={this.props.auth}>
-                    <p>This is a progess bar</p>
-                </Header> 
+                <Header auth={this.props.auth} />
                 <Content>
                     <div className={styles.wrapper}>
                         <Grid callToAction={addEntryControl}>
