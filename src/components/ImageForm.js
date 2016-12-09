@@ -64,12 +64,18 @@ class ImageForm extends Component {
             uploading: true
         });
 
-        var savers = _.toPairs(data).map((item) => {
+        var savers = _.toPairs(_.pick(data, 'image', 'imageThumbnail', 'video', 'videoThumbnail')).map((item) => {
             return uploadToS3(item[1])
                 .then((s3Info) => {
                     return { [item[0]]: s3Info }
                 });
         });
+
+        if (data.text) {
+            savers.push({
+                text: data.text
+            });
+        }
 
         Promise.all(savers)
             .then((results) => {

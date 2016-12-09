@@ -1,7 +1,33 @@
+.wrapper {
+	display: flex;
+	flex: 1;
+	position: relative;
+}
+
 .outputWrapper {
 	position: relative;
 	height: 100%;
 	text-align: center;
+}
+
+.description {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	padding: 1rem;
+	background-color: rgba(0,0,0,.9);
+	z-index: 1;
+}
+
+.textarea {
+	display: flex;
+	flex: 1;
+	margin-bottom: 1rem;
 }
 
 .thumbnail {

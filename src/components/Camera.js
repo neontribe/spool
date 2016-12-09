@@ -8,6 +8,7 @@ import AddControls from './AddControls';
 
 import styles from './css/Camera.module.css';
 import controls from '../css/Controls.module.css';
+import headings from '../css/Headings.module.css';
 
 const mediaConstraints = {
     audio: false,
@@ -25,8 +26,10 @@ class Camera extends Component {
             streamURL: null,
             image: null,
             thumbnail: null,
+            text: '',
             devices: [],
-            activeDevice: null
+            activeDevice: null,
+            showDescriptionField: false
         }
 
         this.startMediaStream = this.startMediaStream.bind(this);
@@ -40,6 +43,9 @@ class Camera extends Component {
         this.getVideoDevices = this.getVideoDevices.bind(this);
         this.switchVideoDevices = _.debounce(this.switchVideoDevices.bind(this), 500, { leading: true, trailing: false });
         this.getCountdownSize = this.getCountdownSize.bind(this);
+        this.showDescripton = this.showDescripton.bind(this);
+        this.hideDescripton = this.hideDescripton.bind(this);
+        this.onTextChange = this.onTextChange.bind(this);
     }
 
     componentWillMount () {
@@ -137,6 +143,7 @@ class Camera extends Component {
     save () {
         // Pass the blobs up
         this.props.save({
+            text: this.state.text,
             image: this.state.image.blob,
             imageThumbnail: this.state.thumbnail.blob
         });
@@ -149,99 +156,137 @@ class Camera extends Component {
         return _.min([dimensions.height, dimensions.width]) * 0.9;
     }
 
+    showDescripton () {
+        this.setState({
+            showDescriptionField: true
+        });
+    }
+
+    hideDescripton () {
+        this.setState({
+            showDescriptionField: false
+        });
+    }
+
+    onTextChange (event) {
+        this.setState({
+            text: event.target.value
+        });
+    }
+
     render () {
         return (
-            <Grid enforceConsistentSize={true}>
-                <div className={styles.outputWrapper}>
-                    {/*this.state.connecting && (
-                        {<ResponsiveEmbed a4by3>
-                            <div className='connecting' />
-                        </ResponsiveEmbed>}
-                    )*/}
-
-                    {this.state.streaming && (
-                        <video
-                            className={styles.video}
-                            ref={(ref) => { this._viewfinder = ref; }}
-                            src={this.state.streamURL}
-                            muted={true}
-                            autoPlay={true}
-                        />
-                    )}
-
-                    {this.state.streaming && !this.state.countdown && (
+            <div className={styles.wrapper}>
+                {this.state.showDescriptionField && (
+                    <div className={styles.description}>
+                        <h2 className={headings.regular}>Add a description</h2>
+                        <textarea
+                            className={styles.textarea}
+                            value={this.state.text}
+                            onChange={this.onTextChange}
+                        ></textarea>
                         <button
-                            className={styles.videoOverlay}
-                            onClick={this.startCountdown}
-                        >
-                            <span className={styles.btnTakePictureWrapper}>
-                                <span className={styles.btnTakePicture}>Press Here To Take Picture</span>
-                            </span>
-                        </button>
-                    )}
+                            className={controls.btnRaised}
+                            onClick={this.hideDescripton}
+                        >Close</button>
+                    </div>
+                )}
 
-                    {this.state.playing &&
-                        <video
-                            className={styles.video}
-                            ref={(ref) => { this._player = ref }}
-                            src={this.state.lastTakeURL}
-                            controls
-                            autoPlay
-                        />
-                    }
+                <Grid enforceConsistentSize={true}>
+                    <div className={styles.outputWrapper}>
+                        {/*this.state.connecting && (
+                            {<ResponsiveEmbed a4by3>
+                                <div className='connecting' />
+                            </ResponsiveEmbed>}
+                        )*/}
 
-                    {this.state.thumbnail && (
-                        <img
-                            className={styles.thumbnail}
-                            src={this.state.thumbnail.dataUri}
-                            alt='The photo you just took'
-                        />
-                    )}
-
-                    {this.state.countdown && (
-                        <div className={styles.countdown}>
-                            <ReactCountdownClock
-                                seconds={this.props.countdownSeconds}
-                                size={this.getCountdownSize()}
-                                font='Open Sans'
-                                color='#212121'
-                                alpha={0.9}
-                                showMilliseconds={false}
-                                onComplete={this.shutter}
+                        {this.state.streaming && (
+                            <video
+                                className={styles.video}
+                                ref={(ref) => { this._viewfinder = ref; }}
+                                src={this.state.streamURL}
+                                muted={true}
+                                autoPlay={true}
                             />
-                        </div>
-                    )}
-                </div>
+                        )}
 
-                <div className={styles.btnStack}>
-                    {(this.state.devices.length > 1) && (
-                        <button
-                            className={controls.btnRaised}
-                            onClick={this.switchVideoDevices}
-                        >Switch Cameras</button>
-                    )}
+                        {this.state.streaming && !this.state.countdown && (
+                            <button
+                                className={styles.videoOverlay}
+                                onClick={this.startCountdown}
+                            >
+                                <span className={styles.btnTakePictureWrapper}>
+                                    <span className={styles.btnTakePicture}>Press Here To Take Picture</span>
+                                </span>
+                            </button>
+                        )}
 
-                    {this.state.image && (
-                        <button
-                            className={controls.btnRaised}
-                            onClick={this.startCountdown}
-                        >Try Again</button>
-                    )}
+                        {this.state.playing &&
+                            <video
+                                className={styles.video}
+                                ref={(ref) => { this._player = ref }}
+                                src={this.state.lastTakeURL}
+                                controls
+                                autoPlay
+                            />
+                        }
 
-                    {/* Todo */}
-                    {this.state.image && (
-                        <button className={controls.btnRaised}>Add Description</button>
-                    )}
+                        {this.state.thumbnail && (
+                            <img
+                                className={styles.thumbnail}
+                                src={this.state.thumbnail.dataUri}
+                                alt='The photo you just took'
+                            />
+                        )}
 
-                    {/* Todo: Re-word to 'Save' */}
-                    {this.state.image && (
-                        <AddControls
-                            onNext={this.save}
-                            disableNext={!this.state.image}
-                        />
-                    )}
-                </div>
-            </Grid>
+                        {this.state.countdown && (
+                            <div className={styles.countdown}>
+                                <ReactCountdownClock
+                                    seconds={this.props.countdownSeconds}
+                                    size={this.getCountdownSize()}
+                                    font='Open Sans'
+                                    color='#212121'
+                                    alpha={0.9}
+                                    showMilliseconds={false}
+                                    onComplete={this.shutter}
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    <div className={styles.btnStack}>
+                        {(this.state.devices.length > 1) && (
+                            <button
+                                className={controls.btnRaised}
+                                onClick={this.switchVideoDevices}
+                            >Switch Cameras</button>
+                        )}
+
+                        {this.state.image && (
+                            <button
+                                className={controls.btnRaised}
+                                onClick={this.startCountdown}
+                            >Try Again</button>
+                        )}
+
+                        {/* Todo */}
+                        {this.state.image && (
+                            <button
+                                className={controls.btnRaised}
+                                onClick={this.showDescripton}
+                            >Add Description</button>
+                        )}
+
+                        {/* Todo: Re-word to 'Save' */}
+                        {this.state.image && (
+                            <AddControls
+                                onNext={this.save}
+                                disableNext={!this.state.image}
+                            />
+                        )}
+                    </div>
+                </Grid>
+            </div>
         );
     }
 }

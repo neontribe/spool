@@ -56,10 +56,10 @@ export class Entry extends Component {
         var backgroundImage = image || video;
         var styleVariant = styles.entry;
         var randomisedStyle;
-
+        var isTextEntry = text && !image && !video;
         var lightIcon = true;
 
-        if (text) {
+        if (isTextEntry) {
             randomisedStyle = this.constructor.colourVariants[_.random(0, this.constructor.colourVariants.length - 1)];
             styleVariant = randomisedStyle.className;
 
@@ -75,7 +75,7 @@ export class Entry extends Component {
                 style={backgroundImage && { backgroundImage: `url(${backgroundImage})` }}
             >
                 <div>
-                    {text && (
+                    {isTextEntry && (
                         <blockquote className={styles.text}>
                             {text.substring(0, 30)}
                             {(text.length > 30) && '...'}
