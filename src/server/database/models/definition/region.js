@@ -23,29 +23,12 @@ module.exports.initRelations = function() {
     delete module.exports.initRelations; // Destroy itself to prevent repeated calls.
     var model = require('../index');
     var Region = model.Region;
-    var Request = model.Request;
     var UserAccount = model.UserAccount;
     var Role = model.Role;
-
-    Region.hasMany(Request, {
-        as: 'RequestRegionIdFkeys',
-        foreignKey: 'region_id',
-        onDelete: 'NO ACTION',
-        onUpdate: 'NO ACTION'
-    });
 
     Region.hasMany(UserAccount, {
         as: 'UserAccountRegionIdFkeys',
         foreignKey: 'region_id',
-        onDelete: 'NO ACTION',
-        onUpdate: 'NO ACTION'
-    });
-
-    Region.belongsToMany(UserAccount, {
-        as: 'RequestUsers',
-        through: Request,
-        foreignKey: 'region_id',
-        otherKey: 'user_id',
         onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
     });

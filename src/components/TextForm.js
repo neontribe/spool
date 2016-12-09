@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
+
 import AddControls from './AddControls';
 
+import styles from './css/TextForm.module.css';
+import a11y from '../css/A11y.module.css';
+
 class TextForm extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
@@ -14,41 +17,39 @@ class TextForm extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    continue() {
-        this.props.save({text: this.state.value});
+    continue () {
+        this.props.save({
+            text: this.state.value
+        });
     }
 
-    handleChange(event) {
+    handleChange (event) {
         this.setState({
             value: event.target.value
         });
     }
 
-    render() {
+    render () {
         return (
-            <Grid>
-                <Row>
-                    <Col>
-                        <FormGroup controlId="media">
-                            <ControlLabel>I just want to say...</ControlLabel>
-                            <FormControl
-                                componentClass="textarea"
-                                maxLength={this.props.maxLength}
-                                placeholder=""
-                                value={this.state.value}
-                                onChange={this.handleChange} />
-                            <HelpBlock>{this.state.value.length} of {this.props.maxLength} letters used</HelpBlock>
-                        </FormGroup>
-                    </Col>
-                    <Col>
-                        <AddControls
-                            onNext={this.continue}
-                            disableNext={!this.state.value}
-                            />
-                    </Col>
-                </Row>
-            </Grid>
+            <form className={styles.wrapper}>
+                <h2 className={a11y.vh}>I just want to say...</h2>
 
+                <textarea
+                    maxLength={this.props.maxLength}
+                    placeholder='I just want to say...'
+                    onChange={this.handleChange}
+                    className={styles.textarea}
+                    value={this.state.value}
+                ></textarea>
+
+                {/*<HelpBlock>{this.state.value.length} of {this.props.maxLength} letters used</HelpBlock>*/}
+                <p>{this.state.value.length} of {this.props.maxLength} letters used</p>
+
+                <AddControls
+                    onNext={this.continue}
+                    disableNext={!this.state.value}
+                />
+            </form>
         );
     }
 }

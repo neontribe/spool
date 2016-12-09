@@ -1,88 +1,73 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
 import { withRouter } from 'react-router';
-import IconChooser from './IconChooser';
-import AddControls from './AddControls';
 import _ from 'lodash';
 
+import IconChooser from './IconChooser';
+
+import styles from './css/MediaForm.module.css';
+
 const choices = [
-      {
-          type: 'video',
-          name: 'Video'
-      },
-      {
-          type: 'photo',
-          name: 'Photo'
-      },
-      {
-          type: 'typing',
-          name: 'Typing'
-      }
-  ];
+  {
+    type: 'video',
+    name: 'Video'
+  },
+  {
+    type: 'photo',
+    name: 'Picture'
+  },
+  {
+    type: 'typing',
+    name: 'Write'
+  }
+];
 
 class MediaForm extends Component {
-
-  constructor(props) {
+  constructor (props) {
     super(props);
 
-    this.state = {
-        types: []
-    };
-
     this.handleNext = this.handleNext.bind(this);
-    this.handleChoice = this.handleChoice.bind(this);
   }
 
-  handleNext() {
-      this.props.router.push('/add/message/' + this.state.types[0]);
+  handleNext (values) {
+    this.props.router.push('/add/message/' + values[0]);
   }
 
-  handleChoice(values) {
-      this.setState({types: values});
-  }
-
-  renderChooser() {
-      return (
-          <Grid>
-              <Row>
-                  <Col xs={12} xsOffset={1}>
-                      <IconChooser
-                          label="How would you like to make your message?"
-                          choices={choices}
-                          maxSelections={1}
-                          onChange={this.handleChoice} />
-                  </Col>
-              </Row>
-              <Row>
-                  <AddControls onNext={this.handleNext} disableNext={!this.state.types.length} />
-              </Row>
-          </Grid>
-      );
-  }
-
-  render() {
-    let children = null;
-    if (this.props.children) {
-        children = React.cloneElement(this.props.children, {
-            save: _.partial(this.props.save, this.props.saveKey)
-        });
-    }
+  renderChooser () {
     return (
-          <div>
-              { children && children }
-              { !children && this.renderChooser() }
-          </div>
+      <IconChooser
+        label='How would you like to create the entry?'
+        choices={choices}
+        maxSelections={1}
+        onChange={this.handleNext}
+      />
+    );
+  }
+
+  render () {
+    let children = null;
+
+    if (this.props.children) {
+      children = React.cloneElement(this.props.children, {
+        save: _.partial(this.props.save, this.props.saveKey)
+      });
+    }
+
+    return (
+      <div className={styles.wrapper}>
+        {children && children}
+        {!children && this.renderChooser()}
+      </div>
     );
   }
 }
 
 MediaForm.propTypes = {
-    save: React.PropTypes.func,
-    saveKey: React.PropTypes.string
+  save: React.PropTypes.func,
+  saveKey: React.PropTypes.string
 }
 
 MediaForm.defaultProps = {
-    saveKey: 'media'
+  saveKey: 'media'
 }
 
 export default withRouter(MediaForm);

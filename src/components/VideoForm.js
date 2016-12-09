@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Alert } from 'react-bootstrap';
+import _ from 'lodash';
+
 import uploadToS3 from '../s3';
 import VideoRecorder from './VideoRecorder';
-import _ from 'lodash';
+
+import styles from './css/VideoForm.module.css';
 
 const errorMap = {
     PermissionDeniedError: 'You\'ve sensibly blocked access to your camera and microphone.',
@@ -11,7 +13,7 @@ const errorMap = {
 
 class VideoForm extends Component {
 
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
@@ -25,10 +27,12 @@ class VideoForm extends Component {
         this.onMediaFailure = this.onMediaFailure.bind(this);
     }
 
-    componentDidMount() {
+    componentDidMount () {
         VideoRecorder.mediaCheck()
             .then(() => {
-                this.setState({mode: 'record'});
+                this.setState({
+                    mode: 'record'
+                });
             })
             .catch((error) => {
                 this.setState({
@@ -38,65 +42,83 @@ class VideoForm extends Component {
             });
     }
 
-    back() {
+    back () {
         this.props.back();
     }
 
     /**
      * Get two blobs, 'thumbnail' and 'video' from the recorder and save them
      */
-    save(data) {
-        this.setState({ uploading: true });
-        var savers = _.toPairs(data).map((item) => {
-            return uploadToS3(item[1])
-                .then((s3Info) => { return {[item[0]]: s3Info} });
+    save (data) {
+        this.setState({
+            uploading: true
         });
 
-        Promise.all(savers).then((results) => {
-            var info = Object.assign.apply(Object, [{}].concat(results));
-            this.setState({
-                uploading: false,
-                uploaded: true
-            });
-            this.props.save(info);
-        }).catch((e) => console.log('Error during file save: ', e));
+        var savers = _.toPairs(data).map((item) => {
+            return uploadToS3(item[1])
+                .then((s3Info) => {
+                    return {
+                        [item[0]]: s3Info
+                    }
+                });
+        });
+
+        Promise.all(savers)
+            .then((results) => {
+                var info = Object.assign.apply(Object, [{}].concat(results));
+
+                this.setState({
+                    uploading: false,
+                    uploaded: true
+                });
+
+                this.props.save(info);
+            })
+            .catch((e) => console.log('Error during file save: ', e));
     }
 
-    requestUploadMode() {
-        this.setState({mode: 'upload'});
+    requestUploadMode () {
+        this.setState({
+            mode: 'upload'
+        });
     }
 
-    onMediaFailure(error) {
+    onMediaFailure (error) {
         this.setState({
             recorderError: error.name,
             mode: 'fallbackPrompt'
         });
     }
 
-	renderBack() {
+	renderBack () {
 		if (this.props.back) {
-            return (<div><span> or </span><Button onClick={this.back}>Go back</Button></div>);
+            return (
+                <div>
+                    <span> or </span>
+                    <button onClick={this.back}>Go back</button>
+                </div>
+            );
 		}
 	}
 
-    render() {
+    render () {
         return (
-            <div>
-            {(
-                {
+            <div className={styles.wrapper}>
+                {({
                     loading: <h2>Loading</h2>,
-                    record: <VideoRecorder save={this.save} onFailure={this.onMediaFailure}/>,
-                    fallbackPrompt: <Alert bsStyle="danger">
-                                        <h4>Oh Snap. We can&apos;t make a video</h4>
-                                        <p>{errorMap[this.state.recorderError]}</p>
-                                        <p>
-                                            <Button onClick={this.requestUploadMode}>Try uploading</Button>
-											{ this.renderBack() }
-                                        </p>
-                                    </Alert>,
+                    record: <VideoRecorder save={this.save} onFailure={this.onMediaFailure} />,
+                    fallbackPrompt: (
+                        <div>
+                            <h4>Oh Snap. We can&apos;t make a video</h4>
+                            <p>{errorMap[this.state.recorderError]}</p>
+                            <p>
+                                <button onClick={this.requestUploadMode}>Try uploading</button>
+								{this.renderBack()}
+                            </p>
+                        </div>
+                    ),
                     upload: <h2>Uploader</h2>
-                }
-            )[this.state.mode]}
+                })[this.state.mode]}
             </div>
         );
     }

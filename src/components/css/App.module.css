@@ -1,0 +1,216 @@
+@keyframes slideRTL {
+	0% { width: 0; }
+	100% { width: 33.3%; }
+}
+
+.app {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.header {
+	display: flex;
+	align-items: stretch;
+	justify-content: space-between;
+	height: 50px;
+	width: 100%;
+	color: #fff;
+	background-color: rgba(0, 0, 0, .1);
+	overflow: hidden;
+}
+
+.header > * {
+	display: flex;
+	align-items: center;
+	padding: 0 1rem;
+}
+
+.logo {
+	font-family: 'Roboto Slab';
+	letter-spacing: 2px;
+}
+
+.headerMeta {
+	display: flex;
+	flex: 1;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, .15);
+}
+
+.contentMenuToggle {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 50px; /* .header->height */
+	width: 50px; /* .header->height */
+}
+
+.contextMenuContent {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	position: absolute;
+	top: 50px; /* .header->height */
+	right: 0;
+	height: calc(100vh - 50px); /* .header->height */
+	box-shadow: -5px 15px 38px 0px rgba(0, 0, 0, .25);
+	background-color: #455a64;
+	z-index: 1;
+
+	animation: slideRTL .75s 1 forwards;
+}
+
+.contextMenu {
+	list-style: none;
+}
+
+.contextMenuItem {
+	padding: 1rem;
+	margin-bottom: 1px;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.content {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	height: calc(100vh - 50px); /* .header->height */
+	padding: 1rem;
+}
+
+/* Force landscape display by rotating the entire document */
+@media screen and (orientation: portrait) {
+	html {
+		transform: rotate(-90deg);
+		transform-origin: left top;
+		width: 100vh;
+		overflow-x: hidden;
+		position: absolute;
+		top: 100%;
+		left: 0;
+	}
+
+	.contextMenuContent,
+	.content {
+		height: calc(100vw - 50px); /* .header->height */
+	}
+}
+
+
+
+
+
+
+/* Filters. Todo: These styles will need moving */
+
+.filter {
+	float: left;
+	width: 50%;
+}
+
+.filterControl {
+	display: block;
+	padding: 1rem;
+	margin: 0 1px 1px 0;
+	color: #fff;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.filterOn {
+	composes: filterControl;
+	color: #212121;
+	background-color: #8bc34a;
+}
+
+.filterHappyOn {
+	composes: filterOn;
+	background-image: url('/static/icon-happy.svg');
+	background-position: left 1rem center;
+	background-repeat: no-repeat;
+	background-size: 1rem;
+	text-indent: 2rem;
+}
+
+.filterSadOn {
+	composes: filterOn;
+	background-image: url('/static/icon-sad.svg');
+	background-position: left 1rem center;
+	background-repeat: no-repeat;
+	background-size: 1rem;
+	text-indent: 2rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Progress bar. Todo: These styles will need moving */
+
+.progressSteps {
+	display: flex;
+	flex: 1;
+	align-self: stretch;
+	align-items: center;
+	justify-content: center;
+	background-color: #293b42;
+}
+
+.progressStep {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	float: left;
+	height: 50px;
+	background: #30454e;
+	text-align: center;
+	padding-left: calc(30px + 1rem);
+	padding-right: 1rem;
+	position: relative;
+	margin: 0 10px 0 0;
+	text-decoration: none;
+	color: #fff;
+	min-width: 100px;
+}
+
+.progressStep:before {
+	content: '';
+	border-top: 25px solid transparent;
+	border-bottom: 25px solid transparent;
+	border-left: 25px solid #293b42;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.progressStep:after {
+	content: '';
+	border-top: 25px solid transparent;
+	border-bottom: 25px solid transparent;
+	border-left: 25px solid #30454e;
+	position: absolute;
+	right: -25px;
+	top: 0;
+	z-index: 1;
+}
+
+.progressIcon {
+	display: flex;
+	align-items: center;
+	height: 2rem;
+	width: 2rem;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+}
+
+.progressIcon + .progressIcon {
+	margin-left: 1rem;
+}

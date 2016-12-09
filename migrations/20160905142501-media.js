@@ -17,7 +17,7 @@ module.exports = {
             autoIncrement: true,
         },
         text: {
-            type: Sequelize.STRING,
+            type: Sequelize.STRING(4096),
         },
         video: {
             type: Sequelize.STRING,
