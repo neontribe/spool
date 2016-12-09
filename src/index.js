@@ -14,6 +14,7 @@ import { SignupContainer } from './components/Signup';
 import { AddEntryContainer } from './components/AddEntry';
 import { AccessContainer } from './components/Access';
 import { EntryViewerContainer } from './components/EntryViewer';
+import IntroductionContainer from './components/Introduction';
 import TopicForm from './components/TopicForm';
 import SentimentForm from './components/SentimentForm';
 import MediaForm from './components/MediaForm';
@@ -85,6 +86,7 @@ ReactDOM.render(
             <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
             <Route path="access" component={AccessContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
 
+            <Route path="introduction" component={IntroductionContainer} onEnter={auth.requireAuthOnEnter}/>
             <Route path="home" component={GalleryContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
             <Route path="add" component={AddEntryContainer} queries={CreatorQueries}>
                 <IndexRedirect to="about"/>
