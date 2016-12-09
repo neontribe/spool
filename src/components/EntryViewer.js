@@ -12,6 +12,15 @@ import controls from '../css/Controls.module.css';
 
 const { Content, Header } = Layout;
 
+
+class Paragraph extends Component {
+    render() {
+        const text = this.props.children;
+        const paragraphs = text.split(/\n/).map((text, i) => <p key={i}>{text}</p>)
+        return (<div className={styles.text}>{paragraphs}</div>);
+    }
+}
+
 export default class EntryViewer extends Component {
     render () {
         var entry = this.props.node;
@@ -51,7 +60,7 @@ export default class EntryViewer extends Component {
                             <div className={styles.contentWrapper}>
                                 {entry.media.text && (
                                     <div className={styles.content}>
-                                        <div className={styles.text}>{entry.media.text}</div>
+                                        <Paragraph>{entry.media.text}</Paragraph>
                                     </div>
                                 )}
 
