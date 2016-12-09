@@ -1,0 +1,39 @@
+.wrapper {
+	display: flex;
+	flex: 1;
+}
+
+.contentWrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	max-height: 100%;
+	width: 100%;
+}
+
+.contentWrapper > * + * {
+	margin-top: 1rem;
+}
+
+.content {
+	height: 100%;
+	overflow: auto;
+}
+
+.text {
+	padding: 1rem;
+	line-height: 2;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.header > * {
+	margin: 0 1rem;
+}
+
+.topics {
+	display: flex;
+}
+
+.topics > * {
+	margin: 0 .5rem;
+}
