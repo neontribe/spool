@@ -8,15 +8,16 @@
 	flex-direction: column;
 	justify-content: center;
 	height: 100%;
+	width: 100%;
+}
+
+.contentWrapper > * + * {
+	margin-top: 1rem;
 }
 
 .content {
 	height: 100%;
 	overflow: auto;
-}
-
-.contentWrapper > * + * {
-	margin-top: 1rem;
 }
 
 .text {

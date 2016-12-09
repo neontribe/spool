@@ -27,7 +27,7 @@ export class Gallery extends Component {
     }
 
     renderEntries () {
-        return this.props.creator.entries.edges.slice(1, 6).map((entry) => {
+        return this.props.creator.entries.edges.slice(0, 5).map((entry) => {
             if (this.props.relay) {
                 return (
                     <EntryContainer
