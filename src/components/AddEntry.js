@@ -4,11 +4,13 @@ import _ from 'lodash';
 import { withRouter } from 'react-router';
 
 import Layout from './Layout';
-const { Content, Header } = Layout;
+import Icon from './Icon';
 import AddEntryMutation from './mutations/AddEntryMutation';
 import withRoles from '../auth/withRoles.js';
 
 import styles from './css/AddEntry.module.css';
+
+const { Content, Header } = Layout;
 
 class AddEntry extends Component {
     constructor (props) {
@@ -57,9 +59,9 @@ class AddEntry extends Component {
             routes.push(nextRoute);
 
             return routes.join('/').replace('//', '/');
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     setEntryData (key, value) {
@@ -91,7 +93,35 @@ class AddEntry extends Component {
         return (
             <Layout className={styles.wrapper}>
                 <Header auth={this.props.auth}>
-                    <p>Foo</p>
+                    {this.state.entry && (
+                        <div className={styles.header}>
+                            <div>
+                                {this.state.entry.topics && (
+                                    <ul className={styles.topics}>
+                                        {this.state.entry.topics.map((topic, i) => (
+                                            <li key={i}>
+                                                <Icon
+                                                    icon={topic}
+                                                    light={true}
+                                                />
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+
+                            <div>
+                                {this.state.entry.sentiment && (
+                                    <Icon
+                                        icon={this.state.entry.sentiment}
+                                        light={true}
+                                    />
+                                )}
+                            </div>
+
+                            <div></div>
+                        </div>
+                    )}
                 </Header>
                 <Content>{children}</Content>
             </Layout>

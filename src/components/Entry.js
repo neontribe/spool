@@ -102,15 +102,16 @@ export class Entry extends Component {
                     </div>
 
                     {this.props.showTopicOverlay && (
-                        <div className={styles.topics}>
+                        <ul className={styles.topics}>
                             {entry.topics.map((topic, i) => (
-                                <Icon
-                                    key={i}
-                                    icon={topic.type}
-                                    light={lightIcon}
-                                />
+                                <li key={i}>
+                                    <Icon
+                                        icon={topic.type}
+                                        light={lightIcon}
+                                    />
+                                </li>
                             ))}
-                        </div>
+                        </ul>
                     )}
                 </div>
             </Link>
