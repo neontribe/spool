@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Button, Alert } from 'react-bootstrap';
+import _ from 'lodash';
+
 import uploadToS3 from '../s3';
 import Camera from './Camera';
-import _ from 'lodash';
+
+import styles from './css/ImageForm.module.css';
 
 const errorMap = {
     PermissionDeniedError: 'You\'ve sensibly blocked access to your camera.',
@@ -10,8 +12,7 @@ const errorMap = {
 };
 
 class ImageForm extends Component {
-
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
@@ -25,10 +26,12 @@ class ImageForm extends Component {
         this.onMediaFailure = this.onMediaFailure.bind(this);
     }
 
-    componentDidMount() {
+    componentDidMount () {
         Camera.mediaCheck()
             .then(() => {
-                this.setState({mode: 'record'});
+                this.setState({
+                    mode: 'record'
+                });
             })
             .catch((error) => {
                 this.setState({
@@ -38,70 +41,83 @@ class ImageForm extends Component {
             });
     }
 
-    back() {
+    back () {
         this.props.back();
     }
 
-	renderBack() {
+	renderBack () {
 		if (this.props.back) {
-            return (<div><span> or </span><Button onClick={this.back}>Go back</Button></div>);
+            return (
+                <div>
+                    <span> or </span>
+                    <button onClick={this.back}>Go back</button>
+                </div>
+            );
 		}
 	}
 
     /**
      * Get two blobs, 'thumbnail' and 'image' from the camera and save them
      */
-    save(data) {
-        this.setState({ uploading: true });
-        var savers = _.toPairs(data).map((item) => {
-            return uploadToS3(item[1])
-                .then((s3Info) => { return {[item[0]]: s3Info} });
+    save (data) {
+        this.setState({
+            uploading: true
         });
 
-        Promise.all(savers).then((results) => {
-            var info = Object.assign.apply(Object, [{}].concat(results));
-            this.setState({
-                uploading: false,
-                uploaded: true
-            });
-            this.props.save(info);
-        }).catch((e) => console.log('Error during file save: ', e));
+        var savers = _.toPairs(data).map((item) => {
+            return uploadToS3(item[1])
+                .then((s3Info) => {
+                    return { [item[0]]: s3Info }
+                });
+        });
+
+        Promise.all(savers)
+            .then((results) => {
+                var info = Object.assign.apply(Object, [{}].concat(results));
+
+                this.setState({
+                    uploading: false,
+                    uploaded: true
+                });
+
+                this.props.save(info);
+            })
+            .catch((e) => console.log('Error during file save: ', e));
     }
 
-    requestUploadMode() {
-        this.setState({mode: 'upload'});
+    requestUploadMode () {
+        this.setState({
+            mode: 'upload'
+        });
     }
 
-    onMediaFailure(error) {
+    onMediaFailure (error) {
         this.setState({
             cameraError: error.name,
             mode: 'fallbackPrompt'
         });
     }
 
-    render() {
+    render () {
         return (
-            <Grid>
-                <Row>
-                    <Col>
-                        {(
-                            {
-                                loading: <h2>Loading</h2>,
-                                record: <Camera save={this.save} onFailure={this.onMediaFailure}/>,
-                                fallbackPrompt: <Alert bsStyle="danger">
-                                                    <h4>Oh Snap. We can&apos;t take a picture</h4>
-                                                    <p>{errorMap[this.state.cameraError]}</p>
-                                                    <p>
-                                                        <Button onClick={this.requestUploadMode}>Try uploading</Button>
-            											{ this.renderBack() }
-                                                    </p>
-                                                </Alert>,
-                                upload: <h2>Uploader</h2>
-                            }
-                        )[this.state.mode]}
-                    </Col>
-                </Row>
-            </Grid>
+            <div className={styles.wrapper}>
+                {({
+                    loading: <h2>Loading</h2>,
+                    record: <Camera save={this.save} onFailure={this.onMediaFailure} />,
+                    fallbackPrompt: (
+                        <div>
+                            <h4>Oh Snap. We can&apos;t take a picture</h4>
+                            <p>{errorMap[this.state.cameraError]}</p>
+                            <p>
+                                <button onClick={this.requestUploadMode}>Try uploading</button>
+								{this.renderBack()}
+                            </p>
+                        </div>
+                    ),
+                    upload: <h2>Uploader</h2>
+                }
+                )[this.state.mode]}
+            </div>
         );
     }
 }

@@ -1,0 +1,11 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	justify-content: center;
+}
+
+.addEntryControl {
+	composes: btnRaised from '../../css/Controls.module.css';
+	width: 100%;
+}

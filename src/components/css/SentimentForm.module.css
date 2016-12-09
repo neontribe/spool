@@ -1,0 +1,28 @@
+.wrapper {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.option {
+	display: flex;
+	flex: 1;
+	justify-content: center;
+	align-self: stretch;
+	align-items: center;
+	font-size: 5rem;
+	background-size: 90%;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.optionHappy {
+	composes: option;
+	background-image: url('/static/icon-happy-light.svg');
+}
+
+.optionSad {
+	composes: option;
+	background-image: url('/static/icon-sad-light.svg');
+}
