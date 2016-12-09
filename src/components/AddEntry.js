@@ -119,7 +119,9 @@ class AddEntry extends Component {
                                 )}
                             </div>
 
-                            <div></div>
+                            <div>
+                                {/* Todo: Display media type selection */}
+                            </div>
                         </div>
                     )}
                 </Header>

@@ -91,7 +91,9 @@ class Camera extends Component {
         var nextIndex = (currentIndex + 1) % this.state.devices.length;
         var newDevice = this.state.devices[nextIndex].deviceId || this.state.activeDevice;
 
-        this.setState({activeDevice: newDevice}, () => {
+        this.setState({
+            activeDevice: newDevice
+        }, () => {
             this.stopMediaStream();
             this.startMediaStream();
         });
@@ -201,7 +203,8 @@ class Camera extends Component {
                             <ReactCountdownClock
                                 seconds={this.props.countdownSeconds}
                                 size={this.getCountdownSize()}
-                                color='#a3dfef'
+                                font='Open Sans'
+                                color='#212121'
                                 alpha={0.9}
                                 showMilliseconds={false}
                                 onComplete={this.shutter}
