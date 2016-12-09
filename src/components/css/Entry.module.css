@@ -1,0 +1,171 @@
+.entry {
+	position: relative;
+	display: flex;
+	flex: 1;
+	justify-content: center;
+	align-self: stretch;
+	align-items: center;
+	text-align: center;
+	color: #fff;
+	text-shadow: 0 0 1px rgba(0, 0, 0, .6);
+	background-size: cover;
+
+	box-shadow:
+		0 10px 20px rgba(0, 0, 0, 0.19),
+		0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.entryDark {
+	composes: entry;
+	color: #212121;
+	text-shadow: none;
+}
+
+.entryVariantA {
+	composes: entry;
+	background-color: #e91e63;
+}
+
+.entryVariantB {
+	composes: entry;
+	background-color: #2196f3;
+}
+
+.entryVariantC {
+	composes: entry;
+	background-color: #009688;
+}
+
+.entryVariantD {
+	composes: entryDark;
+	background-color: #ffeb3b;
+}
+
+.entryVariantE {
+	composes: entry;
+	background-color: #9c27b0;
+}
+
+.entryVariantF {
+	composes: entry;
+	background-color: #3f51b5;
+}
+
+.entryVariantG {
+	composes: entryDark;
+	background-color: #ffc107;
+}
+
+.entryVariantH {
+	composes: entry;
+	background-color: #f44336;
+}
+
+.entryVariantI {
+	composes: entry;
+	background-color: #673ab7;
+}
+
+.entryVariantJ {
+	composes: entryDark;
+	background-color: #cddc39;
+}
+
+.entryVariantK {
+	composes: entry;
+	background-color: #4caf50;
+}
+
+.sentiment {
+	position: absolute;
+	top: 1rem;
+	left: 1rem;
+}
+
+.text {
+	font-family: 'Roboto Slab';
+	font-size: 3vw;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	overflow: auto;
+	width: 75%;
+	padding: 0 1rem;
+	margin: auto;
+
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+.topics {
+	flex-wrap: wrap;
+	max-width: calc(100% - 7rem);
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	display: flex;
+}
+
+.topics > * {
+	margin: 0 .5rem .5rem;
+}
+
+.date {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	padding: 1rem;
+	text-align: left;
+	background-color: rgba(0, 0, 0, .1);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.videoOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.95;
+	box-sizing: border-box;
+    background-image: linear-gradient(transparent, #000);
+    cursor: pointer;
+}
+
+.videoOverlayPlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 100px;
+	width: 100px;
+	margin: auto;
+	border: .5rem solid #000;
+	border-radius: 50%;
+	opacity: 0.75;
+}
+
+.videoOverlayPlay:before {
+	content: '';
+	display: block;
+	background: url('/static/video-play.svg') no-repeat;
+	background-size: contain;
+	position: absolute;
+	top: 0;
+	left: 27%;
+	right: 0;
+	bottom: 0;
+	height: 75%;
+	width: 75%;
+	padding: 1rem;
+	margin: auto;
+}

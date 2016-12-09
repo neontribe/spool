@@ -1,52 +1,55 @@
 import React, { Component } from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
-import  _ from 'lodash';
+import _ from 'lodash';
+
+import styles from './css/AddControls.module.css';
+import controls from '../css/Controls.module.css';
 
 class AddControls extends Component {
-
-    constructor(props) {
+    constructor (props) {
         super(props);
+
         if (this.props.onNext) {
-            this.onNext = _.debounce(this.props.onNext, 500, {leading: true, trailing: false});
-        }
-        if (this.props.onBack) {
-            this.onBack = _.debounce(this.props.onBack, 500, {leading: true, trailing: false});
-        }
-        if (this.props.onQuit) {
-            this.onQuit = _.debounce(this.props.onQuit, 500, {leading: true, trailing: false});
+            this.onNext = _.debounce(this.props.onNext, 500, { leading: true, trailing: false });
         }
 
+        if (this.props.onBack) {
+            this.onBack = _.debounce(this.props.onBack, 500, { leading: true, trailing: false });
+        }
+
+        if (this.props.onQuit) {
+            this.onQuit = _.debounce(this.props.onQuit, 500, { leading: true, trailing: false });
+        }
     }
 
-    render() {
+    render () {
         return (
-            <div className="full-width">
-                <div className="group-left">
-                    {this.onBack &&
-                        <Button
-                            onClick={this.onBack}
-                            disabled={this.props.disableBack}>
-                            <Glyphicon glyph="chevron-left" /> Back
-                        </Button>
-                    }
-                    {this.onQuit &&
-                        <Button
-                            onClick={this.onQuit}
-                            disabled={this.props.disableQuit}>
-                            <Glyphicon glyph="remove" /> Quit
-                        </Button>
-                    }
-                </div>
-                <div className="group-right">
-                    {this.onNext &&
-                        <Button
-                            onClick={this.onNext}
-                            disabled={this.props.disableNext}>
-                            <Glyphicon glyph="ok" /> OK
-                       </Button>
-                    }
+            <div className={styles.wrapper}>
+                {this.onBack && (
+                    <a
+                        role='button'
+                        onClick={this.onBack}
+                        disabled={this.props.disableBack}
+                        className={controls.btnRaised}
+                    >Back</a>
+                )}
 
-                </div>
+                {this.onQuit && (
+                    <a
+                        role='button'
+                        onClick={this.onQuit}
+                        disabled={this.props.disableQuit}
+                        className={controls.btnRaised}
+                    >Quit</a>
+                )}
+
+                {this.onNext && (
+                    <a
+                        role='button'
+                        onClick={this.onNext}
+                        disabled={this.props.disableNext}
+                        className={controls.btnRaised}
+                    >Next</a>
+                )}
             </div>
         );
     }
@@ -59,10 +62,6 @@ AddControls.propTypes = {
     disableNext: React.PropTypes.bool,
     disableBack: React.PropTypes.bool,
     disableQuit: React.PropTypes.bool
-};
-
-AddControls.defaultProps = {
-
 };
 
 export default AddControls;
