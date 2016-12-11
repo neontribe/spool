@@ -4,10 +4,12 @@
 }
 
 .app {
+	max-width: 1920px;
 	display: flex;
 	flex: 1;
 	flex-direction: column;
 	justify-content: center;
+	margin: 0 auto;
 }
 
 .header {

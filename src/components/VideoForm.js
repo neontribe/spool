@@ -12,7 +12,6 @@ const errorMap = {
 };
 
 class VideoForm extends Component {
-
     constructor (props) {
         super(props);
 

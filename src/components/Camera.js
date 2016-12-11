@@ -262,28 +262,24 @@ class Camera extends Component {
                             >Switch Cameras</button>
                         )}
 
-                        {this.state.image && (
+                        {/* Todo: Re-word 'Next' to 'Save' */}
+                        {this.state.image && [
                             <button
+                                key={0}
                                 className={controls.btnRaised}
                                 onClick={this.startCountdown}
-                            >Try Again</button>
-                        )}
-
-                        {/* Todo */}
-                        {this.state.image && (
+                            >Try Again</button>,
                             <button
+                                key={1}
                                 className={controls.btnRaised}
                                 onClick={this.showDescripton}
-                            >Add Description</button>
-                        )}
-
-                        {/* Todo: Re-word to 'Save' */}
-                        {this.state.image && (
+                            >Add Description</button>,
                             <AddControls
+                                key={2}
                                 onNext={this.save}
                                 disableNext={!this.state.image}
                             />
-                        )}
+                        ]}
                     </div>
                 </Grid>
             </div>

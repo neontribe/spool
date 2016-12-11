@@ -4,6 +4,7 @@ import AddControls from './AddControls';
 import IconChooser from './IconChooser';
 
 import styles from './css/TopicForm.module.css';
+import helpers from '../css/Helpers.module.css';
 
 class TopicForm extends Component {
     constructor (props) {
@@ -37,9 +38,9 @@ class TopicForm extends Component {
                     initialValue={this.props.initialValue}
                 />
 
-                {!!this.state.value.length && (
+                <div className={(!this.state.value.length) && helpers.hide}>
                     <AddControls onNext={this.continue} />
-                )}
+                </div>
             </div>
         );
     }

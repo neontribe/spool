@@ -4,6 +4,7 @@ import AddControls from './AddControls';
 
 import styles from './css/TextForm.module.css';
 import a11y from '../css/A11y.module.css';
+import helpers from '../css/Helpers.module.css';
 
 class TextForm extends Component {
     constructor (props) {
@@ -45,10 +46,12 @@ class TextForm extends Component {
                 {/*<HelpBlock>{this.state.value.length} of {this.props.maxLength} letters used</HelpBlock>*/}
                 <p>{this.state.value.length} of {this.props.maxLength} letters used</p>
 
-                <AddControls
-                    onNext={this.continue}
-                    disableNext={!this.state.value}
-                />
+                <div className={(!this.state.value.length) && helpers.hide}>
+                    <AddControls
+                        onNext={this.continue}
+                        disableNext={!this.state.value}
+                    />
+                </div>
             </form>
         );
     }

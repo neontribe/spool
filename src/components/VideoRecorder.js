@@ -9,6 +9,7 @@ import AddControls from './AddControls';
 
 import styles from './css/VideoRecorder.module.css';
 import controls from '../css/Controls.module.css';
+import headings from '../css/Headings.module.css';
 
 var mediaConstraints = {
     audio: true,
@@ -47,6 +48,9 @@ class VideoRecorder extends Component {
         this.getVideoDevices = this.getVideoDevices.bind(this);
         this.getCountdownSize = this.getCountdownSize.bind(this);
         this.switchVideoDevices = _.debounce(this.switchVideoDevices.bind(this), 500, { leading: true, trailing: false });
+        this.showDescripton = this.showDescripton.bind(this);
+        this.hideDescripton = this.hideDescripton.bind(this);
+        this.onTextChange = this.onTextChange.bind(this);
     }
 
     componentWillMount () {
@@ -204,85 +208,123 @@ class VideoRecorder extends Component {
         return _.min([dimensions.height, dimensions.width]) * 0.9;
     }
 
+    showDescripton () {
+        this.setState({
+            showDescriptionField: true
+        });
+    }
+
+    hideDescripton () {
+        this.setState({
+            showDescriptionField: false
+        });
+    }
+
+    onTextChange (event) {
+        this.setState({
+            text: event.target.value
+        });
+    }
+
     render () {
         return (
-            <Grid enforceConsistentSize={true}>
-                <div className={styles.outputWrapper}>
-                    {/*this.state.connecting && (
-                        <div className='connecting' />
-                    )*/}
-
-                    {this.state.streaming && (
-                        <video
-                            className={styles.video}
-                            ref={(ref) => { this._recorder = ref }}
-                            src={this.state.streamURL}
-                            muted={true}
-                            autoPlay={true}
-                        />
-                    )}
-
-                    {this.state.streaming && !this.state.countdown && (
-                        <button
-                            className={styles.videoOverlay}
-                            onClick={this.startCountdown}
-                        >
-                            <span className={styles.btnTakePictureWrapper}>
-                                <span className={styles.btnTakePicture}>Press Here To Record</span>
-                            </span>
-                        </button>
-                    )}
-
-                    {this.state.playing && (
-                        <video
-                            ref={(ref) => { this._player = ref }}
-                            src={this.state.lastTakeURL}
-                            controls={true}
-                            autoPlay={true}
-                        />
-                    )}
-
-                    {this.state.countdown && (
-                        <div className={styles.countdown}>
-                            <ReactCountdownClock
-                                seconds={this.props.countdownSeconds}
-                                size={this.getCountdownSize()}
-                                color='#a3dfef'
-                                alpha={0.9}
-                                showMilliseconds={false}
-                                onComplete={this.startRecording}
-                            />
-                        </div>
-                    )}
-                </div>
-
-                <div className={styles.btnStack}>
-                    {this.state.recording && (
+            <div className={styles.wrapper}>
+                {this.state.showDescriptionField && (
+                    <div className={styles.description}>
+                        <h2 className={headings.regular}>Add a description</h2>
+                        <textarea
+                            className={styles.textarea}
+                            value={this.state.text}
+                            onChange={this.onTextChange}
+                        ></textarea>
                         <button
                             className={controls.btnRaised}
-                            disabled={!this.state.recording}
-                            onClick={this.stopRecording}
-                        >Stop</button>
-                    )}
+                            onClick={this.hideDescripton}
+                        >Close</button>
+                    </div>
+                )}
 
-                    {(this.state.devices.length > 1) && (
-                        <button onClick={this.switchVideoDevices}>Switch Camera</button>
-                    )}
+                <Grid enforceConsistentSize={true}>
+                    <div className={styles.outputWrapper}>
+                        {/*this.state.connecting && (
+                            <div className='connecting' />
+                        )*/}
 
-                    {/* Todo */}
-                    {this.state.lastTakeURL && (
-                        <button className={controls.btnRaised}>Add Description</button>
-                    )}
+                        {this.state.streaming && (
+                            <video
+                                className={styles.video}
+                                ref={(ref) => { this._recorder = ref }}
+                                src={this.state.streamURL}
+                                muted={true}
+                                autoPlay={true}
+                            />
+                        )}
 
-                    {/* Todo: Re-word to 'Save' */}
-                    {this.state.lastTakeURL && (
-                        <AddControls
-                            onNext={this.save}
-                            disableNext={!this.state.lastTakeURL && !this.state.playing}
-                        />
-                    )}
-                </div>
-            </Grid>
+                        {this.state.streaming && !this.state.countdown && (
+                            <button
+                                className={styles.videoOverlay}
+                                onClick={this.startCountdown}
+                            >
+                                <span className={styles.btnTakePictureWrapper}>
+                                    <span className={styles.btnTakePicture}>Press Here To Record</span>
+                                </span>
+                            </button>
+                        )}
+
+                        {this.state.playing && (
+                            <video
+                                className={styles.video}
+                                ref={(ref) => { this._player = ref }}
+                                src={this.state.lastTakeURL}
+                                controls={true}
+                                autoPlay={true}
+                            />
+                        )}
+
+                        {this.state.countdown && (
+                            <div className={styles.countdown}>
+                                <ReactCountdownClock
+                                    seconds={this.props.countdownSeconds}
+                                    size={this.getCountdownSize()}
+                                    font='Open Sans'
+                                    color='#212121'
+                                    alpha={0.9}
+                                    showMilliseconds={false}
+                                    onComplete={this.startRecording}
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    <div className={styles.btnStack}>
+                        {(this.state.devices.length > 1) && (
+                            <button onClick={this.switchVideoDevices}>Switch Camera</button>
+                        )}
+
+                        {this.state.recording && (
+                            <button
+                                className={controls.btnRaised}
+                                disabled={!this.state.recording}
+                                onClick={this.stopRecording}
+                            >Stop</button>
+                        )}
+
+                        {/* Todo: Re-word 'Next' to 'Save' */}
+                        {this.state.lastTakeURL && [
+                            <button
+                                key={0}
+                                className={controls.btnRaised}
+                                onClick={this.showDescripton}
+                            >Add Description</button>,
+                            <AddControls
+                                key={1}
+                                onNext={this.save}
+                                disableNext={!this.state.lastTakeURL && !this.state.playing}
+                            />
+                        ]}
+                    </div>
+                </Grid>
+            </div>
         );
     }
 }
