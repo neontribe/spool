@@ -1,7 +1,9 @@
+/*
 @keyframes slideRTL {
 	0% { width: 0; }
 	100% { width: 33.3%; }
 }
+*/
 
 .app {
 	max-width: 1920px;
@@ -61,7 +63,8 @@
 	background-color: #455a64;
 	z-index: 1;
 
-	animation: slideRTL .75s 1 forwards;
+	width: 33%;
+	/*animation: slideRTL .75s 1 forwards;*/
 }
 
 .contextMenu {
