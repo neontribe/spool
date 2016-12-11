@@ -38,8 +38,10 @@ class TopicForm extends Component {
                     initialValue={this.props.initialValue}
                 />
 
-                <div className={(!this.state.value.length) && helpers.hide}>
-                    <AddControls onNext={this.continue} />
+                <div className={(!this.state.value.length && helpers.hide) || undefined}>
+                    <div className={styles.controls}>
+                        <AddControls onNext={this.continue} />
+                    </div>
                 </div>
             </div>
         );

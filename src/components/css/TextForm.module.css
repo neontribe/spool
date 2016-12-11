@@ -5,6 +5,10 @@
 	justify-content: center;
 }
 
+.controls {
+	text-align: center;
+}
+
 .textarea {
 	flex: 1;
 }

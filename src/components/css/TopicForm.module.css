@@ -4,3 +4,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 }
+
+.controls {
+	text-align: center;
+}

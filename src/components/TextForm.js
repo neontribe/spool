@@ -46,11 +46,13 @@ class TextForm extends Component {
                 {/*<HelpBlock>{this.state.value.length} of {this.props.maxLength} letters used</HelpBlock>*/}
                 <p>{this.state.value.length} of {this.props.maxLength} letters used</p>
 
-                <div className={(!this.state.value.length) && helpers.hide}>
-                    <AddControls
-                        onNext={this.continue}
-                        disableNext={!this.state.value}
-                    />
+                <div className={(!this.state.value.length && helpers.hide) || undefined}>
+                    <div className={styles.controls}>
+                        <AddControls
+                            onNext={this.continue}
+                            disableNext={!this.state.value}
+                        />
+                    </div>
                 </div>
             </form>
         );
