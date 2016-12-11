@@ -118,8 +118,13 @@
 
 .filter {
 	float: left;
-	width: 50%;
+	width: 33.3%;
 	text-align: center;
+}
+
+.filterNewRow {
+	composes: filter;
+	clear: left;
 }
 
 .filterControl {
@@ -130,7 +135,7 @@
 	padding: 1rem;
 	margin: 0 1px 1px 0;
 	color: #fff;
-	/*background-color: rgba(0, 0, 0, .2);*/
+	background-color: rgba(0, 0, 0, .2);
 }
 
 .filterControlOn {

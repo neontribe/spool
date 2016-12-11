@@ -76,79 +76,79 @@ class Header extends Component {
                 <li className={styles.filter}>
                   <a role='button' className={styles.filterControl}>
                     <Icon icon='happy' light={true} />
-                    Toggle happy
+                    Happy
                   </a>
                 </li>
                 <li className={styles.filter}>
                   <a role='button' className={styles.filterControl}>
                     <Icon icon='sad' light={true} />
-                    Toggle sad
+                    Sad
                   </a>
                 </li>
-                <li className={styles.filter}>
+                <li className={styles.filterNewRow}>
                   <a role='button' className={styles.filterControlOn}>
                     <Icon icon='work' light={true} />
-                    Toggle work
+                    Work
                   </a>
                 </li>
                 <li className={styles.filter}>
                   <a role='button' className={styles.filterControlOn}>
                     <Icon icon='learning' light={true} />
-                    Toggle learning
+                    Learning
                   </a>
                 </li>
                 <li className={styles.filter}>
                   <a role='button' className={styles.filterControlOn}>
                     <Icon icon='home' light={true} />
-                    Toggle home
+                    Home
                   </a>
                 </li>
                 <li className={styles.filter}>
                   <a role='button' className={styles.filterControl}>
                     <Icon icon='food' light={true} />
-                    Toggle food
+                    Food
                   </a>
                 </li>
                 <li className={styles.filter}>
                   <a role='button' className={styles.filterControl}>
                     <Icon icon='relationships' light={true} />
-                    Toggle relationships
+                    Relationships
                   </a>
                 </li>
                 <li className={styles.filter}>
                   <a role='button' className={styles.filterControlOn}>
                     <Icon icon='activities' light={true} />
-                    Toggle activities
+                    Activities
                   </a>
                 </li>
                 <li className={styles.filter}>
                   <a role='button' className={styles.filterControlOn}>
                     <Icon icon='travel' light={true} />
-                    Toggle travel
+                    Travel
                   </a>
                 </li>
                 <li className={styles.filter}>
                   <a role='button' className={styles.filterControl}>
                     <Icon icon='health' light={true} />
-                    Toggle health
+                    Health
                   </a>
                 </li>
-                <li className={styles.filter}>
+                <li className={styles.filterNewRow}>
                   <a role='button' className={styles.filterControl}>
                     <Icon icon='video' light={true} />
-                    Toggle videos
+                    Videos
                   </a>
                 </li>
                 <li className={styles.filter}>
                   <a role='button' className={styles.filterControl}>
                     <Icon icon='photo' light={true} />
-                    Toggle photos
+                    Photos
                   </a>
                 </li>
                 <li className={styles.filter}>
                   <a role='button' className={styles.filterControl}>
                     <Icon icon='typing' light={true} />
-                    Toggle written
+                    Written
                   </a>
                 </li>
               </ul>
