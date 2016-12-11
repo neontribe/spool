@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 
 import AuthService from '../auth/AuthService';
+import Layout from './Layout';
 
 import styles from './css/SimpleLogin.module.css';
 import controls from '../css/Controls.module.css';
+
+const { Content } = Layout;
 
 class SimpleLogin extends Component {
   constructor (props) {
@@ -36,12 +39,16 @@ class SimpleLogin extends Component {
 
   render () {
     return (
-      <div className={styles.wrapper}>
-        <div className={styles.btnWrapper}>
-          <button className={controls.btnRaised} onClick={this.googleLogin}>Login with Google</button>
-          <button className={controls.btnRaised} onClick={this.twitterLogin}>Login with Twitter</button>
-        </div>
-      </div>
+      <Layout>
+        <Content>
+          <div className={styles.wrapper}>
+            <div className={styles.btnWrapper}>
+              <button className={controls.btnRaised} onClick={this.googleLogin}>Login with Google</button>
+              <button className={controls.btnRaised} onClick={this.twitterLogin}>Login with Twitter</button>
+            </div>
+          </div>
+        </Content>
+      </Layout>
     );
   }
 }
