@@ -42,7 +42,7 @@
     "babel-plugin-istanbul": "^2.0.1",
     "chai": "^3.5.0",
     "coveralls": "^2.11.12",
-    "detect-port": "1.0.1",
+    "detect-port": "1.0.7",
     "enzyme": "^2.4.1",
     "http-proxy-middleware": "0.17.1",
     "jest": "15.1.1",
