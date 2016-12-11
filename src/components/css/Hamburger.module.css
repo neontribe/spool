@@ -94,3 +94,7 @@
 	transform: rotate(-90deg);
 	transition: bottom 0.1s ease, transform 0.1s 0.14s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
+
+.expandedWrapper {
+	background-color: #455a64;
+}

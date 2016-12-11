@@ -21,7 +21,7 @@ class Hamburger extends Component {
 
     render () {
         return (
-            <div>
+            <div className={(this.state.expanded && styles.expandedWrapper) || undefined}>
                 <span className={this.props.toggleClassName}>
                     <button className={styles.hamburger} onClick={this.toggleContent}>
                         {this.props.text && (
