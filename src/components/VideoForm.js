@@ -53,7 +53,7 @@ class VideoForm extends Component {
             uploading: true
         });
 
-        var savers = _.toPairs(data).map((item) => {
+        var savers = _.toPairs(_.pick(data, 'image', 'imageThumbnail', 'video', 'videoThumbnail')).map((item) => {
             return uploadToS3(item[1])
                 .then((s3Info) => {
                     return {
@@ -61,6 +61,12 @@ class VideoForm extends Component {
                     }
                 });
         });
+
+        if (data.text) {
+            savers.push({
+                text: data.text
+            });
+        }
 
         Promise.all(savers)
             .then((results) => {

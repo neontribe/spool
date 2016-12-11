@@ -29,6 +29,7 @@ class VideoRecorder extends Component {
             lastTakeURL: null,
             lastTakeBlob: null,
             thumbnailBlob: null,
+            text: '',
             devices: [],
             activeDevice: null
         }
@@ -196,6 +197,7 @@ class VideoRecorder extends Component {
             || captureVideoFrame(this._recorder, 'png');
 
         this.props.save({
+            text: this.state.text,
             video: this.state.lastTakeBlob,
             videoThumbnail: thumb.blob
         });
