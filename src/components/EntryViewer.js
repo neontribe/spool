@@ -12,16 +12,24 @@ import controls from '../css/Controls.module.css';
 
 const { Content, Header } = Layout;
 
-
 class Paragraph extends Component {
-    render() {
+    render () {
         const text = this.props.children;
-        const paragraphs = text.split(/\n/).map((text, i) => <p key={i}>{text}</p>)
-        return (<div className={styles.text}>{paragraphs}</div>);
+        const paragraphs = text.split(/\n/).map((text, i) => (
+            <p key={i}>{text}</p>
+        ));
+
+        return (
+            <div className={styles.text}>{paragraphs}</div>
+        );
     }
 }
 
 export default class EntryViewer extends Component {
+    static contextTypes ={
+        router: React.PropTypes.func.isRequired
+    }
+
     render () {
         var entry = this.props.node;
 
@@ -66,7 +74,10 @@ export default class EntryViewer extends Component {
                                 )}
 
                                 {/* Todo: Add router back functionality */}
-                                <button className={controls.btnRaised}>Back</button>
+                                <button
+                                    className={controls.btnRaised}
+                                    onClick={this.context.router.goBack}
+                                >Back</button>
                             </div>
                         </Grid>
                     </div>

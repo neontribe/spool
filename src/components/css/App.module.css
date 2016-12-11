@@ -62,7 +62,7 @@
 	padding-top: .5rem;
 	background-color: #455a64;
 	z-index: 1;
-	overflow: scroll;
+	overflow: auto;
 
 	width: 40%;
 	/*animation: slideRTL .75s 1 forwards;*/
