@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Icon from './Icon';
+
 import styles from './css/IconCard.module.css';
 
 export class IconCard extends Component {
@@ -29,7 +31,10 @@ export class IconCard extends Component {
                 />
 
                 <div className={styles.option}>
-                    <div className={styles[`icon${this.props.icon}`]}></div>
+                    <Icon
+                        className={styles.icon}
+                        icon={this.props.icon}
+                    />
                     <div className={styles.message}>{this.props.message}</div>
                 </div>
             </label>

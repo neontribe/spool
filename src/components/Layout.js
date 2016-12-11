@@ -1,38 +1,38 @@
 import React, { Component } from 'react';
-//todo fix this Appc ode
+// Todo: Fix this App code
 import styles from './css/App.module.css';
 import a11y from '../css/A11y.module.css';
 import { withRouter, Link } from 'react-router';
 import ProfileLink from './ProfileLink';
 import Hamburger from './Hamburger';
-
+import Icon from './Icon';
 
 class Header extends Component {
     constructor(props) {
-        super(props);
+      super(props);
 
-        this.logout = this.logout.bind(this);
+      this.logout = this.logout.bind(this);
 
-        this.state = {
-            profile: props.auth.getProfile()
-        };
+      this.state = {
+        profile: props.auth.getProfile()
+      };
 
-        props.auth.on('profile_updated', (newProfile) => {
-          this.setState({
-            profile: newProfile
-          });
+      props.auth.on('profile_updated', (newProfile) => {
+        this.setState({
+          profile: newProfile
         });
+      });
     }
 
     logout (e) {
-        e.preventDefault();
+      e.preventDefault();
 
-        // Destroys the session data
-        this.props.auth.logout();
+      // Destroys the session data
+      this.props.auth.logout();
 
-        // Redirects to login page
-       
-        this.props.router.push('/login');
+      // Redirects to login page
+     
+      this.props.router.push('/login');
     }
 
     render() {
@@ -71,43 +71,85 @@ class Header extends Component {
               </ul>
 
               {/* Todo: Inject a component from the router, e.g. filter controls */}
-              <h2 className={a11y.vh}>Filter content</h2>
+              <h2 className={styles.filterHeader}>Gallery filters</h2>
               <ul>
                 <li className={styles.filter}>
-                  <a role='button' className={styles.filterHappyOn}>Hide happy</a>
+                  <a role='button' className={styles.filterControl}>
+                    <Icon icon='happy' light={true} />
+                    Toggle happy
+                  </a>
                 </li>
                 <li className={styles.filter}>
-                  <a role='button' className={styles.filterSadOn}>Hide sad</a>
+                  <a role='button' className={styles.filterControl}>
+                    <Icon icon='sad' light={true} />
+                    Toggle sad
+                  </a>
                 </li>
                 <li className={styles.filter}>
-                  <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+                  <a role='button' className={styles.filterControlOn}>
+                    <Icon icon='work' light={true} />
+                    Toggle work
+                  </a>
                 </li>
                 <li className={styles.filter}>
-                  <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+                  <a role='button' className={styles.filterControlOn}>
+                    <Icon icon='learning' light={true} />
+                    Toggle learning
+                  </a>
                 </li>
                 <li className={styles.filter}>
-                  <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+                  <a role='button' className={styles.filterControlOn}>
+                    <Icon icon='home' light={true} />
+                    Toggle home
+                  </a>
                 </li>
                 <li className={styles.filter}>
-                  <a role='button' className={styles.filterControl}>&times; <span>Show filter</span></a>
+                  <a role='button' className={styles.filterControl}>
+                    <Icon icon='food' light={true} />
+                    Toggle food
+                  </a>
                 </li>
                 <li className={styles.filter}>
-                  <a role='button' className={styles.filterControl}>&times; <span>Show filter</span></a>
+                  <a role='button' className={styles.filterControl}>
+                    <Icon icon='relationships' light={true} />
+                    Toggle relationships
+                  </a>
                 </li>
                 <li className={styles.filter}>
-                  <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+                  <a role='button' className={styles.filterControlOn}>
+                    <Icon icon='activities' light={true} />
+                    Toggle activities
+                  </a>
                 </li>
                 <li className={styles.filter}>
-                  <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+                  <a role='button' className={styles.filterControlOn}>
+                    <Icon icon='travel' light={true} />
+                    Toggle travel
+                  </a>
                 </li>
                 <li className={styles.filter}>
-                  <a role='button' className={styles.filterControl}>&times; <span>Hide filter</span></a>
+                  <a role='button' className={styles.filterControl}>
+                    <Icon icon='health' light={true} />
+                    Toggle health
+                  </a>
                 </li>
                 <li className={styles.filter}>
-                  <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+                  <a role='button' className={styles.filterControl}>
+                    <Icon icon='video' light={true} />
+                    Toggle videos
+                  </a>
                 </li>
                 <li className={styles.filter}>
-                  <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+                  <a role='button' className={styles.filterControl}>
+                    <Icon icon='photo' light={true} />
+                    Toggle photos
+                  </a>
+                </li>
+                <li className={styles.filter}>
+                  <a role='button' className={styles.filterControl}>
+                    <Icon icon='typing' light={true} />
+                    Toggle written
+                  </a>
                 </li>
               </ul>
             </Hamburger>

@@ -38,65 +38,21 @@
 }
 
 .icon {
-	height: calc(100% - 5rem);
-	width: calc(100% - 5rem);
-	margin-top: -3rem;
+	height: 100%;
+	width: 100%;
+}
+
+/*
+
+Overrides <Icon /> style. Shouldn't really do this
+with CSSModules but can't find an alternative.
+
+*/
+.icon > div {
+	height: calc(100% - 5rem) !important;
+	width: calc(100% - 5rem) !important;
+	margin: 1rem auto;
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: cover;
-}
-
-.iconwork {
-	composes: icon;
-	background-image: url('/static/icon-work.svg');
-}
-
-.iconlearning {
-	composes: icon;
-	background-image: url('/static/icon-learning.svg');
-}
-
-.iconhome {
-	composes: icon;
-	background-image: url('/static/icon-home.svg');
-}
-
-.iconfood {
-	composes: icon;
-	background-image: url('/static/icon-food.svg');
-}
-
-.iconrelationships {
-	composes: icon;
-	background-image: url('/static/icon-people.svg');
-}
-
-.iconpeople {
-	composes: icon;
-	background-image: url('/static/icon-people.svg');
-}
-
-.icontravel {
-	composes: icon;
-	background-image: url('/static/icon-transport.svg');
-}
-
-.iconhealth {
-	composes: icon;
-	background-image: url('/static/icon-health.svg');
-}
-
-.iconvideo {
-	composes: icon;
-	background-image: url('/static/icon-video.svg');
-}
-
-.iconphoto {
-	composes: icon;
-	background-image: url('/static/icon-photo.svg');
-}
-
-.icontyping {
-	composes: icon;
-	background-image: url('/static/icon-text.svg');
 }

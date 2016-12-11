@@ -14,8 +14,8 @@ const ICONS = [
     'travel',
     'health',
     'video',
-    'picture',
-    'write'
+    'photo',
+    'typing'
 ];
 
 export class Icon extends Component {
@@ -50,6 +50,8 @@ Icon.propTypes = {
 Icon.defaultProps = {
     /* Show a lighter version of the icon */
     light: false,
+
+    /* Icon size multiplier */
     size: 2
 }
 

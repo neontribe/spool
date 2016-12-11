@@ -36,8 +36,8 @@
 .video { composes: icon; background-image: url('/static/icon-video.svg'); }
 .videoLight { composes: icon; background-image: url('/static/icon-video-light.svg'); }
 
-.picture { composes: icon; background-image: url('/static/icon-picture.svg'); }
-.pictureLight { composes: icon; background-image: url('/static/icon-picture-light.svg'); }
+.photo { composes: icon; background-image: url('/static/icon-photo.svg'); }
+.photoLight { composes: icon; background-image: url('/static/icon-photo-light.svg'); }
 
-.write { composes: icon; background-image: url('/static/icon-text.svg'); }
-.writeLight { composes: icon; background-image: url('/static/icon-text-light.svg'); }
+.typing { composes: icon; background-image: url('/static/icon-text.svg'); }
+.typingLight { composes: icon; background-image: url('/static/icon-text-light.svg'); }
