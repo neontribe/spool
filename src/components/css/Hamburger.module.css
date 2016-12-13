@@ -1,3 +1,8 @@
+@keyframes slideRTL {
+	0% { width: 0; }
+	100% { width: 33.3%; }
+}
+
 .text {
 	padding-right: 1rem;
 }
@@ -93,4 +98,36 @@
 	bottom: 0;
 	transform: rotate(-90deg);
 	transition: bottom 0.1s ease, transform 0.1s 0.14s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.contextMenuContent {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	position: absolute;
+	top: 50px; /* .header->height */
+	right: 0;
+	height: calc(100vh - 50px); /* .header->height */
+	box-shadow: -5px 15px 38px 0px rgba(0, 0, 0, .25);
+	background-color: #455a64;
+	z-index: 1;
+
+	animation: slideRTL .75s 1 forwards;
+}
+
+.contextMenu {
+	list-style: none;
+}
+
+.contextMenuItem {
+	padding: 1rem;
+	margin-bottom: 1px;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+@media screen and (orientation: portrait) {
+	.contextMenuContent,
+	.content {
+		height: calc(100vw - 50px); /* .header->height */
+	}
 }

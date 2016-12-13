@@ -11,7 +11,12 @@ import withRoles from '../auth/withRoles.js';
 import styles from './css/Gallery.module.css';
 import controls from '../css/Controls.module.css';
 
+import Hamburger from './Hamburger';
 const { Content, Header } = Layout;
+
+class Filter extends Component {
+
+}
 
 export class Gallery extends Component {
     static propTypes = {
@@ -46,14 +51,64 @@ export class Gallery extends Component {
         });
     }
 
+    renderFilters () {
+        return (
+            <ul>
+        <li className={styles.filter}>
+          <a role='button' className={styles.filterHappyOn}>Hide happy</a>
+        </li>
+        <li className={styles.filter}>
+          <a role='button' className={styles.filterSadOn}>Hide sad</a>
+        </li>
+        <li className={styles.filter}>
+          <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+        </li>
+        <li className={styles.filter}>
+          <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+        </li>
+        <li className={styles.filter}>
+          <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+        </li>
+        <li className={styles.filter}>
+          <a role='button' className={styles.filterControl}>&times; <span>Show filter</span></a>
+        </li>
+        <li className={styles.filter}>
+          <a role='button' className={styles.filterControl}>&times; <span>Show filter</span></a>
+        </li>
+        <li className={styles.filter}>
+          <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+        </li>
+        <li className={styles.filter}>
+          <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+        </li>
+        <li className={styles.filter}>
+          <a role='button' className={styles.filterControl}>&times; <span>Hide filter</span></a>
+        </li>
+        <li className={styles.filter}>
+          <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+        </li>
+        <li className={styles.filter}>
+          <a role='button' className={styles.filterOn}>&times; <span>Hide filter</span></a>
+          </li></ul>);
+    }
+
     render () {
         var addEntryControl = (
             <Link to={'/add'} className={styles.addEntryControl}>Add New Entry</Link>
         );
-
+        const profile = this.props.auth.getProfile();
         return (
             <Layout>
-                <Header auth={this.props.auth} />
+                <Header auth={this.props.auth}>
+                  {profile && (
+                      <Hamburger
+                      auth={this.props.auth}
+                      text={profile.name}
+                      toggleClassName={styles.contextMenuToggle}
+                      contentClassName={styles.contextMenuContent}
+                    >{this.renderFilters()}</Hamburger>
+                  )}
+                </Header>
                 <Content>
                     <div className={styles.wrapper}>
                         <Grid callToAction={addEntryControl}>

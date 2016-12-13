@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import ProfileLink from './ProfileLink';
+import { Link } from 'react-router';
 import styles from './css/Hamburger.module.css';
 
 class Hamburger extends Component {
@@ -35,7 +36,25 @@ class Hamburger extends Component {
                 </span>
 
                 {this.state.expanded && (
-                    <div className={this.props.contentClassName}>{this.props.children}</div>
+                    <div className={styles.contextMenuContent}>
+                      <ul className={styles.contextMenu}>
+                        <li className={styles.contextMenuItem}>
+                          <Link to={'/'}>Home</Link>
+                        </li>
+                        <li className={styles.contextMenuItem}>
+                          {/* Todo: Need to format the render of ProfileLink*/}
+                          <ProfileLink
+                            profile={this.state.profile}
+                            disabled={!this.props.auth.loggedIn()}
+                          />
+                        </li>
+                        <li className={styles.contextMenuItem}>
+                          {this.props.auth.loggedIn() && (
+                            <a href='/logout' onClick={this.logout}>Log out</a>
+                          )}
+                        </li>
+                    </ul>
+                    {this.props.children}</div>
                 )}
             </div>
         );

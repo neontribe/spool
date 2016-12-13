@@ -9,3 +9,42 @@
 	composes: btnRaised from '../../css/Controls.module.css';
 	width: 100%;
 }
+
+/* Filters. Todo: These styles will need moving */
+
+.filter {
+	float: left;
+	width: 50%;
+}
+
+.filterControl {
+	display: block;
+	padding: 1rem;
+	margin: 0 1px 1px 0;
+	color: #fff;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.filterOn {
+	composes: filterControl;
+	color: #212121;
+	background-color: #8bc34a;
+}
+
+.filterHappyOn {
+	composes: filterOn;
+	background-image: url('/static/icon-happy.svg');
+	background-position: left 1rem center;
+	background-repeat: no-repeat;
+	background-size: 1rem;
+	text-indent: 2rem;
+}
+
+.filterSadOn {
+	composes: filterOn;
+	background-image: url('/static/icon-sad.svg');
+	background-position: left 1rem center;
+	background-repeat: no-repeat;
+	background-size: 1rem;
+	text-indent: 2rem;
+}
