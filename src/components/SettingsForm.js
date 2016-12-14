@@ -25,8 +25,9 @@ export class SettingsForm extends Component {
     }
     render () {
         const ready = (this.state.region);
+        console.log(this.props);
         return (
-            <form handleSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit}>
                 <div>
                     <label>
                         Full Name
@@ -52,7 +53,7 @@ export class SettingsForm extends Component {
                             <select
                                 placeholder='I live in...'
                                 value={this.state.region || ''}
-                                handleChange={_.partial(this.handleChange, 'region')}
+                                onChange={_.partial(this.handleChange, 'region')}
                             >
                                 <option value='' disabled={true}>I live in&hellip;</option>
                                 {this.props.meta.regions.map(({type}) => {
@@ -99,7 +100,10 @@ export const SettingsFormContainer = Relay.createContainer(SettingsForm, {
             fragment on Meta {
                 regions {
                     type
-                    services
+                    services {
+                        type
+                        name
+                    }
                 }
             }
         `,
