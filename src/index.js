@@ -10,7 +10,7 @@ import App from './App';
 import { GalleryContainer } from './components/Gallery';
 import { DashboardContainer } from './components/Dashboard';
 import SimpleLogin from './components/SimpleLogin';
-import { SignupContainer } from './components/Signup';
+import { SettingsContainer } from './components/Settings';
 import { AddEntryContainer } from './components/AddEntry';
 import { AccessContainer } from './components/Access';
 import { EntryViewerContainer } from './components/EntryViewer';
@@ -57,7 +57,7 @@ const CreatorQueries = {
     ...UserQueries,
 };
 
-const SignupQueries = {
+const SettingsQueries = {
     ...UserQueries,
     ...MetaQueries,
 };
@@ -72,10 +72,10 @@ ReactDOM.render(
     <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
         <Route path="/" component={App} auth={auth}>
             <IndexRedirect to="settings/configure" />
-            <Route path="settings/:mode" component={SignupContainer} roleMap={{
+            <Route path="settings/:mode" component={SettingsContainer} roleMap={{
                 "consumer": "/dashboard",
                 "creator": "/home",
-            }} queries={SignupQueries} onEnter={auth.requireAuthOnEnter}/>
+            }} queries={SettingsQueries} onEnter={auth.requireAuthOnEnter}/>
 
             <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
             <Route path="access" component={AccessContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
