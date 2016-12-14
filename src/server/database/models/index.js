@@ -9,6 +9,8 @@ function init(sequelize) {
     model.EntryTopic = sequelize.import('./definition/entry-topic.js');
     model.Medium = sequelize.import('./definition/media.js');
     model.Region = sequelize.import('./definition/region.js');
+    model.Service = sequelize.import('./definition/service.js');
+    model.RegionService = sequelize.import('./definition/region-service.js');
     model.Role = sequelize.import('./definition/role.js');
     model.Sentiment = sequelize.import('./definition/sentiment.js');
     model.SequelizeDatum = sequelize.import('./definition/sequelize-data.js');
@@ -21,6 +23,8 @@ function init(sequelize) {
     require('./definition/entry-topic.js').initRelations();
     require('./definition/media.js').initRelations();
     require('./definition/region.js').initRelations();
+    require('./definition/region-service.js').initRelations();
+    require('./definition/service.js').initRelations();
     require('./definition/role.js').initRelations();
     require('./definition/sentiment.js').initRelations();
     require('./definition/sequelize-data.js').initRelations();

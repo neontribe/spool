@@ -450,13 +450,20 @@ const MetaType = new ql.GraphQLObjectType({
     name: 'Meta',
     fields: {
         regions: {
-            type: new ql.GraphQLList(types.RegionDefinitionType),
+            type: new ql.GraphQLList(types.RegionType),
             resolve: () => {
-                return models.Region.findAll().catch((e) => winston.warn(e));
+                return models.Region.findAll({
+                    include: [
+                        {
+                            model: models.Service,
+                            as: 'RegionServiceServices',
+                        }
+                    ]
+                }).catch((e) => winston.warn(e));
             },
         },
         roles: {
-            type: new ql.GraphQLList(types.RoleDefinitionType),
+            type: new ql.GraphQLList(types.RoleType),
             resolve: () => {
                 return models.Role.findAll().catch((e) => winston.warn(e));
             },

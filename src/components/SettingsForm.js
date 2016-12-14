@@ -99,6 +99,7 @@ export const SettingsFormContainer = Relay.createContainer(SettingsForm, {
             fragment on Meta {
                 regions {
                     type
+                    services
                 }
             }
         `,
