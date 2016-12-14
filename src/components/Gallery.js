@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { Link } from 'react-router';
+import { Carousel } from 'react-bootstrap';
 
 import { EntryContainer, Entry } from './Entry';
 import Layout from './Layout';
@@ -10,8 +11,70 @@ import withRoles from '../auth/withRoles.js';
 
 import styles from './css/Gallery.module.css';
 import controls from '../css/Controls.module.css';
+import slideshow from './css/Slideshow.module.css';
 
 const { Content, Header } = Layout;
+
+class EntryCarousel extends Component {
+    constructor (props) {
+        super(props);
+
+        this.state = {
+            activeIndex: 0,
+            intervalId: null
+        };
+    }
+
+    static propTypes = {
+        interval: React.PropTypes.number,
+        offset: React.PropTypes.number
+    }
+
+    static defaultProps = {
+        interval: 6000,
+        offset: 0
+    }
+
+    componentDidMount () {
+        setTimeout(() => {
+            var intervalId = setInterval(() => {
+                if (Math.random() >= 0.5) {
+                    var newIndex = this.state.activeIndex + 1;
+
+                    if (newIndex >= React.Children.count(this.props.children)) {
+                        newIndex = 0;
+                    }
+
+                    // store intervalId in the state so it can be accessed later:
+                    this.setState({
+                        intervalId: intervalId,
+                        activeIndex: newIndex
+                    });
+                }
+            }, this.props.interval);
+        }, this.props.offset);
+    }
+
+    componentWillUnmount () {
+        clearInterval(this.state.intervalId);
+    }
+
+    render () {
+        return (
+            <Carousel
+                activeIndex={this.state.activeIndex}
+                controls={false}
+                indicators={false}
+            >
+                {React.Children.map(this.props.children, (content) => (
+                    <Carousel.Item>
+                        {content}
+                    </Carousel.Item>
+                ))}
+            </Carousel>
+        );
+    }
+}
 
 export class Gallery extends Component {
     static propTypes = {
@@ -42,25 +105,47 @@ export class Gallery extends Component {
         return array;
     }
 
-    // Returns the latest entry followed by 4 randomised entries
+    // Returns the latest entry followed by up to 4 randomised entry carousels
     renderEntries () {
+        var EntryComponent = (this.props.relay) ? EntryContainer : Entry;
         var entries = this.props.creator.entries.edges.slice();
+        var maxSlideCount = 3; // per EntryCarousel
 
         if (entries.length) {
             var latest = entries.shift();
-            var EntryComponent = (this.props.relay) ? EntryContainer : Entry;
-
             var items = [
-                <EntryComponent key={latest.node.id} entry={latest.node} />
+                <EntryComponent key={0} entry={latest.node} />
             ];
 
-            entries = this.shuffle(entries).slice(0, 4);
+            entries = this.shuffle(entries);
 
-            entries.forEach((entry) => {
+            var slots = entries.length;
+
+            if (slots > 4) {
+                slots = 4;
+            }
+
+            var entryIndexCounter = 0;
+
+            for (var i = 1; i <= slots; i++) {
+                var slideCount = Math.ceil(entries.length / slots);
+
+                if (slideCount > maxSlideCount) {
+                    slideCount = maxSlideCount;
+                }
+
+                var _entries = entries.slice(entryIndexCounter, entryIndexCounter + slideCount);
+
+                entryIndexCounter += slideCount;
+
                 items.push(
-                    <EntryComponent key={entry.node.id} entry={entry.node} />
+                    <EntryCarousel key={i} offset={i * 1250}>
+                        {_entries.map((entry, j) => (
+                            <EntryComponent key={j} entry={entry.node} />
+                        ))}
+                    </EntryCarousel>
                 );
-            });
+            }
 
             return items;
         }

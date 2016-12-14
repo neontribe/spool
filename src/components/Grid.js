@@ -214,7 +214,7 @@ export default class Grid extends Component {
         var itemStyle = this.getStyle();
         var children = _.filter(React.Children.toArray(this.props.children), (child) => {
             return child !== false;
-        })
+        });
 
         // Sets the `flex` style property back to its default once the grid has
         // determined how best to utilise the available screen real-estate.
