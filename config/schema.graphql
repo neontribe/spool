@@ -117,8 +117,8 @@ input MediaInput {
 }
 
 type Meta {
-  regions: [RegionDefinitionType]
-  roles: [RoleDefinition]
+  regions: [Region]
+  roles: [Role]
 }
 
 type Mutations {
@@ -160,11 +160,12 @@ type Query {
   meta: Meta
 }
 
-type RegionDefinitionType {
+type Region {
   type: String
+  services: [Service]
 }
 
-type RoleDefinition {
+type Role {
   type: String
   name: String
   secret: String
@@ -172,6 +173,11 @@ type RoleDefinition {
 
 type Sentiment {
   type: String
+}
+
+type Service {
+  type: String
+  name: String
 }
 
 type Topic {

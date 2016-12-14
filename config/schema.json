@@ -1148,7 +1148,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "RegionDefinitionType",
+                  "name": "Region",
                   "ofType": null
                 }
               },
@@ -1164,7 +1164,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "RoleDefinition",
+                  "name": "Role",
                   "ofType": null
                 }
               },
@@ -1179,11 +1179,62 @@
         },
         {
           "kind": "OBJECT",
-          "name": "RegionDefinitionType",
+          "name": "Region",
           "description": null,
           "fields": [
             {
               "name": "type",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "services",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Service",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "Service",
+          "description": null,
+          "fields": [
+            {
+              "name": "type",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "name",
               "description": null,
               "args": [],
               "type": {
@@ -1202,7 +1253,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "RoleDefinition",
+          "name": "Role",
           "description": null,
           "fields": [
             {

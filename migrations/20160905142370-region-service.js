@@ -15,7 +15,8 @@ module.exports = {
             references: {
                 model: 'region',
                 key: 'region_id'
-            }
+            },
+            onDelete: 'CASCADE'
          },
          service_id: {
              type: Sequelize.INTEGER,
