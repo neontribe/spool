@@ -26,24 +26,44 @@ export class Gallery extends Component {
         };
     }
 
-    renderEntries () {
-        return this.props.creator.entries.edges.slice(0, 5).map((entry) => {
-            if (this.props.relay) {
-                return (
-                    <EntryContainer
-                        key={entry.node.id}
-                        entry={entry.node} 
-                    />
-                );
-            }
+    shuffle (array) {
+        var currentIndex = array.length
+        var temporaryValue, randomIndex;
 
-            return (
-                <Entry
-                    key={entry.node.id}
-                    entry={entry.node}
-                />
-            );
-        });
+        while (0 !== currentIndex) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+    }
+
+    // Returns the latest entry followed by 4 randomised entries
+    renderEntries () {
+        var entries = this.props.creator.entries.edges.slice();
+
+        if (entries.length) {
+            var latest = entries.shift();
+            var EntryComponent = (this.props.relay) ? EntryContainer : Entry;
+
+            var items = [
+                <EntryComponent key={latest.node.id} entry={latest.node} />
+            ];
+
+            entries = this.shuffle(entries).slice(0, 4);
+
+            entries.forEach((entry) => {
+                items.push(
+                    <EntryComponent key={entry.node.id} entry={entry.node} />
+                );
+            });
+
+            return items;
+        }
     }
 
     render () {

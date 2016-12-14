@@ -26,7 +26,7 @@ class Paragraph extends Component {
 }
 
 export default class EntryViewer extends Component {
-    static contextTypes ={
+    static contextTypes = {
         router: React.PropTypes.func.isRequired
     }
 
