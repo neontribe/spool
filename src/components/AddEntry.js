@@ -8,21 +8,43 @@ import Icon from './Icon';
 import AddEntryMutation from './mutations/AddEntryMutation';
 import withRoles from '../auth/withRoles.js';
 
-import styles from './css/AddEntry.module.css';
+import TopicForm from './TopicForm';
+import SentimentForm from './SentimentForm';
+import MediaForm from './MediaForm';
 
+import styles from './css/AddEntry.module.css';
 const { Content, Header } = Layout;
 
 class AddEntry extends Component {
+    static ABOUT = 'ENTRY/ABOUT';
+    static SENTIMENT = 'ENTRY/SENTIMENT';
+    static MEDIA = 'ENTRY/MEDIA';
     constructor (props) {
         super(props);
-
         this.state = {
-            entry: props.entry
+            entry: props.entry,
+            form: AddEntry.ABOUT
         }
 
-        this.saveEntry = this.saveEntry.bind(this);
-        this.setEntryData = this.setEntryData.bind(this);
-        this.getPathForNextStage = this.getPathForNextStage.bind(this);
+        const { ABOUT, SENTIMENT, MEDIA } = AddEntry;
+        this.transitions = {
+            [ABOUT]: (key, value) => {
+                this.setEntryData(key, value);
+                this.setState({
+                    form: SENTIMENT
+                })
+            },
+            [SENTIMENT]: (key, value) => {
+                this.setEntryData(key, value);
+                this.setState({
+                    form: MEDIA
+                })
+            },
+            [MEDIA]: (key, value) => {
+                this.setEntryData(key, value, true);
+            }
+        };
+
     }
 
     saveEntry (entry) {
@@ -31,7 +53,6 @@ class AddEntry extends Component {
         var onSuccess = () => {
             this.props.router.push('/home');
         }
-
         this.props.relay.commitUpdate(
             new AddEntryMutation({
                 creator,
@@ -43,53 +64,29 @@ class AddEntry extends Component {
         );
     }
 
-    getPathForNextStage () {
-        // Find the index of this components route in the routes
-        var addIndex = this.props.routes.indexOf(this.props.route);
-
-        // Use it to find the current route under this component (the stage)
-        // which will allow us to ignore the other routes nested under any multi option stage.
-        var currentStage = this.props.routes[addIndex + 1].path;
-        var currentStepIndex = _.findIndex(this.props.route.childRoutes, { path: currentStage });
-
-        if (this.props.route.childRoutes[currentStepIndex + 1]) {
-            let nextRoute = this.props.route.childRoutes[currentStepIndex + 1].path;
-            let routes = this.props.routes.slice(0, addIndex + 1).map(route => route.path);
-
-            routes.push(nextRoute);
-
-            return routes.join('/').replace('//', '/');
-        }
-
-        return null;
-    }
-
-    setEntryData (key, value) {
+    setEntryData (key, value, save) {
         var entry = _.merge({}, this.state.entry, { [key]: value });
-
         this.setState({
             entry
         });
-
-        var pathForNext = this.getPathForNextStage();
-
-        if (pathForNext) {
-            this.props.router.push(pathForNext);
-        } else {
+        if (save) {
             this.saveEntry(entry);
         }
     }
 
-    render () {
-        let children = null;
-
-        if (this.props.children) {
-            children = React.cloneElement(this.props.children, {
-                save: this.setEntryData,
-                topics: this.props.creator.topics
-            });
+    renderForm() {
+        const { ABOUT, SENTIMENT, MEDIA } = AddEntry;
+        switch(this.state.form) {
+            case ABOUT:
+                return <TopicForm save={this.transitions[ABOUT]} topics={this.props.creator.topics}/>
+            case SENTIMENT:
+                return <SentimentForm save={this.transitions[SENTIMENT]}/>
+            case MEDIA:
+                return <MediaForm save={this.transitions[MEDIA]}/>
         }
+    }
 
+    render () {
         return (
             <Layout className={styles.wrapper}>
                 <Header auth={this.props.auth}>
@@ -125,7 +122,7 @@ class AddEntry extends Component {
                         </div>
                     )}
                 </Header>
-                <Content>{children}</Content>
+                <Content>{this.renderForm()}</Content>
             </Layout>
         );
     }

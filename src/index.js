@@ -15,12 +15,6 @@ import { AddEntryContainer } from './components/AddEntry';
 import { AccessContainer } from './components/Access';
 import { EntryViewerContainer } from './components/EntryViewer';
 import IntroductionContainer from './components/Introduction';
-import TopicForm from './components/TopicForm';
-import SentimentForm from './components/SentimentForm';
-import MediaForm from './components/MediaForm';
-import VideoForm from './components/VideoForm';
-import ImageForm from './components/ImageForm';
-import TextForm from './components/TextForm';
 
 import './css/global.css';
 
@@ -88,16 +82,7 @@ ReactDOM.render(
 
             <Route path="introduction" component={IntroductionContainer} onEnter={auth.requireAuthOnEnter}/>
             <Route path="home" component={GalleryContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
-            <Route path="add" component={AddEntryContainer} queries={CreatorQueries}>
-                <IndexRedirect to="about"/>
-                <Route path="about" component={TopicForm} />
-                <Route path="feeling" component={SentimentForm} />
-                <Route path="message" component={MediaForm}>
-                    <Route path="video" component={VideoForm}/>
-                    <Route path="photo" component={ImageForm}/>
-                    <Route path="typing" component={TextForm}/>
-                </Route>
-            </Route>
+            <Route path="add" component={AddEntryContainer} queries={CreatorQueries} />
             <Route path="entry/:id" component={EntryViewerContainer} queries={EntryViewerQueries} onEnter={auth.requireAuthOnEnter} />
             <Route path="login" component={SimpleLogin}/>
             <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter}/>
