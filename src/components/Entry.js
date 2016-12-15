@@ -51,11 +51,10 @@ export class Entry extends Component {
         var entry = this.props.entry;
         var sentiment = entry.sentiment.type;
         var text = entry.media.text;
-        var image = entry.media.imageThumbnail;
-        var video = entry.media.videoThumbnail;
-        var backgroundImage = image || video;
+        var image = entry.media.image;
+        var video = entry.media.video;
         var styleVariant = styles.entry;
-        var randomisedStyle;
+        var randomisedStyle, backgroundImage;
         var isTextEntry = text && !image && !video;
         var lightIcon = true;
 
@@ -66,6 +65,10 @@ export class Entry extends Component {
             if (randomisedStyle.dark) {
                 lightIcon = false;
             }
+        } else if (image) {
+            backgroundImage = entry.media.imageThumbnail;
+        } else if (video) {
+            backgroundImage = entry.media.videoThumbnail;
         }
 
         return (
@@ -85,6 +88,15 @@ export class Entry extends Component {
                     {video && (
                         <div className={styles.videoOverlay}>
                             <div className={styles.videoOverlayPlay}></div>
+
+                            {!this.props.thumbnailMode && (
+                                <video
+                                    className={styles.video}
+                                    src={video}
+                                    controls={true}
+                                    autoPlay={true}
+                                />
+                            )}
                         </div>
                     )}
 
@@ -97,9 +109,11 @@ export class Entry extends Component {
                         />
                     )}
 
-                    <div className={styles.date}>
-                        Created {moment(entry.created).format('Do MMMM')}
-                    </div>
+                    {this.props.thumbnailMode && (
+                        <div className={styles.date}>
+                            Created {moment(entry.created).format('Do MMMM')}
+                        </div>
+                    )}
 
                     {this.props.showTopicOverlay && (
                         <ul className={styles.topics}>
@@ -120,6 +134,7 @@ export class Entry extends Component {
 }
 
 Entry.propTypes = {
+    thumbnailMode: React.PropTypes.bool,
     entry: React.PropTypes.object.isRequired,
     showSentimentOverlay: React.PropTypes.bool,
     showTopicOverlay: React.PropTypes.bool,
@@ -127,6 +142,7 @@ Entry.propTypes = {
 }
 
 Entry.defaultProps = {
+    thumbnailMode: false,
     showSentimentOverlay: true,
     showTopicOverlay: true,
     withViewer: true

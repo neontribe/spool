@@ -113,7 +113,7 @@ export class Gallery extends Component {
         if (entries.length) {
             var latest = entries.shift();
             var items = [
-                <EntryComponent key={0} entry={latest.node} />
+                <EntryComponent key={0} entry={latest.node} thumbnailMode={true} />
             ];
 
             entries = this.shuffle(entries);
@@ -140,7 +140,7 @@ export class Gallery extends Component {
                 items.push(
                     <EntryCarousel key={i} offset={1000 + (i * 500)}>
                         {_entries.map((entry, j) => (
-                            <EntryComponent key={j} entry={entry.node} />
+                            <EntryComponent key={j} entry={entry.node} thumbnailMode={true} />
                         ))}
                     </EntryCarousel>
                 );
