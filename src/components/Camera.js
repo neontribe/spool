@@ -210,27 +210,6 @@ class Camera extends Component {
                             />
                         )}
 
-                        {this.state.streaming && !this.state.countdown && (
-                            <button
-                                className={styles.videoOverlay}
-                                onClick={this.startCountdown}
-                            >
-                                <span className={styles.btnTakePictureWrapper}>
-                                    <span className={styles.btnTakePicture}>Press Here To Take Picture</span>
-                                </span>
-                            </button>
-                        )}
-
-                        {this.state.playing &&
-                            <video
-                                className={styles.video}
-                                ref={(ref) => { this._player = ref }}
-                                src={this.state.lastTakeURL}
-                                controls
-                                autoPlay
-                            />
-                        }
-
                         {this.state.thumbnail && (
                             <img
                                 className={styles.thumbnail}
@@ -260,6 +239,13 @@ class Camera extends Component {
                                 className={controls.btnRaised}
                                 onClick={this.switchVideoDevices}
                             >Switch Cameras</button>
+                        )}
+
+                        {(!this.state.countdown && !this.state.image) && (
+                            <button
+                                className={controls.btnRaised}
+                                onClick={this.startCountdown}
+                            >Take Picture</button>
                         )}
 
                         {/* Todo: Re-word 'Next' to 'Save' */}
@@ -294,7 +280,7 @@ Camera.propTypes = {
 };
 
 Camera.defaultProps = {
-    countdownSeconds: 5
+    countdownSeconds: 3
 };
 /**
  * Expose a test for media capabilities for use by other components

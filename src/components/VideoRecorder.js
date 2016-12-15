@@ -52,9 +52,11 @@ class VideoRecorder extends Component {
         this.showDescripton = this.showDescripton.bind(this);
         this.hideDescripton = this.hideDescripton.bind(this);
         this.onTextChange = this.onTextChange.bind(this);
+        this.pausePlayback = this.pausePlayback.bind(this);
+        this.playRecording = this.playRecording.bind(this);
     }
 
-    componentWillMount () {
+    componentDidMount () {
         this.startMediaStream();
     }
 
@@ -164,6 +166,22 @@ class VideoRecorder extends Component {
         });
     }
 
+    pausePlayback () {
+        this._player.pause();
+
+        this.setState({
+            playing: false
+        });
+    }
+
+    playRecording () {
+        this._player.play();
+
+        this.setState({
+            playing: true
+        });
+    }
+
     onRecordingFinished (blob) {
         this.setState({
             lastTakeURL: URL.createObjectURL(blob),
@@ -262,18 +280,7 @@ class VideoRecorder extends Component {
                             />
                         )}
 
-                        {this.state.streaming && !this.state.countdown && (
-                            <button
-                                className={styles.videoOverlay}
-                                onClick={this.startCountdown}
-                            >
-                                <span className={styles.btnTakePictureWrapper}>
-                                    <span className={styles.btnTakePicture}>Press Here To Record</span>
-                                </span>
-                            </button>
-                        )}
-
-                        {this.state.playing && (
+                        {(this.state.lastTakeURL && !this.state.countdown) && (
                             <video
                                 className={styles.video}
                                 ref={(ref) => { this._player = ref }}
@@ -300,7 +307,17 @@ class VideoRecorder extends Component {
 
                     <div className={styles.btnStack}>
                         {(this.state.devices.length > 1) && (
-                            <button onClick={this.switchVideoDevices}>Switch Camera</button>
+                            <button
+                                className={controls.btnRaised}
+                                onClick={this.switchVideoDevices}
+                            >Switch Camera</button>
+                        )}
+
+                        {(!this.state.countdown && !this.state.recording) && (
+                            <button
+                                className={controls.btnRaised}
+                                onClick={this.startCountdown}
+                            >Start Recording</button>
                         )}
 
                         {this.state.recording && (
@@ -308,7 +325,22 @@ class VideoRecorder extends Component {
                                 className={controls.btnRaised}
                                 disabled={!this.state.recording}
                                 onClick={this.stopRecording}
-                            >Stop</button>
+                            >Stop Recording</button>
+                        )}
+
+                        {this.state.playing && (
+                            <button
+                                key={0}
+                                className={controls.btnRaised}
+                                onClick={this.pausePlayback}
+                            >Pause</button>
+                        )}
+
+                        {(this.state.lastTakeURL && !this.state.playing) && (
+                            <button
+                                className={controls.btnRaised}
+                                onClick={this.playRecording}
+                            >Play</button>
                         )}
 
                         {/* Todo: Re-word 'Next' to 'Save' */}
@@ -316,10 +348,15 @@ class VideoRecorder extends Component {
                             <button
                                 key={0}
                                 className={controls.btnRaised}
+                                onClick={this.startCountdown}
+                            >Try Again</button>,
+                            <button
+                                key={1}
+                                className={controls.btnRaised}
                                 onClick={this.showDescripton}
                             >Add Description</button>,
                             <AddControls
-                                key={1}
+                                key={2}
                                 onNext={this.save}
                                 disableNext={!this.state.lastTakeURL && !this.state.playing}
                             />
@@ -338,7 +375,7 @@ VideoRecorder.propTypes = {
 };
 
 VideoRecorder.defaultProps = {
-    countdownSeconds: 5
+    countdownSeconds: 3
 };
 
 /**

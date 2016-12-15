@@ -135,9 +135,7 @@ export class Signup extends React.Component {
 
         return (
             <Layout>
-                <Header auth={this.props.auth}>
-                    <p>Example</p>
-                </Header>
+                <Header auth={this.props.auth} />
                 <Content>
                     <h2 className={headings.large}>Getting to know you</h2>
 
@@ -146,6 +144,7 @@ export class Signup extends React.Component {
                             <div>
                                 <label>
                                     Where do you live?
+                                    {/* Todo: Cannot semtantically have `div` inside `label` */}
                                     <div>
                                         <select
                                             placeholder='I live in...'
