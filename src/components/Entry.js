@@ -67,7 +67,7 @@ export class Entry extends Component {
             }
         } else if (image) {
             backgroundImage = entry.media.imageThumbnail;
-        } else if (video) {
+        } else if (video && this.props.thumbnailMode) {
             backgroundImage = entry.media.videoThumbnail;
         }
 
