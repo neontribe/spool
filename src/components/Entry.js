@@ -3,8 +3,8 @@ import Relay from 'react-relay';
 import { Link } from 'react-router';
 import moment from 'moment';
 import _ from 'lodash';
+import rand from 'random-seed';
 
-// import EntryViewer from './EntryViewer';
 import Icon from './Icon';
 
 import styles from './css/Entry.module.css';
@@ -146,7 +146,8 @@ export class Entry extends Component {
         var lightIcon = true;
 
         if (isTextEntry) {
-            randomisedStyle = this.constructor.colourVariants[_.random(0, this.constructor.colourVariants.length - 1)];
+            randomisedStyle = this.constructor.colourVariants[(new rand(entry.id)).range(this.constructor.colourVariants.length - 1)];
+
             styleVariant = randomisedStyle.className;
 
             if (randomisedStyle.dark) {
