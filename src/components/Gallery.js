@@ -139,7 +139,7 @@ export class Gallery extends Component {
                 entryIndexCounter += slideCount;
 
                 items.push(
-                    <EntryCarousel key={i} offset={i * 1250}>
+                    <EntryCarousel key={i} offset={1000 + (i * 500)}>
                         {_entries.map((entry, j) => (
                             <EntryComponent key={j} entry={entry.node} />
                         ))}
