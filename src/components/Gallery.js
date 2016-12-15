@@ -11,7 +11,6 @@ import withRoles from '../auth/withRoles.js';
 
 import styles from './css/Gallery.module.css';
 import controls from '../css/Controls.module.css';
-import slideshow from './css/Slideshow.module.css';
 
 const { Content, Header } = Layout;
 
