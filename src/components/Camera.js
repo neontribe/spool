@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import captureVideoFrame from 'capture-video-frame';
-import ReactCountdownClock from 'react-countdown-clock';
 import _ from 'lodash';
 
 import Grid from './Grid';
 import AddControls from './AddControls';
+import CountdownClock from './CountdownClock';
 
 import styles from './css/Camera.module.css';
 import controls from '../css/Controls.module.css';
@@ -42,7 +42,6 @@ class Camera extends Component {
         this.onMediaFailure = this.onMediaFailure.bind(this);
         this.getVideoDevices = this.getVideoDevices.bind(this);
         this.switchVideoDevices = _.debounce(this.switchVideoDevices.bind(this), 500, { leading: true, trailing: false });
-        this.getCountdownSize = this.getCountdownSize.bind(this);
         this.showDescripton = this.showDescripton.bind(this);
         this.hideDescripton = this.hideDescripton.bind(this);
         this.onTextChange = this.onTextChange.bind(this);
@@ -149,13 +148,6 @@ class Camera extends Component {
         });
     }
 
-    getCountdownSize () {
-        var video = this._viewfinder;
-        var dimensions = video.getBoundingClientRect();
-
-        return _.min([dimensions.height, dimensions.width]) * 0.9;
-    }
-
     showDescripton () {
         this.setState({
             showDescriptionField: true
@@ -219,17 +211,10 @@ class Camera extends Component {
                         )}
 
                         {this.state.countdown && (
-                            <div className={styles.countdown}>
-                                <ReactCountdownClock
-                                    seconds={this.props.countdownSeconds}
-                                    size={this.getCountdownSize()}
-                                    font='Open Sans'
-                                    color='#212121'
-                                    alpha={0.9}
-                                    showMilliseconds={false}
-                                    onComplete={this.shutter}
-                                />
-                            </div>
+                            <CountdownClock
+                                seconds={this.props.countdownSeconds}
+                                onComplete={this.shutter}
+                            />
                         )}
                     </div>
 

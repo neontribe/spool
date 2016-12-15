@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import ReactCountdownClock from 'react-countdown-clock';
 import MediaStreamRecorder from 'msr';
 import captureVideoFrame from 'capture-video-frame';
 import _ from 'lodash';
 
 import Grid from './Grid';
 import AddControls from './AddControls';
+import CountdownClock from './CountdownClock';
 
 import styles from './css/VideoRecorder.module.css';
 import controls from '../css/Controls.module.css';
@@ -291,17 +291,10 @@ class VideoRecorder extends Component {
                         )}
 
                         {this.state.countdown && (
-                            <div className={styles.countdown}>
-                                <ReactCountdownClock
-                                    seconds={this.props.countdownSeconds}
-                                    size={this.getCountdownSize()}
-                                    font='Open Sans'
-                                    color='#212121'
-                                    alpha={0.9}
-                                    showMilliseconds={false}
-                                    onComplete={this.startRecording}
-                                />
-                            </div>
+                            <CountdownClock
+                                seconds={this.props.countdownSeconds}
+                                onComplete={this.startRecording}
+                            />
                         )}
                     </div>
 
@@ -313,7 +306,7 @@ class VideoRecorder extends Component {
                             >Switch Camera</button>
                         )}
 
-                        {(!this.state.countdown && !this.state.recording) && (
+                        {(!this.state.countdown && !this.state.recording && !this.state.lastTakeURL) && (
                             <button
                                 className={controls.btnRaised}
                                 onClick={this.startCountdown}
