@@ -74,10 +74,7 @@ export default class EntryViewer extends Component {
                                 )}
 
                                 {/* Todo: Add router back functionality */}
-                                <button
-                                    className={controls.btnRaised}
-                                    onClick={this.context.router.goBack}
-                                >Back</button>
+                                <button className={controls.btnRaised}>Back</button>
                             </div>
                         </Grid>
                     </div>
