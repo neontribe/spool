@@ -3,11 +3,10 @@ import captureVideoFrame from 'capture-video-frame';
 import _ from 'lodash';
 
 import Grid from './Grid';
-import AddControls from './AddControls';
+import Button from './Button';
 import CountdownClock from './CountdownClock';
 
 import styles from './css/Camera.module.css';
-import controls from '../css/Controls.module.css';
 import headings from '../css/Headings.module.css';
 
 const mediaConstraints = {
@@ -177,10 +176,9 @@ class Camera extends Component {
                             value={this.state.text}
                             onChange={this.onTextChange}
                         ></textarea>
-                        <button
-                            className={controls.btnRaised}
+                        <Button
                             onClick={this.hideDescripton}
-                        >Close</button>
+                        >Close</Button>
                     </div>
                 )}
 
@@ -220,36 +218,31 @@ class Camera extends Component {
 
                     <div className={styles.btnStack}>
                         {(this.state.devices.length > 1) && (
-                            <button
-                                className={controls.btnRaised}
+                            <Button
                                 onClick={this.switchVideoDevices}
-                            >Switch Cameras</button>
+                            >Switch Cameras</Button>
                         )}
 
                         {(!this.state.countdown && !this.state.image) && (
-                            <button
-                                className={controls.btnRaised}
+                            <Button
                                 onClick={this.startCountdown}
-                            >Take Picture</button>
+                            >Take Picture</Button>
                         )}
 
                         {/* Todo: Re-word 'Next' to 'Save' */}
                         {this.state.image && [
-                            <button
+                            <Button
                                 key={0}
-                                className={controls.btnRaised}
                                 onClick={this.startCountdown}
-                            >Try Again</button>,
-                            <button
+                            >Try Again</Button>,
+                            <Button
                                 key={1}
-                                className={controls.btnRaised}
                                 onClick={this.showDescripton}
-                            >Add Description</button>,
-                            <AddControls
+                            >Add Description</Button>,
+                            <Button
                                 key={2}
-                                onNext={this.save}
-                                disableNext={!this.state.image}
-                            />
+                                onClick={this.save}
+                            >Next</Button>
                         ]}
                     </div>
                 </Grid>

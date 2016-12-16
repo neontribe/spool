@@ -1,13 +1,4 @@
-.btn {
-	display: inline-block;
-	min-width: 200px;
-	padding: 3rem 5rem;
-	border-radius: 3rem;
-	color: #fff;
-	background: rgba(0, 0, 0, .5);
-}
-
-.btnRaised {
+.raised {
 	min-width: 200px;
 	position: relative;
 	min-width: 2.5rem;
@@ -35,24 +26,24 @@
 		rgba(31, 31, 31, 0.4) 0px 10px 15px;
 }
 
-.btnRaised:before {
+.raised:before {
 	background-color: #0a845a;
 }
 
-.btnRaised,
-.btnRaised:before {
+.raised,
+.raised:before {
 	border-radius: 50px;
 }
 
-.btnRaised:before,
-.btnRaised:after {
+.raised:before,
+.raised:after {
 	content: '';
 	display: block;
 	position: absolute;
 	width: 100%;
 }
 
-.btnRaised:before {
+.raised:before {
 	top: 10px;
 	left: 0;
 	right: 0;
@@ -63,7 +54,7 @@
 	z-index: -50;
 }
 
-.btnRaised:after {
+.raised:after {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -80,7 +71,7 @@
 		rgba(255, 255, 255, 0.05) 0px -3px 3px;
 }
 
-.btnRaised:active {
+.raised:active {
 	top: -3px;
 	color: #fff;
 	text-shadow: 0 0 2px rgba(0, 0, 0, .3);
@@ -92,11 +83,12 @@
 		rgba(0, 0, 0, 0.2) 0px 2px 3px;
 }
 
-.btnRaised:active:before {
+.raised:active:before {
 	top: 15px;
 	height: 100%;
 }
 
-.btnRaised:active:after {
+.raised:active:after {
 	display: none;
 }
+

@@ -5,7 +5,6 @@ import AuthService from '../auth/AuthService';
 import Layout from './Layout';
 
 import styles from './css/SimpleLogin.module.css';
-import controls from '../css/Controls.module.css';
 
 const { Content } = Layout;
 
@@ -43,8 +42,8 @@ class SimpleLogin extends Component {
         <Content>
           <div className={styles.wrapper}>
             <div className={styles.btnWrapper}>
-              <button className={controls.btnRaised} onClick={this.googleLogin}>Login with Google</button>
-              <button className={controls.btnRaised} onClick={this.twitterLogin}>Login with Twitter</button>
+              <Button onClick={this.googleLogin}>Login with Google</Button>
+              <Button onClick={this.twitterLogin}>Login with Twitter</Button>
             </div>
           </div>
         </Content>

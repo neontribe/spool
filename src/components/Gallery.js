@@ -10,7 +10,6 @@ import Grid from './Grid';
 import withRoles from '../auth/withRoles.js';
 
 import styles from './css/Gallery.module.css';
-import controls from '../css/Controls.module.css';
 
 const { Content, Header } = Layout;
 

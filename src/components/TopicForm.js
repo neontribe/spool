@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import AddControls from './AddControls';
+import Button from './Button';
 import IconChooser from './IconChooser';
 
 import styles from './css/TopicForm.module.css';
@@ -40,7 +40,7 @@ class TopicForm extends Component {
 
                 <div className={(!this.state.value.length && helpers.hide) || undefined}>
                     <div className={styles.controls}>
-                        <AddControls onNext={this.continue} />
+                        <Button onClick={this.continue}>Continue</Button>
                     </div>
                 </div>
             </div>

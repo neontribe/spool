@@ -4,11 +4,10 @@ import captureVideoFrame from 'capture-video-frame';
 import _ from 'lodash';
 
 import Grid from './Grid';
-import AddControls from './AddControls';
+import Button from './Button';
 import CountdownClock from './CountdownClock';
 
 import styles from './css/VideoRecorder.module.css';
-import controls from '../css/Controls.module.css';
 import headings from '../css/Headings.module.css';
 
 var mediaConstraints = {
@@ -257,10 +256,7 @@ class VideoRecorder extends Component {
                             value={this.state.text}
                             onChange={this.onTextChange}
                         ></textarea>
-                        <button
-                            className={controls.btnRaised}
-                            onClick={this.hideDescripton}
-                        >Close</button>
+                        <Button onClick={this.hideDescripton}>Close</Button>
                     </div>
                 )}
 
@@ -300,59 +296,33 @@ class VideoRecorder extends Component {
 
                     <div className={styles.btnStack}>
                         {(this.state.devices.length > 1) && (
-                            <button
-                                className={controls.btnRaised}
-                                onClick={this.switchVideoDevices}
-                            >Switch Camera</button>
+                            <Button onClick={this.switchVideoDevices}>Switch Camera</Button>
                         )}
 
                         {(!this.state.countdown && !this.state.recording && !this.state.lastTakeURL) && (
-                            <button
-                                className={controls.btnRaised}
-                                onClick={this.startCountdown}
-                            >Start Recording</button>
+                            <Button onClick={this.startCountdown}>Start Recording</Button>
                         )}
 
                         {this.state.recording && (
-                            <button
-                                className={controls.btnRaised}
-                                disabled={!this.state.recording}
-                                onClick={this.stopRecording}
-                            >Stop Recording</button>
+                            <Button onClick={this.stopRecording}>Stop Recording</Button>
                         )}
 
                         {this.state.playing && (
-                            <button
+                            <Button
                                 key={0}
-                                className={controls.btnRaised}
                                 onClick={this.pausePlayback}
-                            >Pause</button>
+                            >Pause</Button>
                         )}
 
                         {(this.state.lastTakeURL && !this.state.playing) && (
-                            <button
-                                className={controls.btnRaised}
-                                onClick={this.playRecording}
-                            >Play</button>
+                            <Button onClick={this.playRecording}>Play</Button>
                         )}
 
                         {/* Todo: Re-word 'Next' to 'Save' */}
                         {this.state.lastTakeURL && [
-                            <button
-                                key={0}
-                                className={controls.btnRaised}
-                                onClick={this.startCountdown}
-                            >Try Again</button>,
-                            <button
-                                key={1}
-                                className={controls.btnRaised}
-                                onClick={this.showDescripton}
-                            >Add Description</button>,
-                            <AddControls
-                                key={2}
-                                onNext={this.save}
-                                disableNext={!this.state.lastTakeURL && !this.state.playing}
-                            />
+                            <Button key={0} onClick={this.startCountdown}>Try Again</Button>,
+                            <Button key={1} onClick={this.showDescripton}>Add Description</Button>,
+                            <Button key={2} onClick={this.save}>Save</Button>
                         ]}
                     </div>
                 </Grid>

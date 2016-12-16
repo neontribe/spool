@@ -5,12 +5,17 @@ import moment from 'moment';
 import Relay from 'react-relay';
 import { withRouter } from 'react-router';
 
-import AddControls from './AddControls';
+import Button from './Button';
 import IconChooser from './IconChooser';
 import withRoles from '../auth/withRoles.js';
 
 export class AccessForm extends Component {
-    static fields = ['from', 'to', 'topics']
+    static fields = [
+        'from',
+        'to',
+        'topics'
+    ]
+
     constructor (props) {
         super(props);
 
@@ -18,7 +23,8 @@ export class AccessForm extends Component {
             from: moment().add(-1, 'months').toISOString(),
             to: moment().add(1, 'months').toISOString(),
             topics: [],
-        }
+        };
+
         this.handleChange = this.handleChange.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleFromChange = this.handleFromChange.bind(this);
@@ -50,17 +56,22 @@ export class AccessForm extends Component {
 
     handleSuccess () {
         const payload = _.pick(this.state, AccessForm.fields);
+
         console.log(payload);
+
         this.props.onSuccess(payload);
     }
 
     render () {
         console.log(this.props, this.state);
-        //validate
+
+        // Validate
         var valid = false;
+
         if (this.state.from && this.state.to && this.state.topics.length > 0) {
             valid = true;
         }
+
         return (
             <div>
                 <h2>Access Form</h2>
@@ -85,7 +96,7 @@ export class AccessForm extends Component {
                     </div>
                 </div>
                 <div>
-                    <button onClick={this.handleSuccess}>Search</button>
+                    <Button onClick={this.handleSuccess}>Search</Button>
                 </div>
             </div>
         );
@@ -93,6 +104,7 @@ export class AccessForm extends Component {
 }
 
 AccessForm = withRouter(AccessForm);
+
 export default AccessForm;
 
 export const AccessFormContainer = Relay.createContainer(AccessForm, {

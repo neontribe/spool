@@ -9,7 +9,6 @@ import Layout from './Layout';
 const { Content, Header } = Layout;
 
 import headings from '../css/Headings.module.css';
-import controls from '../css/Controls.module.css';
 
 export class Signup extends React.Component {
     static propTypes = {
@@ -203,13 +202,12 @@ export class Signup extends React.Component {
                                 </div>
                             }
 
-                            <div>
-                                <button
+                            {/*<div>
+                                <Button
                                     type='submit'
                                     disabled={!(this.state.region && this.state.role)}
-                                    className={controls.btn}
-                                >OK</button>
-                            </div>
+                                >OK</Button>
+                            </div>*/}
                         </form>
                     </div>
                 </Content>

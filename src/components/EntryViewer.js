@@ -6,9 +6,9 @@ import { EntryContainer } from './Entry';
 import Layout from './Layout';
 import Grid from './Grid';
 import Icon from './Icon';
+import Button from './Button';
 
 import styles from './css/EntryViewer.module.css';
-import controls from '../css/Controls.module.css';
 
 const { Content, Header } = Layout;
 
@@ -76,7 +76,7 @@ export default class EntryViewer extends Component {
                                 )}
 
                                 {/* Todo: Add router back functionality */}
-                                <button className={controls.btnRaised}>Back</button>
+                                <Button onClick={Function.prototype}>Back</Button>
                             </div>
                         </Grid>
                     </div>

@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 import AuthService from '../auth/AuthService';
 
-import controls from '../css/Controls.module.css';
-
 class Login extends Component {
   constructor (props) {
     super(props);
@@ -97,9 +95,9 @@ class Login extends Component {
           </div>
 
           <div>
-            <button className={controls.btnRaised} type='submit'>Sign In</button>
-            <button className={controls.btnRaised} onClick={this.signUp}>Sign Up</button>
-            <button className={controls.btnRaised} onClick={this.googleLogin}>Login with Google</button>
+            <Button type='submit'>Sign In</Button>
+            <Button onClick={this.signUp}>Sign Up</Button>
+            <Button onClick={this.googleLogin}>Login with Google</Button>
           </div>
         </form>
       </div>

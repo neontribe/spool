@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import AddControls from './AddControls';
+import Button from './Button';
 
 import styles from './css/TextForm.module.css';
 import a11y from '../css/A11y.module.css';
@@ -48,10 +48,7 @@ class TextForm extends Component {
 
                 <div className={(!this.state.value.length && helpers.hide) || undefined}>
                     <div className={styles.controls}>
-                        <AddControls
-                            onNext={this.continue}
-                            disableNext={!this.state.value}
-                        />
+                        <Button onClick={this.continue}>Next</Button>
                     </div>
                 </div>
             </form>
