@@ -111,6 +111,10 @@
 
 /* Filters. Todo: These styles will need moving */
 
+.filterBlock {
+	clear: left;
+}
+
 .filterHeader {
 	composes: regular from '../../css/Headings.module.css';
 	padding: 1rem 1rem 0;

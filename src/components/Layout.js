@@ -71,87 +71,105 @@ class Header extends Component {
 
               {/* Todo: Inject a component from the router, e.g. filter controls */}
               <div>
-                <h2 className={styles.filterHeader}>Gallery filters</h2>
-                <ul>
-                  <li className={styles.filter}>
-                    <a role='button' className={styles.filterControl}>
-                      <Icon icon='happy' light={true} />
-                      Happy
-                    </a>
-                  </li>
-                  <li className={styles.filter}>
-                    <a role='button' className={styles.filterControl}>
-                      <Icon icon='sad' light={true} />
-                      Sad
-                    </a>
-                  </li>
-                  <li className={styles.filterNewRow}>
-                    <a role='button' className={styles.filterControlOn}>
-                      <Icon icon='work' light={true} />
-                      Work
-                    </a>
-                  </li>
-                  <li className={styles.filter}>
-                    <a role='button' className={styles.filterControlOn}>
-                      <Icon icon='learning' light={true} />
-                      Learning
-                    </a>
-                  </li>
-                  <li className={styles.filter}>
-                    <a role='button' className={styles.filterControlOn}>
-                      <Icon icon='home' light={true} />
-                      Home
-                    </a>
-                  </li>
-                  <li className={styles.filter}>
-                    <a role='button' className={styles.filterControl}>
-                      <Icon icon='food' light={true} />
-                      Food
-                    </a>
-                  </li>
-                  <li className={styles.filter}>
-                    <a role='button' className={styles.filterControl}>
-                      <Icon icon='relationships' light={true} />
-                      Relationships
-                    </a>
-                  </li>
-                  <li className={styles.filter}>
-                    <a role='button' className={styles.filterControlOn}>
-                      <Icon icon='activities' light={true} />
-                      Activities
-                    </a>
-                  </li>
-                  <li className={styles.filter}>
-                    <a role='button' className={styles.filterControlOn}>
-                      <Icon icon='travel' light={true} />
-                      Travel
-                    </a>
-                  </li>
-                  <li className={styles.filter}>
-                    <a role='button' className={styles.filterControl}>
-                      <Icon icon='health' light={true} />
-                      Health
-                    </a>
-                  </li>
-                  <li className={styles.filterNewRow}>
-                    <a role='button' className={styles.filterControl}>
-                      <Icon icon='video' light={true} />
-                      Videos
-                    </a>
-                  </li>
-                  <li className={styles.filter}>
-                    <a role='button' className={styles.filterControl}>
-                      <Icon icon='photo' light={true} />
-                      Photos
-                    </a>
-                  </li>
-                  <li className={styles.filter}>
-                    <a role='button' className={styles.filterControl}>
-                      <Icon icon='typing' light={true} />
-                      Written
-                    </a>
-                  </li>
-                </ul>
+                <div className={styles.filterBlock}>
+                  <h2 className={styles.filterHeader}>View Mode</h2>
+                  <ul>
+                    <li className={styles.filter}>
+                      <Link to='/home' className={styles.filterControlOn}>
+                        Gallery
+                      </Link>
+                    </li>
+                    <li className={styles.filter}>
+                      <Link to='/timeline' className={styles.filterControl}>
+                        Timeline
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className={styles.filterBlock}>
+                  <h2 className={styles.filterHeader}>Filters</h2>
+                  <ul>
+                    <li className={styles.filter}>
+                      <a role='button' className={styles.filterControl}>
+                        <Icon icon='happy' light={true} />
+                        Happy
+                      </a>
+                    </li>
+                    <li className={styles.filter}>
+                      <a role='button' className={styles.filterControl}>
+                        <Icon icon='sad' light={true} />
+                        Sad
+                      </a>
+                    </li>
+                    <li className={styles.filterNewRow}>
+                      <a role='button' className={styles.filterControlOn}>
+                        <Icon icon='work' light={true} />
+                        Work
+                      </a>
+                    </li>
+                    <li className={styles.filter}>
+                      <a role='button' className={styles.filterControlOn}>
+                        <Icon icon='learning' light={true} />
+                        Learning
+                      </a>
+                    </li>
+                    <li className={styles.filter}>
+                      <a role='button' className={styles.filterControlOn}>
+                        <Icon icon='home' light={true} />
+                        Home
+                      </a>
+                    </li>
+                    <li className={styles.filter}>
+                      <a role='button' className={styles.filterControl}>
+                        <Icon icon='food' light={true} />
+                        Food
+                      </a>
+                    </li>
+                    <li className={styles.filter}>
+                      <a role='button' className={styles.filterControl}>
+                        <Icon icon='relationships' light={true} />
+                        Relationships
+                      </a>
+                    </li>
+                    <li className={styles.filter}>
+                      <a role='button' className={styles.filterControlOn}>
+                        <Icon icon='activities' light={true} />
+                        Activities
+                      </a>
+                    </li>
+                    <li className={styles.filter}>
+                      <a role='button' className={styles.filterControlOn}>
+                        <Icon icon='travel' light={true} />
+                        Travel
+                      </a>
+                    </li>
+                    <li className={styles.filter}>
+                      <a role='button' className={styles.filterControl}>
+                        <Icon icon='health' light={true} />
+                        Health
+                      </a>
+                    </li>
+                    <li className={styles.filterNewRow}>
+                      <a role='button' className={styles.filterControl}>
+                        <Icon icon='video' light={true} />
+                        Videos
+                      </a>
+                    </li>
+                    <li className={styles.filter}>
+                      <a role='button' className={styles.filterControl}>
+                        <Icon icon='photo' light={true} />
+                        Photos
+                      </a>
+                    </li>
+                    <li className={styles.filter}>
+                      <a role='button' className={styles.filterControl}>
+                        <Icon icon='typing' light={true} />
+                        Written
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </Hamburger>
           )}
