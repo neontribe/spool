@@ -68,6 +68,7 @@
 	overflow: auto;
 
 	width: 40%;
+	max-width: 400px;
 	/*animation: slideRTL .75s 1 forwards;*/
 }
 
