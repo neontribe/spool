@@ -45,7 +45,7 @@ class AddEntry extends Component {
                 this.setEntryData(key, value, true);
             }
         };
-
+        this.handleMediaTypeChange = this.handleMediaTypeChange.bind(this);
     }
 
     saveEntry (entry) {
@@ -78,6 +78,12 @@ class AddEntry extends Component {
         }
     }
 
+    handleMediaTypeChange (type) {
+        this.setState({
+            mediaType: type
+        });
+    }
+
     renderForm() {
         const { ABOUT, SENTIMENT, MEDIA } = AddEntry;
 
@@ -88,11 +94,12 @@ class AddEntry extends Component {
             case SENTIMENT:
                 return <SentimentForm save={this.transitions[SENTIMENT]}/>
             case MEDIA:
-                return <MediaForm save={this.transitions[MEDIA]}/>
+                return <MediaForm save={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange}/>
         }
     }
 
     render () {
+        console.log(this.state);
         return (
             <Layout className={styles.wrapper}>
                 <Header auth={this.props.auth}>
