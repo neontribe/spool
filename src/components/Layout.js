@@ -30,7 +30,6 @@ class Header extends Component {
       this.props.auth.logout();
 
       // Redirects to login page
-     
       this.props.router.push('/login');
     }
 
@@ -179,7 +178,7 @@ class Header extends Component {
 }
 
 class Content extends Component {
-    render() {
+    render () {
         return (
             <div className={styles.content}>{this.props.children}</div>
         );

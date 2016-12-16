@@ -12,17 +12,20 @@
 	flex-direction: column;
 	justify-content: center;
 	margin: 0 auto;
+	padding-top: 50px; /* .header->height */
 }
 
 .header {
+	position: fixed;
+	top: 0;
 	display: flex;
 	align-items: stretch;
 	justify-content: space-between;
 	height: 50px;
 	width: 100%;
 	color: #fff;
-	background-color: rgba(0, 0, 0, .1);
-	overflow: hidden;
+	background-color: #30454e;
+	z-index: 100;
 }
 
 .header > * {
@@ -55,7 +58,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	position: absolute;
+	position: fixed;
 	top: 50px; /* .header->height */
 	right: 0;
 	height: calc(100vh - 50px); /* .header->height */
