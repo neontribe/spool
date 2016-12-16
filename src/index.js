@@ -8,6 +8,7 @@ import useRelay from 'react-router-relay';
 import AuthService from './auth/AuthService';
 import App from './App';
 import { GalleryContainer } from './components/Gallery';
+import { TimelineContainer } from './components/Timeline';
 import { DashboardContainer } from './components/Dashboard';
 import SimpleLogin from './components/SimpleLogin';
 import { SignupContainer } from './components/Signup';
@@ -82,6 +83,7 @@ ReactDOM.render(
 
             <Route path="introduction" component={IntroductionContainer} onEnter={auth.requireAuthOnEnter}/>
             <Route path="home" component={GalleryContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
+            <Route path="timeline" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
             <Route path="add" component={AddEntryContainer} queries={CreatorQueries} />
             <Route path="entry/:id" component={EntryViewerContainer} queries={EntryViewerQueries} onEnter={auth.requireAuthOnEnter} />
             <Route path="login" component={SimpleLogin}/>

@@ -1,5 +1,7 @@
 .entry {
-	position: relative;
+	position: absolute;
+	top: 0;
+	left: 0;
 	display: flex;
 	flex: 1;
 	justify-content: center;
@@ -186,6 +188,11 @@
     left: 0;
     height: 100%;
     width: 100%;
+
+    /* .entry->boxShadow */
+    box-shadow:
+		0 10px 20px rgba(0, 0, 0, 0.19),
+		0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
 :global(.carousel-inner) {

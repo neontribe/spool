@@ -79,14 +79,6 @@ export class Gallery extends Component {
         creator: React.PropTypes.object.isRequired,
     }
 
-    constructor (props) {
-        super(props);
-
-        this.state = {
-            hasEntries: props.creator.entries.edges.length
-        };
-    }
-
     shuffle (array) {
         var currentIndex = array.length
         var temporaryValue, randomIndex;
