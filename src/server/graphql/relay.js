@@ -6,6 +6,8 @@ const moment = require('moment');
 const _ = require('lodash');
 const spool = require('../spool.js');
 const winston = require('winston');
+const randomSeed = require('random-seed');
+const shuffle = require('shuffle-array');
 
 var {nodeInterface, nodeField} = relayql.nodeDefinitions(
     /* retrieve given an id and type */
@@ -375,9 +377,13 @@ const CreatorType = new ql.GraphQLObjectType({
         },
         entries: {
             type: entryConnectionDefinition.connectionType,
-            args: relayql.connectionArgs,
+            args: Object.assign({
+                random: {
+                    type: ql.GraphQLBoolean
+                },
+            }, relayql.connectionArgs),
             resolve: (root, args, context) => {
-                return relayql.connectionFromPromisedArray(models.Entry.findAll({
+                const entryPromise = models.Entry.findAll({
                     where: {
                         ownerId: context.userId,
                     },
@@ -385,7 +391,16 @@ const CreatorType = new ql.GraphQLObjectType({
                     order: [
                         ['createdAt', 'DESC']
                     ],
-                }).catch((e) => winston.warn(e)), args);
+                }).then(function(entries) {
+                    if(args.random) {
+                        const generator = randomSeed.create(context.userId);
+                        entries = shuffle(entries, {
+                            rng: generator.random
+                        });
+                    }
+                    return entries;
+                }).catch((e) => winston.warn(e)
+                return relayql.connectionFromPromisedArray(entryPromise), args);
             },
         },
         sharing: {
