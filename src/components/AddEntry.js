@@ -19,6 +19,7 @@ class AddEntry extends Component {
     static ABOUT = 'ENTRY/ABOUT';
     static SENTIMENT = 'ENTRY/SENTIMENT';
     static MEDIA = 'ENTRY/MEDIA';
+
     constructor (props) {
         super(props);
         this.state = {
@@ -53,6 +54,7 @@ class AddEntry extends Component {
         var onSuccess = () => {
             this.props.router.push('/home');
         }
+
         this.props.relay.commitUpdate(
             new AddEntryMutation({
                 creator,
@@ -66,9 +68,11 @@ class AddEntry extends Component {
 
     setEntryData (key, value, save) {
         var entry = _.merge({}, this.state.entry, { [key]: value });
+
         this.setState({
             entry
         });
+
         if (save) {
             this.saveEntry(entry);
         }
@@ -76,7 +80,9 @@ class AddEntry extends Component {
 
     renderForm() {
         const { ABOUT, SENTIMENT, MEDIA } = AddEntry;
+
         switch(this.state.form) {
+            default:
             case ABOUT:
                 return <TopicForm save={this.transitions[ABOUT]} topics={this.props.creator.topics}/>
             case SENTIMENT:

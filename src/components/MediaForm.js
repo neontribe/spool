@@ -9,7 +9,6 @@ import ImageForm from './ImageForm';
 
 import styles from './css/MediaForm.module.css';
 
-
 const choices = [
     {
         type: 'video',
@@ -33,6 +32,7 @@ class MediaForm extends Component {
 
     constructor (props) {
         super(props);
+
         this.handleSave = _.partial(props.save, props.saveKey);
 
         const { SELECT, VIDEO, PHOTO, TEXT } = MediaForm;
@@ -40,35 +40,40 @@ class MediaForm extends Component {
             video: VIDEO,
             photo: PHOTO,
             typing: TEXT,
-        }
+        };
+
         this.state = {
             form: SELECT
-        }
-        this.chooserTransition = (values) => this.setState({form: choiceMap[values[0]]});
+        };
+
+        this.chooserTransition = (values) => this.setState({
+            form: choiceMap[values[0]]
+        });
     }
 
     renderChooser () {
         return (
             <IconChooser
-            label='How would you like to create the entry?'
-            choices={choices}
-            maxSelections={1}
-            onChange={this.chooserTransition}
+                label='How would you like to create the entry?'
+                choices={choices}
+                maxSelections={1}
+                onChange={this.chooserTransition}
             />
         );
     }
 
     renderForm () {
         const { SELECT, VIDEO, PHOTO, TEXT } = MediaForm;
-        switch(this.state.form) {
+
+        switch (this.state.form) {
             case SELECT:
                 return this.renderChooser();
             case VIDEO:
-                return <VideoForm save={this.handleSave}/>;
+                return <VideoForm save={this.handleSave} />;
             case PHOTO:
-                return <ImageForm save={this.handleSave}/>;
+                return <ImageForm save={this.handleSave} />;
             case TEXT:
-                return <TextForm save={this.handleSave}/>;
+                return <TextForm save={this.handleSave} />;
         }
     }
 
@@ -82,12 +87,12 @@ class MediaForm extends Component {
 }
 
 MediaForm.propTypes = {
-  save: React.PropTypes.func,
-  saveKey: React.PropTypes.string
+    save: React.PropTypes.func,
+    saveKey: React.PropTypes.string
 }
 
 MediaForm.defaultProps = {
-  saveKey: 'media'
+    saveKey: 'media'
 }
 
 export default withRouter(MediaForm);

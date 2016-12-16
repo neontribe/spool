@@ -7,7 +7,7 @@ import { withRouter } from 'react-router';
 
 import Button from './Button';
 import IconChooser from './IconChooser';
-import withRoles from '../auth/withRoles.js';
+// import withRoles from '../auth/withRoles.js';
 
 export class AccessForm extends Component {
     static fields = [
@@ -66,11 +66,11 @@ export class AccessForm extends Component {
         console.log(this.props, this.state);
 
         // Validate
-        var valid = false;
+        // var valid = false;
 
-        if (this.state.from && this.state.to && this.state.topics.length > 0) {
-            valid = true;
-        }
+        // if (this.state.from && this.state.to && this.state.topics.length > 0) {
+        //     valid = true;
+        // }
 
         return (
             <div>

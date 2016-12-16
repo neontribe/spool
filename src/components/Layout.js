@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-// Todo: Fix this App code
-import styles from './css/App.module.css';
-import a11y from '../css/A11y.module.css';
 import { withRouter, Link } from 'react-router';
 import ProfileLink from './ProfileLink';
 import Hamburger from './Hamburger';
 import Icon from './Icon';
+
+import styles from './css/App.module.css';
 
 class Header extends Component {
     constructor(props) {

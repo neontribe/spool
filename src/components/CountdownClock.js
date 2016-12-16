@@ -21,7 +21,7 @@ export default class CountdownClock extends Component {
         };
     }
 
-    componentWillMount () {
+    componentDidMount () {
         var countdown = setInterval(() => {
             this.setState({
                 remaining: this.state.remaining - 1

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { Link } from 'react-router';
 import moment from 'moment';
-import _ from 'lodash';
 import rand from 'random-seed';
 
 import Icon from './Icon';
@@ -10,7 +9,7 @@ import Icon from './Icon';
 import styles from './css/Entry.module.css';
 
 export class Entry extends Component {
-    static colourVariants = [
+    static ColourVariants = [
         { className: styles.entryVariantA, dark: false },
         { className: styles.entryVariantB, dark: false },
         { className: styles.entryVariantC, dark: false },
@@ -146,7 +145,7 @@ export class Entry extends Component {
         var lightIcon = true;
 
         if (isTextEntry) {
-            randomisedStyle = this.constructor.colourVariants[(new rand(entry.id)).range(this.constructor.colourVariants.length - 1)];
+            randomisedStyle = this.constructor.ColourVariants[(new rand(entry.id)).range(this.constructor.ColourVariants.length - 1)];
 
             styleVariant = randomisedStyle.className;
 
