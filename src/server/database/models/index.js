@@ -17,6 +17,9 @@ function init(sequelize) {
     model.SequelizeMetum = sequelize.import('./definition/sequelize-meta.js');
     model.Topic = sequelize.import('./definition/topic.js');
     model.UserAccount = sequelize.import('./definition/user-account.js');
+    model.Profile = sequelize.import('./definition/profile.js');
+    model.Residence = sequelize.import('./definition/residence.js');
+    model.ProfileService = sequelize.import('./definition/profile-service.js');
 
     // All models are initialized. Now connect them with relations.
     require('./definition/entry.js').initRelations();
@@ -30,6 +33,9 @@ function init(sequelize) {
     require('./definition/sequelize-data.js').initRelations();
     require('./definition/sequelize-meta.js').initRelations();
     require('./definition/topic.js').initRelations();
+    require('./definition/profile.js').initRelations();
+    require('./definition/residence.js').initRelations();
+    require('./definition/profile-service.js').initRelations();
     require('./definition/user-account.js').initRelations();
     return model;
 }

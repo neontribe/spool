@@ -153,6 +153,7 @@ module.exports = {
     TopicType,
     RoleType,
     RegionType,
+    ServiceType,
     MediaInputType,
     EntryInputType,
     DateRangeInputType,

@@ -12,6 +12,17 @@ module.exports = function(sequelize, DataTypes) {
             field: 'auth_hash',
             allowNull: true
         },
+        profileId: {
+            type: DataTypes.INTEGER,
+            field: 'profile_id',
+            allowNull: true,
+            references: {
+                model: 'profile',
+                key: 'profile_id'
+            },
+            onUpdate: 'NO ACTION',
+            onDelete: 'NO ACTION'
+        },
         seenIntroduction: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
@@ -77,7 +88,15 @@ module.exports.initRelations = function() {
     var Region = model.Region;
     var Role = model.Role;
     var Medium = model.Medium;
+    var Profile = model.Profile;
     var Sentiment = model.Sentiment;
+
+    UserAccount.belongsTo(Profile, {
+        as: 'Profile',
+        foreignKey: 'profile_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
 
     UserAccount.hasMany(Entry, {
         as: 'EntryAuthorIdFkeys',

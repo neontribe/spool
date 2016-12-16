@@ -40,7 +40,7 @@ module.exports = {
                     as: 'Region',
                 },
             ],
-            leftRoleAndRegion: [
+            leftProfile: [
                 {
                     model: models.Role,
                     required: false,
@@ -51,6 +51,11 @@ module.exports = {
                     required: false,
                     as: 'Region',
                 },
+                {
+                    model: models.Profile,
+                    required: false,
+                    as: 'Profile',
+                }
             ],
         },
         Entry: {

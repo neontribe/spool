@@ -12,13 +12,13 @@ type Consumer implements Node {
 
 input CreateEntryInput {
   entry: EntryInput
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type CreateEntryPayload {
   creator: Creator
   entryEdge: EntryEdge
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type Creator implements Node {
@@ -57,13 +57,13 @@ input DateRangeInput {
 
 input DeleteEntryInput {
   entryId: Int
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type DeleteEntryPayload {
   creator: Creator
   deletedEntryId: Int
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type Entry implements Node {
@@ -119,6 +119,7 @@ input MediaInput {
 type Meta {
   regions: [Region]
   roles: [Role]
+  residences: [Residence]
 }
 
 type Mutations {
@@ -148,6 +149,16 @@ type PageInfo {
   endCursor: String
 }
 
+type Profile implements Node {
+  # The ID of an object
+  id: ID!
+  name: String
+  age: Int
+  nickname: String
+  services: [Service]
+  residence: Residence
+}
+
 type Query {
   # Fetches an object given its ID
   node(
@@ -163,6 +174,11 @@ type Query {
 type Region {
   type: String
   services: [Service]
+}
+
+type Residence {
+  type: String
+  name: String
 }
 
 type Role {
@@ -193,12 +209,12 @@ type TopicCount {
 
 input UpdateUserInput {
   user: UserInput
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type UpdateUserPayload {
   user: User
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type User implements Node {
@@ -206,6 +222,7 @@ type User implements Node {
   id: ID!
   role: String
   region: String
+  profile: Profile
 }
 
 input UserInput {

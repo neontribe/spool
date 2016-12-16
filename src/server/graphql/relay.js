@@ -34,8 +34,27 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
                 where: {
                     userId: context.userId,
                 },
-                include: helpers.includes.UserAccount.leftRoleAndRegion,
+                include: helpers.includes.UserAccount.leftProfile,
             }).catch((e) => winston.warn(e));
+        }
+        if (type === 'Profile') {
+            if(!context.Role || context.Role.type === 'creator') {
+                return models.Profile.findOne({
+                    where: {
+                        profileId: id
+                    },
+                    include: [
+                        {
+                            model: models.UserAccount,
+                            as: 'UserAccount',
+                            where: {
+                                userId: context.userId
+                            }
+                        }
+                    ]
+                }).catch((e) => winston.warn(e));
+            }
+            if(context.Role.type === 'consumer') {}
         }
         if (type === 'Entry') {
             if(!context.Role) {
@@ -88,6 +107,10 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
             // eslint-disable-next-line no-use-before-define
             return UserType;
         }
+        if (obj instanceof models.Profile.Instance){
+            // eslint-disable-next-line no-use-before-define
+            return ProfileType;
+        }
         if (obj.consumer) {
             // eslint-disable-next-line no-use-before-define
             return ConsumerType;
@@ -97,6 +120,51 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
             return CreatorType;
         }
     });
+
+const ResidenceType = new ql.GraphQLObjectType({
+    name: 'Residence',
+    fields: {
+        type: {
+            type: ql.GraphQLString,
+            resolve: (root) => root.type
+        },
+        name: {
+            type: ql.GraphQLString,
+            resolve: (root) => root.name
+        },
+    }
+});
+const ProfileType = new ql.GraphQLObjectType({
+    name: 'Profile',
+    fields: {
+        id: relayql.globalIdField('Profile', (root) => root.profileId),
+        name: {
+            type: ql.GraphQLString,
+            resolve: (root) => root.name
+        },
+        age: {
+            type: ql.GraphQLInt,
+            resolve: (root) => root.age
+        },
+        nickname: {
+            type: ql.GraphQLString,
+            resolve: (root) => root.altName
+        },
+        services: {
+            type: new ql.GraphQLList(types.ServiceType),
+            resolve: (root) => {
+                return root.ProfileServiceServices
+            }
+        },
+        residence: {
+            type: ResidenceType,
+            resolve: (root) => {
+                return root.Residence;
+            }
+        },
+    },
+    interfaces: [nodeInterface]
+});
 
 const UserType = new ql.GraphQLObjectType({
     name: 'User',
@@ -113,6 +181,12 @@ const UserType = new ql.GraphQLObjectType({
             resolve: (root) => {
                 return root.Region && root.Region.type;
             },
+        },
+        profile: {
+            type: ProfileType,
+            resolve: (root) => {
+                return root.Profile
+            }
         }
     },
     interfaces: [nodeInterface]
@@ -441,11 +515,10 @@ const userField = {
             where: {
                 userId: context.userId,
             },
-            include: helpers.includes.UserAccount.leftRoleAndRegion,
+            include: helpers.includes.UserAccount.leftProfile,
         }).catch((e) => winston.warn(e));
     },
 }
-
 const MetaType = new ql.GraphQLObjectType({
     name: 'Meta',
     fields: {
@@ -468,6 +541,12 @@ const MetaType = new ql.GraphQLObjectType({
                 return models.Role.findAll().catch((e) => winston.warn(e));
             },
         },
+        residences: {
+            type: new ql.GraphQLList(ResidenceType),
+            resolve: () => {
+                return models.Residence.findAll().catch((e) => winston.warn(e));
+            }
+        }
     },
 });
 

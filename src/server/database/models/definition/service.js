@@ -30,6 +30,8 @@ module.exports.initRelations = function() {
     var Service = model.Service;
     var RegionService = model.RegionService;
     var Region = model.Region;
+    var ProfileService = model.ProfileService;
+    var Profile = model.Profile;
 
     Service.hasMany(RegionService, {
         as: 'RegionServiceServiceIdFkeys',
@@ -43,6 +45,22 @@ module.exports.initRelations = function() {
         through: RegionService,
         foreignKey: 'service_id',
         otherKey: 'region_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
+
+    Service.hasMany(ProfileService, {
+        as: 'ProfileServiceServiceIdFkeys',
+        foreignKey: 'service_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
+
+    Service.belongsToMany(Profile, {
+        as: 'ProfileServiceEntries',
+        through: ProfileService,
+        foreignKey: 'service_id',
+        otherKey: 'profile_id',
         onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
     });

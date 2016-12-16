@@ -18,6 +18,13 @@ module.exports = {
           auth_hash: {
               type: Sequelize.STRING(256),
           },
+          profile_id: {
+            type: Sequelize.INTEGER,
+            references: {
+                model: 'profile',
+                key: 'profile_id'
+            }
+          },
           seen_introduction: {
               type: Sequelize.BOOLEAN,
           },
