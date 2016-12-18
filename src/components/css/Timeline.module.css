@@ -16,6 +16,11 @@
 	margin-right: 0;
 }
 
+.header {
+	composes: large from '../../css/Headings.module.css';
+	padding: 1rem 0;
+}
+
 .moreWrapper {
 	position: fixed;
 	bottom: -7rem;

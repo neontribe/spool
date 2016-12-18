@@ -23,7 +23,7 @@ export class Timeline extends Component {
         super(props);
 
         this.state = {
-            scrollTop: 0
+            showScrollMore: true
         };
 
         this.onScroll = _.debounce(this.onScroll.bind(this), 100, {
@@ -34,11 +34,21 @@ export class Timeline extends Component {
         window.addEventListener('scroll', this.onScroll, false);
     }
 
+    componentWillUnmount () {
+        window.removeEventListener('scroll', this.onScroll, false);
+    }
+
     onScroll () {
         var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        var viewportHeight = document.documentElement.clientHeight;
+        var showScrollMore = false;
+
+        if ((scrollTop < 25) && (this.refs.wrapper.offsetHeight > viewportHeight)) {
+            showScrollMore = true;
+        }
 
         this.setState({
-            scrollTop
+            showScrollMore
         });
     }
 
@@ -60,31 +70,33 @@ export class Timeline extends Component {
             <Layout>
                 <Header auth={this.props.auth} />
                 <Content>
-                    {Object.keys(entries).map((date, i) => {
-                        var _entries = entries[date];
+                    <div ref='wrapper'>
+                        {Object.keys(entries).map((date, i) => {
+                            var _entries = entries[date];
 
-                        return (
-                            <div key={i}>
-                                <h2 className={headings.large}>
-                                    {moment(date).startOf('week').format('YYYY, MMMM Do')} &mdash; {moment(date).endOf('week').format('MMMM Do')}
-                                </h2>
+                            return (
+                                <div key={i}>
+                                    <h2 className={styles.header}>
+                                        {moment(date).startOf('week').format('YYYY, MMMM Do')} &mdash; {moment(date).endOf('week').format('MMMM Do')}
+                                    </h2>
 
-                                {_entries.map((entry, j) => (
-                                    <div key={j} className={((j + 1) % 3 === 0) ? styles.entryLastRowItem : styles.entry}>
-                                        <EntryComponent entry={entry.node} thumbnailMode={true} />
-                                    </div>
-                                ))}
-
-                                {(this.state.scrollTop < 25) && (
-                                    <div className={styles.moreWrapper}>
-                                        <div className={styles.more}>
-                                            Scroll for more&hellip;
+                                    {_entries.map((entry, j) => (
+                                        <div key={j} className={((j + 1) % 3 === 0) ? styles.entryLastRowItem : styles.entry}>
+                                            <EntryComponent entry={entry.node} thumbnailMode={true} />
                                         </div>
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    })}
+                                    ))}
+
+                                    {this.state.showScrollMore && (
+                                        <div className={styles.moreWrapper}>
+                                            <div className={styles.more}>
+                                                Scroll for more&hellip;
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
                 </Content>
             </Layout>
         );
