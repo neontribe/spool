@@ -26,10 +26,6 @@ class Paragraph extends Component {
 }
 
 export default class EntryViewer extends Component {
-    static contextTypes = {
-        router: React.PropTypes.func.isRequired
-    }
-
     render () {
         var entry = this.props.node;
 

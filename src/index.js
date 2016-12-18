@@ -37,7 +37,7 @@ function setupRelayNetworkLayer() {
         authMiddleware({
             token: () => auth.getToken()
         })
-    ], { disableBatchQuery:  true }));
+    ], { disableBatchQuery: true }));
 }
 
 const MetaQueries = {

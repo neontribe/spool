@@ -19,6 +19,29 @@ export class Timeline extends Component {
         // creator: React.PropTypes.object.isRequired,
     }
 
+    constructor (props) {
+        super(props);
+
+        this.state = {
+            scrollTop: 0
+        };
+
+        this.onScroll = _.debounce(this.onScroll.bind(this), 100, {
+            leading: false,
+            trailing: true
+        });
+
+        window.addEventListener('scroll', this.onScroll, false);
+    }
+
+    onScroll () {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        this.setState({
+            scrollTop
+        });
+    }
+
     render () {
         var EntryComponent = (this.props.relay) ? EntryContainer : Entry;
         var entries = this.props.creator.entries.edges.slice();
@@ -51,6 +74,14 @@ export class Timeline extends Component {
                                         <EntryComponent entry={entry.node} thumbnailMode={true} />
                                     </div>
                                 ))}
+
+                                {(this.state.scrollTop < 25) && (
+                                    <div className={styles.moreWrapper}>
+                                        <div className={styles.more}>
+                                            Scroll for more&hellip;
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         );
                     })}
