@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu');
 
+/*
+
+Min size: 16
+Max size: 32
+Min viewport width: 1024
+Max viewport width: 1920
+
+*/
+@value fontSizeRegular: calc(16px + (32 - 16) * (100vw - 1024px) / (1920 - 1024));
+
 *,
 *:before,
 *:after {
@@ -8,7 +18,7 @@
 }
 
 html {
-    font-size: 16px;
+    font-size: fontSizeRegular;
 }
 
 body {
@@ -43,7 +53,7 @@ p {
 }
 
 p + p {
-    margin-top: 1rem;
+    margin-top: calc(16px + (20 - 16) * (100vw - 400px) / (1200 - 768));
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -67,7 +77,7 @@ blockquote {
 textarea {
     min-height: 100px;
     width: 100%;
-    padding: 1rem;
+    padding: calc(16px + (20 - 16) * (100vw - 400px) / (1200 - 768));
     border: 2px solid #212121;
     font-family: 'Open Sans', sans-serif;
     background: #fff;

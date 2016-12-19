@@ -5,6 +5,8 @@
 }
 */
 
+@value headerHeight: calc(50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024));
+
 .app {
 	max-width: 1920px;
 	display: flex;
@@ -12,16 +14,17 @@
 	flex-direction: column;
 	justify-content: center;
 	margin: 0 auto;
-	padding-top: calc(50px + .5rem); /* .header->height */
+	padding-top: calc(headerHeight + .5rem); /* .header->height */
 }
 
 .header {
 	position: fixed;
 	top: 0;
+	left: 0;
 	display: flex;
 	align-items: stretch;
 	justify-content: space-between;
-	height: calc(50px + .5rem);
+	height: calc(headerHeight + .5rem);
 	width: 100%;
 	border-top: .5rem solid #34404c;
 	/*border-bottom: .5rem solid #34404c;*/
@@ -43,7 +46,7 @@
 
 .logo {
 	font-weight: bold;
-	letter-spacing: 2px;
+	letter-spacing: 3px;
 }
 
 .headerMeta {
@@ -57,8 +60,8 @@
 	position: absolute;
 	top: 0;
 	right: 0;
-	height: calc(50px + .5rem); /* .header->height */
-	width: calc(50px + .5rem); /* .header->height */
+	height: calc(headerHeight + .5rem); /* .header->height */
+	width: calc(headerHeight + .5rem); /* .header->height */
 }
 
 .contextMenuContent {
@@ -66,16 +69,16 @@
 	flex-direction: column;
 	justify-content: space-between;
 	position: fixed;
-	top: calc(50px + .5rem); /* .header->height */
+	top: calc(headerHeight + .5rem); /* .header->height */
 	right: 0;
-	height: calc(100vh - 50px - .5rem); /* .header->height */
+	height: calc(100vh - headerHeight - .5rem); /* .header->height */
 	padding-top: .5rem;
 	background-color: #1e2c37;
 	z-index: 1;
 	overflow: auto;
 
 	width: 40%;
-	max-width: 400px;
+	max-width: 800px;
 	/*animation: slideRTL .75s 1 forwards;*/
 }
 
@@ -100,7 +103,7 @@
 	display: flex;
 	flex: 1;
 	flex-direction: column;
-	height: calc(100vh - (50px + .5rem)); /* .header->height */
+	height: calc(100vh - (headerHeight + .5rem)); /* .header->height */
 	padding: 1rem;
 	background-color: #1e2c37;
 	/*overflow: auto;*/
@@ -120,7 +123,7 @@
 
 	.contextMenuContent,
 	.content {
-		height: calc(100vw - 50px + .5rem); /* .header->height */
+		height: calc(100vw - headerHeight + .5rem); /* .header->height */
 	}
 }
 

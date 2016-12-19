@@ -131,7 +131,7 @@
 }
 
 .topics > * {
-	margin: 0 .5rem .5rem;
+	margin: 0 0 .5rem .5rem;
 }
 
 .date {
@@ -222,5 +222,14 @@
 	bottom: .5rem;
 	left: auto;
 	width: auto;
+}
+
+:global(.carousel .carousel-indicators li) {
+	height: .5rem;
+	width: .5rem;
+	margin: 0;
+	margin-left: 3px;
+	border-width: 2px;
+	border-radius: 50%;
 }
 
