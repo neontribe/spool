@@ -107,6 +107,7 @@ class Header extends Component {
 
                   <div className={styles.filterBlock}>
                     <h2 className={styles.filterHeader}>Filters</h2>
+
                     <ul className={styles.filterList}>
                       <li className={styles.filter}>
                         <a role='button' className={styles.filterControl}>
@@ -120,6 +121,9 @@ class Header extends Component {
                           Sad
                         </a>
                       </li>
+                    </ul>
+
+                    <ul className={styles.filterList}>
                       <li className={styles.filterNewRow}>
                         <a role='button' className={styles.filterControlOn}>
                           <Icon className={styles.filterIcon} icon='work' light={true} />
