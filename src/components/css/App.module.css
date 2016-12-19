@@ -23,11 +23,16 @@
 	justify-content: space-between;
 	height: calc(50px + .5rem);
 	width: 100%;
-	color: #fff;
-	border-top: .5rem solid rgba(0, 0, 0, .25);
-	/*border-bottom: .5rem solid #2196f3;*/
-	/*background-color: #2196f3;*/
+	border-top: .5rem solid #34404c;
+	/*border-bottom: .5rem solid #34404c;*/
+	background-color: #34404c;
 	z-index: 110;
+}
+
+.headerExpanded {
+	composes: header;
+	border-top-color: transparent;
+	background-color: transparent;
 }
 
 .header > * {
@@ -37,7 +42,7 @@
 }
 
 .logo {
-	font-family: 'Roboto Slab';
+	font-weight: bold;
 	letter-spacing: 2px;
 }
 
@@ -45,7 +50,7 @@
 	display: flex;
 	flex: 1;
 	justify-content: center;
-	background-color: rgba(0, 0, 0, .15);
+	/*background-color: rgba(0, 0, 0, .15);*/
 }
 
 .contentMenuToggle {
@@ -61,11 +66,11 @@
 	flex-direction: column;
 	justify-content: space-between;
 	position: fixed;
-	top: calc(50px); /* .header->height */
+	top: calc(50px + .5rem); /* .header->height */
 	right: 0;
-	height: calc(100vh - 50px);
+	height: calc(100vh - 50px - .5rem); /* .header->height */
 	padding-top: .5rem;
-	background-color: #2196f3;
+	background-color: #1e2c37;
 	z-index: 1;
 	overflow: auto;
 
@@ -81,7 +86,14 @@
 .contextMenuItem {
 	padding: 1rem;
 	margin-bottom: 1px;
-	background-color: rgba(0, 0, 0, .2);
+	border-top: 2px solid #34404c;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	/*background-color: rgba(0, 0, 0, .2);*/
+}
+
+.contextMenuItem:last-child {
+	border-bottom: 2px solid #34404c;
 }
 
 .content {
@@ -90,7 +102,7 @@
 	flex-direction: column;
 	height: calc(100vh - (50px + .5rem)); /* .header->height */
 	padding: 1rem;
-	background-color: #2196f3;
+	background-color: #1e2c37;
 	/*overflow: auto;*/
 }
 
@@ -141,13 +153,25 @@
 
 .filter {
 	float: left;
-	width: 33.3%;
+	width: 50%;
 	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 1px;
 }
 
 .filterNewRow {
 	composes: filter;
 	clear: left;
+}
+
+.filterMedia {
+	composes: filter;
+	width: 33%;
+}
+
+.filterList {
+	padding: .5rem;
+	overflow: auto;
 }
 
 .filterControl {
@@ -156,18 +180,22 @@
 	align-items: center;
 	justify-content: center;
 	padding: 1rem;
-	margin: 0 1px 1px 0;
+	/*margin: 0 1px 1px 0;*/
+	border: 1px solid #34404c;
 	color: #fff;
-	background-color: rgba(0, 0, 0, .2);
+	/*background-color: rgba(0, 0, 0, .2);*/
 	/*background-color: #bbc4ef;*/
 }
 
 .filterControlOn {
 	composes: filterControl;
-	/*color: #212121;*/
-	background-color: #62bcfa;
+	/*color: #1e2c37;*/
+	background-color: #34404c;
 }
 
+.filterIcon {
+	padding-bottom: 1rem;
+}
 
 
 
@@ -192,7 +220,7 @@
 	justify-content: center;
 	float: left;
 	height: 50px;
-	background: #2196f3;
+	background: #34404c;
 	text-align: center;
 	padding-left: calc(30px + 1rem);
 	padding-right: 1rem;
@@ -217,7 +245,7 @@
 	content: '';
 	border-top: 25px solid transparent;
 	border-bottom: 25px solid transparent;
-	border-left: 25px solid #2196f3;
+	border-left: 25px solid #34404c;
 	position: absolute;
 	right: -25px;
 	top: 0;

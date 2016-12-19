@@ -56,7 +56,6 @@ export class Timeline extends Component {
     }
 
     togglePanel (index) {
-        console.log('togglePanel', index);
         var state = Object.assign({}, this.state);
 
         if (!state.panel[index]) {
@@ -67,8 +66,6 @@ export class Timeline extends Component {
             state.panel[index].expanded = !state.panel[index].expanded;
         }
 
-        console.log(state);
-
         this.setState(state);
     }
 
@@ -78,7 +75,7 @@ export class Timeline extends Component {
 
         // Chronologically sort entries
         entries = entries.sort((a, b) => {
-            return moment(a.node.created) - moment(b.node.created);
+            return moment(b.node.created) - moment(a.node.created);
         });
 
         // Group by month
@@ -97,12 +94,12 @@ export class Timeline extends Component {
                             var showEntries = this.state.panel[i] && this.state.panel[i].expanded;
 
                             return (
-                                <div key={i}>
+                                <div key={i} className={styles.section}>
                                     <h2>
                                         <button
                                             className={styles.header}
                                             onClick={_.partial(this.togglePanel, i)}
-                                        >{dateRange} <span className={styles.toggle}>(Press to {(showEntries) ? 'show' : 'hide'} entries)</span></button>
+                                        >{dateRange} <span className={styles.toggle}>{(showEntries) ? '▼' : '▲'}</span></button>
                                     </h2>
 
                                     <div style={{ display: (showEntries) ? 'none' : 'block' }}>

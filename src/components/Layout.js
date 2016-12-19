@@ -52,7 +52,7 @@ class Header extends Component {
             <div className={styles.overlay}></div>
           )}
 
-          <div className={styles.header}>
+          <div className={(this.state.hamburgerExpanded) ? styles.headerExpanded : styles.header}>
             <h1 className={styles.logo}>
               <Link to={'/'}>SPOOL</Link>
             </h1>
@@ -91,7 +91,7 @@ class Header extends Component {
                 <div>
                   <div className={styles.filterBlock}>
                     <h2 className={styles.filterHeader}>View Mode</h2>
-                    <ul>
+                    <ul className={styles.filterList}>
                       <li className={styles.filter}>
                         <Link to='/home' className={styles.filterControlOn}>
                           Gallery
@@ -107,82 +107,84 @@ class Header extends Component {
 
                   <div className={styles.filterBlock}>
                     <h2 className={styles.filterHeader}>Filters</h2>
-                    <ul>
+                    <ul className={styles.filterList}>
                       <li className={styles.filter}>
                         <a role='button' className={styles.filterControl}>
-                          <Icon icon='happy' light={true} />
+                          <Icon className={styles.filterIcon} icon='happy' light={true} />
                           Happy
                         </a>
                       </li>
                       <li className={styles.filter}>
                         <a role='button' className={styles.filterControl}>
-                          <Icon icon='sad' light={true} />
+                          <Icon className={styles.filterIcon} icon='sad' light={true} />
                           Sad
                         </a>
                       </li>
                       <li className={styles.filterNewRow}>
                         <a role='button' className={styles.filterControlOn}>
-                          <Icon icon='work' light={true} />
+                          <Icon className={styles.filterIcon} icon='work' light={true} />
                           Work
                         </a>
                       </li>
                       <li className={styles.filter}>
                         <a role='button' className={styles.filterControlOn}>
-                          <Icon icon='learning' light={true} />
+                          <Icon className={styles.filterIcon} icon='learning' light={true} />
                           Learning
                         </a>
                       </li>
                       <li className={styles.filter}>
                         <a role='button' className={styles.filterControlOn}>
-                          <Icon icon='home' light={true} />
+                          <Icon className={styles.filterIcon} icon='home' light={true} />
                           Home
                         </a>
                       </li>
                       <li className={styles.filter}>
                         <a role='button' className={styles.filterControl}>
-                          <Icon icon='food' light={true} />
+                          <Icon className={styles.filterIcon} icon='food' light={true} />
                           Food
                         </a>
                       </li>
                       <li className={styles.filter}>
                         <a role='button' className={styles.filterControl}>
-                          <Icon icon='relationships' light={true} />
+                          <Icon className={styles.filterIcon} icon='relationships' light={true} />
                           Relationships
                         </a>
                       </li>
                       <li className={styles.filter}>
                         <a role='button' className={styles.filterControlOn}>
-                          <Icon icon='activities' light={true} />
+                          <Icon className={styles.filterIcon} icon='activities' light={true} />
                           Activities
                         </a>
                       </li>
                       <li className={styles.filter}>
                         <a role='button' className={styles.filterControlOn}>
-                          <Icon icon='travel' light={true} />
+                          <Icon className={styles.filterIcon} icon='travel' light={true} />
                           Travel
                         </a>
                       </li>
                       <li className={styles.filter}>
                         <a role='button' className={styles.filterControl}>
-                          <Icon icon='health' light={true} />
+                          <Icon className={styles.filterIcon} icon='health' light={true} />
                           Health
                         </a>
                       </li>
-                      <li className={styles.filterNewRow}>
+                    </ul>
+                    <ul className={styles.filterList}>
+                      <li className={styles.filterMedia}>
                         <a role='button' className={styles.filterControl}>
-                          <Icon icon='video' light={true} />
+                          <Icon className={styles.filterIcon} icon='video' light={true} />
                           Videos
                         </a>
                       </li>
-                      <li className={styles.filter}>
+                      <li className={styles.filterMedia}>
                         <a role='button' className={styles.filterControl}>
-                          <Icon icon='photo' light={true} />
+                          <Icon className={styles.filterIcon} icon='photo' light={true} />
                           Photos
                         </a>
                       </li>
-                      <li className={styles.filter}>
+                      <li className={styles.filterMedia}>
                         <a role='button' className={styles.filterControl}>
-                          <Icon icon='typing' light={true} />
+                          <Icon className={styles.filterIcon} icon='typing' light={true} />
                           Written
                         </a>
                       </li>

@@ -34,6 +34,7 @@ export class IconCard extends Component {
                     <Icon
                         className={styles.icon}
                         icon={this.props.icon}
+                        light={true}
                     />
                     <div className={styles.message}>{this.props.message}</div>
                 </div>

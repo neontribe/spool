@@ -6,7 +6,7 @@
 	display: flex;
 	align-self: stretch;
 	flex: 1;
-	background-color: rgba(0, 0, 0, .1);
+	background-color: #34404c;
 
 	box-shadow:
 		0 10px 20px rgba(0, 0, 0, 0.19),
@@ -23,18 +23,30 @@
 	cursor: pointer;
 }
 
-.field:checked + .option {
-	color: #212121;
-	background-color: #ffeb3b;
+.field:checked + .option .message {
+	color: #1e2c37;
+	border-color: #2fd9b5;
+	background-color: #2fd9b5;
 }
 
 .message {
 	position: absolute;
 	left: 0;
 	bottom: 0;
+	height: 4rem;
 	width: 100%;
-	padding: 1rem;
+	/*padding: .5rem;*/
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-top-width: 2px;
 	background-color: rgba(0, 0, 0, .2);
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	text-align: center;
+	/*line-height: 1.5;*/
+	font-size: 1.25rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .icon {
@@ -49,8 +61,8 @@ with CSSModules but can't find an alternative.
 
 */
 .icon > div {
-	height: calc(100% - 5rem) !important;
-	width: calc(100% - 5rem) !important;
+	height: calc(100% - 6rem) !important;
+	width: calc(100% - 6rem) !important;
 	margin: 1rem auto;
 	background-position: center center;
 	background-repeat: no-repeat;

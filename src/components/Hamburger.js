@@ -29,7 +29,7 @@ class Hamburger extends Component {
 
     render () {
         return (
-            <div className={(this.state.expanded && styles.expandedWrapper) || styles.wrapper}>
+            <div className={styles.wrapper}>
                 <span className={this.props.toggleClassName}>
                     <button className={styles.hamburger} onClick={this.toggleContent}>
                         {this.props.text && (

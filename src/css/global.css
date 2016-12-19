@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Slab');
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
 
 *,
 *:before,
@@ -15,9 +15,9 @@ body {
     margin: 0;
     padding: 0;
     font-size: 1rem;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     color: #fff;
-    background-color: #2196f3;
+    background-color: #1e2c37;
 }
 
 button {

@@ -90,11 +90,11 @@ class AddEntry extends Component {
         switch(this.state.form) {
             default:
             case ABOUT:
-                return <TopicForm save={this.transitions[ABOUT]} topics={this.props.creator.topics}/>
+                return <TopicForm save={this.transitions[ABOUT]} topics={this.props.creator.topics} />
             case SENTIMENT:
-                return <SentimentForm save={this.transitions[SENTIMENT]}/>
+                return <SentimentForm save={this.transitions[SENTIMENT]} />
             case MEDIA:
-                return <MediaForm save={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange}/>
+                return <MediaForm save={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange} />
         }
     }
 

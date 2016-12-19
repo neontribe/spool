@@ -16,9 +16,13 @@
 	margin-right: 0;
 }
 
+.section {
+	overflow: auto;
+}
+
 .header {
 	composes: large from '../../css/Headings.module.css';
-	padding: 1rem 0;
+	padding-top: 1rem;
 }
 
 .toggle {
