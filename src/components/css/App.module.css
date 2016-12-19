@@ -12,7 +12,7 @@
 	flex-direction: column;
 	justify-content: center;
 	margin: 0 auto;
-	padding-top: 50px; /* .header->height */
+	padding-top: calc(50px + .5rem); /* .header->height */
 }
 
 .header {
@@ -21,11 +21,13 @@
 	display: flex;
 	align-items: stretch;
 	justify-content: space-between;
-	height: 50px;
+	height: calc(50px + .5rem);
 	width: 100%;
 	color: #fff;
-	background-color: #30454e;
-	z-index: 100;
+	border-top: .5rem solid rgba(0, 0, 0, .25);
+	/*border-bottom: .5rem solid #2196f3;*/
+	/*background-color: #2196f3;*/
+	z-index: 110;
 }
 
 .header > * {
@@ -50,8 +52,8 @@
 	position: absolute;
 	top: 0;
 	right: 0;
-	height: 50px; /* .header->height */
-	width: 50px; /* .header->height */
+	height: calc(50px + .5rem); /* .header->height */
+	width: calc(50px + .5rem); /* .header->height */
 }
 
 .contextMenuContent {
@@ -59,11 +61,11 @@
 	flex-direction: column;
 	justify-content: space-between;
 	position: fixed;
-	top: 50px; /* .header->height */
+	top: calc(50px); /* .header->height */
 	right: 0;
-	height: calc(100vh - 50px); /* .header->height */
+	height: calc(100vh - 50px);
 	padding-top: .5rem;
-	background-color: #455a64;
+	background-color: #2196f3;
 	z-index: 1;
 	overflow: auto;
 
@@ -86,8 +88,10 @@
 	display: flex;
 	flex: 1;
 	flex-direction: column;
-	height: calc(100vh - 50px); /* .header->height */
+	height: calc(100vh - (50px + .5rem)); /* .header->height */
 	padding: 1rem;
+	background-color: #2196f3;
+	/*overflow: auto;*/
 }
 
 /* Force landscape display by rotating the entire document */
@@ -104,9 +108,20 @@
 
 	.contextMenuContent,
 	.content {
-		height: calc(100vw - 50px); /* .header->height */
+		height: calc(100vw - 50px + .5rem); /* .header->height */
 	}
 }
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: rgba(0, 0, 0, .75);
+	z-index: 110;
+}
+
 
 
 
@@ -144,12 +159,13 @@
 	margin: 0 1px 1px 0;
 	color: #fff;
 	background-color: rgba(0, 0, 0, .2);
+	/*background-color: #bbc4ef;*/
 }
 
 .filterControlOn {
 	composes: filterControl;
 	/*color: #212121;*/
-	background-color: #8bc34a;
+	background-color: #62bcfa;
 }
 
 
@@ -176,7 +192,7 @@
 	justify-content: center;
 	float: left;
 	height: 50px;
-	background: #30454e;
+	background: #2196f3;
 	text-align: center;
 	padding-left: calc(30px + 1rem);
 	padding-right: 1rem;
@@ -201,7 +217,7 @@
 	content: '';
 	border-top: 25px solid transparent;
 	border-bottom: 25px solid transparent;
-	border-left: 25px solid #30454e;
+	border-left: 25px solid #2196f3;
 	position: absolute;
 	right: -25px;
 	top: 0;

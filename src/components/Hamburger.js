@@ -14,14 +14,22 @@ class Hamburger extends Component {
     }
 
     toggleContent () {
+        var expanded = !this.state.expanded;
+
         this.setState({
-            expanded: !this.state.expanded
+            expanded
         });
+
+        if (expanded) {
+            this.props.onExpand();
+        } else {
+            this.props.onCollapse();
+        }
     }
 
     render () {
         return (
-            <div className={(this.state.expanded && styles.expandedWrapper) || undefined}>
+            <div className={(this.state.expanded && styles.expandedWrapper) || styles.wrapper}>
                 <span className={this.props.toggleClassName}>
                     <button className={styles.hamburger} onClick={this.toggleContent}>
                         {this.props.text && (
@@ -45,12 +53,16 @@ class Hamburger extends Component {
 Hamburger.propTypes = {
     text: React.PropTypes.string,
     contentClassName: React.PropTypes.string,
-    toggleClassName: React.PropTypes.string
+    toggleClassName: React.PropTypes.string,
+    onExpand: React.PropTypes.func,
+    onCollapse: React.PropTypes.func
 }
 
 Hamburger.defaultProps = {
     contentClassName: '',
-    toggleClassName: ''
+    toggleClassName: '',
+    onExpand: Function.prototype,
+    onCollapse: Function.prototype
 }
 
 export default Hamburger;

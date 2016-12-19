@@ -62,7 +62,7 @@ class EntryCarousel extends Component {
             <Carousel
                 activeIndex={this.state.activeIndex}
                 controls={false}
-                indicators={false}
+                indicators={true}
             >
                 {React.Children.map(this.props.children, (content) => (
                     <Carousel.Item>
