@@ -23,13 +23,16 @@ export class Timeline extends Component {
         super(props);
 
         this.state = {
-            showScrollMore: true
+            showScrollMore: true,
+            panel: []
         };
 
         this.onScroll = _.debounce(this.onScroll.bind(this), 100, {
             leading: false,
             trailing: true
         });
+
+        this.togglePanel = this.togglePanel.bind(this);
 
         window.addEventListener('scroll', this.onScroll, false);
     }
@@ -50,6 +53,23 @@ export class Timeline extends Component {
         this.setState({
             showScrollMore
         });
+    }
+
+    togglePanel (index) {
+        console.log('togglePanel', index);
+        var state = Object.assign({}, this.state);
+
+        if (!state.panel[index]) {
+            state.panel[index] = {
+                expanded: true
+            };
+        } else {
+            state.panel[index].expanded = !state.panel[index].expanded;
+        }
+
+        console.log(state);
+
+        this.setState(state);
     }
 
     render () {
@@ -73,18 +93,25 @@ export class Timeline extends Component {
                     <div ref='wrapper'>
                         {Object.keys(entries).map((date, i) => {
                             var _entries = entries[date];
+                            var dateRange = `${moment(date).startOf('week').format('YYYY, MMMM Do')} — ${moment(date).endOf('week').format('MMMM Do')}`;
+                            var showEntries = this.state.panel[i] && this.state.panel[i].expanded;
 
                             return (
                                 <div key={i}>
-                                    <h2 className={styles.header}>
-                                        {moment(date).startOf('week').format('YYYY, MMMM Do')} &mdash; {moment(date).endOf('week').format('MMMM Do')}
+                                    <h2>
+                                        <button
+                                            className={styles.header}
+                                            onClick={_.partial(this.togglePanel, i)}
+                                        >{dateRange} <span className={styles.toggle}>(Press to {(showEntries) ? 'show' : 'hide'} entries)</span></button>
                                     </h2>
 
-                                    {_entries.map((entry, j) => (
-                                        <div key={j} className={((j + 1) % 3 === 0) ? styles.entryLastRowItem : styles.entry}>
-                                            <EntryComponent entry={entry.node} thumbnailMode={true} />
-                                        </div>
-                                    ))}
+                                    <div style={{ display: (showEntries) ? 'none' : 'block' }}>
+                                        {_entries.map((entry, j) => (
+                                            <div key={j} className={((j + 1) % 3 === 0) ? styles.entryLastRowItem : styles.entry}>
+                                                <EntryComponent entry={entry.node} thumbnailMode={true} />
+                                            </div>
+                                        ))}
+                                    </div>
 
                                     {this.state.showScrollMore && (
                                         <div className={styles.moreWrapper}>

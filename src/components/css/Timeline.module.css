@@ -21,6 +21,10 @@
 	padding: 1rem 0;
 }
 
+.toggle {
+	font-size: 1rem;
+}
+
 .moreWrapper {
 	position: fixed;
 	bottom: -7rem;
