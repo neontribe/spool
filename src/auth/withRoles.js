@@ -1,15 +1,16 @@
 import React from 'react';
+import Relay from 'react-relay';
 import { withRouter } from 'react-router';
 
-export default function withRoles(Component, options) {
+export default function withRoles(Component, roles) {
     return withRouter(class WrappedWithRoles extends React.Component {
         componentWillMount() {
             if(!this.valid()) {
-                this.props.router.push(options.fallback);
+                this.props.router.push('/');
             }
         }
         valid() {
-            return !!(options.roles.indexOf(this.props.user.role)+1);
+            return !!(roles.indexOf(this.props.user.role)+1);
         }
         render () {
             if(this.valid()) {
@@ -20,3 +21,8 @@ export default function withRoles(Component, options) {
         }
     });
 }
+
+export const userFragment = Relay.QL`
+        fragment on User {
+            role
+        }`;

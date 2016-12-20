@@ -7,7 +7,6 @@ import { withRouter } from 'react-router';
 
 import AddControls from './AddControls';
 import IconChooser from './IconChooser';
-import withRoles from '../auth/withRoles.js';
 
 export class AccessForm extends Component {
     static fields = ['from', 'to', 'topics']

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import withRoles from '../auth/withRoles.js';
+import withRoles, { userFragment } from '../auth/withRoles.js';
 import { AccessFormContainer } from './AccessForm.js';
 import { EntryContainer } from './Entry.js';
 import moment from 'moment';
@@ -83,10 +83,7 @@ export default class Access extends Component {
     }
 }
 
-export const AccessContainer = Relay.createContainer(withRoles(Access, {
-    roles: ['consumer'],
-    fallback: '/settings/configure'
-}), {
+export const AccessContainer = Relay.createContainer(withRoles(Access, ['consumer']), {
     initialVariables: {
         first: 100,
         ready: false,
@@ -99,7 +96,7 @@ export const AccessContainer = Relay.createContainer(withRoles(Access, {
     fragments: {
         user: () => Relay.QL`
             fragment on User {
-                role
+                ${userFragment}
             }`,
         consumer: () => Relay.QL`
             fragment on Consumer {

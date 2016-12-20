@@ -100,7 +100,6 @@ function updateUser(id, data) {
             var updateUser = models.UserAccount.update({
                 regionId: region.regionId,
                 profileId: Profile.profileId,
-                roleId: 
             }, {
                 where: {
                     userId: id

@@ -6,7 +6,7 @@ import { withRouter } from 'react-router';
 import Layout from './Layout';
 import Icon from './Icon';
 import AddEntryMutation from './mutations/AddEntryMutation';
-import withRoles from '../auth/withRoles.js';
+import withRoles, { userFragment } from '../auth/withRoles.js';
 
 import TopicForm from './TopicForm';
 import SentimentForm from './SentimentForm';
@@ -138,14 +138,11 @@ AddEntry.defaultProps = {
 
 export default withRouter(AddEntry);
 
-export const AddEntryContainer = Relay.createContainer(withRoles(withRouter(AddEntry), {
-    roles: ['creator'],
-    fallback: '/settings/configure',
-}), {
+export const AddEntryContainer = Relay.createContainer(withRoles(withRouter(AddEntry), ['creator']), {
     fragments: {
         user: () => Relay.QL`
         fragment on User {
-            role
+                ${userFragment}
         }`,
         creator: () => Relay.QL`
             fragment on Creator {
