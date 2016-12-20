@@ -22,12 +22,14 @@ class AddEntry extends Component {
 
     constructor (props) {
         super(props);
+
         this.state = {
             entry: props.entry,
             form: AddEntry.ABOUT
         }
 
         const { ABOUT, SENTIMENT, MEDIA } = AddEntry;
+
         this.transitions = {
             [ABOUT]: (key, value) => {
                 this.setEntryData(key, value);
@@ -45,6 +47,7 @@ class AddEntry extends Component {
                 this.setEntryData(key, value, true);
             }
         };
+
         this.handleMediaTypeChange = this.handleMediaTypeChange.bind(this);
     }
 
@@ -84,10 +87,10 @@ class AddEntry extends Component {
         });
     }
 
-    renderForm() {
+    renderForm () {
         const { ABOUT, SENTIMENT, MEDIA } = AddEntry;
 
-        switch(this.state.form) {
+        switch (this.state.form) {
             default:
             case ABOUT:
                 return <TopicForm save={this.transitions[ABOUT]} topics={this.props.creator.topics} />
@@ -105,7 +108,7 @@ class AddEntry extends Component {
                 <Header auth={this.props.auth}>
                     {this.state.entry && (
                         <div className={styles.header}>
-                            <div>
+                            <div className={(this.state.entry.topics && styles.stepComplete) || undefined}>
                                 {this.state.entry.topics && (
                                     <ul className={styles.topics}>
                                         {this.state.entry.topics.map((topic, i) => (
@@ -120,7 +123,7 @@ class AddEntry extends Component {
                                 )}
                             </div>
 
-                            <div>
+                            <div className={(this.state.entry.sentiment && styles.stepComplete) || undefined}>
                                 {this.state.entry.sentiment && (
                                     <Icon
                                         icon={this.state.entry.sentiment}
