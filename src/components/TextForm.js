@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Button from './Button';
 
 import styles from './css/TextForm.module.css';
-import a11y from '../css/A11y.module.css';
+import headings from '../css/Headings.module.css';
 import helpers from '../css/Helpers.module.css';
 
 class TextForm extends Component {
@@ -33,18 +33,20 @@ class TextForm extends Component {
     render () {
         return (
             <form className={styles.wrapper}>
-                <h2 className={a11y.vh}>I just want to say...</h2>
+                <h2 className={headings.large}>I just want to say&hellip;</h2>
 
-                <textarea
-                    maxLength={this.props.maxLength}
-                    placeholder='I just want to say...'
-                    onChange={this.handleChange}
-                    className={styles.textarea}
-                    value={this.state.value}
-                ></textarea>
+                <div className={styles.content}>
+                    <textarea
+                        maxLength={this.props.maxLength}
+                        onChange={this.handleChange}
+                        className={styles.textarea}
+                        value={this.state.value}
+                    ></textarea>
 
-                {/*<HelpBlock>{this.state.value.length} of {this.props.maxLength} letters used</HelpBlock>*/}
-                <p>{this.state.value.length} of {this.props.maxLength} letters used</p>
+                    <p className={styles.charCounter}>
+                        {this.state.value.length} of {this.props.maxLength} letters used
+                    </p>
+                </div>
 
                 <div className={(!this.state.value.length && helpers.hide) || undefined}>
                     <div className={styles.controls}>

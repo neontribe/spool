@@ -4,7 +4,7 @@
 	min-width: 2.5rem;
 	padding: 2rem 3.5rem;
 	font-weight: bold;
-	font-size: 1.25rem;
+	font-size: 1.5rem;
 	color: #fff;
 	text-shadow: 0 0 1px rgba(0, 0, 0, .6);
 	text-align: center;
@@ -91,4 +91,3 @@
 .raised:active:after {
 	display: none;
 }
-
