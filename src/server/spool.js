@@ -99,7 +99,8 @@ function updateUser(id, data) {
             var addProfileServices = Profile.addProfileServiceServices(services);
             var updateUser = models.UserAccount.update({
                 regionId: region.regionId,
-                profileId: Profile.profileId
+                profileId: Profile.profileId,
+                roleId: 
             }, {
                 where: {
                     userId: id

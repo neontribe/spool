@@ -24,7 +24,7 @@ const auth = new AuthService(
     {
         callbackURL: window.location.origin + '/callback',
         login: '/login',
-        loggedIn: '/settings/configure'
+        loggedIn: '/'
     }
 );
 
@@ -70,22 +70,18 @@ setupRelayNetworkLayer();
 
 ReactDOM.render(
     <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
-        <Route path="/" component={App} auth={auth}>
-            <IndexRedirect to="settings/configure" />
-            <Route path="settings/:mode" component={SettingsContainer} roleMap={{
-                "consumer": "/dashboard",
-                "creator": "/home",
-            }} queries={SettingsQueries} onEnter={auth.requireAuthOnEnter}/>
+        <Route path="/" component={App} auth={auth} queries={UserQueries}>
+            <Route path="login" component={SimpleLogin}/>
+            <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter}/>
 
-            <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
-            <Route path="access" component={AccessContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
-
+            <Route path="settings" component={SettingsContainer} queries={SettingsQueries} onEnter={auth.requireAuthOnEnter}/>
             <Route path="introduction" component={IntroductionContainer} onEnter={auth.requireAuthOnEnter}/>
             <Route path="home" component={GalleryContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
             <Route path="add" component={AddEntryContainer} queries={CreatorQueries} />
             <Route path="entry/:id" component={EntryViewerContainer} queries={EntryViewerQueries} onEnter={auth.requireAuthOnEnter} />
-            <Route path="login" component={SimpleLogin}/>
-            <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter}/>
+
+            <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
+            <Route path="access" component={AccessContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
         </Route>
     </Router>,
     document.getElementById('root')
