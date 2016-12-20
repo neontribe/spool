@@ -3,41 +3,39 @@ import Relay from 'react-relay';
 import controls from '../css/Controls.module.css';
 import _ from 'lodash';
 
+const noop = () => {};
 export class SettingsForm extends Component {
     constructor (props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleArrayChange = this.handleArrayChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
         const changed = false;
+        const user = this.props.user;
+        const profile = user.profile;
         this.state = {
             region: {
-                value: props.user.region,
+                value: user.region,
                 changed
             },
             name: {
-                value: '',
+                value: profile.name,
                 changed
             },
             nickname: {
-                value: '',
-                changed
-            },
-            region: {
-                value: '',
+                value: profile.nickname,
                 changed
             },
             age: {
-                value: '',
+                value: profile.age,
                 changed
             },
             residence: {
-                value: '',
+                value: profile.residence.type,
                 changed
             },
             services: {
-                value: [],
+                value: profile.services.map((service) => service.type),
                 changed
             }
         };
@@ -102,8 +100,18 @@ export class SettingsForm extends Component {
     renderServices() {
         if(this.state.region.value) {
             const services = _.find(this.props.meta.regions, { type: this.state.region.value }).services;
-            return services.map(({type, name}) => <label key={type}>{name}
-                <input type="checkbox" name="services" value={type} onChange={this.handleChanges.services}/></label>)
+
+            return services.map(({type, name}) => {
+                let checked = this.state.services.value.indexOf(type) !== -1;
+                return (<label key={type}>{name}
+                    <input
+                        type="checkbox"
+                        name="services"
+                        checked={checked}
+                        value={type}
+                        onChange={this.handleChanges.services}/>
+                </label>)
+            });
         }
         return null;
     }
@@ -113,8 +121,17 @@ export class SettingsForm extends Component {
         })
     }
     renderResidences() {
-        return this.props.meta.residences.map(({type, name}) => <label key={type}>{name}
-            <input type="radio" name="residence" value={type} onChange={this.handleChanges.residence}/></label>);
+        return this.props.meta.residences.map(({type, name}) => {
+            let checked = this.state.residence.value === type;
+            return (<label key={type}>{name}
+                <input
+                    type="radio"
+                    name="residence"
+                    checked={checked}
+                    value={type}
+                    onChange={this.handleChanges.residence}/>
+            </label>)
+        });
     }
     renderError(error) {
         return error ? <p>{error}</p> : null;
@@ -130,6 +147,7 @@ export class SettingsForm extends Component {
                         <input
                             type="text"
                             name="name"
+                            value={this.state.name.value}
                             onChange={this.handleChanges.name}/>
                         {this.renderError(errors.name)}
                     </label>
@@ -138,6 +156,7 @@ export class SettingsForm extends Component {
                         <input
                             type="text"
                             name="nickname"
+                            value={this.state.nickname.value}
                             onChange={this.handleChanges.nickname}/>
                         {this.renderError(errors.nickname)}
                     </label>
@@ -146,6 +165,7 @@ export class SettingsForm extends Component {
                         <input
                             type="text"
                             name="age"
+                            value={this.state.age.value}
                             onChange={this.handleChanges.age}/>
                        {this.renderError(errors.age)}
                     </label>
