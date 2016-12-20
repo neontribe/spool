@@ -12,7 +12,7 @@ export class SettingsForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         const changed = false;
         const user = this.props.user;
-        const profile = user.profile;
+        const profile = user.profile || {services: [], residence: {}};
         this.state = {
             region: {
                 value: user.region,
