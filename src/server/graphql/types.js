@@ -141,8 +141,20 @@ const UserInputType = new ql.GraphQLInputObjectType({
         region: {
             type: new ql.GraphQLNonNull(ql.GraphQLString)
         },
-        roleSecret: {
+        name: {
             type: new ql.GraphQLNonNull(ql.GraphQLString)
+        },
+        nickname: {
+            type: ql.GraphQLString,
+        },
+        age: {
+            type: ql.GraphQLInt,
+        },
+        residence: {
+            type: new ql.GraphQLNonNull(ql.GraphQLString)
+        },
+        services: {
+            type: new ql.GraphQLList(ql.GraphQLString)
         }
     }
 });

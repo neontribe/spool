@@ -10,7 +10,6 @@ const { Content, Header } = Layout;
 import { SettingsFormContainer } from './SettingsForm';
 
 import headings from '../css/Headings.module.css';
-
 export class Settings extends React.Component {
     static propTypes = {
         defaultRole: React.PropTypes.string,
@@ -31,7 +30,7 @@ export class Settings extends React.Component {
     handleSubmit (form) {
         var success = () => this.handleRedirect();
         var user = this.props.user;
-
+        console.log(form, user);
         // Perform Mutation
         this.props.relay.commitUpdate(
             new UpdateUserMutation({

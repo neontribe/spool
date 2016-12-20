@@ -604,7 +604,7 @@ const updateUser = relayql.mutationWithClientMutationId({
         user: userField
     },
     mutateAndGetPayload: function mutateUserPayload({user}, context) {
-        return spool.updateUser(context.userId, user.region, user.roleSecret);
+        return spool.updateUser(context.userId, user);
     }
 }); 
 

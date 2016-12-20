@@ -12,13 +12,13 @@ type Consumer implements Node {
 
 input CreateEntryInput {
   entry: EntryInput
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type CreateEntryPayload {
   creator: Creator
   entryEdge: EntryEdge
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type Creator implements Node {
@@ -57,13 +57,13 @@ input DateRangeInput {
 
 input DeleteEntryInput {
   entryId: Int
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type DeleteEntryPayload {
   creator: Creator
   deletedEntryId: Int
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type Entry implements Node {
@@ -209,12 +209,12 @@ type TopicCount {
 
 input UpdateUserInput {
   user: UserInput
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type UpdateUserPayload {
   user: User
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type User implements Node {
@@ -227,5 +227,9 @@ type User implements Node {
 
 input UserInput {
   region: String!
-  roleSecret: String!
+  name: String!
+  nickname: String
+  age: Int
+  residence: String!
+  services: [String]
 }
