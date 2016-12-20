@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import withRoles, { userFragment } from '../auth/withRoles.js';
+import { withRoles, userFragment } from './wrappers.js';
 import { AccessFormContainer } from './AccessForm.js';
 import { EntryContainer } from './Entry.js';
 import moment from 'moment';

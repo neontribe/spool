@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import moment from 'moment';
 
 import TopicsOverview from './TopicsOverview';
-import withRoles, { userFragment } from '../auth/withRoles.js';
+import { withRoles, userFragment } from './wrappers.js';
 import Layout from './Layout';
 const { Content, Header } = Layout;
 

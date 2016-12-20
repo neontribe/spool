@@ -23,16 +23,10 @@ module.exports = function(sequelize, DataTypes) {
             onUpdate: 'NO ACTION',
             onDelete: 'NO ACTION'
         },
-        seenIntroduction: {
+        introduced: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
-            field: 'seen_introduction',
-            allowNull: false,
-        },
-        seenSharing: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-            field: 'seen_sharing',
+            field: 'introduced',
             allowNull: false,
         },
         sharing: {

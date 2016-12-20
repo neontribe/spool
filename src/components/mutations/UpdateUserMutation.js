@@ -24,6 +24,7 @@ export default class UpdateUserMutation extends Relay.Mutation {
             user {
                 region
                 role
+                profile
             }
         }`
     }

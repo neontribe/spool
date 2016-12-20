@@ -162,6 +162,12 @@ const ProfileType = new ql.GraphQLObjectType({
                 return root.Residence;
             }
         },
+        isIntroduced: {
+            type: ql.GraphQLBoolean,
+            resolve: (root) => {
+                return false;
+            }
+        }
     },
     interfaces: [nodeInterface]
 });
@@ -466,18 +472,6 @@ const CreatorType = new ql.GraphQLObjectType({
             type: ql.GraphQLBoolean,
             resolve: (root, args, context) => {
                 return context.sharing;
-            },
-        },
-        seenSharing: {
-            type: ql.GraphQLBoolean,
-            resolve: (root, args, context) => {
-                return context.seenSharing;
-            },
-        },
-        seenIntroduction: {
-            type: ql.GraphQLBoolean,
-            resolve: (root, args, context) => {
-                return context.seenIntroduction;
             },
         },
         happyCount: {

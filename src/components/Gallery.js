@@ -6,7 +6,7 @@ import { EntryContainer, Entry } from './Entry';
 import Layout from './Layout';
 // import Intro from './Intro';
 import Grid from './Grid';
-import withRoles, { userFragment } from '../auth/withRoles.js';
+import { withRoles, userFragment } from './wrappers.js';
 
 import styles from './css/Gallery.module.css';
 import controls from '../css/Controls.module.css';

@@ -25,7 +25,7 @@ export class Settings extends React.Component {
     }
 
     handleRedirect () {
-        return this.props.router.push('/home');
+        return this.props.router.push('/');
     }
     handleSubmit (form) {
         var success = () => this.handleRedirect();

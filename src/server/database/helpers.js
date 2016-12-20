@@ -55,6 +55,16 @@ module.exports = {
                     model: models.Profile,
                     required: false,
                     as: 'Profile',
+                    include: [
+                        {
+                            model: models.Service,
+                            as: 'ProfileServiceServices'
+                        },
+                        {
+                            model: models.Residence,
+                            as: 'Residence'
+                        }
+                    ]
                 }
             ],
         },

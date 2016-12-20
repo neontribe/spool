@@ -25,10 +25,7 @@ module.exports = {
                 key: 'profile_id'
             }
           },
-          seen_introduction: {
-              type: Sequelize.BOOLEAN,
-          },
-          seen_sharing: {
+          introduced: {
               type: Sequelize.BOOLEAN,
           },
           sharing: {
