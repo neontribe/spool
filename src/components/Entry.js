@@ -1,95 +1,200 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import { Image, Modal } from 'react-bootstrap';
-import EntryViewer from './EntryViewer';
+import { Link } from 'react-router';
 import moment from 'moment';
+import rand from 'random-seed';
+
+import Icon from './Icon';
+
+import styles from './css/Entry.module.css';
 
 export class Entry extends Component {
-    constructor(props) {
+    static ColourVariants = [
+        { className: styles.entryVariantA, dark: false },
+        { className: styles.entryVariantB, dark: false },
+        { className: styles.entryVariantC, dark: false },
+        { className: styles.entryVariantD, dark: true },
+        { className: styles.entryVariantE, dark: false },
+        { className: styles.entryVariantF, dark: false },
+        { className: styles.entryVariantG, dark: true },
+        { className: styles.entryVariantI, dark: false },
+        { className: styles.entryVariantJ, dark: true }
+    ];
+
+    constructor (props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            showOverlay: true
+        };
 
-        this.getStyles = this.getStyles.bind(this);
         this.showViewer = this.showViewer.bind(this);
         this.hideViewer = this.hideViewer.bind(this);
+        this.toggleVideoPlay = this.toggleVideoPlay.bind(this);
     }
 
-    formatTimestamp() {
-        return moment(this.props.entry.created).fromNow();
-    }
+    componentDidMount () {
+        if (this.refs && this.refs.video) {
+            this.refs.video.onplaying = () => {
+                this.setState({
+                    showOverlay: false
+                });
+            };
 
-    getStyles() {
-        var thumb = this.props.entry.media.videoThumbnail || this.props.entry.media.imageThumbnail;
-        return (thumb)
-            ? { backgroundImage: 'url('+ thumb + ')' }
-            : {};
-    }
-
-    showViewer(e) {
-        e.preventDefault();
-        if (this.props.withViewer) {
-            this.setState({showEntryViewer: true});
+            // this.refs.video.onpause
+            this.refs.video.onended = () => {
+                this.setState({
+                    showOverlay: true
+                });
+            };
         }
     }
 
-    hideViewer() {
-        this.setState({showEntryViewer: false});
+    showViewer (e) {
+        e.preventDefault();
+
+        if (this.props.withViewer) {
+            this.setState({
+                showEntryViewer: true
+            });
+        }
     }
 
-    render() {
-        var hasMedia = this.props.entry.media.image || this.props.entry.media.video;
-        var className = 'entry entry--' + this.props.entry.sentiment.type;
+    hideViewer () {
+        this.setState({
+            showEntryViewer: false
+        });
+    }
 
-        if (hasMedia) {
-            className += ' entry--has-media';
+    toggleVideoPlay () {
+        var video = this.refs.video;
+
+        if (video.paused) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    }
+
+    renderEntry (entry, randomisedStyle, isTextEntry, lightIcon) {
+        return (
+            <div>
+                {isTextEntry && (
+                    <blockquote className={styles.text}>
+                        {entry.media.text.substring(0, 30)}
+                        {(entry.media.text.length > 30) && '...'}
+                    </blockquote>
+                )}
+
+                {entry.media.video && (
+                    <div className={styles.videoOverlay}>
+                        {this.state.showOverlay && (
+                            <div className={styles.videoOverlayPlay}></div>
+                        )}
+
+                        {!this.props.thumbnailMode && (
+                            <video
+                                className={styles.video}
+                                ref='video'
+                                src={entry.media.video}
+                                controls={true}
+                                autoPlay={true}
+                                onClick={!this.props.thumbnailMode && this.toggleVideoPlay}
+                            />
+                        )}
+                    </div>
+                )}
+
+                {this.props.showSentimentOverlay && (
+                    <Icon
+                        icon={entry.sentiment.type}
+                        light={lightIcon}
+                        size={4}
+                        className={styles.sentiment}
+                    />
+                )}
+
+                {this.props.thumbnailMode && (
+                    <div className={styles.date}>
+                        Created {moment(entry.created).format('Do MMMM')}
+                    </div>
+                )}
+
+                {this.props.showTopicOverlay && (
+                    <ul className={styles.topics}>
+                        {entry.topics.map((topic, i) => (
+                            <li key={i}>
+                                <Icon
+                                    icon={topic.type}
+                                    light={lightIcon}
+                                />
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
+        );
+    }
+
+    render () {
+        var entry = this.props.entry;
+        var isTextEntry = entry.media.text && !entry.media.image && !entry.media.video;
+        var styleVariant = styles.entry;
+        var randomisedStyle;
+        var backgroundImage;
+        var lightIcon = true;
+
+        if (isTextEntry) {
+            randomisedStyle = this.constructor.ColourVariants[(new rand(entry.id)).range(this.constructor.ColourVariants.length - 1)];
+
+            styleVariant = randomisedStyle.className;
+
+            if (randomisedStyle.dark) {
+                lightIcon = false;
+            }
+        } else if (entry.media.imageThumbnail) {
+            backgroundImage = entry.media.imageThumbnail;
+        } else if (entry.media.video && this.props.thumbnailMode) {
+            backgroundImage = entry.media.videoThumbnail;
+        }
+
+        var props = {
+            className: styleVariant
+        };
+
+        if (backgroundImage) {
+            props.style = {
+                backgroundImage: `url(${backgroundImage})`
+            }
+        }
+
+        if (this.props.thumbnailMode) {
+            return (
+                <Link
+                    {...props}
+                    to={`/entry/${entry.id}`}
+                >{this.renderEntry(entry, randomisedStyle, isTextEntry, lightIcon)}</Link>
+            );            
         }
 
         return (
-            <a className="entry" href="/entry" onClick={this.showViewer}>
-                <div className={className} style={this.getStyles()}>
-                    <div className='entry-content'>
-                        <div className='entry-quote-container'>
-                            { this.props.entry.media.text &&
-                                <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
-                            }
-                        </div>
-
-                        <Image
-                            src={'/static/' + this.props.entry.sentiment.type + '.png'}
-                            alt={this.props.entry.sentiment.type}
-                        />
-
-                        <div className='entry--meta'>
-                            <div className="entry--time">{this.formatTimestamp()}</div>
-                            <div className="entry--tags">
-                                {this.props.entry.topics.map((t) => t.name).join(', ')}
-                            </div>
-                        </div>
-
-                        { this.props.withViewer &&
-                            <Modal
-                                show={this.state.showEntryViewer}
-                                bsSize="large"
-                                backdrop={true}
-                                onHide={this.hideViewer}
-                            >
-                                <EntryViewer entry={this.props.entry} />
-                            </Modal>
-                        }
-                    </div>
-                </div>
-            </a>
+            <div {...props}>{this.renderEntry(entry, randomisedStyle, isTextEntry, lightIcon)}</div>
         );
     }
 }
 
 Entry.propTypes = {
+    thumbnailMode: React.PropTypes.bool,
     entry: React.PropTypes.object.isRequired,
+    showSentimentOverlay: React.PropTypes.bool,
+    showTopicOverlay: React.PropTypes.bool,
     withViewer: React.PropTypes.bool
 }
 
 Entry.defaultProps = {
+    thumbnailMode: false,
+    showSentimentOverlay: true,
+    showTopicOverlay: true,
     withViewer: true
 }
 
@@ -106,7 +211,7 @@ export const EntryContainer = Relay.createContainer(Entry, {
                 imageThumbnail
             }
             topics {
-                name
+                type
             }
             sentiment {
                 type

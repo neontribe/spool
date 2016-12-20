@@ -1,25 +1,31 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Glyphicon, FormGroup, ControlLabel, FormControl, Badge } from 'react-bootstrap';
-import TopicsOverview from './TopicsOverview';
 import Relay from 'react-relay';
-import moment from 'moment';
 import { Link } from 'react-router';
+import moment from 'moment';
+
+import TopicsOverview from './TopicsOverview';
 import withRoles from '../auth/withRoles.js';
+import Layout from './Layout';
+const { Content, Header } = Layout;
 
 export class Dashboard extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
+
         this.state = {
             rangeFrom: '-1,months'
         }
+
         this.changeRange = this.changeRange.bind(this);
     }
 
-    changeRange(evt) {
+    changeRange (evt) {
         var [qty, step] = evt.target.value.split(',');
+
         this.setState({
             rangeFrom: evt.target.value
         });
+
         this.props.relay.setVariables({
             range: {
                 from: moment().add(qty, step).startOf('date').format(),
@@ -28,41 +34,42 @@ export class Dashboard extends Component {
         });
     }
 
-    render() {
+    render () {
+        const { access } = this.props.consumer;
         return (
-            <Grid>
-                <Row>
-                    <Col xs={10}>
-                        <Link className="btn" to={'/requests/all'}>
-                            <Glyphicon glyph="th-list"/> All Requests</Link>
-                        <Link className="btn" to={'/requests/add'}>
-                            <Glyphicon glyph="plus"/> New Access Request</Link>
-                    </Col>
-                    <Col xs={2}>
-                       <FormGroup controlId="dateRange">
-                          <ControlLabel>Scope</ControlLabel>
-                          <FormControl componentClass="select" value={this.state.rangeFrom} onChange={this.changeRange}>
-                            <option value="0,days">Today</option>
-                            <option value="-1,months">30 Days</option>
-                            <option value="-3,months">3 Months</option>
-                            <option value="-1,years">Year</option>
-                          </FormControl>
-                        </FormGroup>
-                    </Col>
-
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <p>Active Creators: <Badge>{this.props.consumer.creatorActivityCount.active}</Badge></p>
-                        <p>Stale: <Badge>{this.props.consumer.creatorActivityCount.stale}</Badge></p>
-                    </Col>
-                </Row>
-               <Row>
-                   <Col xs={12}>
-                       <TopicsOverview topics={this.props.consumer.topicCounts} />
-                   </Col>
-               </Row>
-            </Grid>
+            <Layout>
+                <Header auth={this.props.auth}>
+                    <p>test</p>
+                </Header>
+                <Content>
+                    <div>
+                        {/*<FormGroup controlId="dateRange">*/}
+                        <div>
+                            {/*<ControlLabel>Scope</ControlLabel>*/}
+                            <h2>Scope</h2>
+                            <Link to="/access"><span style={{color: 'red'}}>Access (click me)</span></Link>
+                            <select value={this.state.rangeFrom} onChange={this.changeRange}>
+                                <option value="0,days">Today</option>
+                                <option value="-1,months">30 Days</option>
+                                <option value="-3,months">3 Months</option>
+                                <option value="-1,years">Year</option>
+                            </select>
+                        </div>
+                        {/*</FormGroup>*/}
+                    </div>
+                    <div>
+                        <p>Active Creators: {access.activity.active}</p>
+                        <p>Stale: {access.activity.stale}</p>
+                    </div>
+                    <div>
+                        <p>Happy Entries: {access.sentiment.happy}</p>
+                        <p>Sad Entries: {access.sentiment.sad}</p>
+                    </div>
+                   <div>
+                       <TopicsOverview topics={access.topics} />
+                   </div>
+               </Content>
+            </Layout>
         );
     }
 };
@@ -84,28 +91,24 @@ export const DashboardContainer = Relay.createContainer(withRoles(Dashboard, {
             }`,
         consumer: () => Relay.QL`
             fragment on Consumer {
-                creatorActivityCount(range: $range) {
-                    active
-                    stale
-                }
-                topicCounts(range: $range) {
-                    topic {
-                        type
-                        name
+                access(range: $range) {
+                    activity {
+                        active
+                        stale
                     }
-                    entryCount
-                    creatorCount
-                }
-                requests(first: 100) {
-                    edges {
-                        node {
-                                from
-                                to
-                                region
+                    topics {
+                        topic {
+                            type
+                            name
                         }
+                        entryCount
+                        creatorCount
+                    }
+                    sentiment {
+                        happy
+                        sad
                     }
                 }
-            }
-        `,
+            }`,
     }
 });

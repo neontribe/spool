@@ -1,0 +1,201 @@
+/*
+@keyframes slideRTL {
+	0% { width: 0; }
+	100% { width: 33.3%; }
+}
+*/
+
+@value headerHeight: calc(50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024));
+
+.app {
+	max-width: 1920px;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+	margin: 0 auto;
+	padding-top: calc(headerHeight + .5rem); /* .header->height */
+}
+
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: stretch;
+	justify-content: space-between;
+	height: calc(headerHeight + .5rem);
+	width: 100%;
+	border-top: .5rem solid #34404c;
+	/*border-bottom: .5rem solid #34404c;*/
+	background-color: #34404c;
+	z-index: 110;
+}
+
+.headerExpanded {
+	composes: header;
+	border-top-color: transparent;
+	background-color: transparent;
+}
+
+.header > * {
+	display: flex;
+	align-items: center;
+	padding: 0 1rem;
+}
+
+.logo {
+	font-weight: bold;
+	letter-spacing: 3px;
+}
+
+.headerMeta {
+	display: flex;
+	flex: 1;
+	justify-content: center;
+	/*background-color: rgba(0, 0, 0, .15);*/
+}
+
+.contentMenuToggle {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: calc(headerHeight + .5rem); /* .header->height */
+	width: calc(headerHeight + .5rem); /* .header->height */
+}
+
+.contextMenuContent {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	position: fixed;
+	top: calc(headerHeight + .5rem); /* .header->height */
+	right: 0;
+	height: calc(100vh - headerHeight - .5rem); /* .header->height */
+	padding-top: .5rem;
+	background-color: #1e2c37;
+	z-index: 1;
+	overflow: auto;
+
+	width: 40%;
+	max-width: 800px;
+	/*animation: slideRTL .75s 1 forwards;*/
+}
+
+.contextMenu {
+	list-style: none;
+}
+
+.contextMenuItem {
+	padding: 1rem;
+	margin-bottom: 1px;
+	border-top: 2px solid #34404c;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	/*background-color: rgba(0, 0, 0, .2);*/
+}
+
+.contextMenuItem:last-child {
+	border-bottom: 2px solid #34404c;
+}
+
+.content {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	height: calc(100vh - (headerHeight + .5rem)); /* .header->height */
+	padding: 1rem;
+	background-color: #1e2c37;
+	/*overflow: auto;*/
+}
+
+/* Force landscape display by rotating the entire document */
+@media screen and (orientation: portrait) {
+	html {
+		transform: rotate(-90deg);
+		transform-origin: left top;
+		width: 100vh;
+		overflow-x: hidden;
+		position: absolute;
+		top: 100%;
+		left: 0;
+	}
+
+	.contextMenuContent,
+	.content {
+		height: calc(100vw - headerHeight + .5rem); /* .header->height */
+	}
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: rgba(0, 0, 0, .75);
+	z-index: 110;
+}
+
+
+
+
+
+
+
+/* Filters. Todo: These styles will need moving */
+
+.filterBlock {
+	clear: left;
+}
+
+.filterHeader {
+	composes: regular from '../../css/Headings.module.css';
+	padding: 1rem 1rem 0;
+}
+
+.filter {
+	float: left;
+	width: 50%;
+	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.filterNewRow {
+	composes: filter;
+	clear: left;
+}
+
+.filterMedia {
+	composes: filter;
+	width: 33%;
+}
+
+.filterList {
+	padding: .5rem;
+	overflow: auto;
+}
+
+.filterControl {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+	/*margin: 0 1px 1px 0;*/
+	border: 1px solid #34404c;
+	color: #fff;
+	/*background-color: rgba(0, 0, 0, .2);*/
+	/*background-color: #bbc4ef;*/
+}
+
+.filterControlOn {
+	composes: filterControl;
+	/*color: #1e2c37;*/
+	background-color: #34404c;
+}
+
+.filterIcon {
+	padding-bottom: 1rem;
+}

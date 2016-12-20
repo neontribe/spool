@@ -1,5 +1,4 @@
 const ql = require('graphql');
-require('../database/models');
 
 const MediaType = new ql.GraphQLObjectType({
     name: 'Media',
@@ -73,21 +72,13 @@ const MediaInputType = new ql.GraphQLInputObjectType({
     }
 });
 
+const TopicsInputType = new ql.GraphQLList(ql.GraphQLString);
 const EntryInputType = new ql.GraphQLInputObjectType({
     name: 'EntryInput',
     fields: {
         media: { type: MediaInputType },
         sentiment: { type: ql.GraphQLString },
-        topics: { type: new ql.GraphQLList(ql.GraphQLString) }
-    }
-});
-
-const UserRequestInputType = new ql.GraphQLInputObjectType({
-    name: 'UserRequestInputType',
-    fields: {
-        id: { type: new ql.GraphQLNonNull(ql.GraphQLString) },
-        access: { type: new ql.GraphQLNonNull(ql.GraphQLBoolean) },
-        hide: { type: new ql.GraphQLNonNull(ql.GraphQLBoolean) },
+        topics: { type: TopicsInputType }
     }
 });
 
@@ -130,20 +121,6 @@ const TopicCountType = new ql.GraphQLObjectType({
     }
 });
 
-const RequestInputType = new ql.GraphQLInputObjectType({
-    name: 'RequestInput',
-    fields: {
-        range: {
-            type: DateRangeInputType
-        },
-        reason: { type: ql.GraphQLString },
-        name: { type: ql.GraphQLString },
-        org: { type: ql.GraphQLString },
-        avatar: { type: ql.GraphQLString },
-        topics: { type: new ql.GraphQLList(ql.GraphQLString) }
-    }
-});
-
 const UserInputType = new ql.GraphQLInputObjectType({
     name: 'UserInput',
     fields: {
@@ -164,9 +141,8 @@ module.exports = {
     RegionDefinitionType,
     MediaInputType,
     EntryInputType,
-    RequestInputType,
     DateRangeInputType,
     TopicCountType,
     UserInputType,
-    UserRequestInputType,
+    TopicsInputType,
 };

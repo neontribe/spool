@@ -1,0 +1,93 @@
+.wrapper {
+	display: flex;
+	flex: 1;
+	position: relative;
+}
+
+.outputWrapper {
+	position: relative;
+	height: 100%;
+	text-align: center;
+}
+
+.description {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	padding: 1rem;
+	background-color: rgba(0, 0, 0, .5);
+	z-index: 1;
+}
+
+.textarea {
+	display: flex;
+	flex: 1;
+	margin-bottom: 1rem;
+}
+
+.thumbnail {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 100%;
+    width: 100%;
+	margin: auto;
+}
+
+/*.videoOverlay {
+	display: flex;
+	justify-content: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 100%;
+	width: 100%;
+	margin: auto;
+}
+
+.btnTakePictureWrapper {
+	position: relative;
+	width: 33.3%;
+	padding-top: 33.3%;
+	border-radius: 50%;
+	color: #fff;
+	background-color: rgba(0, 0, 0, .5);
+}
+
+.btnTakePicture {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	padding: 1rem;
+	line-height: 1.5;
+	width: 100%;
+}*/
+
+.btnStack {
+	display: flex;
+	flex-direction: column;
+}
+
+.btnStack > * + * {
+	margin-top: 1rem;
+}
+
+.video {
+	height: 100%;
+	width: 100%;
+	object-fit: fill;
+}
