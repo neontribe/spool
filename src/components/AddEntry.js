@@ -102,7 +102,6 @@ class AddEntry extends Component {
     }
 
     render () {
-        console.log(this.state);
         return (
             <Layout className={styles.wrapper}>
                 <Header auth={this.props.auth}>

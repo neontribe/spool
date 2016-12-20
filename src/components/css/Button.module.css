@@ -1,4 +1,45 @@
 .raised {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 1rem;
+	border-radius: 60px;
+	font-size: 1.75rem;
+	vertical-align: middle;
+	padding: 2rem 4rem;
+	/*color: #1e2c37;*/
+	color: #fff;
+	text-align: center;
+	text-shadow: 0 0 2px #000;
+	/*background-color: #2fd9b5;*/
+	border: 4px solid #2fd9b5;
+	background-color: #34404c;
+	margin-bottom: 10px;
+	box-shadow: 10px 10px 0 2px #000;
+	text-shadow: 0 0 1px rgba(0, 0, 0, .6);
+}
+
+.raised:active {
+	box-shadow: none;
+	top: 10px;
+	left: 10px;
+}
+
+.round {
+	composes: raised;
+	padding: 2rem;
+	border-radius: 50%;
+}
+
+.round:before {
+	content: '';
+	float: left;
+	width: auto;
+	padding-bottom: 100%;
+}
+
+/*.raised {
 	min-width: 200px;
 	position: relative;
 	min-width: 2.5rem;
@@ -91,3 +132,4 @@
 .raised:active:after {
 	display: none;
 }
+*/
