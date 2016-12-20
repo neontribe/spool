@@ -1,0 +1,10 @@
+.wrapper {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.controls {
+	text-align: center;
+}

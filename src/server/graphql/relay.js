@@ -55,65 +55,23 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
             }
 
             if(context.Role.type === 'consumer') {
-                // only return an Entry node if it part of a user request
-                // whos parent request is owned by the consumer
+                // only give entries to consumers where they are sharing and
+                // the regions match
                 return models.Entry.findOne({
                     where: {
                         entryId: id,
                     },
                     include: [
                         {
-                            model: models.EntryUserRequest,
-                            as: 'EntryUserRequest',
-                            include: [
-                                {
-                                    model: models.UserRequest,
-                                    as: 'UserRequest',
-                                    include: [
-                                        {
-                                            model: models.Request,
-                                            as: 'Request',
-                                            where: {
-                                                userId: context.userId
-                                            }
-                                        }
-                                    ]
-                                }
-                            ]
+                            model: models.UserAccount,
+                            as: 'Owner',
+                            where: {
+                                sharing: true,
+                                regionId: context.regionId
+                            }
                         },
                         ...helpers.includes.Entry.basic
                     ],
-                }).catch((e) => winston.warn(e));
-            }
-        }
-        if (type === 'UserRequest') {
-            if(!context.Role) {
-                winston.info(`Failed to resolve ${type} node due to missing role`);
-                return null;
-            }
-            // only creators can access user request for themselves
-            if(context.Role.type === 'creator') {
-                return models.UserRequest.findOne({
-                    where: {
-                        userRequestId: id,
-                        userId: context.userId,
-                    },
-                }).catch((e) => winston.warn(e));
-            }
-        }
-        if (type === 'Request') {
-            if(!context.Role) {
-                winston.info(`Failed to resolve ${type} node due to missing role`);
-                return null;
-            }
-            // only consumers can access requests for themselves
-            if(context.Role.type === 'consumer') {
-                return models.Request.findOne({
-                    where: {
-                        requestId: id,
-                        userId: context.userId,
-                    },
-                    include: helpers.includes.Request.basic
                 }).catch((e) => winston.warn(e));
             }
         }
@@ -125,14 +83,6 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
         if (obj instanceof models.Entry.Instance) {
             // eslint-disable-next-line no-use-before-define
             return EntryType;
-        }
-        if (obj instanceof models.UserRequest.Instance) {
-            // eslint-disable-next-line no-use-before-define
-            return UserRequestType;
-        }
-        if (obj instanceof models.Request.Instance) {
-            // eslint-disable-next-line no-use-before-define
-            return RequestType;
         }
         if (obj instanceof models.UserAccount.Instance){
             // eslint-disable-next-line no-use-before-define
@@ -168,163 +118,6 @@ const UserType = new ql.GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
-const RequestType = new ql.GraphQLObjectType({
-    name: 'Request',
-    // function since we need circular structures here (utilizing var hoisting)
-    fields: () => ({
-        id: relayql.globalIdField('Request', (root) => root.requestId),
-        from: {
-            type: ql.GraphQLString,
-            resolve: (root) => {
-                return moment(root.from).format();
-            },
-        },
-        to: {
-            type: ql.GraphQLString,
-            resolve: (root) => {
-                return moment(root.to).format();
-            },
-        },
-        region: {
-            type: ql.GraphQLString,
-            resolve: (root) => {
-                return root.Region && root.Region.type;
-            },
-        },
-        topics: {
-            type: new ql.GraphQLList(types.TopicType),
-            resolve: (root) => {
-                return root.RequestTopicTopics;
-            },
-        },
-        reason: {
-            type: ql.GraphQLString,
-            resolve: (root) => {
-                return root.reason;
-            },
-        },
-        name: {
-            type: ql.GraphQLString,
-            resolve: (root) => {
-                return root.name;
-            },
-        },
-        org: {
-            type: ql.GraphQLString,
-            resolve: (root) => {
-                return root.org;
-            },
-        },
-        avatar: {
-            type: ql.GraphQLString,
-            resolve: (root) => {
-                return root.avatar;
-            },
-        },
-        created: {
-            type: ql.GraphQLString,
-            resolve: (root) => {
-                return moment(root.createdAt).format();
-            },
-        },
-        updated: {
-            type: ql.GraphQLString,
-            resolve: (root) => {
-                return moment(root.updatedAt).format();
-            },
-        },
-        entries: {
-            // eslint-disable-next-line no-use-before-define
-            type: entryConnectionDefinition.connectionType,
-            args: relayql.connectionArgs,
-            resolve: (root, args, context) => {
-                // if they are not a consumer, they can't see entries attached to this
-                if(!context.Role || context.Role.type !== 'consumer') {
-                    winston.info(`Failed to resolve entries field on Request due to role mismatch`);
-                    return relayql.connectionFromArray([], args);
-                }
-                var entries = models.EntryUserRequest.findAll({
-                    where: {
-                        access: true,
-                    },
-                    include: [
-                        {
-                            model: models.UserRequest,
-                            as: 'UserRequest',
-                            where: {
-                                requestId: root.requestId,
-                            },
-                        },
-                        {
-                            model: models.Entry,
-                            as: 'Entry',
-                            include: helpers.includes.Entry.basic,
-                        },
-                    ],
-                })
-                .then((results) => results.map((result) => result.Entry))
-                .catch((e) => winston.warn(e));
-                return relayql.connectionFromPromisedArray(entries, args);
-            },
-        }
-    }),
-    interfaces: [nodeInterface]
-});
-var requestConnectionDefinition =
-    relayql.connectionDefinitions({nodeType: RequestType});
-
-const UserRequestType = new ql.GraphQLObjectType({
-    name: 'UserRequest',
-    fields: {
-        id: relayql.globalIdField('UserRequest', (root) => root.userRequestId),
-        request: {
-            type: RequestType,
-            resolve: (root) => {
-                return root.Request;
-            },
-        },
-        seen: {
-            type: ql.GraphQLBoolean,
-            resolve: (root) => {
-                return root.seen;
-            },
-        },
-        created: {
-            type: ql.GraphQLString,
-            resolve: (root) => {
-                return moment(root.createdAt).format();
-            },
-        },
-        updated: {
-            type: ql.GraphQLString,
-            resolve: (root) => {
-                return moment(root.updatedAt).format();
-            },
-        }
-    },
-    interfaces: [nodeInterface]
-});
-var userRequestConnectionDefinition =
-    relayql.connectionDefinitions({nodeType: UserRequestType});
-
-const EntryRequest = new ql.GraphQLObjectType({
-    name: 'EntryRequest',
-    fields: {
-        access: {
-            type: ql.GraphQLBoolean,
-            resolve: (root) => {
-                return root.access;
-            },
-        },
-        userRequest: {
-            type: UserRequestType,
-            resolve: (root) => {
-                return root.UserRequest
-            }
-        }
-    },
-});
-
 const EntryType = new ql.GraphQLObjectType({
     name: 'Entry',
     fields: {
@@ -358,28 +151,6 @@ const EntryType = new ql.GraphQLObjectType({
             resolve: (root) => {
                 return moment(root.updatedAt).format();
             },
-        },
-        requests: {
-            type: new ql.GraphQLList(EntryRequest),
-            resolve: (root, args, context) => {
-                //if they are not a creator, they can't see requests attached to this
-                if(!context.Role || context.Role.type !== 'creator') {
-                    winston.info(`Failed to resolve requests field on Entry due to role mismatch`);
-                    return [];
-                }
-                return models.EntryUserRequest.findAll({
-                    where: {
-                        entryId: root.entryId,
-                    },
-                    include: [
-                        {
-                            model: models.UserRequest,
-                            as: 'UserRequest',
-                            include: helpers.includes.UserRequest.basic
-                        }
-                    ]
-                }).catch((e) => winston.warn(e));
-            }
         }
     },
     interfaces: [nodeInterface]
@@ -387,8 +158,8 @@ const EntryType = new ql.GraphQLObjectType({
 var entryConnectionDefinition =
     relayql.connectionDefinitions({nodeType: EntryType});
 
-const CreatorActivityCountType = new ql.GraphQLObjectType({
-    name: 'CreatorActivityCount',
+const CreatorActivityType = new ql.GraphQLObjectType({
+    name: 'CreatorActivity',
     fields: {
         active: {
             type: ql.GraphQLInt,
@@ -405,21 +176,85 @@ const CreatorActivityCountType = new ql.GraphQLObjectType({
     }
 });
 
-const ConsumerType = new ql.GraphQLObjectType({
-    name: 'Consumer',
+const CreatorSentimentType = new ql.GraphQLObjectType({
+    name: 'CreatorSentiment',
     fields: {
-        id: relayql.globalIdField('Consumer', (root, args, context) => context.userId),
-        creatorActivityCount: {
-            type: CreatorActivityCountType,
+        happy: {
+            type: ql.GraphQLInt,
+            resolve: (root) => {
+                return root.happy;
+            },
+        },
+        sad: {
+            type: ql.GraphQLInt,
+            resolve: (root) => {
+                return root.sad;
+            },
+        }
+    }
+});
+
+const DataAccessType = new ql.GraphQLObjectType({
+    name: 'DataAccess',
+    fields: {
+        sentiment: {
+            type: CreatorSentimentType,
+            resolve: function({range, regionId}) {
+                var from = moment(range.from);
+                var to = moment(range.to);
+                return models.Entry.findAll({
+                    where: {
+                        createdAt: {
+                            $between: [from.format(), to.format()]
+                        }
+                    },
+                    include: [
+                        {
+                            model: models.Sentiment,
+                            as: 'Sentiment',
+                        },
+                        {
+                            model: models.UserAccount,
+                            as: 'Owner',
+                            where: {
+                                regionId: regionId,
+                                createdAt: {
+                                    $gte: from.format()
+                                },
+                            }
+                        },
+                    ]
+                }).then(function(results) {
+                    return results.reduce(function(reduction, row) {
+                        reduction[row.Sentiment.type]++;
+                        return reduction;
+                    }, {
+                        happy: 0,
+                        sad: 0
+                    });
+                }).catch((e) => winston.warn(e));
+            }
+        },
+        topics: {
+            type: new ql.GraphQLList(types.TopicCountType),
             args: {
                 range: {
                     type: types.DateRangeInputType,
                 }
             },
-            resolve: function(root, {range}, context) {
+            resolve: function({range, regionId}) {
                 var from = moment(range.from);
                 var to = moment(range.to);
-                var regionId = context.regionId
+                return sequelize.query(helpers.queries.Topic.countsByRange(from.format(), to.format(), regionId))
+                .then(([results, metadata]) => results)
+                .catch((e) => winston.warn(e));
+            },
+        },
+        activity: {
+            type: CreatorActivityType,
+            resolve: function({range, regionId}, args) {
+                var from = moment(range.from);
+                var to = moment(range.to);
                 return sequelize.query(helpers.queries.UserAccount.entryActivity(from.format(), to.format(), regionId))
                 .then(([results, metadata]) => results)
                 .then(function(results) {
@@ -437,41 +272,81 @@ const ConsumerType = new ql.GraphQLObjectType({
                 }).catch((e) => winston.warn(e));
             },
         },
-        topicCounts: {
-            type: new ql.GraphQLList(types.TopicCountType),
-            args: {
-                range: {
-                    type: types.DateRangeInputType,
-                }
-            },
-            resolve: function(root, {range}, context) {
+        entries: {
+            type: entryConnectionDefinition.connectionType,
+            args: Object.assign({
+                topics: {
+                    type: types.TopicsInputType,
+                },
+            }, relayql.connectionArgs),
+            resolve: ({range, regionId}, args) => {
+                const { topics } = args;
                 var from = moment(range.from);
                 var to = moment(range.to);
-                var regionId = context.regionId;
 
-                return sequelize.query(helpers.queries.Topic.countsByRange(from.format(), to.format(), regionId))
-                .then(([results, metadata]) => results)
-                .catch((e) => winston.warn(e));
-            },
-        },
+                return relayql.connectionFromPromisedArray(models.Entry.findAll({
+                    where: {
+                        createdAt: {
+                            $between: [from.format(), to.format()]
+                        }
+                    },
+                    include: [
+                        {
+                            model: models.Medium,
+                            as: 'Medium',
+                        },
+                        {
+                            model: models.Sentiment,
+                            as: 'Sentiment',
+                        },
+                        {
+                            model: models.Topic,
+                            as: 'EntryTopicTopics',
+                            where: {
+                                //excluding entries which don't have a matching topic
+                                type: {
+                                    $in: topics
+                                },
+                            }
+                        },
+                        {
+                            model: models.UserAccount,
+                            as: 'Owner',
+                            where: {
+                                //and avoiding any entries whos sharing is diabled
+                                //or their origin region is not part of the request
+                                sharing: true,
+                                regionId: regionId
+                            }
+                        },
+                    ]
+                }).catch((e) => winston.warn(e)), args);
+            }
+        }
+    }
+});
+
+const ConsumerType = new ql.GraphQLObjectType({
+    name: 'Consumer',
+    fields: {
+        id: relayql.globalIdField('Consumer', (root, args, context) => context.userId),
         topics: {
             type: new ql.GraphQLList(types.TopicType),
             resolve: () => {
                 return models.Topic.findAll().catch((e) => winston.warn(e));
             },
         },
-        requests: {
-            type: requestConnectionDefinition.connectionType,
-            args: relayql.connectionArgs,
-            resolve: (root, args, context) => {
-                return relayql.connectionFromPromisedArray(models.Request.findAll({
-                    where: {
-                        userId: context.userId
-                    },
-                    include: helpers.includes.Request.basic
-                }).catch((e) => winston.warn(e)), args);
+        access: {
+            type: DataAccessType,
+            args: {
+                range: {
+                    type: types.DateRangeInputType,
+                },
             },
-        },
+            resolve: (root, {range}, {regionId}) => {
+                return {range, regionId}
+            }
+        }
     },
     interfaces: [nodeInterface]
 });
@@ -513,17 +388,22 @@ const CreatorType = new ql.GraphQLObjectType({
                 }).catch((e) => winston.warn(e)), args);
             },
         },
-        requests: {
-            type: userRequestConnectionDefinition.connectionType,
-            args: relayql.connectionArgs,
+        sharing: {
+            type: ql.GraphQLBoolean,
             resolve: (root, args, context) => {
-                return relayql.connectionFromPromisedArray(models.UserRequest.findAll({
-                    where: {
-                        userId: context.userId,
-                        seen: false
-                    },
-                    include: helpers.includes.UserRequest.basic
-                }).catch((e) => winston.warn(e)), args);
+                return context.sharing;
+            },
+        },
+        seenSharing: {
+            type: ql.GraphQLBoolean,
+            resolve: (root, args, context) => {
+                return context.seenSharing;
+            },
+        },
+        seenIntroduction: {
+            type: ql.GraphQLBoolean,
+            resolve: (root, args, context) => {
+                return context.seenIntroduction;
             },
         },
         happyCount: {
@@ -627,100 +507,6 @@ const createEntry = relayql.mutationWithClientMutationId({
     }
 });
 
-const updateUserRequest = relayql.mutationWithClientMutationId({
-    name: 'UpdateUserRequest',
-    inputFields: {
-        userRequest: {
-            type: types.UserRequestInputType
-        },
-    },
-    outputFields: {
-        creator: creatorField,
-        userRequestId: {
-            type: ql.GraphQLString,
-            resolve: (root) => {
-                return root.userRequestId;
-            }
-        },
-    },
-    mutateAndGetPayload: function mutateEntryPayload({userRequest}, context) {
-        if (!context.Role || context.Role.type !== "creator") {
-            winston.info(`Failed updateUserRequest mutation due to role mismatch`);
-            return {};
-        }
-        return new Promise(function(resolve, reject) {
-            var id = relayql.fromGlobalId(userRequest.id).id;
-            models.UserRequest.findOne({
-                where: {
-                    userRequestId: id,
-                    userId: context.userId,
-                }
-            }).then(function (request) {
-                if(!request) {
-                    winston.info(`Failed updateUserRequest mutation due to missing request`);
-                    resolve({});
-                    return null;
-                } else {
-                    // The request will always be hidden, for now
-                    resolve(spool.updateUserRequest(id, userRequest.hide, userRequest.access)
-                            .then(() => {
-                                return {userRequestId: userRequest.id};
-                            }));
-                    return null;
-                }
-            }).catch((e) => winston.warn(e));
-        }).catch((e) => winston.warn(e));
-    }
-});
-
-const updateEntryRequest = relayql.mutationWithClientMutationId({
-    name: 'UpdateEntryRequest',
-    inputFields: {
-        entryId: {
-            type: new ql.GraphQLNonNull(ql.GraphQLString),
-        },
-        userRequestId: {
-            type: new ql.GraphQLNonNull(ql.GraphQLString),
-        },
-        access: {
-            type: ql.GraphQLBoolean
-        },
-    },
-    outputFields: {
-      creator: creatorField,
-    },
-    mutateAndGetPayload: function mutateEntryPayload({entryId, userRequestId, access}, context) {
-        if (!context.Role || context.Role.type !== "creator") {
-            winston.info(`Failed updateEntryRequest mutation due to role mismatch`);
-            return {};
-        }
-        return new Promise(function(resolve, reject) {
-            userRequestId = relayql.fromGlobalId(userRequestId).id;
-            entryId = relayql.fromGlobalId(entryId).id;
-            models.Entry.findOne({
-                where: {
-                    entryId: entryId,
-                    ownerId: context.userId
-                }
-            }).then(function(entry) {
-                if(!entry) {
-                    winston.info(`Failed updateEntryRequest mutation due to missing entry`);
-                    resolve({});
-                } else {
-                    models.EntryUserRequest.update({
-                        access,
-                    }, {
-                        where: {
-                            entryId: entryId,
-                            userRequestId: userRequestId,
-                        }
-                    }).then(() => resolve({}));
-                }
-            }).catch((e) => winston.warn(e));
-        }).catch((e) => winston.warn(e));
-    }
-});
-
 const updateUser = relayql.mutationWithClientMutationId({
     name: 'UpdateUser',
     inputFields: {
@@ -736,55 +522,31 @@ const updateUser = relayql.mutationWithClientMutationId({
     }
 }); 
 
-const createRequest = relayql.mutationWithClientMutationId({
-    name: 'CreateRequest',
+const deleteEntry = relayql.mutationWithClientMutationId({
+    name: 'DeleteEntry',
     inputFields: {
-        request: {
-            type: types.RequestInputType
+        entryId: {
+            type: ql.GraphQLInt,
         }
     },
     outputFields: {
-        consumer: consumerField,
-        requestEdge: {
-            type: requestConnectionDefinition.edgeType,
-            resolve: ({request}, args, context) => {
-                return models.Request.findAll({
-                    where: {
-                        userId: context.userId
-                    },
-                    include: helpers.includes.Request.basic
-                }).then(function(requests) {
-                    var indexOfRequest = _.findIndex(requests, { requestId: request.requestId });
-                    return {
-                        cursor: relayql.offsetToCursor(indexOfRequest),
-                        node: request
-                    }
-                }).catch((e) => winston.warn(e));
-           },
-        },
-    },
-    mutateAndGetPayload: function mutateRequestPayload({request}, context) {
-        if (!context.Role || context.Role.type !== "consumer") {
-            winston.info(`Failed createRequest mutation due to role mismatch`);
-            return {};
+        creator: creatorField,
+        deletedEntryId: {
+            type: ql.GraphQLInt,
+            resolve: (entryId) => entryId,
         }
-        var requestData = {
-            userId: context.userId,
-            regionId: context.regionId,
-            from: moment(request.range.from).format(),
-            to: moment(request.range.to).format(),
-            avatar: request.avatar,
-            name: request.name,
-            org: request.org,
-            reason: request.reason,
-        };
-        var topics = request.topics;
-        // make new request
-        return spool.makeRequest(requestData, topics).then(function(request) {
-            return {request};
-        });
+    },
+    mutateAndGetPayload: function mutateUserPayload({entryId}, context) {
+        const ownerId = context.userId;
+        const { id } = relayql.fromGlobalId(entryId);
+        return models.Entry.destroy({
+            where: {
+                entryId: id,
+                ownerId,
+            },
+        }).catch((e) => winston.warn(e));
     }
-});
+}); 
 
 module.exports = {
     fields: {
@@ -796,9 +558,7 @@ module.exports = {
     },
     mutations: {
         createEntry,
-        createRequest,
         updateUser,
-        updateUserRequest,
-        updateEntryRequest,
+        deleteEntry,
     }
 }
