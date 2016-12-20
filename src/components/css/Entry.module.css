@@ -219,9 +219,10 @@
 
 :global(.carousel .carousel-indicators) {
 	right: .5rem;
-	bottom: .5rem;
+	bottom: .7rem;
 	left: auto;
 	width: auto;
+	margin: 0;
 }
 
 :global(.carousel .carousel-indicators li) {

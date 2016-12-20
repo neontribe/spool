@@ -33,7 +33,7 @@ export default class EntryViewer extends Component {
             <Layout>
                 <Header auth={this.props.auth}>
                     <div className={styles.header}>
-                        <div>{moment(entry.created).format('Do MMMM')}</div>
+                        <div>Created {moment(entry.created).format('Do MMMM')}</div>
 
                         <Icon
                             icon={entry.sentiment.type}
