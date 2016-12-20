@@ -22,7 +22,7 @@ export function withRoles(Component, roles) {
     });
 }
 
-export function withIntroduction(Component) {
+export function withRequiredIntroduction(Component) {
     return withRouter(class WrappedWithRequiredIntroduction extends React.Component {
         componentWillMount() {
             if(!this.valid()) {
@@ -50,7 +50,7 @@ export function withRequiredSetup(Component) {
             }
         }
         valid() {
-            return !!this.props.user.profile.isConfigured;
+            return !!this.props.user.profile;
         }
         render () {
             if(this.valid()) {

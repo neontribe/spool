@@ -6,7 +6,7 @@ import { EntryContainer, Entry } from './Entry';
 import Layout from './Layout';
 // import Intro from './Intro';
 import Grid from './Grid';
-import { withRoles, userFragment } from './wrappers.js';
+import { withRoles, withRequiredIntroduction, withRequiredSetup, userFragment } from './wrappers.js';
 
 import styles from './css/Gallery.module.css';
 import controls from '../css/Controls.module.css';
@@ -66,7 +66,8 @@ export class Gallery extends Component {
     }
 }
 
-export const GalleryContainer = Relay.createContainer(withRoles(Gallery, ['creator']), {
+const WrappedGallery = withRoles(withRequiredSetup(withRequiredIntroduction(Gallery)), ['creator']);
+export const GalleryContainer = Relay.createContainer(WrappedGallery, {
     initialVariables: {
         first: 100,
     },
