@@ -51,7 +51,7 @@ class AddEntry extends Component {
         var creator = this.props.creator;
 
         var onSuccess = () => {
-            this.props.router.push('/home');
+            this.props.router.push('/app/home');
         }
         this.props.relay.commitUpdate(
             new AddEntryMutation({

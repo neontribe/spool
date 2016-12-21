@@ -6,7 +6,7 @@ export function withRoles(Component, roles) {
     return withRouter(class WrappedWithRoles extends React.Component {
         componentWillMount() {
             if(!this.valid()) {
-                this.props.router.push('/');
+                this.props.router.push('/app');
             }
         }
         valid() {
@@ -26,7 +26,7 @@ export function withRequiredIntroduction(Component) {
     return withRouter(class WrappedWithRequiredIntroduction extends React.Component {
         componentWillMount() {
             if(!this.valid()) {
-                this.props.router.push('/introduction');
+                this.props.router.push('/app/introduction');
             }
         }
         valid() {
@@ -46,7 +46,7 @@ export function withRequiredSetup(Component) {
     return withRouter(class WrappedWithRequiredSetup extends React.Component {
         componentWillMount() {
             if(!this.valid()) {
-                this.props.router.push('/settings');
+                this.props.router.push('/app/settings');
             }
         }
         valid() {
@@ -61,6 +61,8 @@ export function withRequiredSetup(Component) {
         }
     });
 }
+
+
 
 export const userFragment = Relay.QL`
         fragment on User {

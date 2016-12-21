@@ -6,6 +6,24 @@ import styles from './components/css/App.module.css';
 import a11y from './css/A11y.module.css';
 
 class App extends Component {
+    render () {
+        let children = null;
+        if (this.props.children) {
+            children = React.cloneElement(this.props.children, {
+                auth: this.props.route.auth
+            });
+        }
+        return (
+            <div className={styles.app}>
+                {children}
+            </div>
+        );
+    }
+}
+
+export default App = withRouter(App);
+
+class RoleWrapper extends Component {
     componentDidMount() {
         const {children} = this.props;
         if(!children) {
@@ -22,10 +40,10 @@ class App extends Component {
         switch(this.props.user.role) {
             default:
             case 'creator': 
-                path = '/home';
+                path = '/app/home';
                 break;
             case 'consumer':
-                path = '/dashboard';
+                path = '/app/dashboard';
                 break;
         }
         this.props.router.push(path);
@@ -38,15 +56,13 @@ class App extends Component {
             });
         }
         return (
-            <div className={styles.app}>
+            <div>
                 {children}
             </div>
         );
     }
 }
-
-App = withRouter(App);
-export default Relay.createContainer(App, {
+export const RoleWrapperContainer = Relay.createContainer(withRouter(RoleWrapper), {
     fragments: {
         user: () => Relay.QL`
             fragment on User {
