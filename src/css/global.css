@@ -84,7 +84,17 @@ textarea {
     background: #fff;
 }
 
+@media all and (min-width: 1920px) {
+    html {
+        font-size: 22px;
+    }
+}
 
+@media all and (min-width: 1920px) and (min-height: 1080px) {
+    html {
+        font-size: 32px;
+    }
+}
 
 
 
