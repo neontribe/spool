@@ -159,6 +159,15 @@ const UserInputType = new ql.GraphQLInputObjectType({
     }
 });
 
+const PrivacyInputType = new ql.GraphQLInputObjectType({
+    name: 'PrivacyInput',
+    fields: {
+        sharing: {
+            type: ql.GraphQLBoolean
+        }
+    }
+});
+
 module.exports = {
     MediaType,
     SentimentType,
@@ -171,5 +180,6 @@ module.exports = {
     DateRangeInputType,
     TopicCountType,
     UserInputType,
+    PrivacyInputType,
     TopicsInputType,
 };

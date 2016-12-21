@@ -23,18 +23,6 @@ module.exports = function(sequelize, DataTypes) {
             onUpdate: 'NO ACTION',
             onDelete: 'NO ACTION'
         },
-        introduced: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-            field: 'introduced',
-            allowNull: false,
-        },
-        sharing: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-            field: 'sharing',
-            allowNull: false,
-        },
         roleId: {
             type: DataTypes.INTEGER,
             field: 'role_id',

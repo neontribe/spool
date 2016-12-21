@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import Relay from 'react-relay';
+import HideIntroductionMutation from './mutations/HideIntroductionMutation.js';
 import Layout from './Layout';
 const { Header, Content } = Layout;
 
@@ -24,6 +25,21 @@ export default class Introduction extends Component {
         }
         this.handleNextStep = this.handleNextStep.bind(this);
         this.handleBackStep = this.handleBackStep.bind(this);
+        this.handleFinalStep = this.handleFinalStep.bind(this);
+    }
+    handleFinalStep() {
+        var user = this.props.user;
+        var onSuccess = () => {
+            this.handleNextStep();
+        };
+
+        this.props.relay.commitUpdate(
+            new HideIntroductionMutation({
+                user
+            }),
+            {
+                onSuccess
+            });
     }
     handleNextStep() {
         this.setState({
@@ -43,9 +59,7 @@ export default class Introduction extends Component {
                 </Header>
                 <Content>
                     <Stepper
-                        active={this.state.step}
-                        onNext={this.handleNextStep}
-                        onBack={this.handleBackStep}>
+                        active={this.state.step}>
                         <Step>
                             <h1>Get Started</h1>
                             <p>Blabla bla</p>
@@ -74,7 +88,7 @@ export default class Introduction extends Component {
                                 </label>
                             </form>
                             <button onClick={this.handleBackStep}>back</button>
-                            <button onClick={this.handleNextStep}>next</button>
+                            <button onClick={this.handleFinalStep}>next</button>
                         </Step>
                         <Step>
                             <h1>You're Set Up!</h1>
@@ -86,3 +100,14 @@ export default class Introduction extends Component {
         );
     }
 }
+
+export const IntroductionContainer = Relay.createContainer(Introduction, {
+    fragments: {
+        user: () => Relay.QL`
+            fragment on User {
+                id
+                ${HideIntroductionMutation.getFragment('user')}
+            }
+        `,
+    }
+});

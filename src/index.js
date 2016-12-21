@@ -15,7 +15,7 @@ import { SettingsContainer } from './components/Settings';
 import { AddEntryContainer } from './components/AddEntry';
 import { AccessContainer } from './components/Access';
 import { EntryViewerContainer } from './components/EntryViewer';
-import IntroductionContainer from './components/Introduction';
+import { IntroductionContainer } from './components/Introduction';
 
 import './css/global.css';
 
@@ -78,7 +78,7 @@ ReactDOM.render(
 
             <Route path="app" component={RoleWrapperContainer} queries={UserQueries} onEnter={auth.requireAuthOnEnter}  auth={auth}>
                 <Route path="settings" component={SettingsContainer} queries={SettingsQueries} onEnter={auth.requireAuthOnEnter}/>
-                <Route path="introduction" component={IntroductionContainer} onEnter={auth.requireAuthOnEnter}/>
+                <Route path="introduction" component={IntroductionContainer} queries={UserQueries} onEnter={auth.requireAuthOnEnter}/>
                 <Route path="home" component={GalleryContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
                 <Route path="add" component={AddEntryContainer} queries={CreatorQueries} />
                 <Route path="timeline" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>

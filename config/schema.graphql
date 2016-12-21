@@ -12,13 +12,13 @@ type Consumer implements Node {
 
 input CreateEntryInput {
   entry: EntryInput
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type CreateEntryPayload {
   creator: Creator
   entryEdge: EntryEdge
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type Creator implements Node {
@@ -55,13 +55,13 @@ input DateRangeInput {
 
 input DeleteEntryInput {
   entryId: Int
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type DeleteEntryPayload {
   creator: Creator
   deletedEntryId: Int
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type Entry implements Node {
@@ -98,6 +98,15 @@ input EntryInput {
   topics: [String]
 }
 
+input HideIntroductionInput {
+  clientMutationId: String!
+}
+
+type HideIntroductionPayload {
+  user: User
+  clientMutationId: String!
+}
+
 type Media {
   text: String
   video: String
@@ -124,6 +133,8 @@ type Mutations {
   createEntry(input: CreateEntryInput!): CreateEntryPayload
   updateUser(input: UpdateUserInput!): UpdateUserPayload
   deleteEntry(input: DeleteEntryInput!): DeleteEntryPayload
+  updatePrivacy(input: UpdatePrivacyInput!): UpdatePrivacyPayload
+  hideIntroduction(input: HideIntroductionInput!): HideIntroductionPayload
 }
 
 # An object with an ID
@@ -145,6 +156,10 @@ type PageInfo {
 
   # When paginating forwards, the cursor to continue.
   endCursor: String
+}
+
+input PrivacyInput {
+  sharing: Boolean
 }
 
 type Profile implements Node {
@@ -206,14 +221,24 @@ type TopicCount {
   creatorCount: Int
 }
 
+input UpdatePrivacyInput {
+  privacy: PrivacyInput
+  clientMutationId: String!
+}
+
+type UpdatePrivacyPayload {
+  user: User
+  clientMutationId: String!
+}
+
 input UpdateUserInput {
   user: UserInput
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type UpdateUserPayload {
   user: User
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type User implements Node {
