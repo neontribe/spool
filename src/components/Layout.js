@@ -54,7 +54,7 @@ class Header extends Component {
 
           <div className={(this.state.hamburgerExpanded) ? styles.headerExpanded : styles.header}>
             <h1 className={styles.logo}>
-              <Link to={'/'}>SPOOL</Link>
+              <Link to={'/app'}>SPOOL</Link>
             </h1>
 
             {!this.state.hamburgerExpanded && this.props.children}
@@ -69,7 +69,7 @@ class Header extends Component {
               >
                 <ul className={styles.contextMenu}>
                   <li className={styles.contextMenuItem}>
-                    <Link to={'/'}>Home</Link>
+                      <Link to={'/app/home'}>Home</Link>
                   </li>
 
                   <li className={styles.contextMenuItem}>
@@ -93,12 +93,12 @@ class Header extends Component {
                     <h2 className={styles.filterHeader}>View Mode</h2>
                     <ul className={styles.filterList}>
                       <li className={styles.filter}>
-                        <Link to='/home' className={styles.filterControlOn}>
+                          <Link to='/app/home' className={styles.filterControlOn}>
                           Gallery
                         </Link>
                       </li>
                       <li className={styles.filter}>
-                        <Link to='/timeline' className={styles.filterControl}>
+                          <Link to='/app/timeline' className={styles.filterControl}>
                           Timeline
                         </Link>
                       </li>

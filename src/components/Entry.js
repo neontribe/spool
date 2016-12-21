@@ -172,7 +172,7 @@ export class Entry extends Component {
             return (
                 <Link
                     {...props}
-                    to={`/entry/${entry.id}`}
+                    to={`/app/entry/${entry.id}`}
                 >{this.renderEntry(entry, randomisedStyle, isTextEntry, lightIcon)}</Link>
             );            
         }

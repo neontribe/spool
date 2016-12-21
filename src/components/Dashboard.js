@@ -47,7 +47,7 @@ export class Dashboard extends Component {
                         <div>
                             {/*<ControlLabel>Scope</ControlLabel>*/}
                             <h2>Scope</h2>
-                            <Link to="/access"><span style={{color: 'red'}}>Access (click me)</span></Link>
+                            <Link to="/app/access"><span style={{color: 'red'}}>Access (click me)</span></Link>
                             <select value={this.state.rangeFrom} onChange={this.changeRange}>
                                 <option value="0,days">Today</option>
                                 <option value="-1,months">30 Days</option>
