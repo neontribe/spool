@@ -71,8 +71,5 @@
 }
 
 .field:checked + .message {
-	/*color: #1e2c37;*/
-	/*border-color: #2fd9b5;*/
-	/*background-color: #2fd9b5;*/
 	background-color: #34404c;
 }

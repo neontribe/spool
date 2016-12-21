@@ -109,7 +109,7 @@ class AddEntry extends Component {
                         <div className={styles.header}>
                             <div className={(this.state.entry.topics && styles.stepComplete) || undefined}>
                                 {this.state.entry.topics && (
-                                    <ul className={styles.topics}>
+                                    <ol className={styles.topics}>
                                         {this.state.entry.topics.map((topic, i) => (
                                             <li key={i}>
                                                 <Icon
@@ -118,7 +118,7 @@ class AddEntry extends Component {
                                                 />
                                             </li>
                                         ))}
-                                    </ul>
+                                    </ol>
                                 )}
                             </div>
 
