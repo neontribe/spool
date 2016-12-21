@@ -26,7 +26,6 @@ type Creator implements Node {
   id: ID!
   topics: [Topic]
   entries(after: String, first: Int, before: String, last: Int): EntryConnection
-  sharing: Boolean
   happyCount: Int
   sadCount: Int
 }
@@ -170,6 +169,7 @@ type Profile implements Node {
   nickname: String
   services: [Service]
   residence: Residence
+  isSharing: Boolean
   isIntroduced: Boolean
 }
 

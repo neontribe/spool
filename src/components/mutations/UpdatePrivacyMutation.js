@@ -7,6 +7,7 @@ export default class UpdatePrivacyMutation extends Relay.Mutation {
             id
         }`
     }
+
     getMutation() {
         return Relay.QL`mutation {updatePrivacy}`
     }

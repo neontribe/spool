@@ -249,18 +249,6 @@
               "deprecationReason": null
             },
             {
-              "name": "sharing",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "happyCount",
               "description": null,
               "args": [],
@@ -1207,6 +1195,18 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "Residence",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "isSharing",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,

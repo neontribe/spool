@@ -162,6 +162,12 @@ const ProfileType = new ql.GraphQLObjectType({
                 return root.Residence;
             }
         },
+        isSharing: {
+            type: ql.GraphQLBoolean,
+            resolve: (root) => {
+                return root.sharing;
+            }
+        },
         isIntroduced: {
             type: ql.GraphQLBoolean,
             resolve: (root) => {
@@ -466,12 +472,6 @@ const CreatorType = new ql.GraphQLObjectType({
                         ['createdAt', 'DESC']
                     ],
                 }).catch((e) => winston.warn(e)), args);
-            },
-        },
-        sharing: {
-            type: ql.GraphQLBoolean,
-            resolve: (root, args, context) => {
-                return context.sharing;
             },
         },
         happyCount: {

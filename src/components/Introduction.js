@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import HideIntroductionMutation from './mutations/HideIntroductionMutation.js';
+import UpdatePrivacyMutation from './mutations/UpdatePrivacyMutation.js';
 import Layout from './Layout';
 import {Link} from 'react-router';
 const { Header, Content } = Layout;
@@ -22,14 +23,39 @@ export default class Introduction extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            step: 0
+            step: 0,
+            confirmedPrivacy: false,
         }
         this.handleNextStep = this.handleNextStep.bind(this);
         this.handleBackStep = this.handleBackStep.bind(this);
         this.handleFinalStep = this.handleFinalStep.bind(this);
+        this.handleSharingChange = this.handleSharingChange.bind(this);
+    }
+    handleSharingChange (evt) {
+        const { user } = this.props;
+        const value = parseInt(evt.target.value);
+        var onSuccess = () => {
+            // tell the UI to allow to continue to the next step
+            // if they have confirmed their privacy settings
+            this.setState({
+                confirmedPrivacy: true
+            });
+        };
+        this.props.relay.commitUpdate(
+            new UpdatePrivacyMutation({
+                user,
+                sharing: !!value
+            }),
+            {
+                onSuccess
+            });
+
+        this.setState({
+            sharing: !!value
+        });
     }
     handleFinalStep() {
-        var user = this.props.user;
+        const { user } = this.props;
         var onSuccess = () => {
             this.handleNextStep();
         };
@@ -83,13 +109,16 @@ export default class Introduction extends Component {
                             <p>Blabla bla</p>
                             <form>
                                 <label>
-                                    Share Settings
-                                    <input type="radio" name="share" value="yes" />
-                                    <input type="radio" name="share" value="no" />
+                                    Yes
+                                    <input type="radio" name="share" value="1" onChange={this.handleSharingChange} />
+                                </label>
+                                <label>
+                                    No
+                                    <input type="radio" name="share" value="0" onChange={this.handleSharingChange} />
                                 </label>
                             </form>
                             <button onClick={this.handleBackStep}>back</button>
-                            <button onClick={this.handleFinalStep}>next</button>
+                            { this.state.confirmedPrivacy && <button onClick={this.handleFinalStep}>next</button> }
                         </Step>
                         <Step>
                             <h1>You're Set Up!</h1>
@@ -108,7 +137,11 @@ export const IntroductionContainer = Relay.createContainer(Introduction, {
         user: () => Relay.QL`
             fragment on User {
                 id
+                ${UpdatePrivacyMutation.getFragment('user')}
                 ${HideIntroductionMutation.getFragment('user')}
+                profile {
+                    isSharing
+                }
             }
         `,
     }
