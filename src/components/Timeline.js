@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { EntryContainer, Entry } from './Entry';
 import Layout from './Layout';
 // import Grid from './Grid';
-import withRoles from '../auth/withRoles.js';
+import { withRoles } from './wrappers.js';
 
 import styles from './css/Timeline.module.css';
 import headings from '../css/Headings.module.css';
@@ -127,10 +127,7 @@ export class Timeline extends Component {
     }
 }
 
-export const TimelineContainer = Relay.createContainer(withRoles(Timeline, {
-    roles: ['creator'],
-    fallback: '/settings/configure',
-}), {
+export const TimelineContainer = Relay.createContainer(withRoles(Timeline, ['creator']), {
     initialVariables: {
         first: 100,
     },
