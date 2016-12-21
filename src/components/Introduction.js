@@ -1,27 +1,39 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
+import { Link } from 'react-router';
+import Layout from './Layout';
+import Button from './Button';
 import HideIntroductionMutation from './mutations/HideIntroductionMutation.js';
 import UpdatePrivacyMutation from './mutations/UpdatePrivacyMutation.js';
-import Layout from './Layout';
-import {Link} from 'react-router';
-const { Header, Content } = Layout;
 
+import styles from './css/Introduction.module.css';
+import headings from '../css/Headings.module.css';
+
+const { Header, Content } = Layout;
 
 class Stepper extends Component {
     render () {
         const children = React.Children.toArray(this.props.children);
         const step = children[this.props.active];
-        return (<div>{step}</div>);
+
+        return (
+            <div className={styles.step}>{step}</div>
+        );
     }
 }
+
 class Step extends Component {
     render () {
-        return (<div>{this.props.children}</div>);
+        return (
+            <div className={styles.stepContent}>{this.props.children}</div>
+        );
     }
 }
+
 export default class Introduction extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
+
         this.state = {
             step: 0,
             confirmedPrivacy: false,
@@ -54,6 +66,7 @@ export default class Introduction extends Component {
             sharing: !!value
         });
     }
+
     handleFinalStep() {
         const { user } = this.props;
         var onSuccess = () => {
@@ -66,64 +79,106 @@ export default class Introduction extends Component {
             }),
             {
                 onSuccess
-            });
+            }
+        );
     }
-    handleNextStep() {
+
+    handleNextStep () {
         this.setState({
-            step: this.state.step+1,
+            step: this.state.step + 1,
         });
     }
-    handleBackStep() {
+
+    handleBackStep () {
         this.setState({
-            step: this.state.step-1,
+            step: this.state.step - 1,
         });
     }
+
     render () {
         return (
             <Layout>
                 <Header auth={this.props.auth}>
-                    <p>Progress</p>
+                    <ol className={styles.header}>
+                        <li className={(this.state.step >= 0) && styles.stepComplete}>1. About</li>
+                        <li className={(this.state.step >= 1) && styles.stepComplete}>2. Entries</li>
+                        <li className={(this.state.step >= 2) && styles.stepComplete}>3. Privacy</li>
+                        <li className={(this.state.step >= 3) && styles.stepComplete}>4. Sharing</li>
+                        <li className={(this.state.step >= 4) && styles.stepComplete}>5. Done</li>
+                    </ol>
                 </Header>
                 <Content>
-                    <Stepper
-                        active={this.state.step}>
+                    <Stepper active={this.state.step}>
                         <Step>
-                            <h1>Get Started</h1>
-                            <p>Blabla bla</p>
-                            <button onClick={this.handleNextStep}>next</button>
+                            <div>
+                                <h1 className={headings.large}>Get Started</h1>
+                                <p>Blabla bla</p>
+                            </div>
+                            <div className={styles.controls}>
+                                <Button onClick={this.handleNextStep}>Next</Button>
+                            </div>
                         </Step>
                         <Step>
-                            <h1>Adding an Entry</h1>
-                            <p>Blabla bla</p>
-                            <button onClick={this.handleBackStep}>back</button>
-                            <button onClick={this.handleNextStep}>next</button>
+                            <div>
+                                <h1 className={headings.large}>Adding an Entry</h1>
+                                <p>Blabla bla</p>
+                            </div>
+                            <div className={styles.controls}>
+                                <Button onClick={this.handleBackStep}>Back</Button>
+                                <Button onClick={this.handleNextStep}>Next</Button>
+                            </div>
                         </Step>
                         <Step>
-                            <h1>Privacy Explainer</h1>
-                            <p>Blabla bla</p>
-                            <button onClick={this.handleBackStep}>back</button>
-                            <button onClick={this.handleNextStep}>next</button>
+                            <div>
+                                <h1 className={headings.large}>Privacy Explainer</h1>
+                                <p>Blabla bla</p>
+                            </div>
+                            <div className={styles.controls}>
+                                <Button onClick={this.handleBackStep}>Back</Button>
+                                <Button onClick={this.handleNextStep}>Next</Button>
+                            </div>
                         </Step>
                         <Step>
-                            <h1>Do you want to share?</h1>
-                            <p>Blabla bla</p>
-                            <form>
-                                <label>
-                                    Yes
-                                    <input type="radio" name="share" value="1" onChange={this.handleSharingChange} />
-                                </label>
-                                <label>
-                                    No
-                                    <input type="radio" name="share" value="0" onChange={this.handleSharingChange} />
-                                </label>
-                            </form>
-                            <button onClick={this.handleBackStep}>back</button>
-                            { this.state.confirmedPrivacy && <button onClick={this.handleFinalStep}>next</button> }
+                            <div>
+                                <h1 className={headings.large}>Do you want to share?</h1>
+                                <p>Blabla bla</p>
+                                <form>
+                                    <legend>Share Settings</legend>
+                                    <label className={styles.option}>
+                                        <input
+                                            type='radio'
+                                            name='share'
+                                            value='1'
+                                            onClick={this.handleSharingChange}
+                                            className={styles.field}
+                                        />
+                                        <span className={styles.message}>Yes</span>
+                                    </label>
+                                    <label className={styles.option}>
+                                        <input
+                                            type='radio'
+                                            name='share'
+                                            value='0'
+                                            onClick={this.handleSharingChange}
+                                            className={styles.field}
+                                        />
+                                        <span className={styles.message}>No</span>
+                                    </label>
+                                </form>
+                            </div>
+                            <div className={styles.controls}>
+                                <Button onClick={this.handleBackStep}>Back</Button>
+                                { this.state.confirmedPrivacy && <Button onClick={this.handleFinalStep}>Next</Button> }
+                            </div>
                         </Step>
                         <Step>
-                            <h1>You're Set Up!</h1>
-                            <p>Add an entry or do something...</p>
-                            <Link to="/app/home">Home</Link>
+                            <div>
+                                <h1 className={headings.large}>You're Set Up!</h1>
+                                <p>Add an entry or do something&hellip;</p>
+                            </div>
+                            <div className={styles.controls}>
+                                <Link to='/app/home' className={styles.btn}>I'm Ready!</Link>
+                            </div>
                         </Step>
                     </Stepper>
                 </Content>

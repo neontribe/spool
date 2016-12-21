@@ -48,6 +48,7 @@ class MediaForm extends Component {
 
         this.chooserTransition = (values) => {
             this.props.onMediaTypeChange(values[0]);
+
             return this.setState({
                 form: choiceMap[values[0]]
             });

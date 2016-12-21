@@ -60,7 +60,7 @@ export default class Grid extends Component {
 
         var children = _.filter(React.Children.toArray(this.props.children), (child) => {
             return child !== false;
-        })
+        });
 
         if (this.props.callToAction) {
             children.length++;

@@ -107,9 +107,9 @@ class AddEntry extends Component {
                 <Header auth={this.props.auth}>
                     {this.state.entry && (
                         <div className={styles.header}>
-                            <div className={(this.state.entry.topics && styles.stepComplete) || undefined}>
-                                {this.state.entry.topics && (
-                                    <ul className={styles.topics}>
+                            <div className={styles.stepComplete}>
+                                {(this.state.entry.topics) ? (
+                                    <ol className={styles.topics}>
                                         {this.state.entry.topics.map((topic, i) => (
                                             <li key={i}>
                                                 <Icon
@@ -118,21 +118,22 @@ class AddEntry extends Component {
                                                 />
                                             </li>
                                         ))}
-                                    </ul>
-                                )}
+                                    </ol>
+                                ) : '1. Topic'}
                             </div>
 
                             <div className={(this.state.entry.sentiment && styles.stepComplete) || undefined}>
-                                {this.state.entry.sentiment && (
+                                {(this.state.entry.sentiment) ? (
                                     <Icon
                                         icon={this.state.entry.sentiment}
                                         light={true}
                                     />
-                                )}
+                                ) : '2. Sentiment'}
                             </div>
 
                             <div>
                                 {/* Todo: Display media type selection */}
+                                3. Media type
                             </div>
                         </div>
                     )}

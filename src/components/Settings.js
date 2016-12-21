@@ -5,11 +5,12 @@ import { withRouter } from 'react-router';
 
 import UpdateUserMutation from './mutations/UpdateUserMutation';
 import Layout from './Layout';
-const { Content, Header } = Layout;
-
 import { SettingsFormContainer } from './SettingsForm';
 
 import headings from '../css/Headings.module.css';
+
+const { Content, Header } = Layout;
+
 export class Settings extends React.Component {
     static propTypes = {
         defaultRole: React.PropTypes.string,
@@ -21,16 +22,18 @@ export class Settings extends React.Component {
 
     constructor (props) {
         super(props);
+
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleRedirect () {
         return this.props.router.push('/app');
     }
+
     handleSubmit (form) {
         var success = () => this.handleRedirect();
         var user = this.props.user;
-        console.log(form, user);
+
         // Perform Mutation
         this.props.relay.commitUpdate(
             new UpdateUserMutation({
@@ -46,16 +49,14 @@ export class Settings extends React.Component {
     render () {
         return (
             <Layout>
-                <Header auth={this.props.auth}>
-                    <p>Example</p>
-                </Header>
+                <Header auth={this.props.auth} />
                 <Content>
                     <h2 className={headings.large}>Getting to know you</h2>
                     <SettingsFormContainer
-                            user={this.props.user}
-                            meta={this.props.meta}
-                            onSubmit={this.handleSubmit}
-                        />
+                        user={this.props.user}
+                        meta={this.props.meta}
+                        onSubmit={this.handleSubmit}
+                    />
                 </Content>
             </Layout>
         );
@@ -63,6 +64,7 @@ export class Settings extends React.Component {
 }
 
 Settings = withRouter(Settings);
+
 export const SettingsContainer = Relay.createContainer(Settings, {
     fragments: {
         meta: () => Relay.QL`

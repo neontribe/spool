@@ -201,11 +201,16 @@ class Camera extends Component {
                         )}
 
                         {this.state.thumbnail && (
-                            <img
-                                className={styles.thumbnail}
-                                src={this.state.thumbnail.dataUri}
-                                alt='The photo you just took'
-                            />
+                            <div>
+                                <img
+                                    className={styles.thumbnail}
+                                    src={this.state.thumbnail.dataUri}
+                                    alt='The photo you just took'
+                                />
+                                {this.state.text && (
+                                    <div className={styles.text}>{this.state.text}</div>
+                                )}
+                            </div>
                         )}
 
                         {this.state.countdown && (

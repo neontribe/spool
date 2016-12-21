@@ -21,20 +21,9 @@
 	border-right: 0;
 }
 
-.header > *:first-child {
-	/*border-top-left-radius: 5px;*/
-	/*border-bottom-left-radius: 5px;*/
-}
-
 .header > *:last-child {
 	border-right: 2px solid #1e2c37;
-	/*border-top-right-radius: 5px;*/
-	/*border-bottom-right-radius: 5px;*/
 }
-
-/*.header > *:nth-child(odd) {
-	background-color: #1e2c37;
-}*/
 
 .stepComplete {
 	background-color: #1e2c37;

@@ -18,6 +18,7 @@ import { EntryViewerContainer } from './components/EntryViewer';
 import { IntroductionContainer } from './components/Introduction';
 
 import './css/global.css';
+import './css/bootstrap.css';
 
 const auth = new AuthService(
     process.env.AUTH0_CLIENT_ID,
@@ -74,17 +75,17 @@ ReactDOM.render(
         <Route path="/" component={App} auth={auth}>
             <IndexRedirect to="/app" />
             <Route path="login" component={SimpleLogin} />
-            <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter}/>
+            <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter} />
 
             <Route path="app" component={RoleWrapperContainer} queries={UserQueries} onEnter={auth.requireAuthOnEnter}  auth={auth}>
-                <Route path="settings" component={SettingsContainer} queries={SettingsQueries} onEnter={auth.requireAuthOnEnter}/>
-                <Route path="introduction" component={IntroductionContainer} queries={UserQueries} onEnter={auth.requireAuthOnEnter}/>
-                <Route path="home" component={GalleryContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
+                <Route path="settings" component={SettingsContainer} queries={SettingsQueries} onEnter={auth.requireAuthOnEnter} />
+                <Route path="introduction" component={IntroductionContainer} queries={UserQueries} onEnter={auth.requireAuthOnEnter} />
+                <Route path="home" component={GalleryContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter} />
                 <Route path="add" component={AddEntryContainer} queries={CreatorQueries} />
-                <Route path="timeline" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
+                <Route path="timeline" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter} />
                 <Route path="entry/:id" component={EntryViewerContainer} queries={EntryViewerQueries} onEnter={auth.requireAuthOnEnter} />
-                <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
-                <Route path="access" component={AccessContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
+                <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter} />
+                <Route path="access" component={AccessContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter} />
             </Route>
         </Route>
     </Router>,
