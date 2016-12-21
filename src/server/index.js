@@ -51,7 +51,7 @@ function reconcileUser() {
                 where: {
                     authHash: hash
                 },
-                include: helpers.includes.UserAccount.leftRoleAndRegion,
+                include: helpers.includes.UserAccount.leftProfile,
             }).then(function handleFindUser(user) {
                 if (user) {
                     resolve(user);
