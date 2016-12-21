@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import controls from '../css/Controls.module.css';
 import _ from 'lodash';
 
 const noop = () => {};
@@ -197,8 +196,7 @@ export class SettingsForm extends Component {
                 <div>
                     <button
                         type='submit'
-                        disabled={!errors ? '' : 'disabled'}
-                        className={controls.btn}>OK</button>
+                        disabled={!errors ? '' : 'disabled'}>OK</button>
                 </div>
             </form>)
     }
