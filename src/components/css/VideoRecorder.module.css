@@ -7,6 +7,7 @@
 .outputWrapper {
 	position: relative;
 	height: 100%;
+	width: 100%;
 	text-align: center;
 }
 
@@ -19,9 +20,12 @@
 	left: 0;
 	height: 100%;
 	width: 100%;
-	padding: 1rem;
-	background-color: rgba(0, 0, 0, .5);
+	background-color: #1e2c37;
 	z-index: 1;
+}
+
+.descriptionControls {
+	text-align: center;
 }
 
 .textarea {

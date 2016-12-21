@@ -6,11 +6,13 @@ import styles from './css/Button.module.css';
 export default class Button extends Component {
     static propTypes = {
         onClick: React.PropTypes.func.isRequired,
-        style: React.PropTypes.oneOf(['raised']) // Maps to class name
+        style: React.PropTypes.oneOf(['raised', 'round']), // Maps to class name
+        showPressIcon: React.PropTypes.bool
     }
 
     static defaultProps = {
-        style: 'raised'
+        style: 'raised',
+        showPressIcon: false
     }
 
     constructor (props) {
@@ -27,7 +29,9 @@ export default class Button extends Component {
             <button
                 className={styles[this.props.style]}
                 onClick={this.onClick}
-            >{this.props.children}</button>
+            >{this.props.showPressIcon && (
+                <span className={styles.handIcon}></span>
+            )}{this.props.children}</button>
         );
     }
 };

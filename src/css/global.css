@@ -3,12 +3,12 @@
 /*
 
 Min size: 16
-Max size: 32
+Max size: 22
 Min viewport width: 1024
 Max viewport width: 1920
 
 */
-@value fontSizeRegular: calc(16px + (32 - 16) * (100vw - 1024px) / (1920 - 1024));
+@value fontSizeRegular: calc(16px + (22 - 16) * (100vw - 1024px) / (1920 - 1024));
 
 *,
 *:before,
@@ -90,7 +90,7 @@ textarea {
     }
 }
 
-@media all and (min-width: 1920px) and (min-height: 1080px) {
+@media all and (min-height: 1080px) {
     html {
         font-size: 32px;
     }

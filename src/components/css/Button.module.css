@@ -3,11 +3,11 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	min-width: 1rem;
-	border-radius: 60px;
+	min-width: 10rem;
+	border-radius: 4rem;
 	font-size: 1.75rem;
 	vertical-align: middle;
-	padding: 2rem 4rem;
+	padding: 2rem;
 	/*color: #1e2c37;*/
 	color: #fff;
 	text-align: center;
@@ -31,6 +31,7 @@
 
 .round {
 	composes: raised;
+	min-width: 0;
 	padding: 2rem;
 	border-radius: 50%;
 }
@@ -40,6 +41,15 @@
 	float: left;
 	width: auto;
 	padding-bottom: 100%;
+}
+
+.handIcon {
+	display: inline-block;
+	height: 1em;
+	width: .75em;
+	margin-right: 1rem;
+	background: url('/static/icon-hand.svg') no-repeat;
+	background-size: cover;
 }
 
 /*.raised {

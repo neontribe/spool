@@ -250,13 +250,15 @@ class VideoRecorder extends Component {
             <div className={styles.wrapper}>
                 {this.state.showDescriptionField && (
                     <div className={styles.description}>
-                        <h2 className={headings.regular}>Add a description</h2>
+                        <h2 className={headings.large}>Add a description</h2>
                         <textarea
                             className={styles.textarea}
                             value={this.state.text}
                             onChange={this.onTextChange}
                         ></textarea>
-                        <Button onClick={this.hideDescripton}>Close</Button>
+                        <div className={styles.descriptionControls}>
+                            <Button onClick={this.hideDescripton}>Close</Button>
+                        </div>
                     </div>
                 )}
 

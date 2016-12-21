@@ -196,6 +196,9 @@
 	background-color: #34404c;
 }
 
-.filterIcon {
-	padding-bottom: 1rem;
+.filterText {
+	margin-top: .5rem;
+	height: 2em;
+	display: flex;
+	align-items: center;
 }

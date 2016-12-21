@@ -6,6 +6,17 @@
 }
 
 .addEntryControl {
+	display: flex;
+	flex: 1;
+	align-self: stretch;
+	align-items: center;
+	justify-content: center;
+}
+
+.button {
 	composes: raised from './Button.module.css';
-	width: 95%;
+}
+
+.handIcon {
+	composes: handIcon from './Button.module.css';
 }

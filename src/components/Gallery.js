@@ -143,7 +143,11 @@ export class Gallery extends Component {
 
     render () {
         var addEntryControl = (
-            <Link to={'/add'} className={styles.addEntryControl}>Add New Entry</Link>
+            <Link to={'/add'} className={styles.addEntryControl}>
+                <span className={styles.button}>
+                    <span className={styles.handIcon}></span> Add New Entry
+                </span>
+            </Link>
         );
 
         return (

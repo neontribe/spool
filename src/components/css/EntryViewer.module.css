@@ -11,17 +11,13 @@
 	width: 100%;
 }
 
-.contentWrapper > * + * {
-	margin-top: 1rem;
-}
-
 .content {
 	height: 100%;
 	overflow: auto;
 }
 
 .text {
-	font-size: 1.2rem;
+	font-size: 1.25rem;
 }
 
 .header > * {
@@ -34,4 +30,9 @@
 
 .topics > * {
 	margin: 0 .5rem;
+}
+
+.controls {
+	margin-top: 2rem;
+	text-align: center;
 }

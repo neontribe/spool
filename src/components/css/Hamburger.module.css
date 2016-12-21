@@ -62,11 +62,11 @@
 }
 
 .hamburgerInner::before {
-	top: -8px;
+	top: -.5rem;
 }
 
 .hamburgerInner::after {
-	bottom: -8px;
+	bottom: -.5rem;
 }
 
 .hamburgerInner::before {

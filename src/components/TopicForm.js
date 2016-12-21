@@ -40,7 +40,7 @@ class TopicForm extends Component {
 
                 <div className={(!this.state.value.length && helpers.hide) || undefined}>
                     <div className={styles.controls}>
-                        <Button onClick={this.continue}>Continue</Button>
+                        <Button onClick={this.continue} showPressIcon={true}>Continue</Button>
                     </div>
                 </div>
             </div>
