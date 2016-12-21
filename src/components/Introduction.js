@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Relay from 'react-relay';
 import HideIntroductionMutation from './mutations/HideIntroductionMutation.js';
 import Layout from './Layout';
+import {Link} from 'react-router';
 const { Header, Content } = Layout;
 
 
@@ -93,6 +94,7 @@ export default class Introduction extends Component {
                         <Step>
                             <h1>You're Set Up!</h1>
                             <p>Add an entry or do something...</p>
+                            <Link to="/app/home">Home</Link>
                         </Step>
                     </Stepper>
                 </Content>
