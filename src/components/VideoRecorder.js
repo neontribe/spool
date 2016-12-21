@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, ResponsiveEmbed, Button, ButtonToolbar, Glyphicon } from 'react-bootstrap';
-import AddControls from './AddControls';
-import ReactCountdownClock from 'react-countdown-clock';
 import MediaStreamRecorder from 'msr';
 import captureVideoFrame from 'capture-video-frame';
 import _ from 'lodash';
+
+import Grid from './Grid';
+import Button from './Button';
+import CountdownClock from './CountdownClock';
+
+import styles from './css/VideoRecorder.module.css';
+import headings from '../css/Headings.module.css';
 
 var mediaConstraints = {
     audio: true,
@@ -12,8 +16,7 @@ var mediaConstraints = {
 };
 
 class VideoRecorder extends Component {
-
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
@@ -25,15 +28,16 @@ class VideoRecorder extends Component {
             lastTakeURL: null,
             lastTakeBlob: null,
             thumbnailBlob: null,
+            text: '',
             devices: [],
             activeDevice: null
         }
 
         this.startMediaStream = this.startMediaStream.bind(this);
         this.stopMediaStream = this.stopMediaStream.bind(this);
-        this.startCountdown = _.debounce(this.startCountdown.bind(this), 500, {leading: true, trailing: false});
+        this.startCountdown = _.debounce(this.startCountdown.bind(this), 500, { leading: true, trailing: false });
         this.startRecording = this.startRecording.bind(this);
-        this.stopRecording = _.debounce(this.stopRecording.bind(this), 500, {leading: true, trailing: false});
+        this.stopRecording = _.debounce(this.stopRecording.bind(this), 500, { leading: true, trailing: false });
         this.onMediaSuccess = this.onMediaSuccess.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
         this.onRecordingFinished = this.onRecordingFinished.bind(this);
@@ -43,18 +47,23 @@ class VideoRecorder extends Component {
         this.onMediaFailure = this.onMediaFailure.bind(this);
         this.getVideoDevices = this.getVideoDevices.bind(this);
         this.getCountdownSize = this.getCountdownSize.bind(this);
-        this.switchVideoDevices = _.debounce(this.switchVideoDevices.bind(this), 500, {leading: true, trailing: false});
+        this.switchVideoDevices = _.debounce(this.switchVideoDevices.bind(this), 500, { leading: true, trailing: false });
+        this.showDescripton = this.showDescripton.bind(this);
+        this.hideDescripton = this.hideDescripton.bind(this);
+        this.onTextChange = this.onTextChange.bind(this);
+        this.pausePlayback = this.pausePlayback.bind(this);
+        this.playRecording = this.playRecording.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount () {
         this.startMediaStream();
     }
 
-    componentWillUnmount() {
+    componentWillUnmount () {
         this.stopMediaStream();
     }
 
-    startMediaStream(){
+    startMediaStream () {
         // First get a hold of getUserMedia, if present
 		const getUserMedia = (navigator.getUserMedia ||
 				navigator.webkitGetUserMedia ||
@@ -62,43 +71,55 @@ class VideoRecorder extends Component {
 				navigator.msGetUserMedia);
 
         if (!getUserMedia) {
-            this.setState({ mediaFailure: {name: 'getUserMediaUnsupported'}});
+            this.setState({
+                mediaFailure: {
+                    name: 'getUserMediaUnsupported'
+                }
+            });
+
             return;
         }
 
         this.getVideoDevices().then((devices) => {
             var activeDevice = this.state.activeDevice || devices[0].deviceId;
+
             mediaConstraints.video = {
                 optional: [{
                     sourceId: activeDevice
                 }]
             };
+
             this.setState({
                 activeDevice: activeDevice,
                 devices: devices
             });
+
             getUserMedia.call(navigator, mediaConstraints, this.onMediaSuccess, this.onMediaFailure);
         });
     }
 
-    getVideoDevices() {
+    getVideoDevices () {
         return navigator.mediaDevices.enumerateDevices().then((devices) => {
-            return _.filter(devices, {kind: 'videoinput'});
+            return _.filter(devices, { kind: 'videoinput' });
         });
     }
 
     switchVideoDevices() {
-        var currentIndex = _.findIndex(this.state.devices, {deviceId: this.state.activeDevice});
+        var currentIndex = _.findIndex(this.state.devices, { deviceId: this.state.activeDevice });
         var nextIndex = (currentIndex + 1) % this.state.devices.length;
         var newDevice = this.state.devices[nextIndex].deviceId || this.state.activeDevice;
-        this.setState({activeDevice: newDevice}, () => {
+
+        this.setState({
+            activeDevice: newDevice
+        }, () => {
             this.stopMediaStream();
             this.startMediaStream();
         });
     }
 
-    onMediaSuccess(stream) {
+    onMediaSuccess (stream) {
         const mediaRecorder = new MediaStreamRecorder(stream);
+
         mediaRecorder.stream = stream;
         mediaRecorder.ondataavailable = this.onRecordingFinished;
 
@@ -110,11 +131,11 @@ class VideoRecorder extends Component {
         });
     }
 
-    onMediaFailure(error) {
+    onMediaFailure (error) {
         this.props.onFailure(error);
     }
 
-    startCountdown() {
+    startCountdown () {
         this.setState({
             countdown: true,
             streaming: true,
@@ -123,8 +144,9 @@ class VideoRecorder extends Component {
         });
     }
 
-    startRecording() {
+    startRecording () {
         this.state.mediaRecorder.start();
+
         this.setState({
             countdown: false,
             streaming: true,
@@ -135,28 +157,45 @@ class VideoRecorder extends Component {
         });
     }
 
-    stopRecording() {
+    stopRecording () {
         this.state.mediaRecorder.stop();
+
         this.setState({
             recording: false
         });
     }
 
-    onRecordingFinished(blob) {
+    pausePlayback () {
+        this._player.pause();
+
+        this.setState({
+            playing: false
+        });
+    }
+
+    playRecording () {
+        this._player.play();
+
+        this.setState({
+            playing: true
+        });
+    }
+
+    onRecordingFinished (blob) {
         this.setState({
             lastTakeURL: URL.createObjectURL(blob),
             lastTakeBlob: blob
         }, () => this.replayLastTake());
     }
 
-    replayLastTake() {
+    replayLastTake () {
         this.setState({
             streaming: false,
             playing: true
         });
     }
 
-    discardLastTake() {
+    discardLastTake () {
         this.setState({
             streaming: true,
             playing: false,
@@ -165,107 +204,131 @@ class VideoRecorder extends Component {
         });
     }
 
-    stopMediaStream(){
+    stopMediaStream () {
         this.state.mediaRecorder.stream.getTracks().map((track) => track.stop());
     }
 
-    save() {
+    save () {
         // Take a thumb from the replay, or from the recorder if it is a direct save
         const thumb = captureVideoFrame(this._player, 'png')
             || captureVideoFrame(this._recorder, 'png');
+
         this.props.save({
+            text: this.state.text,
             video: this.state.lastTakeBlob,
             videoThumbnail: thumb.blob
         });
     }
 
-    getCountdownSize(){
+    getCountdownSize () {
         var video = this._recorder || this._player;
         var dimensions = video.getBoundingClientRect();
+
         return _.min([dimensions.height, dimensions.width]) * 0.9;
     }
 
-    render() {
+    showDescripton () {
+        this.setState({
+            showDescriptionField: true
+        });
+    }
+
+    hideDescripton () {
+        this.setState({
+            showDescriptionField: false
+        });
+    }
+
+    onTextChange (event) {
+        this.setState({
+            text: event.target.value
+        });
+    }
+
+    render () {
         return (
-            <Grid>
-                <Row>
-                    <Col>
-                        <div style={{ position: 'relative' }}>
-                            { this.state.connecting &&
-                                <ResponsiveEmbed a4by3>
-                                    <div className="connecting" />
-                                </ResponsiveEmbed>
-                            }
-                            { this.state.streaming &&
-                                <ResponsiveEmbed a4by3>
-                                    <video
-                                        ref={(ref) => { this._recorder = ref }}
-                                        src={this.state.streamURL}
-                                        muted
-                                        autoPlay
-                                        />
-                                </ResponsiveEmbed>
-                            }
-                            { this.state.playing &&
-                                <ResponsiveEmbed a4by3>
-                                    <video
-                                        ref={(ref) => { this._player = ref }}
-                                        src={this.state.lastTakeURL}
-                                        controls
-                                        autoPlay
-                                        />
-                                </ResponsiveEmbed>
-                            }
-                            {  this.state.countdown &&
-                                <div style={{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        width: '100%',
-                                        height: '100%',
-                                        backgroundColor: 'rgba(0,0,0,0)'
-                                    }}>
-                                        <ReactCountdownClock
-                                            seconds={this.props.countdownSeconds}
-                                            size={this.getCountdownSize()}
-                                            color="#a3dfef"
-                                            alpha={0.9}
-                                            showMilliseconds={false}
-                                            onComplete={this.startRecording} />
-                                </div>
-                            }
+            <div className={styles.wrapper}>
+                {this.state.showDescriptionField && (
+                    <div className={styles.description}>
+                        <h2 className={headings.large}>Add a description</h2>
+                        <textarea
+                            className={styles.textarea}
+                            value={this.state.text}
+                            onChange={this.onTextChange}
+                        ></textarea>
+                        <div className={styles.descriptionControls}>
+                            <Button onClick={this.hideDescripton}>Close</Button>
                         </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <ButtonToolbar className="toolbar-center">
-                            <Button block
-                                disabled={this.state.recording}
-                                onClick={this.startCountdown}>
-                              <Glyphicon glyph="record" /> Record
-                            </Button>
-                            <Button block
-                                disabled={!this.state.recording}
-                                onClick={this.stopRecording}>
-                              <Glyphicon glyph="stop" /> Stop
-                            </Button>
-                            { this.state.devices.length > 1 &&
-                                <Button bsStyle="primary" bsSize="large" block
-                                    onClick={this.switchVideoDevices}>
-                                    <Glyphicon glyph="refresh" /> Switch Camera
-                                </Button>
-                            }
-                        </ButtonToolbar>
-                    </Col>
-                    <Col>
-                        <AddControls
-                            onNext={this.save}
-                            disableNext={!this.state.lastTakeURL && !this.state.playing}
+                    </div>
+                )}
+
+                <Grid enforceConsistentSize={true}>
+                    <div className={styles.outputWrapper}>
+                        {/*this.state.connecting && (
+                            <div className='connecting' />
+                        )*/}
+
+                        {this.state.streaming && (
+                            <video
+                                className={styles.video}
+                                ref={(ref) => { this._recorder = ref }}
+                                src={this.state.streamURL}
+                                muted={true}
+                                autoPlay={true}
                             />
-                    </Col>
-                </Row>
-            </Grid>
+                        )}
+
+                        {(this.state.lastTakeURL && !this.state.countdown) && (
+                            <video
+                                className={styles.video}
+                                ref={(ref) => { this._player = ref }}
+                                src={this.state.lastTakeURL}
+                                controls={true}
+                                autoPlay={true}
+                            />
+                        )}
+
+                        {this.state.countdown && (
+                            <CountdownClock
+                                seconds={this.props.countdownSeconds}
+                                onComplete={this.startRecording}
+                            />
+                        )}
+                    </div>
+
+                    <div className={styles.btnStack}>
+                        {(this.state.devices.length > 1) && (
+                            <Button onClick={this.switchVideoDevices}>Switch Camera</Button>
+                        )}
+
+                        {(!this.state.countdown && !this.state.recording && !this.state.lastTakeURL) && (
+                            <Button onClick={this.startCountdown}>Start Recording</Button>
+                        )}
+
+                        {this.state.recording && (
+                            <Button onClick={this.stopRecording}>Stop Recording</Button>
+                        )}
+
+                        {this.state.playing && (
+                            <Button
+                                key={0}
+                                onClick={this.pausePlayback}
+                            >Pause</Button>
+                        )}
+
+                        {(this.state.lastTakeURL && !this.state.playing) && (
+                            <Button onClick={this.playRecording}>Play</Button>
+                        )}
+
+                        {/* Todo: Re-word 'Next' to 'Save' */}
+                        {this.state.lastTakeURL && [
+                            <Button key={0} onClick={this.startCountdown}>Try Again</Button>,
+                            <Button key={1} onClick={this.showDescripton}>Add Description</Button>,
+                            <Button key={2} onClick={this.save}>Save</Button>
+                        ]}
+                    </div>
+                </Grid>
+            </div>
         );
     }
 }
@@ -275,14 +338,16 @@ VideoRecorder.propTypes = {
     onFailure: React.PropTypes.func.isRequired,
     countdownSeconds: React.PropTypes.number
 };
+
 VideoRecorder.defaultProps = {
-    countdownSeconds: 5
+    countdownSeconds: 3
 };
+
 /**
  * Expose a test for media capabilities for use by other components
  */
-VideoRecorder.mediaCheck = function(){
-    return new Promise(function(resolve, reject){
+VideoRecorder.mediaCheck = function () {
+    return new Promise(function (resolve, reject) {
         function mediaOK (stream) {
             stream.getTracks().map((track) => track.stop());
             resolve();
@@ -299,11 +364,10 @@ VideoRecorder.mediaCheck = function(){
     			navigator.msGetUserMedia);
 
         if (!getUserMedia) {
-            reject({name: 'getUserMediaUnsupported'});
+            reject({ name: 'getUserMediaUnsupported' });
         } else {
-            getUserMedia.call(navigator, mediaConstraints, mediaOK, mediaFail);// First get a hold of getUserMedia, if present
+            getUserMedia.call(navigator, mediaConstraints, mediaOK, mediaFail); // First get a hold of getUserMedia, if present
         }
-
     });
 };
 

@@ -1,0 +1,24 @@
+.wrapper {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.option {
+	composes: round from './Button.module.css';
+	width: 95%;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.optionHappy {
+	composes: option;
+	background-image: url('/static/icon-happy-light.svg');
+}
+
+.optionSad {
+	composes: option;
+	background-image: url('/static/icon-sad-light.svg');
+}

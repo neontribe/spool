@@ -59,25 +59,6 @@ export default class AddEntryMutation extends Relay.Mutation {
         rangeBehaviors: ({ status }) => (
             status === 'completed' ? 'ignore' : 'prepend'
         ),
-    },
-    {
-        type: 'REQUIRED_CHILDREN',
-        children: [
-            Relay.QL`
-            fragment on CreateEntryPayload {
-                entryEdge {
-                    node {
-                        requests {
-                            access
-                            userRequest {
-                                id
-                                seen
-                            }
-                        }
-                    }
-                }
-            }`,
-        ],
-    }];
+    }]
   }
 }
