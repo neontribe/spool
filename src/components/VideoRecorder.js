@@ -279,13 +279,18 @@ class VideoRecorder extends Component {
                         )}
 
                         {(this.state.lastTakeURL && !this.state.countdown) && (
-                            <video
-                                className={styles.video}
-                                ref={(ref) => { this._player = ref }}
-                                src={this.state.lastTakeURL}
-                                controls={true}
-                                autoPlay={true}
-                            />
+                            <div className={styles.videoContainer}>
+                                <video
+                                    className={styles.video}
+                                    ref={(ref) => { this._player = ref }}
+                                    src={this.state.lastTakeURL}
+                                    controls={true}
+                                    autoPlay={true}
+                                />
+                                {this.state.text && (
+                                    <div className={styles.text}>{this.state.text}</div>
+                                )}
+                            </div>
                         )}
 
                         {this.state.countdown && (
@@ -305,23 +310,23 @@ class VideoRecorder extends Component {
                             <Button onClick={this.startCountdown}>Start Recording</Button>
                         )}
 
-                        {this.state.recording && (
+                        {(this.state.recording && !this.state.countdown) && (
                             <Button onClick={this.stopRecording}>Stop Recording</Button>
                         )}
 
-                        {this.state.playing && (
+                        {(this.state.playing && !this.state.countdown) && (
                             <Button
                                 key={0}
                                 onClick={this.pausePlayback}
                             >Pause</Button>
                         )}
 
-                        {(this.state.lastTakeURL && !this.state.playing) && (
+                        {(this.state.lastTakeURL && !this.state.countdown && !this.state.playing) && (
                             <Button onClick={this.playRecording}>Play</Button>
                         )}
 
                         {/* Todo: Re-word 'Next' to 'Save' */}
-                        {this.state.lastTakeURL && [
+                        {(this.state.lastTakeURL && !this.state.countdown) && [
                             <Button key={0} onClick={this.startCountdown}>Try Again</Button>,
                             <Button key={1} onClick={this.showDescripton}>Add Description</Button>,
                             <Button key={2} onClick={this.save}>Save</Button>

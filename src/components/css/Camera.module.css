@@ -1,6 +1,7 @@
 .wrapper {
 	display: flex;
 	flex: 1;
+	justify-content: center;
 	position: relative;
 }
 
@@ -94,4 +95,17 @@
 	height: 100%;
 	width: 100%;
 	object-fit: fill;
+}
+
+.text {
+	position: absolute;
+	left: 0;
+	bottom: 2rem;
+	width: 100%;
+	padding: 1rem;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-align: left;
+	overflow: hidden;
+	background-color: rgba(0, 0, 0, .5);
 }
