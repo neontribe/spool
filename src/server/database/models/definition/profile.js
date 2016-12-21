@@ -33,6 +33,18 @@ module.exports = function(sequelize, DataTypes) {
             onUpdate: 'NO ACTION',
             onDelete: 'NO ACTION'
         },
+        introduced: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            field: 'introduced',
+            allowNull: false,
+        },
+        sharing: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            field: 'sharing',
+            allowNull: false,
+        },
         createdAt: {
             type: DataTypes.DATE,
             field: 'created_at',

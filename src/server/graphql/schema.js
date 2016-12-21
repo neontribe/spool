@@ -19,6 +19,8 @@ const MutationType = new ql.GraphQLObjectType({
         createEntry,
         updateUser,
         deleteEntry,
+        updatePrivacy,
+        hideIntroduction
     },
 });
 

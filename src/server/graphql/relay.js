@@ -587,6 +587,51 @@ const createEntry = relayql.mutationWithClientMutationId({
     }
 });
 
+const updatePrivacy = relayql.mutationWithClientMutationId({
+    name: 'UpdatePrivacy',
+    inputFields: {
+        privacy: {
+            type: types.PrivacyInputType
+        }
+    },
+    outputFields: {
+        user: userField,
+    },
+    mutateAndGetPayload: function mutatePrivacyPayload({privacy}, context) {
+        if (!context.Profile) {
+            return {};
+        }
+        return models.Profile.update({
+            sharing: privacy.sharing
+        }, {
+            where: {
+                profileId: context.Profile.profileId
+            }
+            //return an empty object to store mutationId
+        }).then(() => ({}));
+    }
+});
+
+const hideIntroduction = relayql.mutationWithClientMutationId({
+    name: 'HideIntroduction',
+    outputFields: {
+        user: userField,
+    },
+    mutateAndGetPayload: function mutateIntroductionPayload({privacy}, context) {
+        if (!context.Profile) {
+            return {};
+        }
+        return models.Profile.update({
+            introduced: true
+        }, {
+            where: {
+                profileId: context.Profile.profileId
+            }
+            //return an empty object to store mutationId
+        }).then(() => ({}));
+    }
+});
+
 const updateUser = relayql.mutationWithClientMutationId({
     name: 'UpdateUser',
     inputFields: {
@@ -640,5 +685,7 @@ module.exports = {
         createEntry,
         updateUser,
         deleteEntry,
+        updatePrivacy,
+        hideIntroduction
     }
 }

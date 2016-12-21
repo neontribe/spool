@@ -25,12 +25,6 @@ module.exports = {
                 key: 'profile_id'
             }
           },
-          introduced: {
-              type: Sequelize.BOOLEAN,
-          },
-          sharing: {
-              type: Sequelize.BOOLEAN,
-          },
           role_id: {
             type: Sequelize.INTEGER,
             references: {

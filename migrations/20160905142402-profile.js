@@ -32,6 +32,12 @@ module.exports = {
                 key: 'residence_id'
             }
         },
+        introduced: {
+            type: Sequelize.BOOLEAN,
+        },
+        sharing: {
+            type: Sequelize.BOOLEAN,
+        },
         created_at: { 
             type: Sequelize.DATE
         },
