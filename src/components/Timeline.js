@@ -23,7 +23,7 @@ export class Timeline extends Component {
         super(props);
 
         this.state = {
-            showScrollMore: true,
+            showScrollMore: false,
             panel: []
         };
 
@@ -35,6 +35,10 @@ export class Timeline extends Component {
         this.togglePanel = this.togglePanel.bind(this);
 
         window.addEventListener('scroll', this.onScroll, false);
+    }
+
+    componentDidMount () {
+        this.onScroll();
     }
 
     componentWillUnmount () {
