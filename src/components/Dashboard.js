@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import moment from 'moment';
 
 import TopicsOverview from './TopicsOverview';
-import withRoles from '../auth/withRoles.js';
+import { withRoles, userFragment } from './wrappers.js';
 import Layout from './Layout';
 const { Content, Header } = Layout;
 
@@ -74,10 +74,7 @@ export class Dashboard extends Component {
     }
 };
 
-export const DashboardContainer = Relay.createContainer(withRoles(Dashboard, {
-    roles: ['consumer'],
-    fallback: '/settings/configure',
-}), {
+export const DashboardContainer = Relay.createContainer(withRoles(Dashboard, ['consumer']), {
     initialVariables: {
         range: {
             from: moment().add(-1, 'months').startOf('date').format(),
@@ -87,7 +84,7 @@ export const DashboardContainer = Relay.createContainer(withRoles(Dashboard, {
     fragments: {
         user: () => Relay.QL`
             fragment on User {
-                role
+                ${userFragment}
             }`,
         consumer: () => Relay.QL`
             fragment on Consumer {

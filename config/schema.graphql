@@ -27,8 +27,6 @@ type Creator implements Node {
   topics: [Topic]
   entries(after: String, first: Int, before: String, last: Int): EntryConnection
   sharing: Boolean
-  seenSharing: Boolean
-  seenIntroduction: Boolean
   happyCount: Int
   sadCount: Int
 }
@@ -117,8 +115,9 @@ input MediaInput {
 }
 
 type Meta {
-  regions: [RegionDefinitionType]
-  roles: [RoleDefinition]
+  regions: [Region]
+  roles: [Role]
+  residences: [Residence]
 }
 
 type Mutations {
@@ -148,6 +147,17 @@ type PageInfo {
   endCursor: String
 }
 
+type Profile implements Node {
+  # The ID of an object
+  id: ID!
+  name: String
+  age: Int
+  nickname: String
+  services: [Service]
+  residence: Residence
+  isIntroduced: Boolean
+}
+
 type Query {
   # Fetches an object given its ID
   node(
@@ -160,11 +170,17 @@ type Query {
   meta: Meta
 }
 
-type RegionDefinitionType {
+type Region {
   type: String
+  services: [Service]
 }
 
-type RoleDefinition {
+type Residence {
+  type: String
+  name: String
+}
+
+type Role {
   type: String
   name: String
   secret: String
@@ -172,6 +188,11 @@ type RoleDefinition {
 
 type Sentiment {
   type: String
+}
+
+type Service {
+  type: String
+  name: String
 }
 
 type Topic {
@@ -200,9 +221,14 @@ type User implements Node {
   id: ID!
   role: String
   region: String
+  profile: Profile
 }
 
 input UserInput {
   region: String!
-  roleSecret: String!
+  name: String!
+  nickname: String
+  age: Int
+  residence: String!
+  services: [String]
 }

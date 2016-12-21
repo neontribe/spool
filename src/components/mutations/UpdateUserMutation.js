@@ -12,12 +12,9 @@ export default class UpdateUserMutation extends Relay.Mutation {
     }
 
     getVariables() {
-        //this.props.blah
+        const { region, name, nickname, age, residence, services } = this.props;
         return {
-            user: {
-                region: this.props.region,
-                roleSecret: this.props.secret,
-            }
+            user: { region, name, nickname, age, residence, services },
         }
     }
 
@@ -27,6 +24,7 @@ export default class UpdateUserMutation extends Relay.Mutation {
             user {
                 region
                 role
+                profile
             }
         }`
     }

@@ -29,7 +29,7 @@ if(process.env.NODE_ENV !== 'production') {
         locations: error.locations,
         stack: error.stack
     });
-    winston.level = 'warn';
+    winston.level = 'info';
 }
 
 /*
@@ -57,7 +57,9 @@ function reconcileUser() {
                     resolve(user);
                 } else {
                     userCreateCache[userId] = userCreateCache[userId] || models.UserAccount.create({
-                        authHash: hash
+                        authHash: hash,
+                        //todo, avoid this hardcoded value
+                        roleId: 1
                     });
                     return userCreateCache[userId].then(function(user) {
                         return resolve(user);

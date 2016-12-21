@@ -55,20 +55,57 @@ function makeEntry(userId, mediaData, sentimentData, topicsData) {
     }).catch((e) => winston.warn(e));
 }
 
-function updateUser(id, userRegion, roleSecret) {
+function updateUser(id, data) {
     return co(function* () {
-        var findRegion = models.Region.findOne({ where: { type: userRegion } });
-        var findRole = models.Role.findOne({ where: { secret: roleSecret } });
-        var [region, role] = yield [findRegion, findRole];
-        if (region && role) {
-            yield models.UserAccount.update({
-                roleId: role.roleId,
+        var findRegion = models.Region.findOne({ where: { type: data.region } });
+        var findResidence = models.Residence.findOne({ where: { type: data.residence } });
+        var findServices = models.Service.findAll({
+            where: {
+                type: {
+                    $in: data.services
+                }
+            }
+        });
+        var findUser = models.UserAccount.findOne({
+            where: { userId: id },
+            include: helpers.leftProfile });
+        var [region, user, residence, services] = yield [findRegion, findUser, findResidence, findServices];
+        if (region && user && residence && services.length) {
+            var profileData = {
+                age: data.age,
+                name: data.name,
+                altName: data.nickname,
+                residenceId: residence.residenceId,
+            };
+            var Profile = user.Profile;
+            if (!Profile) {
+                Profile = yield models.Profile.create(profileData, {
+                    returning: true
+                });
+            } else {
+                models.Profile.update(profileData, {
+                    where: {
+                        profileId: Profile.profileId
+                    }
+                });
+            }
+
+            yield models.ProfileService.destroy({
+                where: {
+                    profileId: Profile.profileId
+                }
+            });
+
+            var addProfileServices = Profile.addProfileServiceServices(services);
+            var updateUser = models.UserAccount.update({
                 regionId: region.regionId,
+                profileId: Profile.profileId,
             }, {
                 where: {
                     userId: id
                 }
             });
+            yield [addProfileServices, updateUser]
         }
         return {};
     }).catch((e) => winston.warn(e));

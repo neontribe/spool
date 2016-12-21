@@ -35,7 +35,7 @@ class ProfileLink extends Component {
 
     navigateToSettings () {
         this.hideProfile();
-        this.props.router.push('/settings/change');
+        this.props.router.push('/app/settings');
     }
 
     render () {

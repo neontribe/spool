@@ -7,7 +7,6 @@ import { withRouter } from 'react-router';
 
 import Button from './Button';
 import IconChooser from './IconChooser';
-// import withRoles from '../auth/withRoles.js';
 
 export class AccessForm extends Component {
     static fields = [

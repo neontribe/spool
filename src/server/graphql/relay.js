@@ -34,8 +34,27 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
                 where: {
                     userId: context.userId,
                 },
-                include: helpers.includes.UserAccount.leftRoleAndRegion,
+                include: helpers.includes.UserAccount.leftProfile,
             }).catch((e) => winston.warn(e));
+        }
+        if (type === 'Profile') {
+            if(!context.Role || context.Role.type === 'creator') {
+                return models.Profile.findOne({
+                    where: {
+                        profileId: id
+                    },
+                    include: [
+                        {
+                            model: models.UserAccount,
+                            as: 'UserAccount',
+                            where: {
+                                userId: context.userId
+                            }
+                        }
+                    ]
+                }).catch((e) => winston.warn(e));
+            }
+            if(context.Role.type === 'consumer') {}
         }
         if (type === 'Entry') {
             if(!context.Role) {
@@ -88,6 +107,10 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
             // eslint-disable-next-line no-use-before-define
             return UserType;
         }
+        if (obj instanceof models.Profile.Instance){
+            // eslint-disable-next-line no-use-before-define
+            return ProfileType;
+        }
         if (obj.consumer) {
             // eslint-disable-next-line no-use-before-define
             return ConsumerType;
@@ -97,6 +120,57 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
             return CreatorType;
         }
     });
+
+const ResidenceType = new ql.GraphQLObjectType({
+    name: 'Residence',
+    fields: {
+        type: {
+            type: ql.GraphQLString,
+            resolve: (root) => root.type
+        },
+        name: {
+            type: ql.GraphQLString,
+            resolve: (root) => root.name
+        },
+    }
+});
+const ProfileType = new ql.GraphQLObjectType({
+    name: 'Profile',
+    fields: {
+        id: relayql.globalIdField('Profile', (root) => root.profileId),
+        name: {
+            type: ql.GraphQLString,
+            resolve: (root) => root.name
+        },
+        age: {
+            type: ql.GraphQLInt,
+            resolve: (root) => root.age
+        },
+        nickname: {
+            type: ql.GraphQLString,
+            resolve: (root) => root.altName
+        },
+        services: {
+            type: new ql.GraphQLList(types.ServiceType),
+            resolve: (root) => {
+                return root.ProfileServiceServices
+            }
+        },
+        residence: {
+            type: ResidenceType,
+            resolve: (root) => {
+                return root.Residence;
+            }
+        },
+        isIntroduced: {
+            type: ql.GraphQLBoolean,
+            resolve: (root) => {
+                return false;
+            }
+        }
+    },
+    interfaces: [nodeInterface]
+});
 
 const UserType = new ql.GraphQLObjectType({
     name: 'User',
@@ -113,6 +187,12 @@ const UserType = new ql.GraphQLObjectType({
             resolve: (root) => {
                 return root.Region && root.Region.type;
             },
+        },
+        profile: {
+            type: ProfileType,
+            resolve: (root) => {
+                return root.Profile
+            }
         }
     },
     interfaces: [nodeInterface]
@@ -394,18 +474,6 @@ const CreatorType = new ql.GraphQLObjectType({
                 return context.sharing;
             },
         },
-        seenSharing: {
-            type: ql.GraphQLBoolean,
-            resolve: (root, args, context) => {
-                return context.seenSharing;
-            },
-        },
-        seenIntroduction: {
-            type: ql.GraphQLBoolean,
-            resolve: (root, args, context) => {
-                return context.seenIntroduction;
-            },
-        },
         happyCount: {
             type: ql.GraphQLInt,
             resolve: (root, args, context) => {
@@ -441,26 +509,38 @@ const userField = {
             where: {
                 userId: context.userId,
             },
-            include: helpers.includes.UserAccount.leftRoleAndRegion,
+            include: helpers.includes.UserAccount.leftProfile,
         }).catch((e) => winston.warn(e));
     },
 }
-
 const MetaType = new ql.GraphQLObjectType({
     name: 'Meta',
     fields: {
         regions: {
-            type: new ql.GraphQLList(types.RegionDefinitionType),
+            type: new ql.GraphQLList(types.RegionType),
             resolve: () => {
-                return models.Region.findAll().catch((e) => winston.warn(e));
+                return models.Region.findAll({
+                    include: [
+                        {
+                            model: models.Service,
+                            as: 'RegionServiceServices',
+                        }
+                    ]
+                }).catch((e) => winston.warn(e));
             },
         },
         roles: {
-            type: new ql.GraphQLList(types.RoleDefinitionType),
+            type: new ql.GraphQLList(types.RoleType),
             resolve: () => {
                 return models.Role.findAll().catch((e) => winston.warn(e));
             },
         },
+        residences: {
+            type: new ql.GraphQLList(ResidenceType),
+            resolve: () => {
+                return models.Residence.findAll().catch((e) => winston.warn(e));
+            }
+        }
     },
 });
 
@@ -518,7 +598,7 @@ const updateUser = relayql.mutationWithClientMutationId({
         user: userField
     },
     mutateAndGetPayload: function mutateUserPayload({user}, context) {
-        return spool.updateUser(context.userId, user.region, user.roleSecret);
+        return spool.updateUser(context.userId, user);
     }
 }); 
 

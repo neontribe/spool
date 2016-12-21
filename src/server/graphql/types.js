@@ -38,8 +38,8 @@ const TopicType = new ql.GraphQLObjectType({
     }
 });
 
-const RoleDefinitionType = new ql.GraphQLObjectType({
-    name: 'RoleDefinition',
+const RoleType = new ql.GraphQLObjectType({
+    name: 'Role',
     fields: {
         type: { type: ql.GraphQLString, resolve: (role) => role.type },
         name: { type: ql.GraphQLString, resolve: (role) => role.name },
@@ -47,10 +47,24 @@ const RoleDefinitionType = new ql.GraphQLObjectType({
     }
 });
 
-const RegionDefinitionType = new ql.GraphQLObjectType({
-    name: 'RegionDefinitionType',
+const ServiceType = new ql.GraphQLObjectType({
+    name: 'Service',
+    fields: {
+        type: { type: ql.GraphQLString, resolve: (root) => root.type },
+        name: { type: ql.GraphQLString, resolve: (root) => root.name }
+    }
+});
+
+const RegionType = new ql.GraphQLObjectType({
+    name: 'Region',
     fields: {
         type: { type: ql.GraphQLString, resolve: (region) => region.type },
+        services: {
+            type: new ql.GraphQLList(ServiceType),
+            resolve: (root) => {
+                return root.RegionServiceServices
+            }
+        }
     }
 });
 
@@ -127,8 +141,20 @@ const UserInputType = new ql.GraphQLInputObjectType({
         region: {
             type: new ql.GraphQLNonNull(ql.GraphQLString)
         },
-        roleSecret: {
+        name: {
             type: new ql.GraphQLNonNull(ql.GraphQLString)
+        },
+        nickname: {
+            type: ql.GraphQLString,
+        },
+        age: {
+            type: ql.GraphQLInt,
+        },
+        residence: {
+            type: new ql.GraphQLNonNull(ql.GraphQLString)
+        },
+        services: {
+            type: new ql.GraphQLList(ql.GraphQLString)
         }
     }
 });
@@ -137,8 +163,9 @@ module.exports = {
     MediaType,
     SentimentType,
     TopicType,
-    RoleDefinitionType,
-    RegionDefinitionType,
+    RoleType,
+    RegionType,
+    ServiceType,
     MediaInputType,
     EntryInputType,
     DateRangeInputType,

@@ -7,7 +7,7 @@ import { EntryContainer, Entry } from './Entry';
 import Layout from './Layout';
 // import Intro from './Intro';
 import Grid from './Grid';
-import withRoles from '../auth/withRoles.js';
+import { withRoles, withRequiredIntroduction, withRequiredSetup, userFragment } from './wrappers.js';
 
 import styles from './css/Gallery.module.css';
 
@@ -164,17 +164,15 @@ export class Gallery extends Component {
     }
 }
 
-export const GalleryContainer = Relay.createContainer(withRoles(Gallery, {
-    roles: ['creator'],
-    fallback: '/settings/configure',
-}), {
+const WrappedGallery = withRoles(withRequiredSetup(withRequiredIntroduction(Gallery)), ['creator']);
+export const GalleryContainer = Relay.createContainer(WrappedGallery, {
     initialVariables: {
         first: 100,
     },
     fragments: {
         user: () => Relay.QL`
         fragment on User {
-            role
+                ${userFragment}
         }`,
         creator: () => Relay.QL`
         fragment on Creator {

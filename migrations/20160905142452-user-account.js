@@ -18,10 +18,14 @@ module.exports = {
           auth_hash: {
               type: Sequelize.STRING(256),
           },
-          seen_introduction: {
-              type: Sequelize.BOOLEAN,
+          profile_id: {
+            type: Sequelize.INTEGER,
+            references: {
+                model: 'profile',
+                key: 'profile_id'
+            }
           },
-          seen_sharing: {
+          introduced: {
               type: Sequelize.BOOLEAN,
           },
           sharing: {

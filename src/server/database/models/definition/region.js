@@ -24,6 +24,8 @@ module.exports.initRelations = function() {
     var model = require('../index');
     var Region = model.Region;
     var UserAccount = model.UserAccount;
+    var RegionService = model.RegionService;
+    var Service = model.Service;
     var Role = model.Role;
 
     Region.hasMany(UserAccount, {
@@ -42,4 +44,19 @@ module.exports.initRelations = function() {
         onUpdate: 'NO ACTION'
     });
 
+    Region.hasMany(RegionService, {
+        as: 'ServiceRegionIdFkeys',
+        foreignKey: 'region_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'NO ACTION'
+    });
+
+    Region.belongsToMany(Service, {
+        as: 'RegionServiceServices',
+        through: RegionService,
+        foreignKey: 'region_id',
+        otherKey: 'service_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'NO ACTION'
+    });
 };
