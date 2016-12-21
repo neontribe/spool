@@ -18,8 +18,7 @@ class EntryCarousel extends Component {
         super(props);
 
         this.state = {
-            activeIndex: 0,
-            intervalId: null
+            activeIndex: 0
         };
     }
 
@@ -34,8 +33,8 @@ class EntryCarousel extends Component {
     }
 
     componentDidMount () {
-        setTimeout(() => {
-            var intervalId = setInterval(() => {
+        this.timeout = setTimeout(() => {
+            this.intervalId = setInterval(() => {
                 if (Math.random() >= 0.5) {
                     var newIndex = this.state.activeIndex + 1;
 
@@ -45,7 +44,6 @@ class EntryCarousel extends Component {
 
                     // store intervalId in the state so it can be accessed later:
                     this.setState({
-                        intervalId: intervalId,
                         activeIndex: newIndex
                     });
                 }
@@ -54,7 +52,8 @@ class EntryCarousel extends Component {
     }
 
     componentWillUnmount () {
-        clearInterval(this.state.intervalId);
+        clearTimeout(this.timeout);
+        clearInterval(this.intervalId);
     }
 
     render () {
@@ -80,7 +79,7 @@ export class Gallery extends Component {
     }
 
     shuffle (array) {
-        var currentIndex = array.length
+        var currentIndex = array.length;
         var temporaryValue, randomIndex;
 
         while (0 !== currentIndex) {
