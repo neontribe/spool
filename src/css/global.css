@@ -84,6 +84,19 @@ textarea {
     background: #fff;
 }
 
+select,
+[type="text"],
+[type="number"] {
+    padding: 1rem;
+    border: 4px solid #34404c;
+    background-color: #fff;
+}
+
+label {
+    display: block;
+    margin-bottom: 1rem;
+}
+
 @media all and (min-width: 1920px) {
     html {
         font-size: 22px;

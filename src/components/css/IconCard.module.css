@@ -66,5 +66,5 @@ with CSSModules but can't find an alternative.
 	margin: 1rem auto;
 	background-position: center center;
 	background-repeat: no-repeat;
-	background-size: cover;
+	background-size: contain;
 }
