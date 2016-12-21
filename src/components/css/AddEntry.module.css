@@ -28,3 +28,11 @@
 .stepComplete {
 	background-color: #1e2c37;
 }
+
+.topics {
+	display: flex;
+}
+
+.topics > * {
+	margin: 0 .5rem;
+}
