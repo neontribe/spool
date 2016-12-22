@@ -78,22 +78,6 @@ export class Gallery extends Component {
         creator: React.PropTypes.object.isRequired,
     }
 
-    shuffle (array) {
-        var currentIndex = array.length;
-        var temporaryValue, randomIndex;
-
-        while (0 !== currentIndex) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-
-        return array;
-    }
-
     // Returns the latest entry followed by up to 4 randomised entry carousels
     renderEntries () {
         var EntryComponent = (this.props.relay) ? EntryContainer : Entry;
@@ -105,8 +89,6 @@ export class Gallery extends Component {
             var items = [
                 <EntryComponent key={0} entry={latest.node} thumbnailMode={true} />
             ];
-
-            entries = this.shuffle(entries);
 
             var slots = entries.length;
 
@@ -167,7 +149,8 @@ export class Gallery extends Component {
 const WrappedGallery = withRoles(withRequiredSetup(withRequiredIntroduction(Gallery)), ['creator']);
 export const GalleryContainer = Relay.createContainer(WrappedGallery, {
     initialVariables: {
-        first: 100,
+        first: 15,
+        random: true,
     },
     fragments: {
         user: () => Relay.QL`
@@ -178,7 +161,7 @@ export const GalleryContainer = Relay.createContainer(WrappedGallery, {
         fragment on Creator {
             happyCount
             sadCount
-            entries(first: $first) {
+            entries(first: $first, random: $random) {
                 edges {
                     node {
                         id,

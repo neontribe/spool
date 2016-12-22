@@ -25,7 +25,7 @@ type Creator implements Node {
   # The ID of an object
   id: ID!
   topics: [Topic]
-  entries(after: String, first: Int, before: String, last: Int): EntryConnection
+  entries(random: Boolean, after: String, first: Int, before: String, last: Int): EntryConnection
   happyCount: Int
   sadCount: Int
 }
