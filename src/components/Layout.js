@@ -9,23 +9,31 @@ import styles from './css/App.module.css';
 
 class Header extends Component {
     constructor(props) {
-      super(props);
+        super(props);
 
-      this.logout = this.logout.bind(this);
+        this.logout = this.logout.bind(this);
 
-      this.state = {
-        profile: props.auth.getProfile(),
-        hamburgerExpanded: false
-      };
+        this.state = {
+            profile: props.auth.getProfile(),
+            hamburgerExpanded: false
+        };
+        this.onHamburgerExpand = _.partial(this.onHamburgerToggle.bind(this), 'expanded');
+        this.onHamburgerCollapse = _.partial(this.onHamburgerToggle.bind(this), 'collapsed');
+        this.handleProfileUpdated = this.handleProfileUpdated.bind(this);
+    }
 
-      this.onHamburgerExpand = _.partial(this.onHamburgerToggle.bind(this), 'expanded');
-      this.onHamburgerCollapse = _.partial(this.onHamburgerToggle.bind(this), 'collapsed');
-
-      props.auth.on('profile_updated', (newProfile) => {
+    handleProfileUpdated(profile) {
         this.setState({
-          profile: newProfile
+            profile
         });
-      });
+    }
+
+    componentDidMount() {
+        this.props.auth.on('profile_updated', this.handleProfileUpdated);
+    }
+
+    componentWillUnmount() {
+        this.props.auth.removeListener('profile_updated', this.handleProfileUpdated);
     }
 
     logout (e) {
