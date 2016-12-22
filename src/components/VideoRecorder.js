@@ -264,9 +264,14 @@ class VideoRecorder extends Component {
 
                 <Grid enforceConsistentSize={true}>
                     <div className={styles.outputWrapper}>
-                        {/*this.state.connecting && (
-                            <div className='connecting' />
-                        )*/}
+                        {this.state.connecting && (
+                            <div className={styles.connecting}>
+                                <div>
+                                    <span>Connecting</span>
+                                    Please Wait&hellip;
+                                </div>
+                            </div>
+                        )}
 
                         {this.state.streaming && (
                             <video

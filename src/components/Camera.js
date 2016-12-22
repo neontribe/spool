@@ -184,11 +184,14 @@ class Camera extends Component {
 
                 <Grid enforceConsistentSize={true}>
                     <div className={styles.outputWrapper}>
-                        {/*this.state.connecting && (
-                            {<ResponsiveEmbed a4by3>
-                                <div className='connecting' />
-                            </ResponsiveEmbed>}
-                        )*/}
+                        {this.state.connecting && (
+                            <div className={styles.connecting}>
+                                <div>
+                                    <span>Connecting</span>
+                                    Please Wait&hellip;
+                                </div>
+                            </div>
+                        )}
 
                         {this.state.streaming && (
                             <video
