@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import { IconCard } from './IconCard';
 import Grid from './Grid';
 
-import styles from './css/IconChooser.module.css';
+import styles from './css/IconChooserGrid.module.css';
 import headings from '../css/Headings.module.css';
 
-class IconChooser extends Component {
+class IconChooserGrid extends Component {
     constructor (props) {
         super(props);
 
@@ -45,22 +45,31 @@ class IconChooser extends Component {
             <div className={styles.wrapper}>
                 <h2 className={headings.large}>{this.props.label}</h2>
 
-                {this.props.choices.map((t, i) => (
-                    <IconCard
-                        key={i}
-                        onChange={this.handleChange}
-                        checked={(this.state.value.indexOf(t.type) !== -1)}
-                        icon={t.type}
-                        message={t.name}
-                        value={t.type}
-                    />
-                ))}
+                <Grid enforceConsistentSize={true}>
+                    {this.props.choices.map((t, i) => (
+                        <IconCard
+                            key={i}
+                            onChange={this.handleChange}
+                            checked={(this.state.value.indexOf(t.type) !== -1)}
+                            icon={t.type}
+                            message={t.name}
+                            value={t.type}
+                            classNames={{
+                                wrapper: styles.iconWrapper,
+                                option: styles.option,
+                                message: styles.message,
+                                icon: styles.icon,
+                                field: styles.field
+                            }}
+                        />
+                    ))}
+                </Grid>
             </div>
         );
     }
 }
 
-IconChooser.propTypes = {
+IconChooserGrid.propTypes = {
     initialValue: React.PropTypes.array,
     onChange: React.PropTypes.func,
     choices: React.PropTypes.array,
@@ -70,8 +79,8 @@ IconChooser.propTypes = {
     applyGrid: React.PropTypes.bool
 };
 
-IconChooser.defaultProps = {
+IconChooserGrid.defaultProps = {
     initialValue: []
 };
 
-export default IconChooser;
+export default IconChooserGrid;

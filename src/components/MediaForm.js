@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import _ from 'lodash';
 
-import IconChooser from './IconChooser';
+import IconChooserGrid from './IconChooserGrid';
 import TextForm from './TextForm';
 import VideoForm from './VideoForm';
 import ImageForm from './ImageForm';
@@ -57,7 +57,7 @@ class MediaForm extends Component {
 
     renderChooser () {
         return (
-            <IconChooser
+            <IconChooserGrid
                 label='How would you like to create the entry?'
                 choices={choices}
                 maxSelections={1}

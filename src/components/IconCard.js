@@ -11,6 +11,11 @@ export class IconCard extends Component {
         value: React.PropTypes.string,
         icon: React.PropTypes.string.isRequired,
         message: React.PropTypes.string.isRequired,
+        classNames: React.PropTypes.object,
+    }
+
+    static defaultProps = {
+        classNames: {},
     }
 
     renderStatic () {
@@ -21,22 +26,22 @@ export class IconCard extends Component {
 
     renderCheckbox () {
         return (
-            <label className={styles.wrapper}>
+            <label className={this.props.classNames.wrapper || styles.wrapper}>
                 <input
                     type='checkbox'
-                    className={styles.field}
+                    className={this.props.classNames.field || styles.field}
                     checked={this.props.checked}
                     value={this.props.value}
                     onChange={this.props.onChange}
                 />
 
-                <div className={styles.option}>
+                <div className={this.props.classNames.option || styles.option}>
                     <Icon
-                        className={styles.icon}
+                        className={this.props.classNames.icon || styles.icon}
                         icon={this.props.icon}
                         light={true}
                     />
-                    <div className={styles.message}>{this.props.message}</div>
+                    <div className={this.props.classNames.message || styles.message}>{this.props.message}</div>
                 </div>
             </label>
         );

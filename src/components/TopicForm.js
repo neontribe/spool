@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Button from './Button';
-import IconChooser from './IconChooser';
+import IconChooserGrid from './IconChooserGrid';
 
 import styles from './css/TopicForm.module.css';
 import helpers from '../css/Helpers.module.css';
@@ -31,7 +31,7 @@ class TopicForm extends Component {
     render () {
         return (
             <div className={styles.wrapper}>
-                <IconChooser
+                <IconChooserGrid
                     label='What do you want to talk about?'
                     choices={this.props.topics}
                     onChange={this.handleChange}

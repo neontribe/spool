@@ -98,12 +98,17 @@ select,
 [type="number"] {
     padding: 1rem;
     border: 4px solid #34404c;
+    margin: 0 1rem 1rem 0;
     background-color: #fff;
 }
 
 label {
     display: block;
     margin-bottom: 1rem;
+}
+
+table {
+    text-align: left;
 }
 
 @media all and (min-width: 1920px) {

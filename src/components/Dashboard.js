@@ -6,6 +6,10 @@ import moment from 'moment';
 import TopicsOverview from './TopicsOverview';
 import { withRoles, userFragment } from './wrappers.js';
 import Layout from './Layout';
+
+import styles from './css/Dashboard.module.css';
+import headings from '../css/Headings.module.css';
+
 const { Content, Header } = Layout;
 
 export class Dashboard extends Component {
@@ -36,38 +40,51 @@ export class Dashboard extends Component {
 
     render () {
         const { access } = this.props.consumer;
+
         return (
             <Layout>
-                <Header auth={this.props.auth}>
-                    <p>test</p>
-                </Header>
+                <Header auth={this.props.auth} />
                 <Content>
                     <div>
-                        {/*<FormGroup controlId="dateRange">*/}
-                        <div>
-                            {/*<ControlLabel>Scope</ControlLabel>*/}
-                            <h2>Scope</h2>
-                            <Link to="/app/access"><span style={{color: 'red'}}>Access (click me)</span></Link>
-                            <select value={this.state.rangeFrom} onChange={this.changeRange}>
-                                <option value="0,days">Today</option>
-                                <option value="-1,months">30 Days</option>
-                                <option value="-3,months">3 Months</option>
-                                <option value="-1,years">Year</option>
-                            </select>
+                        <div className={styles.controls}>
+                            <Link to='/app/access' className={styles.button}>Access Form</Link>
                         </div>
-                        {/*</FormGroup>*/}
+
+                        <div>
+                            <h2 className={headings.regular}>Scope</h2>
+                            <div>
+                                <select value={this.state.rangeFrom} onChange={this.changeRange}>
+                                    <option value='0,days'>Today</option>
+                                    <option value='-1,months'>30 Days</option>
+                                    <option value='-3,months'>3 Months</option>
+                                    <option value='-1,years'>Year</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <p>Active Creators: {access.activity.active}</p>
-                        <p>Stale: {access.activity.stale}</p>
-                    </div>
-                    <div>
-                        <p>Happy Entries: {access.sentiment.happy}</p>
-                        <p>Sad Entries: {access.sentiment.sad}</p>
-                    </div>
-                   <div>
-                       <TopicsOverview topics={access.topics} />
-                   </div>
+
+                    <table className={styles.table}>
+                        <tbody>
+                            <tr>
+                                <th>Active Creators:</th>
+                                <td>{access.activity.active}</td>
+                            </tr>
+                            <tr>
+                                <th>Stale:</th>
+                                <td>{access.activity.stale}</td>
+                            </tr>
+                            <tr>
+                                <th>Happy Entries:</th>
+                                <td>{access.sentiment.happy}</td>
+                            </tr>
+                            <tr>
+                                <th>Sad Entries:</th>
+                                <td>{access.sentiment.sad}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <TopicsOverview topics={access.topics} />
                </Content>
             </Layout>
         );

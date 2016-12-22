@@ -96,9 +96,7 @@ export default class Access extends Component {
     render () {
         return (
             <Layout>
-                <Header auth={this.props.auth}>
-                    <p>Test</p>
-                </Header>
+                <Header auth={this.props.auth} />
                 <Content>
                     <AccessFormContainer onSuccess={this.handleFormSuccess} consumer={this.props.consumer}/>
                     {this.renderCSVButton()}

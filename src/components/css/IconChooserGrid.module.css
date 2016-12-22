@@ -3,13 +3,24 @@
 }
 
 .wrapper {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	justify-content: center;
+	margin-bottom: 1rem;
+}
+
+.iconWrapper {
 	position: relative;
-	display: inline-block;
+	display: flex;
+	align-self: stretch;
+	flex: 1;
 	margin: 0;
-	margin-bottom: 2px;
-	margin-right: 2px;
-	border: 2px solid #34404c;
-	background-color: #1e2c37;
+	background-color: #34404c;
+
+	box-shadow:
+		0 10px 20px rgba(0, 0, 0, 0.19),
+		0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
 .option {
@@ -18,7 +29,7 @@
 	align-self: stretch;
 	align-items: center;
 	flex: 1;
-	height: 100%;
+	height: auto;
 	cursor: pointer;
 }
 
@@ -29,22 +40,28 @@
 }
 
 .message {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	height: 4rem;
 	width: 100%;
+	padding: .5rem;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-top-width: 2px;
+	background-color: rgba(0, 0, 0, .2);
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	text-align: center;
+	font-size: 1.25rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 1rem;
-	font-size: 1rem;
-	white-space: nowrap;
 }
 
 .icon {
 	height: 100%;
 	width: 100%;
-	padding: .5rem 1rem;
+	padding: 0;
 }
 
 /*
@@ -54,9 +71,9 @@ with CSSModules but can't find an alternative.
 
 */
 .icon > div {
-	height: 2rem !important;
-	width: 2rem !important;
-	margin: 0;
+	height: calc(100% - 6rem) !important;
+	width: calc(100% - 6rem) !important;
+	margin: 1rem auto;
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: contain;

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import DatePicker from 'react-bootstrap-date-picker';
 import _ from 'lodash';
 import moment from 'moment';
 import Relay from 'react-relay';
 import { withRouter } from 'react-router';
 
+import DatePicker from './DatePicker';
 import Button from './Button';
 import IconChooser from './IconChooser';
 
@@ -35,15 +35,15 @@ export class AccessForm extends Component {
         this.handleTo = _.partial(this.handleInputChange, 'to');
     }
 
-    handleInputChange(key, evt) {
+    handleInputChange (key, evt) {
         this.handleChange(key, evt.target.value);
     }
 
-    handleFromChange(value) {
+    handleFromChange (value) {
         this.handleChange('from', value);
     }
 
-    handleToChange(value) {
+    handleToChange (value) {
         this.handleChange('to', value);
     }
 
@@ -73,7 +73,7 @@ export class AccessForm extends Component {
 
         return (
             <div>
-                <h2>Access Form</h2>
+                <h1>Access Form</h1>
                 <div>
                     <IconChooser
                         label='Entries tagged with topic'
@@ -81,22 +81,16 @@ export class AccessForm extends Component {
                         maxSelections={1}
                         onChange={this.handleTopics}
                     />
-                    <div>
-                        <DatePicker
-                            value={this.state.from}
-                            onChange={this.handleFromChange}
-                        />
-                    </div>
-                    <div>
-                        <DatePicker
-                            value={this.state.to}
-                            onChange={this.handleToChange}
-                        />
-                    </div>
+                    <DatePicker
+                        value={this.state.from}
+                        onChange={this.handleFromChange}
+                    />
+                    <DatePicker
+                        value={this.state.to}
+                        onChange={this.handleToChange}
+                    />
                 </div>
-                <div>
-                    <Button onClick={this.handleSuccess}>Search</Button>
-                </div>
+                <Button onClick={this.handleSuccess}>Search</Button>
             </div>
         );
     }
