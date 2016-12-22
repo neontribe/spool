@@ -16,7 +16,6 @@ export class SettingsForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleArrayChange = this.handleArrayChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.submit = this.submit.bind(this);
 
         const changed = false;
         const user = this.props.user;
@@ -181,10 +180,6 @@ export class SettingsForm extends Component {
         return error ? (<p className={styles.error}><span>{error}</span></p>) : null;
     }
 
-    submit () {
-        this.refs.form.submit();
-    }
-
     render () {
         const errors = this.errors();
         const ready = !errors;
@@ -192,7 +187,6 @@ export class SettingsForm extends Component {
         return (
             <form
                 ref='form'
-                onSubmit={!errors ? this.handleSubmit : noop}
                 className={styles.form}
             >
                 <div className={styles.row}>
@@ -265,7 +259,7 @@ export class SettingsForm extends Component {
 
                 <div className={styles.controls}>
                     {!errors && (
-                        <Button onClick={this.submit}>OK</Button>
+                        <Button onClick={this.handleSubmit}>OK</Button>
                     )}
                 </div>
             </form>
