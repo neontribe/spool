@@ -5,7 +5,6 @@ import { Carousel } from 'react-bootstrap';
 
 import { EntryContainer, Entry } from './Entry';
 import Layout from './Layout';
-// import Intro from './Intro';
 import Grid from './Grid';
 import { withRoles, withRequiredIntroduction, withRequiredSetup, userFragment } from './wrappers.js';
 
@@ -42,7 +41,6 @@ class EntryCarousel extends Component {
                         newIndex = 0;
                     }
 
-                    // store intervalId in the state so it can be accessed later:
                     this.setState({
                         activeIndex: newIndex
                     });
@@ -97,23 +95,36 @@ export class Gallery extends Component {
             }
 
             var entryIndexCounter = 0;
+            var slides = [];
 
-            for (var i = 1; i <= slots; i++) {
-                var slideCount = Math.ceil(entries.length / slots);
+            while (entries.length) {
+                for (var i = 0; i < slots; i++) {
+                    if (entries.length) {
+                        if (!slides[i]) {
+                            slides[i] = [];
+                        }
 
-                if (slideCount > maxSlideCount) {
-                    slideCount = maxSlideCount;
+                        var entry = entries.shift();
+
+                        slides[i].push(entry);
+                    }
+                }
+            }
+
+            for (var i = 0; i < slides.length; i++) {
+                var _slides = [];
+
+                for (var j = 0; j < slides[i].length; j++) {
+                    var entry = slides[i][j];
+
+                    _slides.push(
+                        <EntryComponent key={j} entry={entry.node} thumbnailMode={true} />
+                    );
                 }
 
-                var _entries = entries.slice(entryIndexCounter, entryIndexCounter + slideCount);
-
-                entryIndexCounter += slideCount;
-
                 items.push(
-                    <EntryCarousel key={i} offset={1000 + (i * 500)}>
-                        {_entries.map((entry, j) => (
-                            <EntryComponent key={j} entry={entry.node} thumbnailMode={true} />
-                        ))}
+                    <EntryCarousel key={i + 1} offset={1000 + (i * 500)}>
+                        {_slides}
                     </EntryCarousel>
                 );
             }
@@ -124,7 +135,7 @@ export class Gallery extends Component {
 
     render () {
         var addEntryControl = (
-            <Link to={'/app/add'} className={styles.addEntryControl}>
+            <Link to='/app/add' className={styles.addEntryControl}>
                 <span className={styles.button}>
                     <span className={styles.handIcon}></span> Add New Entry
                 </span>
@@ -147,6 +158,7 @@ export class Gallery extends Component {
 }
 
 const WrappedGallery = withRoles(withRequiredSetup(withRequiredIntroduction(Gallery)), ['creator']);
+
 export const GalleryContainer = Relay.createContainer(WrappedGallery, {
     initialVariables: {
         first: 15,
