@@ -1,0 +1,27 @@
+.controls {
+	float: right;
+}
+
+.button {
+	composes: raised from '../css/Button.module.css';
+}
+
+.table {
+	border-spacing: 0; 
+	border-collapse: collapse;
+	margin-bottom: 1rem;
+}
+
+.table td,
+.table th {
+	padding: .5rem;
+	font-weight: normal;
+}
+
+.table td {
+	text-align: center;
+}
+
+.table tr:nth-child(odd) {
+	background-color: #34404c;
+}

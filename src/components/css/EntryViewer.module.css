@@ -1,0 +1,38 @@
+.wrapper {
+	display: flex;
+	flex: 1;
+}
+
+.contentWrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	max-height: 100%;
+	width: 100%;
+}
+
+.content {
+	height: 100%;
+	overflow: auto;
+}
+
+.text {
+	font-size: 1.25rem;
+}
+
+.header > * {
+	margin: 0 1rem;
+}
+
+.topics {
+	display: flex;
+}
+
+.topics > * {
+	margin: 0 .5rem;
+}
+
+.controls {
+	margin-top: 2rem;
+	text-align: center;
+}

@@ -1,0 +1,43 @@
+.icon {
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.happy { composes: icon; background-image: url('/static/icon-happy.svg'); }
+.happyLight { composes: icon; background-image: url('/static/icon-happy-light.svg'); }
+
+.sad { composes: icon; background-image: url('/static/icon-sad.svg'); }
+.sadLight { composes: icon; background-image: url('/static/icon-sad-light.svg'); }
+
+.work { composes: icon; background-image: url('/static/icon-work.svg'); }
+.workLight { composes: icon; background-image: url('/static/icon-work-light.svg'); }
+
+.learning { composes: icon; background-image: url('/static/icon-learning.svg'); }
+.learningLight { composes: icon; background-image: url('/static/icon-learning-light.svg'); }
+
+.home { composes: icon; background-image: url('/static/icon-home.svg'); }
+.homeLight { composes: icon; background-image: url('/static/icon-home-light.svg'); }
+
+.food { composes: icon; background-image: url('/static/icon-food.svg'); }
+.foodLight { composes: icon; background-image: url('/static/icon-food-light.svg'); }
+
+.relationships { composes: icon; background-image: url('/static/icon-people.svg'); }
+.relationshipsLight { composes: icon; background-image: url('/static/icon-people-light.svg'); }
+
+.activities { composes: icon; background-image: url('/static/icon-activities.svg'); }
+.activitiesLight { composes: icon; background-image: url('/static/icon-activities-light.svg'); }
+
+.travel { composes: icon; background-image: url('/static/icon-transport.svg'); }
+.travelLight { composes: icon; background-image: url('/static/icon-transport-light.svg'); }
+
+.health { composes: icon; background-image: url('/static/icon-health.svg'); }
+.healthLight { composes: icon; background-image: url('/static/icon-health-light.svg'); }
+
+.video { composes: icon; background-image: url('/static/icon-video.svg'); }
+.videoLight { composes: icon; background-image: url('/static/icon-video-light.svg'); }
+
+.photo { composes: icon; background-image: url('/static/icon-photo.svg'); }
+.photoLight { composes: icon; background-image: url('/static/icon-photo-light.svg'); }
+
+.typing { composes: icon; background-image: url('/static/icon-text.svg'); }
+.typingLight { composes: icon; background-image: url('/static/icon-text-light.svg'); }
