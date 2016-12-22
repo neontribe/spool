@@ -12,13 +12,13 @@ type Consumer implements Node {
 
 input CreateEntryInput {
   entry: EntryInput
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type CreateEntryPayload {
   creator: Creator
   entryEdge: EntryEdge
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type Creator implements Node {
@@ -54,18 +54,19 @@ input DateRangeInput {
 
 input DeleteEntryInput {
   entryId: Int
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type DeleteEntryPayload {
   creator: Creator
   deletedEntryId: Int
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type Entry implements Node {
   # The ID of an object
   id: ID!
+  owner: EntryOwner
   media: Media
   sentiment: Sentiment
   topics: [Topic]
@@ -97,13 +98,19 @@ input EntryInput {
   topics: [String]
 }
 
+type EntryOwner {
+  age: Int
+  residency: String
+  services: [Service]
+}
+
 input HideIntroductionInput {
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type HideIntroductionPayload {
   user: User
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type Media {
@@ -223,22 +230,22 @@ type TopicCount {
 
 input UpdatePrivacyInput {
   privacy: PrivacyInput
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type UpdatePrivacyPayload {
   user: User
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 input UpdateUserInput {
   user: UserInput
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type UpdateUserPayload {
   user: User
-  clientMutationId: String!
+  clientMutationId: String
 }
 
 type User implements Node {

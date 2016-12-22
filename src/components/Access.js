@@ -10,10 +10,6 @@ import Button from './Button';
 
 const { Content, Header } = Layout;
 
-// const AccessList = ({ children }) => (
-//     <ul>{children}</ul>
-// );
-
 const link = document.createElement('a');
 
 export default class Access extends Component {
@@ -54,6 +50,9 @@ export default class Access extends Component {
                 topics: node.topics.map(({name}) => name).join(', '),
                 sentiment: node.sentiment.type,
                 creationDate: node.created,
+                creatorAge: node.owner.age,
+                creatorResidency: node.owner.residency,
+                creatorServices: node.owner.services && node.owner.services.map(({name}) => name).join(', '),
             };
             return row;
         });
@@ -130,6 +129,13 @@ export const AccessContainer = Relay.createContainer(withRoles(Access, ['consume
                         edges {
                             node {
                                 id
+                                owner {
+                                    age
+                                    residency
+                                    services {
+                                        name
+                                    }
+                                }
                                 media {
                                     text
                                 }
