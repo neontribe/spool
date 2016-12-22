@@ -85,9 +85,15 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
                             model: models.UserAccount,
                             as: 'Owner',
                             where: {
-                                sharing: true,
                                 regionId: context.regionId
-                            }
+                            },
+                            include: [{
+                                model: models.Profile,
+                                as: 'Profile',
+                                where: {
+                                    sharing: true,
+                                }
+                            }]
                         },
                         ...helpers.includes.Entry.basic
                     ],
@@ -399,11 +405,15 @@ const DataAccessType = new ql.GraphQLObjectType({
                             model: models.UserAccount,
                             as: 'Owner',
                             where: {
-                                //and avoiding any entries whos sharing is diabled
-                                //or their origin region is not part of the request
-                                sharing: true,
                                 regionId: regionId
-                            }
+                            },
+                            include: [{
+                                model: models.Profile,
+                                as: 'Profile',
+                                where: {
+                                    sharing: true,
+                                }
+                            }]
                         },
                     ]
                 }).catch((e) => winston.warn(e)), args);
