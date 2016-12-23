@@ -8,6 +8,7 @@ import Layout from './Layout';
 import Grid from './Grid';
 import Icon from './Icon';
 import Button from './Button';
+import DeleteEntryMutation from './mutations/DeleteEntryMutation.js';
 
 import styles from './css/EntryViewer.module.css';
 
@@ -28,15 +29,39 @@ class Paragraph extends Component {
 }
 
 export default class EntryViewer extends Component {
+    constructor(props) {
+        super(props);
+        this.handleOnClick = this.handleOnClick.bind(this);
+    }
+    handleOnClick () {
+        var onSuccess = () => {
+            browserHistory.goBack();
+        };
+
+        const { node, creator } = this.props;
+        this.props.relay.commitUpdate(
+            new DeleteEntryMutation({
+                entry: node,
+                creator
+            }),
+            {
+                onSuccess
+            });
+    }
+    renderMenuContent() {
+        return (<Button onClick={this.handleOnClick}>Delete</Button>)
+    }
     render () {
         var entry = this.props.node;
+        if(!entry) {
+            return null;
+        }
 
         return (
             <Layout>
-                <Header auth={this.props.auth}>
+                <Header auth={this.props.auth} menuContent={this.renderMenuContent()}>
                     <div className={styles.header}>
                         <div>Created {moment(entry.created).format('Do MMMM')}</div>
-
                         <Icon
                             icon={entry.sentiment.type}
                             light={true}
@@ -52,7 +77,6 @@ export default class EntryViewer extends Component {
                                 </li>
                             ))}
                         </ul>
-
                         {/* Todo: Add view counter */}
                         <span>8 views</span>
                     </div>
@@ -71,7 +95,7 @@ export default class EntryViewer extends Component {
                                     <div className={styles.content}>
                                         <Paragraph>{entry.media.text}</Paragraph>
                                     </div>
-                                )}
+                                    )}
 
                                 {/* Todo: Add router back functionality */}
                                 <div className={styles.controls}>
@@ -101,7 +125,13 @@ export const EntryViewerContainer = Relay.createContainer(EntryViewer, {
                 type
             }
             ${EntryContainer.getFragment('entry')}
+            ${DeleteEntryMutation.getFragment('entry')}
         }
         `,
+        creator: () => Relay.QL`
+        fragment on Creator {
+            id
+            ${DeleteEntryMutation.getFragment('creator')}
+        }`,
     }
 });

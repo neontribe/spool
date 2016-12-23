@@ -718,14 +718,14 @@ const deleteEntry = relayql.mutationWithClientMutationId({
     name: 'DeleteEntry',
     inputFields: {
         entryId: {
-            type: ql.GraphQLInt,
+            type: ql.GraphQLString,
         }
     },
     outputFields: {
         creator: creatorField,
         deletedEntryId: {
-            type: ql.GraphQLInt,
-            resolve: (entryId) => entryId,
+            type: ql.GraphQLString,
+            resolve: ({entryId}) => entryId,
         }
     },
     mutateAndGetPayload: function mutateUserPayload({entryId}, context) {
@@ -736,7 +736,7 @@ const deleteEntry = relayql.mutationWithClientMutationId({
                 entryId: id,
                 ownerId,
             },
-        }).catch((e) => winston.warn(e));
+        }).then(() => ({ entryId })).catch((e) => winston.warn(e));
     }
 }); 
 
