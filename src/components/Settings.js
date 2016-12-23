@@ -1,6 +1,5 @@
 import React from 'react';
 import Relay from 'react-relay';
-import _ from 'lodash';
 import { withRouter } from 'react-router';
 
 import UpdateUserMutation from './mutations/UpdateUserMutation';

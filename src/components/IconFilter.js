@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Icon from './Icon';
 import { Link } from 'react-router';
+import _ from 'lodash';
 
 import styles from './css/IconFilter.module.css';
 

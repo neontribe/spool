@@ -7,8 +7,6 @@ import Button from './Button';
 import styles from './css/SettingsForm.module.css';
 import headings from '../css/Headings.module.css';
 
-const noop = () => {};
-
 export class SettingsForm extends Component {
     constructor (props) {
         super(props);
@@ -182,8 +180,6 @@ export class SettingsForm extends Component {
 
     render () {
         const errors = this.errors();
-        const ready = !errors;
-
         return (
             <form
                 ref='form'

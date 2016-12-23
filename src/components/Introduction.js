@@ -45,7 +45,7 @@ export default class Introduction extends Component {
     }
     handleSharingChange (evt) {
         const { user } = this.props;
-        const value = parseInt(evt.target.value);
+        const value = parseInt(evt.target.value, 10);
         var onSuccess = () => {
             // tell the UI to allow to continue to the next step
             // if they have confirmed their privacy settings
