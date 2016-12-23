@@ -68,7 +68,7 @@ function updateUser(id, data) {
         });
         var findUser = models.UserAccount.findOne({
             where: { userId: id },
-            include: helpers.leftProfile });
+            include: helpers.includes.UserAccount.leftProfile });
         var [region, user, residence, services] = yield [findRegion, findUser, findResidence, findServices];
         if (region && user && residence && services.length) {
             var profileData = {
