@@ -5,16 +5,19 @@ import { Link } from 'react-router';
 import styles from './css/IconFilter.module.css';
 
 class Filter extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
+
         this.handleClick = this.handleClick.bind(this);
     }
-    handleClick() {
+
+    handleClick () {
         this.props.onChange(!this.props.active);
     }
+
     render () {
         return (
-            <li className={styles.filter} onClick={this.handleClick}>
+            <li className={this.props.className || styles.filter} onClick={this.handleClick}>
                 <a role='button' className={this.props.active ? styles.filterControlOn : styles.filterControl}>
                     <Icon icon={this.props.icon} light={true} />
                     <span className={styles.filterText}>{this.props.children}</span>
@@ -27,7 +30,7 @@ class Filter extends Component {
 class LinkFilter extends Component {
     render () {
         return (
-          <li className={styles.filter}>
+          <li className={this.props.className || styles.filter}>
               <Link to={this.props.linkTo} className={styles.filterControl}>
                   {this.props.children}
               </Link>
@@ -39,7 +42,7 @@ class LinkFilter extends Component {
 class FilterList extends Component {
     render () {
         return (
-            <ul className={styles.filterList}>
+            <ul className={this.props.className || styles.filterList}>
                 {this.props.children}
             </ul>
         );
@@ -47,8 +50,9 @@ class FilterList extends Component {
 }
 
 export default class IconFilter extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
+
         this.state = {
             happy: false,
             sad: false,
@@ -64,21 +68,27 @@ export default class IconFilter extends Component {
             photo: false,
             typing: false,
         };
+
         this.handleChange = this.handleChange.bind(this);
         this.handlers = {};
+
         Object.keys(this.state).forEach((key) => this.handlers[key] = _.partial(this.handleChange, key));
     }
-    handleChange(key, value) {
+
+    handleChange (key, value) {
         const state = {
             ...this.state,
             [key]: value
         };
+
         this.setState(state);
         this.props.onChange(state);
     }
+
     render() {
         const { happy, sad, work, learning, home, food, relationships, activities, travel, health, video, photo, typing } = this.state;
         const handlers = this.handlers;
+
         return (<div>
           <div className={styles.filterBlock}>
               <h2 className={styles.filterHeader}>View Mode</h2>
@@ -94,59 +104,75 @@ export default class IconFilter extends Component {
                 <Filter
                     icon='happy'
                     onChange={handlers['happy']}
-                    active={happy}>Happy</Filter>
+                    active={happy}
+                >Happy</Filter>
                 <Filter
                     icon='sad'
                     onChange={handlers['sad']}
-                    active={sad}>Sad</Filter>
+                    active={sad}
+                >Sad</Filter>
             </FilterList>
             <FilterList>
                 <Filter
                     icon='work'
                     onChange={handlers['work']}
-                    active={work}>Work</Filter>
+                    active={work}
+                >Work</Filter>
                 <Filter
                     icon='learning'
                     onChange={handlers['learning']}
-                    active={learning}>Learning</Filter>
+                    active={learning}
+                >Learning</Filter>
                 <Filter
                     icon='home'
                     onChange={handlers['home']}
-                    active={home}>Home</Filter>
+                    active={home}
+                >Home</Filter>
                 <Filter
                     icon='food'
                     onChange={handlers['food']}
-                    active={food}>Food</Filter>
+                    active={food}
+                >Food</Filter>
                 <Filter
                     icon='relationships'
                     onChange={handlers['relationships']}
-                    active={relationships}>People &amp; Relationships</Filter>
+                    active={relationships}
+                >People &amp; Relationships</Filter>
                 <Filter
                     icon='activities'
                     onChange={handlers['activities']}
-                    active={activities}>Activities</Filter>
+                    active={activities}
+                >Activities</Filter>
                 <Filter
                     icon='travel'
                     onChange={handlers['travel']}
-                    active={travel}>Travel</Filter>
+                    active={travel}
+                >Travel</Filter>
                 <Filter
                     icon='health'
                     onChange={handlers['health']}
-                    active={health}>Health</Filter>
+                    active={health}
+                >Health</Filter>
             </FilterList>
             <FilterList>
                 <Filter
                     icon='video'
                     onChange={handlers['video']}
-                    active={video}>Videos</Filter>
+                    active={video}
+                    className={styles.filterMedia}
+                >Videos</Filter>
                 <Filter
                     icon='photo'
                     onChange={handlers['photo']}
-                    active={photo}>Photos</Filter>
+                    active={photo}
+                    className={styles.filterMedia}
+                >Photos</Filter>
                 <Filter
                     icon='typing'
                     onChange={handlers['typing']}
-                    active={typing}>Written</Filter>
+                    active={typing}
+                    className={styles.filterMedia}
+                >Written</Filter>
             </FilterList>
           </div>
         </div>)
