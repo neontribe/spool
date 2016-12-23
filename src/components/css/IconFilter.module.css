@@ -16,6 +16,11 @@
 	letter-spacing: 1px;
 }
 
+.filterActive {
+	composes: filter;
+	background-color: #34404c;
+}
+
 .filterNewRow {
 	composes: filter;
 	clear: left;

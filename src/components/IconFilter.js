@@ -37,8 +37,12 @@ class Filter extends Component {
 
 class LinkFilter extends Component {
     render () {
+        var className = (window.location.href.indexOf(this.props.linkTo) !== -1)
+            ? styles.filterActive
+            : styles.filter;
+
         return (
-          <li className={this.props.className || styles.filter}>
+          <li className={className}>
               <Link to={this.props.linkTo} className={styles.filterControl}>
                   {this.props.children}
               </Link>
@@ -100,6 +104,7 @@ export default class IconFilter extends Component {
         return (<div>
           <div className={styles.filterBlock}>
               <h2 className={styles.filterHeader}>View Mode</h2>
+
               <FilterList>
                   <LinkFilter linkTo='/app/home'>Gallery</LinkFilter>
                   <LinkFilter linkTo='/app/timeline'>Timeline</LinkFilter>

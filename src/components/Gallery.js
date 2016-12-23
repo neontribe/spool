@@ -78,8 +78,9 @@ export class Gallery extends Component {
         creator: React.PropTypes.object.isRequired,
     }
 
-    constructor(props) {
+    constructor (props) {
         super(props);
+
         this.handleFilterChange = this.handleFilterChange.bind(this);
     }
 
@@ -140,12 +141,15 @@ export class Gallery extends Component {
         }
     }
 
+    /* Todo: handleFilterChange */
     handleFilterChange (filters) {
         console.log(filters);
     }
 
-    renderMenuContent() {
-        return (<IconFilter onChange={this.handleFilterChange} />);
+    renderMenuContent () {
+        return (
+            <IconFilter onChange={this.handleFilterChange} />
+        );
     }
 
     render () {
