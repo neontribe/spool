@@ -32,7 +32,7 @@
 .textarea {
 	display: flex;
 	flex: 1;
-	margin-bottom: 1rem;
+	border-color: #2fd9b5;
 }
 
 .thumbnail {
@@ -144,4 +144,21 @@
 .connecting span {
 	display: block;
 	font-size: 1.5rem;
+}
+
+.content {
+	position: relative;
+	display: flex;
+	flex: 1;
+	margin-bottom: 1rem;
+}
+
+.charCounter {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	padding: .5rem 1rem;
+	border-top-left-radius: 20px;
+	color: #1e2c37;
+	background-color: #2fd9b5;
 }
