@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
+import moment from 'moment';
+import Papa from 'papaparse';
+
 import { withRoles, userFragment } from './wrappers.js';
 import { AccessFormContainer } from './AccessForm.js';
 import { EntryContainer } from './Entry.js';
-import moment from 'moment';
-import Papa from 'papaparse';
 import Layout from './Layout';
 import Button from './Button';
 
@@ -16,12 +17,15 @@ const { Content, Header } = Layout;
 
 const link = document.createElement('a');
 
+import styles from './css/Access.module.css';
+
 export default class Access extends Component {
     constructor (props) {
         super(props);
 
         this.handleFormSuccess = this.handleFormSuccess.bind(this);
-        // todo debounce this
+
+        // Todo: Debounce this
         this.handleCSVClick = this.handleCSVClick.bind(this);
 
         this.state = {
@@ -39,7 +43,7 @@ export default class Access extends Component {
             ready: true,
         };
 
-        // not much need for this in state, but the contents are helpful
+        // Not much need for this in state, but the contents are helpful
         this.setState({
             form
         });
@@ -48,13 +52,14 @@ export default class Access extends Component {
     }
 
     handleCSVClick () {
-        const data = this.props.consumer.access.entries.edges.map(({node}) => {
+        const data = this.props.consumer.access.entries.edges.map(({ node }) => {
             const row = {
                 text: node.media.text,
-                topics: node.topics.map(({name}) => name).join(', '),
+                topics: node.topics.map(({ name }) => name).join(', '),
                 sentiment: node.sentiment.type,
                 creationDate: node.created,
             };
+
             return row;
         });
 
@@ -71,13 +76,19 @@ export default class Access extends Component {
         }
     }
 
-    renderAccessList() {
+    renderAccessList () {
         const { access } = this.props.consumer;
 
         if (access && access.entries.edges.length) {
-            return access.entries.edges.map(({ node }) => (
-                <EntryContainer key={node.id} entry={node} />
-            ));
+            return (
+                <div>
+                    {access.entries.edges.map((entry, i) => (
+                        <div key={i} className={((i + 1) % 3 === 0) ? styles.entryLastRowItem : styles.entry}>
+                            <EntryContainer entry={entry} />
+                        </div>
+                    ))}
+                </div>
+            );
         }
 
         return null;
@@ -86,7 +97,9 @@ export default class Access extends Component {
     renderCSVButton () {
         if (this.state.form.ready) {
             return (
-                <Button onClick={this.handleCSVClick}>Download as CSV</Button>
+                <div>
+                    <Button onClick={this.handleCSVClick}>Download as CSV</Button>
+                </div>
             );
         }
 
@@ -98,10 +111,12 @@ export default class Access extends Component {
             <Layout>
                 <Header auth={this.props.auth} />
                 <Content>
-                    <AccessFormContainer onSuccess={this.handleFormSuccess} consumer={this.props.consumer}/>
+                    <AccessFormContainer
+                        onSuccess={this.handleFormSuccess}
+                        consumer={this.props.consumer}
+                    />
                     {this.renderCSVButton()}
                     {this.renderAccessList()}
-                    {this.renderCSVButton()}
                 </Content>
             </Layout>
         );
