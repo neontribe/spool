@@ -1,118 +1,66 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 
 import AuthService from '../auth/AuthService';
+import Layout from './Layout';
+import Button from './Button';
 
-class Login extends Component {
-  constructor (props) {
-    super(props);
+import styles from './css/SimpleLogin.module.css';
 
-    this.state = {
-        email: props.email,
-        password: props.password
+const { Content } = Layout;
+
+class SimpleLogin extends Component {
+    constructor (props) {
+        super(props);
+
+        this.googleLogin = _.debounce(this.googleLogin.bind(this), 500, { leading: true, trailing: false });
+        this.twitterLogin = _.debounce(this.twitterLogin.bind(this), 500, { leading: true, trailing: false });
     }
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.signUp = this.signUp.bind(this);
-    this.googleLogin = this.googleLogin.bind(this);
-  }
+    googleLogin () {
+        this.props.auth.login({
+            connection: 'google-oauth2'
+        }, function (err) {
+            if (err) {
+                alert('something went wrong: ' + err.message);
+            }
+        });
+    }
 
-  handleChange (event) {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
-  }
+    twitterLogin () {
+        this.props.auth.login({
+            connection: 'twitter'
+        }, function (err) {
+            if (err) {
+                alert('something went wrong: ' + err.message);
+            }
+        });
+    }
 
-  handleSubmit (event) {
-    event.preventDefault();
-
-    // on form submit, sends the credentials to auth0 api
-    this.props.auth.login({
-      connection: 'Username-Password-Authentication',
-      responseType: 'token',
-      email: this.state.email,
-      password: this.state.email
-    }, function (err) {
-      if (err) {
-        alert('something went wrong: ' + err.message);
-      }
-    });
-  }
-
-  signUp () {
-    // calls auth0 signup api, sending new account data
-    this.props.auth.signup({
-      connection: 'Username-Password-Authentication',
-      responseType: 'token',
-      email: this.state.email,
-      password: this.state.email
-    }, function (err) {
-      if (err) {
-        alert('something went wrong: ' + err.message);
-      }
-    });
-  }
-
-  googleLogin () {
-    this.props.auth.login({
-      connection: 'google-oauth2'
-    }, function (err) {
-      if (err) {
-        alert('something went wrong: ' + err.message);
-      }
-    });
-  }
-
-  render () {
-    return (
-      <div>
-        <h2>Login</h2>
-
-        <form onSubmit={this.handleSubmit}>
-          <div>
-            {/*<ControlLabel>E-mail</ControlLabel>*/}
-            <h3>E-mail</h3>
-            <input
-              type='email'
-              placeholder='yours@example.com'
-              required={true}
-              value={this.state.email}
-              onChange={this.handleChange}
-            />
-          </div>
-
-          <div>
-            {/*<ControlLabel>Password</ControlLabel>*/}
-            <h3>Password</h3>
-            <input
-              type='text'
-              name='password'
-              placeholder='Password'
-              required={true}
-              value={this.state.password}
-              onChange={this.handleChange}
-            />
-          </div>
-
-          <div>
-            <Button type='submit'>Sign In</Button>
-            <Button onClick={this.signUp}>Sign Up</Button>
-            <Button onClick={this.googleLogin}>Login with Google</Button>
-          </div>
-        </form>
-      </div>
-  );
-  }
+    render () {
+        return (
+            <Layout>
+                <Content>
+                    <div className={styles.wrapper}>
+                        <div className={styles.btnWrapper}>
+                            <Button onClick={this.googleLogin}>Login with Google</Button>
+                            <Button onClick={this.twitterLogin}>Login with Twitter</Button>
+                        </div>
+                    </div>
+                </Content>
+            </Layout>
+        );
+    }
 }
 
-Login.propTypes = {
-  location: React.PropTypes.object,
-  auth: React.PropTypes.instanceOf(AuthService)
+SimpleLogin.propTypes = {
+    location: React.PropTypes.object,
+    auth: React.PropTypes.instanceOf(AuthService)
 }
 
-Login.defaultProps = {
-  email: '',
-  password: ''
+SimpleLogin.defaultProps = {
+    email: '',
+    password: ''
 }
 
-export default Login;
+export default SimpleLogin;

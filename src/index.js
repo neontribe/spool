@@ -10,7 +10,7 @@ import App, { RoleWrapperContainer } from './App';
 import { GalleryContainer } from './components/Gallery';
 import { TimelineContainer } from './components/Timeline';
 import { DashboardContainer } from './components/Dashboard';
-import SimpleLogin from './components/SimpleLogin';
+import Login from './components/Login';
 import { SettingsContainer } from './components/Settings';
 import { AddEntryContainer } from './components/AddEntry';
 import { AccessContainer } from './components/Access';
@@ -75,8 +75,8 @@ ReactDOM.render(
     <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
         <Route path="/" component={App} auth={auth}>
             <IndexRedirect to="/app" />
-            <Route path="login" component={SimpleLogin} />
-            <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter} />
+            <Route path="login" component={Login} />
+            <Route path="callback" component={Login} onEnter={auth.parseAuthOnEnter} />
 
             <Route path="app" component={RoleWrapperContainer} queries={UserQueries} onEnter={auth.requireAuthOnEnter}  auth={auth}>
                 <Route path="settings" component={SettingsContainer} queries={SettingsQueries} onEnter={auth.requireAuthOnEnter} />
