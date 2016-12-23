@@ -66,6 +66,7 @@ const SettingsQueries = {
 
 const EntryViewerQueries = {
     node: () => Relay.QL`query { node(id: $id) }`,
+    creator: () => Relay.QL`query { creator }`,
 }
 
 setupRelayNetworkLayer();

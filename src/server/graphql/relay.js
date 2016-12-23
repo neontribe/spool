@@ -212,10 +212,51 @@ const UserType = new ql.GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
+const EntryOwnerType = new ql.GraphQLObjectType({
+    name: 'EntryOwner',
+    fields: {
+        age: {
+            type: ql.GraphQLInt,
+            resolve: (root) => {
+                return root.age;
+            },
+        },
+        residency: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return root.Residence.name;
+            }
+        },
+        services: {
+            type: new ql.GraphQLList(types.ServiceType),
+            resolve: (root) => {
+                return root.ProfileServiceServices;
+            }
+        }
+    }
+});
+
 const EntryType = new ql.GraphQLObjectType({
     name: 'Entry',
     fields: {
         id: relayql.globalIdField('Entry', (root) => root.entryId),
+        owner: {
+            type: EntryOwnerType,
+            resolve: (root) => {
+                return models.Profile.findOne({
+                    where: {
+                        profileId: root.Owner.profileId
+                    },
+                    include: [{
+                        model: models.Residence,
+                        as: 'Residence'
+                    }, {
+                        model: models.Service,
+                        as: 'ProfileServiceServices',
+                    }]
+                });
+            }
+        },
         media: {
             type: types.MediaType,
             resolve: (root) => {
@@ -677,14 +718,14 @@ const deleteEntry = relayql.mutationWithClientMutationId({
     name: 'DeleteEntry',
     inputFields: {
         entryId: {
-            type: ql.GraphQLInt,
+            type: ql.GraphQLString,
         }
     },
     outputFields: {
         creator: creatorField,
         deletedEntryId: {
-            type: ql.GraphQLInt,
-            resolve: (entryId) => entryId,
+            type: ql.GraphQLString,
+            resolve: ({entryId}) => entryId,
         }
     },
     mutateAndGetPayload: function mutateUserPayload({entryId}, context) {
@@ -695,7 +736,7 @@ const deleteEntry = relayql.mutationWithClientMutationId({
                 entryId: id,
                 ownerId,
             },
-        }).catch((e) => winston.warn(e));
+        }).then(() => ({ entryId })).catch((e) => winston.warn(e));
     }
 }); 
 

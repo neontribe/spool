@@ -17,8 +17,9 @@ export default class DeleteEntryMutation extends Relay.Mutation {
     }
 
     getVariables() {
-        const { entryId } = this.props.entry;
-        return { entryId };
+        const { id } = this.props.entry;
+
+        return { entryId: id };
     }
 
     getFatQuery() {
