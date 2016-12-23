@@ -86,9 +86,10 @@ export class Gallery extends Component {
 
     // Returns the latest entry followed by up to 4 randomised entry carousels
     renderEntries () {
+        const MAX_CAROUSEL_ITEMS = 3; // per EntryCarousel
+
         var EntryComponent = (this.props.relay) ? EntryContainer : Entry;
         var entries = this.props.creator.entries.edges.slice();
-        var maxSlideCount = 3; // per EntryCarousel
 
         if (entries.length) {
             var latest = entries.shift();
@@ -121,8 +122,13 @@ export class Gallery extends Component {
 
             for (var i = 0; i < slides.length; i++) {
                 var _slides = [];
+                var maxSlides = slides[i].length;
 
-                for (var j = 0; j < slides[i].length; j++) {
+                if (maxSlides > MAX_CAROUSEL_ITEMS) {
+                    maxSlides = MAX_CAROUSEL_ITEMS;
+                }
+
+                for (var j = 0; j < maxSlides; j++) {
                     var entry = slides[i][j];
 
                     _slides.push(
