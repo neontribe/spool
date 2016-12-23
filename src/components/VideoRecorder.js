@@ -313,7 +313,7 @@ class VideoRecorder extends Component {
                     </div>
 
                     <div className={styles.btnStack}>
-                        {(this.state.devices.length > 1) && (
+                        {((this.state.devices.length > 1) && !this.state.countdown) && (
                             <Button onClick={this.switchVideoDevices}>Switch Camera</Button>
                         )}
 
