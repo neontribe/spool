@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import moment from 'moment';
+import { browserHistory } from 'react-router';
 
 import { EntryContainer } from './Entry';
 import Layout from './Layout';
@@ -9,6 +10,7 @@ import Icon from './Icon';
 import Button from './Button';
 
 import styles from './css/EntryViewer.module.css';
+
 
 const { Content, Header } = Layout;
 
@@ -73,7 +75,7 @@ export default class EntryViewer extends Component {
 
                                 {/* Todo: Add router back functionality */}
                                 <div className={styles.controls}>
-                                    <Button onClick={Function.prototype}>Back</Button>
+                                    <Button onClick={browserHistory.goBack}>Back</Button>
                                 </div>
                             </div>
                         </Grid>

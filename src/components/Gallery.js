@@ -10,6 +10,8 @@ import { withRoles, withRequiredIntroduction, withRequiredSetup, userFragment } 
 
 import styles from './css/Gallery.module.css';
 
+import IconFilter from './IconFilter.js';
+
 const { Content, Header } = Layout;
 
 class EntryCarousel extends Component {
@@ -76,6 +78,11 @@ export class Gallery extends Component {
         creator: React.PropTypes.object.isRequired,
     }
 
+    constructor(props) {
+        super(props);
+        this.handleFilterChange = this.handleFilterChange.bind(this);
+    }
+
     // Returns the latest entry followed by up to 4 randomised entry carousels
     renderEntries () {
         var EntryComponent = (this.props.relay) ? EntryContainer : Entry;
@@ -133,6 +140,14 @@ export class Gallery extends Component {
         }
     }
 
+    handleFilterChange (filters) {
+        console.log(filters);
+    }
+
+    renderMenuContent() {
+        return (<IconFilter onChange={this.handleFilterChange} />);
+    }
+
     render () {
         var addEntryControl = (
             <Link to='/app/add' className={styles.addEntryControl}>
@@ -144,7 +159,9 @@ export class Gallery extends Component {
 
         return (
             <Layout>
-                <Header auth={this.props.auth} />
+                <Header
+                    auth={this.props.auth}
+                    menuContent={this.renderMenuContent()}/>
                 <Content>
                     <div className={styles.wrapper}>
                         <Grid callToAction={addEntryControl}>
