@@ -91,7 +91,6 @@ class Header extends Component {
                   </li>
                 </ul>
 
-                {/* Todo: Inject a component from the router, e.g. filter controls */}
                 {this.props.menuContent}
               </Hamburger>
             )}

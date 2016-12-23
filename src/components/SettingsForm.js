@@ -23,23 +23,23 @@ export class SettingsForm extends Component {
 
         this.state = {
             region: {
-                value: user.region,
+                value: user.region || '',
                 changed
             },
             name: {
-                value: profile.name,
+                value: profile.name || '',
                 changed
             },
             nickname: {
-                value: profile.nickname,
+                value: profile.nickname || '',
                 changed
             },
             age: {
-                value: profile.age,
+                value: profile.age || '',
                 changed
             },
             residence: {
-                value: profile.residence.type,
+                value: profile.residence.type || '',
                 changed
             },
             services: {
@@ -101,23 +101,23 @@ export class SettingsForm extends Component {
 
         const { name, age, region, services, residence } = this.state;
 
-        if (!name.value && name.changed) {
+        if (!name.value) {
             errors['name'] = 'Your name is required';
         }
 
-        if (!age.value && age.changed) {
+        if (!age.value) {
             errors['age'] = 'Your age is required';
         }
 
-        if (!region.value && region.changed) {
+        if (!region.value) {
             errors['region'] = 'Area selection is required';
         }
 
-        if (!services.value.length && services.changed) {
+        if (!services.value.length) {
             errors['services'] = 'Select at least one service';
         }
 
-        if (!residence.value && residence.changed) {
+        if (!residence.value) {
             errors['residence'] = 'Residence selection is required';
         }
 
@@ -193,7 +193,7 @@ export class SettingsForm extends Component {
                     <div className={styles.column}>
                         <h3 className={headings.regular}>Your Details</h3>
                         <label>
-                            <span className={styles.label}>Full Name</span>
+                            <span className={styles.label}>Full Name *</span>
                             <input
                                 type='text'
                                 name='name'
@@ -201,7 +201,7 @@ export class SettingsForm extends Component {
                                 onChange={this.handleChanges.name}
                                 className={styles.textField}
                             />
-                            {this.renderError(errors.name)}
+                            {this.state.name.changed && this.renderError(errors.name)}
                         </label>
 
                         <label>
@@ -213,11 +213,11 @@ export class SettingsForm extends Component {
                                 onChange={this.handleChanges.nickname}
                                 className={styles.textField}
                             />
-                            {this.renderError(errors.nickname)}
+                            {this.state.nickname.changed && this.renderError(errors.nickname)}
                         </label>
 
                         <label>
-                            <span className={styles.label}>Age</span>
+                            <span className={styles.label}>Age *</span>
                             <input
                                 type='number'
                                 name='age'
@@ -225,11 +225,11 @@ export class SettingsForm extends Component {
                                 onChange={this.handleChanges.age}
                                 className={styles.numberField}
                             />
-                           {this.renderError(errors.age)}
+                           {this.state.age.changed && this.renderError(errors.age)}
                         </label>
 
                         <label>
-                            <span className={styles.label}>Area</span>
+                            <span className={styles.label}>Area *</span>
                             <div>
                                 <select
                                     placeholder='I live in...'
@@ -239,22 +239,22 @@ export class SettingsForm extends Component {
                                     <option value='' disabled={true}>I live in&hellip;</option>
                                     {this.renderRegionOptions()}
                                 </select>
-                                {this.renderError(errors.region)}
+                                {this.state.region.changed && this.renderError(errors.region)}
                             </div>
                         </label>
                     </div>
 
                     <div className={styles.column}>
-                        <h3 className={headings.regular}>Residence Type</h3>
+                        <h3 className={headings.regular}>Residence Type *</h3>
                         {this.renderResidences()}
-                        {this.renderError(errors.residence)}
+                        {this.state.residence.changed && this.renderError(errors.residence)}
                     </div>
 
                     {this.state.region.value && (
                         <div className={styles.column}>
-                            <h3 className={headings.regular}>Services Used</h3>
+                            <h3 className={headings.regular}>Services Used *</h3>
                             {this.renderServices()}
-                            {this.renderError(errors.services)}
+                            {this.state.services.changed && this.renderError(errors.services)}
                         </div>
                     )}
                 </div>

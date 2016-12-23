@@ -55,21 +55,14 @@ export class AccessForm extends Component {
 
     handleSuccess () {
         const payload = _.pick(this.state, AccessForm.fields);
-
-        console.log(payload);
-
         this.props.onSuccess(payload);
     }
 
     render () {
-        console.log(this.props, this.state);
-
-        // Validate
-        // var valid = false;
-
-        // if (this.state.from && this.state.to && this.state.topics.length > 0) {
-        //     valid = true;
-        // }
+        var valid = false;
+        if (this.state.from && this.state.to && this.state.topics.length > 0) {
+            valid = true;
+        }
 
         return (
             <div>
@@ -90,7 +83,7 @@ export class AccessForm extends Component {
                         onChange={this.handleToChange}
                     />
                 </div>
-                <Button onClick={this.handleSuccess}>Search</Button>
+                { valid && <Button onClick={this.handleSuccess}>Search</Button> }
             </div>
         );
     }
