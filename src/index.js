@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Relay from 'react-relay';
 import { RelayNetworkLayer, urlMiddleware, authMiddleware } from 'react-relay-network-layer';
-import { Router, Route, IndexRedirect, browserHistory, applyRouterMiddleware } from 'react-router';
+import { Router, Route, IndexRedirect, Redirect, browserHistory, applyRouterMiddleware } from 'react-router';
 import useRelay from 'react-router-relay';
 
 import AuthService from './auth/AuthService';
@@ -88,6 +88,8 @@ ReactDOM.render(
                 <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter} />
                 <Route path="access" component={AccessContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter} />
             </Route>
+
+            <Redirect from="*" to="/app/home" />
         </Route>
     </Router>,
     document.getElementById('root')
