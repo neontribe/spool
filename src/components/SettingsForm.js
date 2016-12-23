@@ -23,23 +23,23 @@ export class SettingsForm extends Component {
 
         this.state = {
             region: {
-                value: user.region,
+                value: user.region || '',
                 changed
             },
             name: {
-                value: profile.name,
+                value: profile.name || '',
                 changed
             },
             nickname: {
-                value: profile.nickname,
+                value: profile.nickname || '',
                 changed
             },
             age: {
-                value: profile.age,
+                value: profile.age || '',
                 changed
             },
             residence: {
-                value: profile.residence.type,
+                value: profile.residence.type || '',
                 changed
             },
             services: {
