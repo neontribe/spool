@@ -78,7 +78,7 @@ class EmailLoginForm extends Component {
     }
 }
 
-class Login extends Component {
+class Signup extends Component {
     constructor (props) {
         super(props);
 
@@ -151,13 +151,13 @@ class Login extends Component {
                 <Content>
                     <div className={styles.wrapper}>
                         <div className={styles.btnWrapper}>
-                            <h1>Login</h1>
-                            <Button onClick={this.googleLogin}>Login using Google</Button>
-                            <Button onClick={this.twitterLogin}>Login using Twitter</Button>
-                            <Button onClick={this.handleUseEmail}>Login using Email</Button>
+                            <h1>Signup</h1>
+                            <Button onClick={this.googleLogin}>Signup using Google</Button>
+                            <Button onClick={this.twitterLogin}>Signup using Twitter</Button>
+                            <Button onClick={this.handleUseEmail}>Signup using Email</Button>
                         </div>
                     </div>
-                    { this.renderEmailLogin() }
+                    { this.renderEmailSignup() }
                 </Content>
             </Layout>
         );

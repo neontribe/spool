@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Relay from 'react-relay';
 import { RelayNetworkLayer, urlMiddleware, authMiddleware } from 'react-relay-network-layer';
-import { Router, Route, IndexRedirect, browserHistory, applyRouterMiddleware } from 'react-router';
+import { Router, Route, IndexRoute, IndexRedirect, browserHistory, applyRouterMiddleware } from 'react-router';
 import useRelay from 'react-router-relay';
 
 import AuthService from './auth/AuthService';
@@ -11,6 +11,8 @@ import { GalleryContainer } from './components/Gallery';
 import { TimelineContainer } from './components/Timeline';
 import { DashboardContainer } from './components/Dashboard';
 import Login from './components/Login';
+import Signup from './components/Signup';
+import Welcome from './components/Welcome';
 import { SettingsContainer } from './components/Settings';
 import { AddEntryContainer } from './components/AddEntry';
 import { AccessContainer } from './components/Access';
@@ -75,7 +77,11 @@ ReactDOM.render(
     <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
         <Route path="/" component={App} auth={auth}>
             <IndexRedirect to="/app" />
-            <Route path="login" component={Login} />
+            <Route path="login">
+                <IndexRoute component={Welcome} />
+                <Route path="continue" component={Login} />
+                <Route path="signup" component={Signup} />
+            </Route>
             <Route path="callback" component={Login} onEnter={auth.parseAuthOnEnter} />
 
             <Route path="app" component={RoleWrapperContainer} queries={UserQueries} onEnter={auth.requireAuthOnEnter}  auth={auth}>

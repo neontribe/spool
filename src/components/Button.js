@@ -7,7 +7,8 @@ export default class Button extends Component {
     static propTypes = {
         onClick: React.PropTypes.func.isRequired,
         style: React.PropTypes.oneOf(['raised', 'round']), // Maps to class name
-        showPressIcon: React.PropTypes.bool
+        showPressIcon: React.PropTypes.bool,
+        active: React.PropTypes.bool
     }
 
     static defaultProps = {
