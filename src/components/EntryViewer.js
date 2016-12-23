@@ -8,6 +8,7 @@ import Layout from './Layout';
 import Grid from './Grid';
 import Icon from './Icon';
 import Button from './Button';
+import DeleteEntryMutation from './mutations/DeleteEntryMutation.js';
 
 import styles from './css/EntryViewer.module.css';
 
@@ -28,31 +29,32 @@ class Paragraph extends Component {
 }
 
 export default class EntryViewer extends Component {
+    constructor(props) {
+        super(props);
+        this.handleOnClick = this.handleOnClick.bind(this);
+    }
+    handleOnClick () {
+        var onSuccess = () => {
+            this.props.router.push('/app');
+        };
+        const { entry, creator } = this.props;
+        this.props.relay.commitUpdate(
+            new DeleteEntryMutation({
+                entry,
+                creator
+            }),
+            {
+                onSuccess
+            });
+    }
     render () {
         var entry = this.props.node;
-
         return (
             <Layout>
                 <Header auth={this.props.auth}>
                     <div className={styles.header}>
                         <div>Created {moment(entry.created).format('Do MMMM')}</div>
-
-                        <Icon
-                            icon={entry.sentiment.type}
-                            light={true}
-                        />
-
-                        <ul className={styles.topics}>
-                            {entry.topics.map((topic, i) => (
-                                <li key={i}>
-                                    <Icon
-                                        icon={topic.type}
-                                        light={true}
-                                    />
-                                </li>
-                            ))}
-                        </ul>
-
+                        <Button onClick={this.handleOnClick}>Delete</Button>
                         {/* Todo: Add view counter */}
                         <span>8 views</span>
                     </div>
@@ -101,7 +103,13 @@ export const EntryViewerContainer = Relay.createContainer(EntryViewer, {
                 type
             }
             ${EntryContainer.getFragment('entry')}
+            ${DeleteEntryMutation.getFragment('entry')}
         }
         `,
+        creator: () => Relay.QL`
+        fragment on Creator {
+            id
+            ${DeleteEntryMutation.getFragment('creator')}
+        }`,
     }
 });
