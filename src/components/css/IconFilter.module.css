@@ -8,6 +8,7 @@
 }
 
 .filter {
+	position: relative;
 	float: left;
 	width: 50%;
 	text-align: center;
@@ -55,4 +56,29 @@
 	height: 2em;
 	display: flex;
 	align-items: center;
+}
+
+.count {
+	position: absolute;
+	/*top: .5rem;*/
+	/*right: .5rem;*/
+	top: 0;
+	right: 0;
+	/*height: 1.5rem;*/
+	/*width: 1.5rem;*/
+	height: 2rem;
+	width: 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	/*color: #34404c;*/
+	font-weight: bold;
+	/*border-radius: 50%;*/
+	/*background-color: #2fd9b5;*/
+	background-color: #34404c;
+}
+
+.countZero {
+	composes: count;
+	color: #1e2c37;
 }

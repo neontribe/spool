@@ -5,6 +5,10 @@ import { Link } from 'react-router';
 import styles from './css/IconFilter.module.css';
 
 class Filter extends Component {
+    static propTypes = {
+        count: React.PropTypes.number.isRequired
+    }
+
     constructor (props) {
         super(props);
 
@@ -22,6 +26,10 @@ class Filter extends Component {
                     <Icon icon={this.props.icon} light={true} />
                     <span className={styles.filterText}>{this.props.children}</span>
                 </a>
+
+                {!this.props.active && (
+                    <span className={(this.props.count > 0) ? styles.count : styles.countZero}>{this.props.count}</span>
+                )}
             </li>
         );
     }
@@ -105,11 +113,13 @@ export default class IconFilter extends Component {
                     icon='happy'
                     onChange={handlers['happy']}
                     active={happy}
+                    count={4}
                 >Happy</Filter>
                 <Filter
                     icon='sad'
                     onChange={handlers['sad']}
                     active={sad}
+                    count={1}
                 >Sad</Filter>
             </FilterList>
             <FilterList>
@@ -117,41 +127,49 @@ export default class IconFilter extends Component {
                     icon='work'
                     onChange={handlers['work']}
                     active={work}
+                    count={1}
                 >Work</Filter>
                 <Filter
                     icon='learning'
                     onChange={handlers['learning']}
                     active={learning}
+                    count={0}
                 >Learning</Filter>
                 <Filter
                     icon='home'
                     onChange={handlers['home']}
                     active={home}
+                    count={0}
                 >Home</Filter>
                 <Filter
                     icon='food'
                     onChange={handlers['food']}
                     active={food}
+                    count={0}
                 >Food</Filter>
                 <Filter
                     icon='relationships'
                     onChange={handlers['relationships']}
                     active={relationships}
+                    count={1}
                 >People &amp; Relationships</Filter>
                 <Filter
                     icon='activities'
                     onChange={handlers['activities']}
                     active={activities}
+                    count={1}
                 >Activities</Filter>
                 <Filter
                     icon='travel'
                     onChange={handlers['travel']}
                     active={travel}
+                    count={0}
                 >Travel</Filter>
                 <Filter
                     icon='health'
                     onChange={handlers['health']}
                     active={health}
+                    count={3}
                 >Health</Filter>
             </FilterList>
             <FilterList>
@@ -159,18 +177,21 @@ export default class IconFilter extends Component {
                     icon='video'
                     onChange={handlers['video']}
                     active={video}
+                    count={1}
                     className={styles.filterMedia}
                 >Videos</Filter>
                 <Filter
                     icon='photo'
                     onChange={handlers['photo']}
                     active={photo}
+                    count={0}
                     className={styles.filterMedia}
                 >Photos</Filter>
                 <Filter
                     icon='typing'
                     onChange={handlers['typing']}
                     active={typing}
+                    count={2}
                     className={styles.filterMedia}
                 >Written</Filter>
             </FilterList>
