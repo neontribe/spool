@@ -87,16 +87,55 @@
 }
 
 .contextMenuItem {
-	padding: 1rem;
-	margin-bottom: 1px;
-	border-top: 2px solid #34404c;
+	margin-bottom: 2px;
+	/*border-top: 1px solid #34404c;*/
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	/*background-color: rgba(0, 0, 0, .2);*/
 }
 
+.contextMenuItem > a {
+	display: block;
+	padding: 1rem;
+	font-weight: bold;
+	/*border-left: 5px solid transparent;*/
+
+	position: relative;
+}
+
+.contextMenuItem > a:before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 5px;
+	/*background-color: rgba(0, 0, 0, .5);*/
+}
+
 .contextMenuItem:last-child {
-	border-bottom: 2px solid #34404c;
+	/*border-bottom: 1px solid #34404c;*/
+}
+
+.contextMenuItemHome,
+.contextMenuItemLogout,
+.contextMenuItemSettings {
+	composes: contextMenuItem;
+}
+
+.contextMenuItemSettings > a:before {
+	background-color: #008946;
+}
+
+.contextMenuItemHome > a:before {
+	color: #1e2c37;
+	/*border-color: #fece4f;*/
+	background-color: #fece4f;
+}
+
+.contextMenuItemLogout > a:before {
+	/*border-color: #ce1d2b;*/
+	background-color: #ce1d2b;
 }
 
 .content {

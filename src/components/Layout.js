@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router';
 import _ from 'lodash';
 
-import ProfileLink from './ProfileLink';
 import Hamburger from './Hamburger';
 
 import styles from './css/App.module.css';
@@ -75,19 +74,17 @@ class Header extends Component {
                 onCollapse={this.onHamburgerCollapse}
               >
                 <ul className={styles.contextMenu}>
-                  <li className={styles.contextMenuItem}>
-                      <Link to={'/app/home'}>Home</Link>
+                  <li className={styles.contextMenuItemHome}>
+                    <Link to='/app/home'>Home</Link>
                   </li>
 
-                  <li className={styles.contextMenuItem}>
-                    {/* Todo: Need to format the render of ProfileLink*/}
-                    <ProfileLink
-                      profile={this.state.profile}
-                      disabled={!this.props.auth.loggedIn()}
-                    />
-                  </li>
+                  {this.props.auth.loggedIn() && (
+                    <li className={styles.contextMenuItemSettings}>
+                      <Link to='/app/settings'>Settings</Link>
+                    </li>
+                  )}
 
-                  <li className={styles.contextMenuItem}>
+                  <li className={styles.contextMenuItemLogout}>
                     {this.props.auth.loggedIn() && (
                       <a href='/logout' onClick={this.logout}>Log out</a>
                     )}

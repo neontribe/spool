@@ -91,6 +91,14 @@ export class Timeline extends Component {
             <Layout>
                 <Header auth={this.props.auth} />
                 <Content>
+                    {!entries.length && (
+                        <div className={styles.noResults}>
+                            <Link to='/app/add' className={styles.button}>
+                                <span className={styles.handIcon}></span> Add New Entry
+                            </Link>
+                        </div>
+                    )}
+
                     <div ref='wrapper'>
                         {Object.keys(entries).map((date, i) => {
                             var _entries = entries[date];
