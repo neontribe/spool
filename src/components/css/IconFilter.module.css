@@ -4,7 +4,7 @@
 
 .filterHeader {
 	composes: regular from '../../css/Headings.module.css';
-	padding: 1rem 1rem 0;
+	padding: 1rem .5rem 0;
 }
 
 .filter {
