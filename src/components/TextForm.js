@@ -20,6 +20,7 @@ class TextForm extends Component {
 
     continue (evt) {
         evt.preventDefault();
+
         this.props.save({
             text: this.state.value
         });
@@ -66,7 +67,7 @@ TextForm.propTypes = {
 
 TextForm.defaultProps = {
     initialValue: '',
-    maxLength: 250
+    maxLength: 1000
 };
 
 export default TextForm;

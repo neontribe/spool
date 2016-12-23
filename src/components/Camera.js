@@ -171,11 +171,17 @@ class Camera extends Component {
                 {this.state.showDescriptionField && (
                     <div className={styles.description}>
                         <h2 className={headings.large}>Add a description</h2>
-                        <textarea
-                            className={styles.textarea}
-                            value={this.state.text}
-                            onChange={this.onTextChange}
-                        ></textarea>
+                        <div className={styles.content}>
+                            <textarea
+                                maxLength={this.props.maxTextLength}
+                                className={styles.textarea}
+                                value={this.state.text}
+                                onChange={this.onTextChange}
+                            ></textarea>
+                            <p className={styles.charCounter}>
+                                {this.state.text.length} of {this.props.maxTextLength} letters used
+                            </p>
+                        </div>
                         <div className={styles.descriptionControls}>
                             <Button onClick={this.hideDescripton}>Close</Button>
                         </div>
@@ -266,7 +272,8 @@ Camera.propTypes = {
 };
 
 Camera.defaultProps = {
-    countdownSeconds: 3
+    countdownSeconds: 3,
+    maxTextLength: 1000
 };
 /**
  * Expose a test for media capabilities for use by other components
