@@ -135,7 +135,7 @@ export default class Grid extends Component {
             }
 
             case 4: {
-                length = calculateMaxCellSize(4);
+                length = calculateMaxCellSize(6); // Incorrect when this is 4, why?
 
                 for (; i < children.length; i++) {
                     itemStyle[i] = {
