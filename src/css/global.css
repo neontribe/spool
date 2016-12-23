@@ -3,12 +3,12 @@
 /*
 
 Min size: 16
-Max size: 22
+Max size: 20
 Min viewport width: 1024
 Max viewport width: 1920
 
 */
-@value fontSizeRegular: calc(16px + (22 - 16) * (100vw - 1024px) / (1920 - 1024));
+@value fontSizeRegular: calc(16px + (20 - 16) * (100vw - 1024px) / (1920 - 1024));
 
 *,
 *:before,
@@ -125,12 +125,12 @@ table {
 
 @media all and (min-width: 1920px) {
     html {
-        font-size: 22px;
+        font-size: 20px;
     }
 }
 
 @media all and (min-height: 1080px) {
     html {
-        font-size: 32px;
+        font-size: 30px;
     }
 }
