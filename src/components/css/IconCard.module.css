@@ -22,6 +22,7 @@
 	cursor: pointer;
 }
 
+.field:checked + .option,
 .field:checked + .option .message {
 	color: #1e2c37;
 	border-color: #2fd9b5;

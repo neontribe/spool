@@ -7,7 +7,11 @@ export class DatePicker extends Component {
     render () {
         return (
             <div className={styles.wrapper}>
-                <BootstrapDatePicker showClearButton={false} {...this.props} />
+                <BootstrapDatePicker
+                	dateFormat='DD/MM/YYYY'
+                	showClearButton={false}
+                	{...this.props}
+                />
             </div>
         );
     }

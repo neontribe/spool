@@ -16,11 +16,26 @@
 
 :global(#calendar) {
 	position: absolute;
-	padding: 1rem;
+	padding: .5rem;
 	background-color: #34404c;
 	z-index: 10;
 }
 
 :global(#calendar td) {
 	text-align: center;
+}
+
+:global(#calendar .popover-title) {
+	padding: .5rem;
+	color: #34404c;
+	background-color: #2fd9b5;
+}
+
+/*:global(#calendar thead td) {
+	border-bottom: 1px solid rgba(255, 255, 255, .2);
+}*/
+
+:global(#calendar tbody td) {
+	padding: .25rem !important;
+	border: 1px solid rgba(255, 255, 255, .2);
 }

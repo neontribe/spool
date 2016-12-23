@@ -245,16 +245,18 @@ export class SettingsForm extends Component {
                     </div>
 
                     <div className={styles.column}>
-                        <h3 className={headings.regular}>Services Used</h3>
-                        {this.renderServices()}
-                        {this.renderError(errors.services)}
-                    </div>
-
-                    <div className={styles.column}>
                         <h3 className={headings.regular}>Residence Type</h3>
                         {this.renderResidences()}
                         {this.renderError(errors.residence)}
                     </div>
+
+                    {this.state.region.value && (
+                        <div className={styles.column}>
+                            <h3 className={headings.regular}>Services Used</h3>
+                            {this.renderServices()}
+                            {this.renderError(errors.services)}
+                        </div>
+                    )}
                 </div>
 
                 <div className={styles.controls}>

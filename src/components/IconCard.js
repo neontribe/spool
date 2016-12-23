@@ -39,7 +39,7 @@ export class IconCard extends Component {
                     <Icon
                         className={this.props.classNames.icon || styles.icon}
                         icon={this.props.icon}
-                        light={true}
+                        light={!this.props.checked}
                     />
                     <div className={this.props.classNames.message || styles.message}>{this.props.message}</div>
                 </div>
