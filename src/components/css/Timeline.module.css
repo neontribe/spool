@@ -32,6 +32,7 @@
 .moreWrapper {
 	position: fixed;
 	bottom: -7rem;
+	left: 0;
 	height: 11rem;
 	width: 100%;
 	display: flex;

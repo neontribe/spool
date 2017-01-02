@@ -91,7 +91,7 @@ export class Timeline extends Component {
             <Layout>
                 <Header auth={this.props.auth} />
                 <Content>
-                    {!entries.length && (
+                    {!Object.keys(entries).length && (
                         <div className={styles.noResults}>
                             <Link to='/app/add' className={styles.button}>
                                 <span className={styles.handIcon}></span> Add New Entry
