@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-
-import { IconCard } from './IconCard';
-
 import styles from './css/TopicsOverview.module.css';
 import headings from '../css/Headings.module.css';
 

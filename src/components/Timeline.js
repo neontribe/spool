@@ -10,7 +10,6 @@ import Layout from './Layout';
 import { withRoles } from './wrappers.js';
 
 import styles from './css/Timeline.module.css';
-import headings from '../css/Headings.module.css';
 
 const { Content, Header } = Layout;
 
@@ -83,7 +82,7 @@ export class Timeline extends Component {
         });
 
         // Group by month
-        var entries = _.groupBy(entries, (entry) => {
+        entries = _.groupBy(entries, (entry) => {
             return moment(entry.node.created).startOf('week').format('YYYY-MM-DD');
         });
 
