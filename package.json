@@ -141,6 +141,7 @@
     "style-loader": "0.13.1",
     "sync-request": "^3.0.1",
     "url-loader": "0.5.7",
+    "viewport-units-buggyfill": "^0.6.0",
     "webpack": "^1.13.1",
     "whatwg-fetch": "1.0.0",
     "winston": "^2.2.0"

@@ -107,7 +107,6 @@
 	padding: 0 1rem;
 	margin: auto;
 	font-size: 2rem;
-
 	height: 100%;
 	display: flex;
 	justify-content: center;
@@ -128,6 +127,9 @@
 	top: 1rem;
 	right: 1rem;
 	display: flex;
+
+	/* hack to engage viewport-units-buggyfill */
+	content: 'viewport-units-buggyfill; max-width: calc(100% - 7rem);';
 }
 
 .topics > * {

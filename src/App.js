@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { withRouter } from 'react-router';
+import * as viewportUnitsBuggyfill from 'viewport-units-buggyfill';
+import hacks from 'viewport-units-buggyfill/viewport-units-buggyfill.hacks';
 
 import styles from './components/css/App.module.css';
 
@@ -31,6 +33,16 @@ class RoleWrapper extends Component {
         if (!children) {
             this.navigateHome();
         }
+
+        console.log(viewportUnitsBuggyfill);
+        console.log(window.viewportUnitsBuggyfillHacks);
+        console.log('hacks', hacks);
+
+        viewportUnitsBuggyfill.init({
+            hacks
+        });
+
+        setInterval(viewportUnitsBuggyfill.refresh, 300);
     }
 
     componentWillReceiveProps ({ children }) {
@@ -66,7 +78,7 @@ class RoleWrapper extends Component {
         }
 
         return (
-            <div>{children}</div>
+            <div style={{ height: '100%'}}>{children}</div>
         );
     }
 }

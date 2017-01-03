@@ -1,14 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand');
 
-/*
-
-Min size: 16
-Max size: 20
-Min viewport width: 1024
-Max viewport width: 1920
-
-*/
-@value fontSizeRegular: calc(16px + (20 - 16) * (100vw - 1024px) / (1920 - 1024));
 
 *,
 *:before,
@@ -19,7 +10,18 @@ Max viewport width: 1920
 }
 
 html {
-    font-size: fontSizeRegular;
+    /*
+
+    Min size: 16
+    Max size: 20
+    Min viewport width: 1024
+    Max viewport width: 1920
+
+    */
+    font-size: calc(16px + (20 - 16) * (100vw - 1024px) / (1920 - 1024));
+
+    /* hack to engage viewport-units-buggyfill */
+    content: 'viewport-units-buggyfill; calc(16px + (20 - 16) * (100vw - 1024px) / (1920 - 1024));';
 }
 
 body {

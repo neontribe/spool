@@ -78,4 +78,7 @@ with CSSModules but can't find an alternative.
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: contain;
+
+	/* hack to engage viewport-units-buggyfill */
+	content: 'viewport-units-buggyfill; height: calc(100% - 6rem) !important; width: calc(100% - 6rem) !important;';
 }
