@@ -34,10 +34,6 @@ class RoleWrapper extends Component {
             this.navigateHome();
         }
 
-        console.log(viewportUnitsBuggyfill);
-        console.log(window.viewportUnitsBuggyfillHacks);
-        console.log('hacks', hacks);
-
         viewportUnitsBuggyfill.init({
             hacks
         });
