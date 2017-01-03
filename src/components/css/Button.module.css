@@ -1,0 +1,52 @@
+.raised {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 10rem;
+	border-radius: 4rem;
+	font-size: 1.75rem;
+	vertical-align: middle;
+	padding: 2rem;
+	color: #fff;
+	text-align: center;
+	text-shadow: 0 0 2px #000;
+	font-weight: bold;
+	border: 4px solid #2fd9b5;
+	background-color: #34404c;
+	margin: 0 10px 10px 0;
+	text-shadow: 0 0 1px rgba(0, 0, 0, .6);
+
+	box-shadow:
+		10px 10px 0 2px #000,
+		inset 5px 5px 0 2px rgba(0, 0, 0, .2);
+}
+
+.raised:active {
+	box-shadow: none;
+	top: 10px;
+	left: 10px;
+}
+
+.round {
+	composes: raised;
+	min-width: 0;
+	padding: 2rem;
+	border-radius: 50%;
+}
+
+.round:before {
+	content: '';
+	float: left;
+	width: auto;
+	padding-bottom: 100%;
+}
+
+.handIcon {
+	display: inline-block;
+	height: 1em;
+	width: .75em;
+	margin-right: 1rem;
+	background: url('/static/icon-hand.svg') no-repeat;
+	background-size: cover;
+}

@@ -1,5 +1,4 @@
 const ql = require('graphql');
-require('../database/models');
 
 const MediaType = new ql.GraphQLObjectType({
     name: 'Media',
@@ -39,8 +38,8 @@ const TopicType = new ql.GraphQLObjectType({
     }
 });
 
-const RoleDefinitionType = new ql.GraphQLObjectType({
-    name: 'RoleDefinition',
+const RoleType = new ql.GraphQLObjectType({
+    name: 'Role',
     fields: {
         type: { type: ql.GraphQLString, resolve: (role) => role.type },
         name: { type: ql.GraphQLString, resolve: (role) => role.name },
@@ -48,10 +47,24 @@ const RoleDefinitionType = new ql.GraphQLObjectType({
     }
 });
 
-const RegionDefinitionType = new ql.GraphQLObjectType({
-    name: 'RegionDefinitionType',
+const ServiceType = new ql.GraphQLObjectType({
+    name: 'Service',
+    fields: {
+        type: { type: ql.GraphQLString, resolve: (root) => root.type },
+        name: { type: ql.GraphQLString, resolve: (root) => root.name }
+    }
+});
+
+const RegionType = new ql.GraphQLObjectType({
+    name: 'Region',
     fields: {
         type: { type: ql.GraphQLString, resolve: (region) => region.type },
+        services: {
+            type: new ql.GraphQLList(ServiceType),
+            resolve: (root) => {
+                return root.RegionServiceServices
+            }
+        }
     }
 });
 
@@ -73,21 +86,13 @@ const MediaInputType = new ql.GraphQLInputObjectType({
     }
 });
 
+const TopicsInputType = new ql.GraphQLList(ql.GraphQLString);
 const EntryInputType = new ql.GraphQLInputObjectType({
     name: 'EntryInput',
     fields: {
         media: { type: MediaInputType },
         sentiment: { type: ql.GraphQLString },
-        topics: { type: new ql.GraphQLList(ql.GraphQLString) }
-    }
-});
-
-const UserRequestInputType = new ql.GraphQLInputObjectType({
-    name: 'UserRequestInputType',
-    fields: {
-        id: { type: new ql.GraphQLNonNull(ql.GraphQLString) },
-        access: { type: new ql.GraphQLNonNull(ql.GraphQLBoolean) },
-        hide: { type: new ql.GraphQLNonNull(ql.GraphQLBoolean) },
+        topics: { type: TopicsInputType }
     }
 });
 
@@ -130,28 +135,35 @@ const TopicCountType = new ql.GraphQLObjectType({
     }
 });
 
-const RequestInputType = new ql.GraphQLInputObjectType({
-    name: 'RequestInput',
-    fields: {
-        range: {
-            type: DateRangeInputType
-        },
-        reason: { type: ql.GraphQLString },
-        name: { type: ql.GraphQLString },
-        org: { type: ql.GraphQLString },
-        avatar: { type: ql.GraphQLString },
-        topics: { type: new ql.GraphQLList(ql.GraphQLString) }
-    }
-});
-
 const UserInputType = new ql.GraphQLInputObjectType({
     name: 'UserInput',
     fields: {
         region: {
             type: new ql.GraphQLNonNull(ql.GraphQLString)
         },
-        roleSecret: {
+        name: {
             type: new ql.GraphQLNonNull(ql.GraphQLString)
+        },
+        nickname: {
+            type: ql.GraphQLString,
+        },
+        age: {
+            type: ql.GraphQLInt,
+        },
+        residence: {
+            type: new ql.GraphQLNonNull(ql.GraphQLString)
+        },
+        services: {
+            type: new ql.GraphQLList(ql.GraphQLString)
+        }
+    }
+});
+
+const PrivacyInputType = new ql.GraphQLInputObjectType({
+    name: 'PrivacyInput',
+    fields: {
+        sharing: {
+            type: ql.GraphQLBoolean
         }
     }
 });
@@ -160,13 +172,14 @@ module.exports = {
     MediaType,
     SentimentType,
     TopicType,
-    RoleDefinitionType,
-    RegionDefinitionType,
+    RoleType,
+    RegionType,
+    ServiceType,
     MediaInputType,
     EntryInputType,
-    RequestInputType,
     DateRangeInputType,
     TopicCountType,
     UserInputType,
-    UserRequestInputType,
+    PrivacyInputType,
+    TopicsInputType,
 };

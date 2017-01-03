@@ -14,36 +14,36 @@ module.exports = {
       */
       return queryInterface.bulkInsert('topic', [
           {
-              type: 'transport',
-              name: 'Transport'
+              type: 'work',
+              name: 'Work'
           },
           {
-              type: 'education',
-              name: 'Education'
+              type: 'learning',
+              name: 'Learning'
           },
           {
               type: 'home',
               name: 'Home'
           },
           {
-              type: 'leisure',
-              name: 'Leisure'
-          },
-          {
-              type: 'health',
-              name: 'Health'
-          },
-          {
               type: 'food',
               name: 'Food'
           },
           {
-              type: 'sport',
-              name: 'Sport'
+              type: 'relationships',
+              name: 'People & Relationships'
           },
           {
-              type: 'work',
-              name: 'Work'
+              type: 'activities',
+              name: 'Activities'
+          },
+          {
+              type: 'travel',
+              name: 'Travel'
+          },
+          {
+              type: 'health',
+              name: 'Health'
           }
       ]);
   },

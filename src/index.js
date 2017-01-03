@@ -2,28 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Relay from 'react-relay';
 import { RelayNetworkLayer, urlMiddleware, authMiddleware } from 'react-relay-network-layer';
-import { Router, Route, IndexRedirect, browserHistory, applyRouterMiddleware } from 'react-router';
+import { Router, Route, IndexRedirect, Redirect, browserHistory, applyRouterMiddleware } from 'react-router';
 import useRelay from 'react-router-relay';
+
 import AuthService from './auth/AuthService';
-import App from './App';
+import App, { RoleWrapperContainer } from './App';
+import { GalleryContainer } from './components/Gallery';
 import { TimelineContainer } from './components/Timeline';
 import { DashboardContainer } from './components/Dashboard';
-import { RequestFormContainer } from './components/RequestForm';
 import SimpleLogin from './components/SimpleLogin';
-import { SignupContainer } from './components/Signup';
+import { SettingsContainer } from './components/Settings';
 import { AddEntryContainer } from './components/AddEntry';
-import TopicForm from './components/TopicForm';
-import SentimentForm from './components/SentimentForm';
-import MediaForm from './components/MediaForm';
-import VideoForm from './components/VideoForm';
-import ImageForm from './components/ImageForm';
-import TextForm from './components/TextForm';
-import { RequestViewerContainer } from './components/RequestViewer';
-import { EntryRequestViewerContainer } from './components/EntryRequestViewer';
+import { AccessContainer } from './components/Access';
+import { EntryViewerContainer } from './components/EntryViewer';
+import { IntroductionContainer } from './components/Introduction';
 
-import 'bootstrap/dist/css/bootstrap.css';
-import './override-bootstrap.css';
-import './index.css';
+import './css/global.css';
+import './css/bootstrap.css';
 
 const auth = new AuthService(
     process.env.AUTH0_CLIENT_ID,
@@ -31,7 +26,7 @@ const auth = new AuthService(
     {
         callbackURL: window.location.origin + '/callback',
         login: '/login',
-        loggedIn: '/settings/configure'
+        loggedIn: '/app'
     }
 );
 
@@ -43,7 +38,7 @@ function setupRelayNetworkLayer() {
         authMiddleware({
             token: () => auth.getToken()
         })
-    ], { disableBatchQuery:  true }));
+    ], { disableBatchQuery: true }));
 }
 
 const MetaQueries = {
@@ -64,48 +59,38 @@ const CreatorQueries = {
     ...UserQueries,
 };
 
-const SignupQueries = {
+const SettingsQueries = {
     ...UserQueries,
     ...MetaQueries,
 };
 
-const EntryQueries = {
-    entry: () => Relay.QL`query { node(id: $entryId) }`,
-    ...CreatorQueries,
-    ...UserQueries,
-};
+const EntryViewerQueries = {
+    node: () => Relay.QL`query { node(id: $id) }`,
+    creator: () => Relay.QL`query { creator }`,
+}
 
 setupRelayNetworkLayer();
 
 ReactDOM.render(
-  <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
-    <Route path="/" component={App} auth={auth}>
-        <IndexRedirect to="settings/configure" />
-        <Route path="settings/:mode" component={SignupContainer} roleMap={{
-            "consumer": "/dashboard",
-            "creator": "/home",
-        }} queries={SignupQueries} onEnter={auth.requireAuthOnEnter}/>
+    <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
+        <Route path="/" component={App} auth={auth}>
+            <IndexRedirect to="/app" />
+            <Route path="login" component={SimpleLogin} />
+            <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter} />
 
-        <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
-        <Route path="requests">
-            <Route path="all" component={RequestViewerContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter}/>
-            <Route path="add" component={RequestFormContainer} queries={ConsumerQueries} auth={auth} onEnter={auth.requireAuthOnEnter}/>
-        </Route>
-        <Route path="home" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter}/>
-        <Route path="entry/:entryId/requests" component={EntryRequestViewerContainer} queries={EntryQueries} onEnter={auth.requireAuthOnEnter}/>
-        <Route path="add" component={AddEntryContainer} queries={CreatorQueries}>
-            <IndexRedirect to="about"/>
-            <Route path="about" component={TopicForm} />
-            <Route path="feeling" component={SentimentForm} />
-            <Route path="message" component={MediaForm}>
-                <Route path="video" component={VideoForm}/>
-                <Route path="photo" component={ImageForm}/>
-                <Route path="typing" component={TextForm}/>
+            <Route path="app" component={RoleWrapperContainer} queries={UserQueries} onEnter={auth.requireAuthOnEnter}  auth={auth}>
+                <Route path="settings" component={SettingsContainer} queries={SettingsQueries} onEnter={auth.requireAuthOnEnter} />
+                <Route path="introduction" component={IntroductionContainer} queries={UserQueries} onEnter={auth.requireAuthOnEnter} />
+                <Route path="home" component={GalleryContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter} />
+                <Route path="add" component={AddEntryContainer} queries={CreatorQueries} />
+                <Route path="timeline" component={TimelineContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter} />
+                <Route path="entry/:id" component={EntryViewerContainer} queries={EntryViewerQueries} onEnter={auth.requireAuthOnEnter} />
+                <Route path="dashboard" component={DashboardContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter} />
+                <Route path="access" component={AccessContainer} queries={ConsumerQueries} onEnter={auth.requireAuthOnEnter} />
             </Route>
+
+            <Redirect from="*" to="/app/home" />
         </Route>
-        <Route path="login" component={SimpleLogin}/>
-        <Route path="callback" component={SimpleLogin} onEnter={auth.parseAuthOnEnter}/>
-    </Route>
-  </Router>,
-  document.getElementById('root')
+    </Router>,
+    document.getElementById('root')
 );

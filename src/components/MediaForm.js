@@ -1,79 +1,97 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
 import { withRouter } from 'react-router';
-import IconChooser from './IconChooser';
-import AddControls from './AddControls';
 import _ from 'lodash';
 
+import IconChooserGrid from './IconChooserGrid';
+import TextForm from './TextForm';
+import VideoForm from './VideoForm';
+import ImageForm from './ImageForm';
+
+import styles from './css/MediaForm.module.css';
+
 const choices = [
-      {
-          type: 'video',
-          name: 'Video'
-      },
-      {
-          type: 'photo',
-          name: 'Photo'
-      },
-      {
-          type: 'typing',
-          name: 'Typing'
-      }
-  ];
+    {
+        type: 'video',
+        name: 'Video'
+    },
+    {
+        type: 'photo',
+        name: 'Picture'
+    },
+    {
+        type: 'typing',
+        name: 'Write'
+    }
+];
 
 class MediaForm extends Component {
+    static SELECT = 'MEDIAFORM/SELECT';
+    static VIDEO = 'MEDIAFORM/VIDEO';
+    static PHOTO = 'MEDIAFORM/PHOTO';
+    static TEXT = 'MEDIAFORM/TEXT';
 
-  constructor(props) {
-    super(props);
+    constructor (props) {
+        super(props);
 
-    this.state = {
-        types: []
-    };
+        this.handleSave = _.partial(props.save, props.saveKey);
 
-    this.handleNext = this.handleNext.bind(this);
-    this.handleChoice = this.handleChoice.bind(this);
-  }
+        const { SELECT, VIDEO, PHOTO, TEXT } = MediaForm;
+        const choiceMap = {
+            video: VIDEO,
+            photo: PHOTO,
+            typing: TEXT,
+        };
 
-  handleNext() {
-      this.props.router.push('/add/message/' + this.state.types[0]);
-  }
+        this.state = {
+            form: SELECT
+        };
 
-  handleChoice(values) {
-      this.setState({types: values});
-  }
+        this.chooserTransition = (values) => {
+            this.props.onMediaTypeChange(values[0]);
 
-  renderChooser() {
-      return (
-          <Grid>
-              <Row>
-                  <Col xs={12} xsOffset={1}>
-                      <IconChooser
-                          label="How would you like to make your message?"
-                          choices={choices}
-                          maxSelections={1}
-                          onChange={this.handleChoice} />
-                  </Col>
-              </Row>
-              <Row>
-                  <AddControls onNext={this.handleNext} disableNext={!this.state.types.length} />
-              </Row>
-          </Grid>
-      );
-  }
-
-  render() {
-    let children = null;
-    if (this.props.children) {
-        children = React.cloneElement(this.props.children, {
-            save: _.partial(this.props.save, this.props.saveKey)
-        });
+            return this.setState({
+                form: choiceMap[values[0]]
+            });
+        }
     }
-    return (
-          <div>
-              { children && children }
-              { !children && this.renderChooser() }
-          </div>
-    );
-  }
+
+    renderChooser () {
+        return (
+            <IconChooserGrid
+                label='How would you like to create the entry?'
+                choices={choices}
+                maxSelections={1}
+                onChange={this.chooserTransition}
+            />
+        );
+    }
+
+    renderForm () {
+        const { SELECT, VIDEO, PHOTO, TEXT } = MediaForm;
+
+        switch (this.state.form) {
+            case SELECT:
+                return this.renderChooser();
+
+            case VIDEO:
+                return <VideoForm save={this.handleSave} />;
+
+            case PHOTO:
+                return <ImageForm save={this.handleSave} />;
+
+            case TEXT:
+            default:
+                return <TextForm save={this.handleSave} />;
+        }
+    }
+
+    render () {
+        return (
+            <div className={styles.wrapper}>
+                {this.renderForm()}
+            </div>
+        );
+    }
 }
 
 MediaForm.propTypes = {

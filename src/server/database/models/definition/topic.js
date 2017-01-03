@@ -29,19 +29,10 @@ module.exports.initRelations = function() {
     var model = require('../index');
     var Topic = model.Topic;
     var EntryTopic = model.EntryTopic;
-    var RequestTopic = model.RequestTopic;
     var Entry = model.Entry;
-    var Request = model.Request;
 
     Topic.hasMany(EntryTopic, {
         as: 'EntryTopicTopicIdFkeys',
-        foreignKey: 'topic_id',
-        onDelete: 'NO ACTION',
-        onUpdate: 'NO ACTION'
-    });
-
-    Topic.hasMany(RequestTopic, {
-        as: 'RequestTopicTopicIdFkeys',
         foreignKey: 'topic_id',
         onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
@@ -55,14 +46,4 @@ module.exports.initRelations = function() {
         onDelete: 'NO ACTION',
         onUpdate: 'NO ACTION'
     });
-
-    Topic.belongsToMany(Request, {
-        as: 'RequestTopicRequests',
-        through: RequestTopic,
-        foreignKey: 'topic_id',
-        otherKey: 'request_id',
-        onDelete: 'NO ACTION',
-        onUpdate: 'NO ACTION'
-    });
-
 };

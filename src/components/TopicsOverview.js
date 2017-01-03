@@ -1,27 +1,24 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Badge } from 'react-bootstrap';
-import { IconCard } from './IconCard';
+import styles from './css/TopicsOverview.module.css';
+import headings from '../css/Headings.module.css';
 
 class TopicsOverview extends Component {
-    render() {
+    render () {
         return (
-            <Grid>
-                <Row>
-                    <Col xs={12}>
-                        <h2>Entries by topic</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    { this.props.topics.map((item, i) => {
-                        return (
-                            <Col xs={3} key={item.topic.type + '_' + i}>
-                                <IconCard message={item.topic.name} icon={item.topic.type} />
-                                <div className="topicCount"><Badge>{item.entryCount}</Badge> entries by <Badge>{item.creatorCount}</Badge> creators</div>
-                            </Col>
-                        );
-                    })}
-                </Row>
-            </Grid>
+            <div>
+                <h2 className={headings.regular}>Entries by topic</h2>
+
+                <table className={styles.table}>
+                    <tbody>
+                        {this.props.topics.map((item, i) => (
+                            <tr key={i}>
+                                <th>{item.topic.name}</th>
+                                <td>{item.entryCount} entries by {item.creatorCount} creators</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }

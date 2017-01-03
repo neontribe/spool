@@ -6,10 +6,8 @@ schema {
 type Consumer implements Node {
   # The ID of an object
   id: ID!
-  creatorActivityCount(range: DateRangeInput): CreatorActivityCount
-  topicCounts(range: DateRangeInput): [TopicCount]
   topics: [Topic]
-  requests(after: String, first: Int, before: String, last: Int): RequestConnection
+  access(range: DateRangeInput): DataAccess
 }
 
 input CreateEntryInput {
@@ -23,30 +21,30 @@ type CreateEntryPayload {
   clientMutationId: String
 }
 
-input CreateRequestInput {
-  request: RequestInput
-  clientMutationId: String
-}
-
-type CreateRequestPayload {
-  consumer: Consumer
-  requestEdge: RequestEdge
-  clientMutationId: String
-}
-
 type Creator implements Node {
   # The ID of an object
   id: ID!
   topics: [Topic]
-  entries(after: String, first: Int, before: String, last: Int): EntryConnection
-  requests(after: String, first: Int, before: String, last: Int): UserRequestConnection
+  entries(random: Boolean, filter: EntryFilterArgs, after: String, first: Int, before: String, last: Int): EntryConnection
   happyCount: Int
   sadCount: Int
 }
 
-type CreatorActivityCount {
+type CreatorActivity {
   active: Int
   stale: Int
+}
+
+type CreatorSentiment {
+  happy: Int
+  sad: Int
+}
+
+type DataAccess {
+  sentiment: CreatorSentiment
+  topics(range: DateRangeInput): [TopicCount]
+  activity: CreatorActivity
+  entries(topics: [String], after: String, first: Int, before: String, last: Int): EntryConnection
 }
 
 input DateRangeInput {
@@ -54,15 +52,26 @@ input DateRangeInput {
   to: String!
 }
 
+input DeleteEntryInput {
+  entryId: String
+  clientMutationId: String
+}
+
+type DeleteEntryPayload {
+  creator: Creator
+  deletedEntryId: String
+  clientMutationId: String
+}
+
 type Entry implements Node {
   # The ID of an object
   id: ID!
+  owner: EntryOwner
   media: Media
   sentiment: Sentiment
   topics: [Topic]
   created: String
   updated: String
-  requests: [EntryRequest]
 }
 
 # A connection to a list of items.
@@ -83,15 +92,31 @@ type EntryEdge {
   cursor: String!
 }
 
+input EntryFilterArgs {
+  sentiment: [String]
+  topics: [String]
+  media: MediaFilterType
+}
+
 input EntryInput {
   media: MediaInput
   sentiment: String
   topics: [String]
 }
 
-type EntryRequest {
-  access: Boolean
-  userRequest: UserRequest
+type EntryOwner {
+  age: Int
+  residency: String
+  services: [Service]
+}
+
+input HideIntroductionInput {
+  clientMutationId: String
+}
+
+type HideIntroductionPayload {
+  user: User
+  clientMutationId: String
 }
 
 type Media {
@@ -100,6 +125,12 @@ type Media {
   videoThumbnail: String
   image: String
   imageThumbnail: String
+}
+
+input MediaFilterType {
+  video: Boolean
+  image: Boolean
+  text: Boolean
 }
 
 input MediaInput {
@@ -111,16 +142,17 @@ input MediaInput {
 }
 
 type Meta {
-  regions: [RegionDefinitionType]
-  roles: [RoleDefinition]
+  regions: [Region]
+  roles: [Role]
+  residences: [Residence]
 }
 
 type Mutations {
   createEntry(input: CreateEntryInput!): CreateEntryPayload
-  createRequest(input: CreateRequestInput!): CreateRequestPayload
   updateUser(input: UpdateUserInput!): UpdateUserPayload
-  updateUserRequest(input: UpdateUserRequestInput!): UpdateUserRequestPayload
-  updateEntryRequest(input: UpdateEntryRequestInput!): UpdateEntryRequestPayload
+  deleteEntry(input: DeleteEntryInput!): DeleteEntryPayload
+  updatePrivacy(input: UpdatePrivacyInput!): UpdatePrivacyPayload
+  hideIntroduction(input: HideIntroductionInput!): HideIntroductionPayload
 }
 
 # An object with an ID
@@ -144,6 +176,22 @@ type PageInfo {
   endCursor: String
 }
 
+input PrivacyInput {
+  sharing: Boolean
+}
+
+type Profile implements Node {
+  # The ID of an object
+  id: ID!
+  name: String
+  age: Int
+  nickname: String
+  services: [Service]
+  residence: Residence
+  isSharing: Boolean
+  isIntroduced: Boolean
+}
+
 type Query {
   # Fetches an object given its ID
   node(
@@ -156,54 +204,17 @@ type Query {
   meta: Meta
 }
 
-type RegionDefinitionType {
+type Region {
   type: String
+  services: [Service]
 }
 
-type Request implements Node {
-  # The ID of an object
-  id: ID!
-  from: String
-  to: String
-  region: String
-  topics: [Topic]
-  reason: String
+type Residence {
+  type: String
   name: String
-  org: String
-  avatar: String
-  created: String
-  updated: String
-  entries(after: String, first: Int, before: String, last: Int): EntryConnection
 }
 
-# A connection to a list of items.
-type RequestConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [RequestEdge]
-}
-
-# An edge in a connection.
-type RequestEdge {
-  # The item at the end of the edge
-  node: Request
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-input RequestInput {
-  range: DateRangeInput
-  reason: String
-  name: String
-  org: String
-  avatar: String
-  topics: [String]
-}
-
-type RoleDefinition {
+type Role {
   type: String
   name: String
   secret: String
@@ -211,6 +222,11 @@ type RoleDefinition {
 
 type Sentiment {
   type: String
+}
+
+type Service {
+  type: String
+  name: String
 }
 
 type Topic {
@@ -224,15 +240,13 @@ type TopicCount {
   creatorCount: Int
 }
 
-input UpdateEntryRequestInput {
-  entryId: String!
-  userRequestId: String!
-  access: Boolean
+input UpdatePrivacyInput {
+  privacy: PrivacyInput
   clientMutationId: String
 }
 
-type UpdateEntryRequestPayload {
-  creator: Creator
+type UpdatePrivacyPayload {
+  user: User
   clientMutationId: String
 }
 
@@ -246,58 +260,19 @@ type UpdateUserPayload {
   clientMutationId: String
 }
 
-input UpdateUserRequestInput {
-  userRequest: UserRequestInputType
-  clientMutationId: String
-}
-
-type UpdateUserRequestPayload {
-  creator: Creator
-  userRequestId: String
-  clientMutationId: String
-}
-
 type User implements Node {
   # The ID of an object
   id: ID!
   role: String
   region: String
+  profile: Profile
 }
 
 input UserInput {
   region: String!
-  roleSecret: String!
-}
-
-type UserRequest implements Node {
-  # The ID of an object
-  id: ID!
-  request: Request
-  seen: Boolean
-  created: String
-  updated: String
-}
-
-# A connection to a list of items.
-type UserRequestConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [UserRequestEdge]
-}
-
-# An edge in a connection.
-type UserRequestEdge {
-  # The item at the end of the edge
-  node: UserRequest
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-input UserRequestInputType {
-  id: String!
-  access: Boolean!
-  hide: Boolean!
+  name: String!
+  nickname: String
+  age: Int
+  residence: String!
+  services: [String]
 }

@@ -1,0 +1,75 @@
+.error {
+	color: #fff;
+	border-top: 4px solid #f44336;
+	line-height: 1;
+}
+
+.error > span {
+	float: right;
+	padding: .5rem;
+	margin-top: -4px;
+	background-color: #f44336;
+}
+
+.form {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.label {
+	display: inline-block;
+	padding: .5rem;
+	margin-bottom: 0;
+	line-height: 1;
+	background-color: #34404c;
+}
+
+.row {
+	display: flex;
+}
+
+.column {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	margin: 0 .5rem;
+}
+
+.textField {
+	width: 100%;
+}
+
+.numberField {
+	composes: textField;
+	display: block;
+	width: 5rem;
+}
+
+.controls {
+	text-align: center;
+}
+
+.service {
+	margin-bottom: 0;
+}
+
+.service + .service {
+	margin-top: 4px;
+}
+
+.message {
+	cursor: pointer;
+	display: block;
+	padding: 1rem;
+	border: 4px solid #34404c;
+}
+
+.field {
+	composes: vh from '../../css/A11y.module.css';
+}
+
+.field:checked + .message {
+	background-color: #34404c;
+}

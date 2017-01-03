@@ -1,0 +1,145 @@
+@value headerHeight: calc(50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024));
+
+.app {
+	max-width: 1920px;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+	margin: 0 auto;
+	padding-top: calc(headerHeight + .5rem); /* .header->height */
+}
+
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: stretch;
+	justify-content: space-between;
+	height: calc(headerHeight + .5rem);
+	width: 100%;
+	border-top: .5rem solid #34404c;
+	background-color: #34404c;
+	z-index: 110;
+}
+
+.headerExpanded {
+	composes: header;
+	border-top-color: transparent;
+	background-color: transparent;
+}
+
+.header > * {
+	display: flex;
+	align-items: center;
+	padding: 0 1rem;
+}
+
+.logo {
+	font-weight: bold;
+	letter-spacing: 3px;
+}
+
+.headerMeta {
+	display: flex;
+	flex: 1;
+	justify-content: center;
+}
+
+.contentMenuToggle {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: calc(headerHeight + .5rem); /* .header->height */
+	width: calc(headerHeight + .5rem); /* .header->height */
+}
+
+.contextMenuContent {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	position: fixed;
+	top: calc(headerHeight + .5rem); /* .header->height */
+	right: 0;
+	height: calc(100vh - headerHeight - .5rem); /* .header->height */
+	padding-top: .5rem;
+	background-color: #1e2c37;
+	z-index: 1;
+	overflow: auto;
+
+	width: 40%;
+	max-width: 800px;
+}
+
+.contextMenu {
+	list-style: none;
+}
+
+.contextMenuItem {
+	margin-bottom: 2px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.contextMenuItem > a {
+	position: relative;
+	display: block;
+	padding: 1rem;
+	font-weight: bold;
+}
+
+.contextMenuItem > a:before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 5px;
+}
+
+.contextMenuItemHome,
+.contextMenuItemLogout,
+.contextMenuItemSettings {
+	composes: contextMenuItem;
+}
+
+.contextMenuItemSettings > a:before {
+	background-color: #008946;
+}
+
+.contextMenuItemHome > a:before {
+	color: #1e2c37;
+	background-color: #fece4f;
+}
+
+.contextMenuItemLogout > a:before {
+	background-color: #ce1d2b;
+}
+
+.content {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	height: calc(100vh - (headerHeight + .5rem)); /* .header->height */
+	padding: 1rem;
+	background-color: #1e2c37;
+}
+
+/* Force landscape display by rotating the entire document */
+@media screen and (orientation: portrait) {
+	.contextMenuContent,
+	.content {
+		height: calc(100vw - headerHeight + .5rem); /* .header->height */
+	}
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: rgba(0, 0, 0, .75);
+	z-index: 110;
+}

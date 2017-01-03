@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
-import AddControls from './AddControls';
+
+import Button from './Button';
+
+import styles from './css/TextForm.module.css';
+import headings from '../css/Headings.module.css';
+import helpers from '../css/Helpers.module.css';
 
 class TextForm extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
@@ -14,41 +18,44 @@ class TextForm extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    continue() {
-        this.props.save({text: this.state.value});
+    continue (evt) {
+        evt.preventDefault();
+
+        this.props.save({
+            text: this.state.value
+        });
     }
 
-    handleChange(event) {
+    handleChange (event) {
         this.setState({
             value: event.target.value
         });
     }
 
-    render() {
+    render () {
         return (
-            <Grid>
-                <Row>
-                    <Col>
-                        <FormGroup controlId="media">
-                            <ControlLabel>I just want to say...</ControlLabel>
-                            <FormControl
-                                componentClass="textarea"
-                                maxLength={this.props.maxLength}
-                                placeholder=""
-                                value={this.state.value}
-                                onChange={this.handleChange} />
-                            <HelpBlock>{this.state.value.length} of {this.props.maxLength} letters used</HelpBlock>
-                        </FormGroup>
-                    </Col>
-                    <Col>
-                        <AddControls
-                            onNext={this.continue}
-                            disableNext={!this.state.value}
-                            />
-                    </Col>
-                </Row>
-            </Grid>
+            <form className={styles.wrapper}>
+                <h2 className={headings.large}>I just want to say&hellip;</h2>
 
+                <div className={styles.content}>
+                    <textarea
+                        maxLength={this.props.maxLength}
+                        onChange={this.handleChange}
+                        className={styles.textarea}
+                        value={this.state.value}
+                    ></textarea>
+
+                    <p className={styles.charCounter}>
+                        {this.state.value.length} of {this.props.maxLength} letters used
+                    </p>
+                </div>
+
+                <div className={(!this.state.value.length && helpers.hide) || undefined}>
+                    <div className={styles.controls}>
+                        <Button onClick={this.continue}>Next</Button>
+                    </div>
+                </div>
+            </form>
         );
     }
 }
@@ -60,7 +67,7 @@ TextForm.propTypes = {
 
 TextForm.defaultProps = {
     initialValue: '',
-    maxLength: 250
+    maxLength: 1000
 };
 
 export default TextForm;

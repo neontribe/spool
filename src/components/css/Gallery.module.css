@@ -1,0 +1,22 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	justify-content: center;
+}
+
+.addEntryControl {
+	display: flex;
+	flex: 1;
+	align-self: stretch;
+	align-items: center;
+	justify-content: center;
+}
+
+.button {
+	composes: raised from './Button.module.css';
+}
+
+.handIcon {
+	composes: handIcon from './Button.module.css';
+}
