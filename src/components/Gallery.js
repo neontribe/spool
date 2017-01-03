@@ -80,7 +80,9 @@ export class Gallery extends Component {
 
     constructor (props) {
         super(props);
-
+        this.state = {
+            filters: {}
+        }
         this.handleFilterChange = this.handleFilterChange.bind(this);
     }
 
@@ -168,15 +170,15 @@ export class Gallery extends Component {
             sentiment: _.intersection(active, ['happy', 'sad']),
             media: mediaArguments
         };
-
-         this.props.relay.setVariables({
+        this.setState({filters});
+        this.props.relay.setVariables({
             filter: filterArguments
         }); 
     }
 
     renderMenuContent () {
         return (
-            <IconFilter onChange={this.handleFilterChange} />
+            <IconFilter onChange={this.handleFilterChange} filters={this.state.filters}/>
         );
     }
 

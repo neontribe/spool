@@ -555,7 +555,7 @@ const CreatorType = new ql.GraphQLObjectType({
                         ['createdAt', 'DESC']
                     ],
                 }).then(function(entries) {
-                    if(Object.keys(args.filter).length) {
+                    if(args.filter && Object.keys(args.filter).length) {
                         let filter = new EntryFilter(args.filter);
                         entries = filter.filter(entries);
                     }

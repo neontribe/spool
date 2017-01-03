@@ -66,7 +66,7 @@ export default class IconFilter extends Component {
     constructor (props) {
         super(props);
 
-        this.state = {
+        this.state = Object.assign({
             happy: false,
             sad: false,
             work: false,
@@ -80,7 +80,7 @@ export default class IconFilter extends Component {
             video: false,
             image: false,
             text: false,
-        };
+        }, props.filters);
 
         this.handleChange = this.handleChange.bind(this);
         this.handlers = {};
