@@ -78,8 +78,8 @@ export default class IconFilter extends Component {
             travel: false,
             health: false,
             video: false,
-            photo: false,
-            typing: false,
+            image: false,
+            text: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -99,7 +99,7 @@ export default class IconFilter extends Component {
     }
 
     render() {
-        const { happy, sad, work, learning, home, food, relationships, activities, travel, health, video, photo, typing } = this.state;
+        const { happy, sad, work, learning, home, food, relationships, activities, travel, health, video, image, text } = this.state;
         const handlers = this.handlers;
 
         return (<div>
@@ -188,15 +188,15 @@ export default class IconFilter extends Component {
                 >Videos</Filter>
                 <Filter
                     icon='photo'
-                    onChange={handlers['photo']}
-                    active={photo}
+                    onChange={handlers['image']}
+                    active={image}
                     count={0}
                     className={styles.filterMedia}
                 >Photos</Filter>
                 <Filter
                     icon='typing'
-                    onChange={handlers['typing']}
-                    active={typing}
+                    onChange={handlers['text']}
+                    active={text}
                     count={2}
                     className={styles.filterMedia}
                 >Written</Filter>

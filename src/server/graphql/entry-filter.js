@@ -6,7 +6,7 @@ module.exports = class EntryFilter {
 
     sentiment(entry) {
         const sentiments = this.filters.sentiment;
-        if (!sentiments) {
+        if (!sentiments || !sentiments.length) {
             return true;
         }
         const sentiment = entry.Sentiment.type;
@@ -15,7 +15,7 @@ module.exports = class EntryFilter {
 
     topic(entry) {
         const topics = this.filters.topics;
-        if (!topics) {
+        if (!topics || !topics.length) {
             return true;
         }
         var valid = -1;

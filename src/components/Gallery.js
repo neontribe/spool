@@ -149,7 +149,29 @@ export class Gallery extends Component {
 
     /* Todo: handleFilterChange */
     handleFilterChange (filters) {
-        console.log(filters);
+        var active = _.reduce(filters, (reduction, value, key) => {
+            if(value) {
+                reduction.push(key);
+            }
+            return reduction;
+        }, []);
+
+        var mediaArguments;
+        const { text, video, image } = filters;
+        if(text || video || image) {
+            mediaArguments = {
+                text, video, image
+            };
+        }
+        const filterArguments = {
+            topics: _.intersection(active, ['work', 'learning', 'home', 'food', 'relationships', 'activities', 'travel', 'health']),
+            sentiment: _.intersection(active, ['happy', 'sad']),
+            media: mediaArguments
+        };
+
+         this.props.relay.setVariables({
+            filter: filterArguments
+        }); 
     }
 
     renderMenuContent () {
@@ -190,6 +212,15 @@ export const GalleryContainer = Relay.createContainer(WrappedGallery, {
     initialVariables: {
         first: 15,
         random: true,
+        filter: {
+            sentiment: ['happy', 'sad'],
+            topics: ['work', 'learning', 'home', 'food', 'relationships', 'activities', 'travel', 'health'],
+            media: {
+                text: true,
+                video: true,
+                image: true,
+            }
+        }
     },
     fragments: {
         user: () => Relay.QL`
@@ -200,7 +231,7 @@ export const GalleryContainer = Relay.createContainer(WrappedGallery, {
         fragment on Creator {
             happyCount
             sadCount
-            entries(first: $first, random: $random) {
+            entries(first: $first, random: $random, filter: $filter) {
                 edges {
                     node {
                         id,
