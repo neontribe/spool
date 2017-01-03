@@ -81,9 +81,11 @@ export class Gallery extends Component {
 
     constructor (props) {
         super(props);
+
         this.state = {
             filters: {}
-        }
+        };
+
         this.handleFilterChange = this.handleFilterChange.bind(this);
     }
 
@@ -145,28 +147,35 @@ export class Gallery extends Component {
         }
     }
 
-    /* Todo: handleFilterChange */
     handleFilterChange (filters) {
         var active = _.reduce(filters, (reduction, value, key) => {
-            if(value) {
+            if (value) {
                 reduction.push(key);
             }
+
             return reduction;
         }, []);
 
         var mediaArguments;
+
         const { text, video, image } = filters;
-        if(text || video || image) {
+
+        if (text || video || image) {
             mediaArguments = {
                 text, video, image
             };
         }
+
         const filterArguments = {
             topics: _.intersection(active, ['work', 'learning', 'home', 'food', 'relationships', 'activities', 'travel', 'health']),
             sentiment: _.intersection(active, ['happy', 'sad']),
             media: mediaArguments
         };
-        this.setState({filters});
+
+        this.setState({
+            filters
+        });
+
         this.props.relay.setVariables({
             filter: filterArguments
         }); 

@@ -5,6 +5,7 @@ import Grid from './Grid';
 
 import styles from './css/SentimentForm.module.css';
 import headings from '../css/Headings.module.css';
+import a11y from '../css/A11y.module.css';
 
 class SentimentForm extends Component {
     constructor (props) {
@@ -28,10 +29,10 @@ class SentimentForm extends Component {
 
                 <Grid enforceConsistentSize={true}>
                     <a role='button' className={styles.optionHappy} onClick={_.partial(this.continue, 'happy')}>
-                        {/* Todo: Add hidden text (a11y) */}
+                        <span className={a11y.vh}>I feel happy</span>
                     </a>
                     <a role='button' className={styles.optionSad} onClick={_.partial(this.continue, 'sad')}>
-                        {/* Todo: Add hidden text (a11y) */}
+                        <span className={a11y.vh}>I feel sad</span>
                     </a>
                 </Grid>
             </div>

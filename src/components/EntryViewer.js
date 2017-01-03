@@ -97,7 +97,6 @@ export default class EntryViewer extends Component {
                                     </div>
                                     )}
 
-                                {/* Todo: Add router back functionality */}
                                 <div className={styles.controls}>
                                     <Button onClick={browserHistory.goBack}>Back</Button>
                                 </div>

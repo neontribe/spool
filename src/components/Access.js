@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Relay from 'react-relay';
 import moment from 'moment';
 import Papa from 'papaparse';
+import _ from 'lodash';
 
 import { withRoles, userFragment } from './wrappers.js';
 import { AccessFormContainer } from './AccessForm.js';
@@ -21,8 +22,10 @@ export default class Access extends Component {
 
         this.handleFormSuccess = this.handleFormSuccess.bind(this);
 
-        // Todo: Debounce this
-        this.handleCSVClick = this.handleCSVClick.bind(this);
+        this.handleCSVClick = _.debounce(this.handleCSVClick.bind(this), 500, {
+            leading: true,
+            trailing: false
+        });
 
         this.state = {
             form: {},
@@ -56,7 +59,7 @@ export default class Access extends Component {
                 creationDate: node.created,
                 creatorAge: node.owner.age,
                 creatorResidency: node.owner.residency,
-                creatorServices: node.owner.services && node.owner.services.map(({name}) => name).join(', '),
+                creatorServices: node.owner.services && node.owner.services.map(({ name }) => name).join(', '),
             };
 
             return row;

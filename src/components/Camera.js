@@ -243,7 +243,6 @@ class Camera extends Component {
                             >Take Picture</Button>
                         )}
 
-                        {/* Todo: Re-word 'Next' to 'Save' */}
                         {this.state.image && [
                             <Button
                                 key={0}
@@ -256,7 +255,7 @@ class Camera extends Component {
                             <Button
                                 key={2}
                                 onClick={this.save}
-                            >Next</Button>
+                            >Save</Button>
                         ]}
                     </div>
                 </Grid>

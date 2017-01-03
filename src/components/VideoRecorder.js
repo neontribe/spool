@@ -336,7 +336,6 @@ class VideoRecorder extends Component {
                             <Button onClick={this.playRecording}>Play</Button>
                         )}
 
-                        {/* Todo: Re-word 'Next' to 'Save' */}
                         {(this.state.lastTakeURL && !this.state.countdown) && [
                             <Button key={0} onClick={this.startCountdown}>Try Again</Button>,
                             <Button key={1} onClick={this.showDescripton}>Add Description</Button>,
