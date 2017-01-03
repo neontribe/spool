@@ -7,6 +7,14 @@ import Hamburger from './Hamburger';
 import styles from './css/App.module.css';
 
 class Header extends Component {
+    static propTypes = {
+      menuItems: React.PropTypes.arrayOf(React.PropTypes.element)
+    }
+
+    static defaultProps = {
+      menuItems: []
+    }
+
     constructor(props) {
         super(props);
 
@@ -107,42 +115,48 @@ class Header extends Component {
 
             {!this.state.hamburgerExpanded && this.props.children}
 
-            {this.state.profile && (
-              <Hamburger
-                text={this.state.profile.name}
-                toggleClassName={styles.contextMenuToggle}
-                contentClassName={styles.contextMenuContent}
-                onExpand={this.onHamburgerExpand}
-                onCollapse={this.onHamburgerCollapse}
-              >
-                <ul className={styles.contextMenu}>
+            <Hamburger
+              text={this.state.profile && this.state.profile.name}
+              toggleClassName={styles.contextMenuToggle}
+              contentClassName={styles.contextMenuContent}
+              onExpand={this.onHamburgerExpand}
+              onCollapse={this.onHamburgerCollapse}
+            >
+              <ul className={styles.contextMenu}>
+                {(this.state.profile) && (
                   <li className={styles.contextMenuItemHome}>
                     <Link to='/app/home'>Home</Link>
                   </li>
+                )}
 
-                  {this.props.auth.loggedIn() && (
-                    <li className={styles.contextMenuItemSettings}>
-                      <Link to='/app/settings'>Settings</Link>
-                    </li>
-                  )}
-
+                {(this.state.profile && this.props.auth.loggedIn()) && (
                   <li className={styles.contextMenuItemSettings}>
-                    <a
-                      role='button'
-                      onClick={(this.state.fullscreen) ? this.exitFullscreen : this.goFullscreen}
-                    >{(this.state.fullscreen) ? 'Exit Fullscreen' : 'Fullscreen'}</a>
+                    <Link to='/app/settings'>Settings</Link>
                   </li>
+                )}
 
+                <li className={styles.contextMenuItemSettings}>
+                  <a
+                    role='button'
+                    onClick={(this.state.fullscreen) ? this.exitFullscreen : this.goFullscreen}
+                  >{(this.state.fullscreen) ? 'Exit Fullscreen' : 'Fullscreen'}</a>
+                </li>
+
+                {(this.state.profile) && (
                   <li className={styles.contextMenuItemLogout}>
                     {this.props.auth.loggedIn() && (
                       <a href='/logout' onClick={this.logout}>Log out</a>
                     )}
                   </li>
-                </ul>
+                )}
 
-                {this.props.menuContent}
-              </Hamburger>
-            )}
+                {(this.props.menuItems.length) && this.props.menuItems.map((item, i) => (
+                  <li key={i} className={styles.contextMenuItem}>{item}</li>
+                ))}
+              </ul>
+
+              {this.state.profile && this.props.menuContent}
+            </Hamburger>
           </div>
         </div>
       );

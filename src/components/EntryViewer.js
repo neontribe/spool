@@ -53,11 +53,6 @@ export default class EntryViewer extends Component {
         );
     }
 
-    renderMenuContent() {
-        return (
-            <Button onClick={this.handleOnClick}>Delete</Button>
-        );
-    }
 
     render () {
         var entry = this.props.node;
@@ -68,7 +63,12 @@ export default class EntryViewer extends Component {
 
         return (
             <Layout>
-                <Header auth={this.props.auth} menuContent={this.renderMenuContent()}>
+                <Header
+                    auth={this.props.auth}
+                    menuItems={[
+                        <a role='button' className={styles.delete} onClick={this.handleOnClick}>Delete</a>
+                    ]}
+                >
                     <div className={styles.header}>
                         <div>Created {moment(entry.created).format('Do MMMM')}</div>
                         <Icon

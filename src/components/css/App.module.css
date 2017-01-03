@@ -100,11 +100,16 @@
 
 .contextMenuItemHome,
 .contextMenuItemLogout,
+.contextMenuItemFullscreen,
 .contextMenuItemSettings {
 	composes: contextMenuItem;
 }
 
 .contextMenuItemSettings > a:before {
+	background-color: #008946;
+}
+
+.contextMenuItemFullscreen > a:before {
 	background-color: #008946;
 }
 
