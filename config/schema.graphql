@@ -25,7 +25,7 @@ type Creator implements Node {
   # The ID of an object
   id: ID!
   topics: [Topic]
-  entries(random: Boolean, after: String, first: Int, before: String, last: Int): EntryConnection
+  entries(random: Boolean, filter: EntryFilterArgs, after: String, first: Int, before: String, last: Int): EntryConnection
   happyCount: Int
   sadCount: Int
 }
@@ -53,13 +53,13 @@ input DateRangeInput {
 }
 
 input DeleteEntryInput {
-  entryId: Int
+  entryId: String
   clientMutationId: String
 }
 
 type DeleteEntryPayload {
   creator: Creator
-  deletedEntryId: Int
+  deletedEntryId: String
   clientMutationId: String
 }
 
@@ -92,6 +92,12 @@ type EntryEdge {
   cursor: String!
 }
 
+input EntryFilterArgs {
+  sentiment: [String]
+  topics: [String]
+  media: MediaFilterType
+}
+
 input EntryInput {
   media: MediaInput
   sentiment: String
@@ -119,6 +125,12 @@ type Media {
   videoThumbnail: String
   image: String
   imageThumbnail: String
+}
+
+input MediaFilterType {
+  video: Boolean
+  image: Boolean
+  text: Boolean
 }
 
 input MediaInput {

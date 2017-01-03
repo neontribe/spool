@@ -8,6 +8,7 @@ const spool = require('../spool.js');
 const winston = require('winston');
 const shuffle = require('shuffle-array');
 const randomSeed = require('random-seed');
+const EntryFilter = require('./entry-filter.js');
 
 var {nodeInterface, nodeField} = relayql.nodeDefinitions(
     /* retrieve given an id and type */
@@ -502,6 +503,28 @@ const consumerField = {
     },
 }
 
+const EntryFilterArgsType = new ql.GraphQLInputObjectType({
+    name: 'EntryFilterArgs',
+    fields: {
+        sentiment: {
+            type: new ql.GraphQLList(ql.GraphQLString)
+        },
+        topics: {
+            type: new ql.GraphQLList(ql.GraphQLString)
+        },
+        media: {
+            type: new ql.GraphQLInputObjectType({
+                name: 'MediaFilterType',
+                fields: {
+                    video: { type: ql.GraphQLBoolean },
+                    image: { type: ql.GraphQLBoolean },
+                    text: { type: ql.GraphQLBoolean }
+                }
+            })
+        }
+    }
+});
+
 const CreatorType = new ql.GraphQLObjectType({
     name: 'Creator',
     fields: {
@@ -518,6 +541,9 @@ const CreatorType = new ql.GraphQLObjectType({
                 random: {
                     type: ql.GraphQLBoolean,
                 },
+                filter: {
+                    type: EntryFilterArgsType
+                }
             }, relayql.connectionArgs),
             resolve: (root, args, context) => {
                 return relayql.connectionFromPromisedArray(models.Entry.findAll({
@@ -529,9 +555,13 @@ const CreatorType = new ql.GraphQLObjectType({
                         ['createdAt', 'DESC']
                     ],
                 }).then(function(entries) {
+                    if(Object.keys(args.filter).length) {
+                        let filter = new EntryFilter(args.filter);
+                        entries = filter.filter(entries);
+                    }
                     if(args.random) {
-                        const first = entries.shift();
-                        const generator = randomSeed.create(context.userId);
+                        let first = entries.shift();
+                        let generator = randomSeed.create(context.userId);
                         entries = shuffle(entries, {
                             rng: generator.random
                         });
