@@ -53,16 +53,3 @@
 	align-items: center;
 	justify-content: center;
 }
-
-.button {
-	composes: raised from './Button.module.css';
-}
-
-.handIcon {
-	display: inline-block;
-	height: 1em;
-	width: .75em;
-	margin-right: 1rem;
-	background: url('/static/icon-hand.svg') no-repeat;
-	background-size: cover;
-}

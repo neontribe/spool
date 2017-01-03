@@ -12,12 +12,12 @@ import DeleteEntryMutation from './mutations/DeleteEntryMutation.js';
 
 import styles from './css/EntryViewer.module.css';
 
-
 const { Content, Header } = Layout;
 
 class Paragraph extends Component {
     render () {
         const text = this.props.children;
+
         const paragraphs = text.split(/\n/).map((text, i) => (
             <p key={i}>{text}</p>
         ));
@@ -29,16 +29,19 @@ class Paragraph extends Component {
 }
 
 export default class EntryViewer extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
+
         this.handleOnClick = this.handleOnClick.bind(this);
     }
+
     handleOnClick () {
         var onSuccess = () => {
             browserHistory.goBack();
         };
 
         const { node, creator } = this.props;
+
         this.props.relay.commitUpdate(
             new DeleteEntryMutation({
                 entry: node,
@@ -46,14 +49,20 @@ export default class EntryViewer extends Component {
             }),
             {
                 onSuccess
-            });
+            }
+        );
     }
+
     renderMenuContent() {
-        return (<Button onClick={this.handleOnClick}>Delete</Button>)
+        return (
+            <Button onClick={this.handleOnClick}>Delete</Button>
+        );
     }
+
     render () {
         var entry = this.props.node;
-        if(!entry) {
+
+        if (!entry) {
             return null;
         }
 
@@ -77,6 +86,7 @@ export default class EntryViewer extends Component {
                                 </li>
                             ))}
                         </ul>
+
                         {/* Todo: Add view counter */}
                         <span>8 views</span>
                     </div>
@@ -95,7 +105,7 @@ export default class EntryViewer extends Component {
                                     <div className={styles.content}>
                                         <Paragraph>{entry.media.text}</Paragraph>
                                     </div>
-                                    )}
+                                )}
 
                                 <div className={styles.controls}>
                                     <Button onClick={browserHistory.goBack}>Back</Button>

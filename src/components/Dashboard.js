@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import { Link } from 'react-router';
 import moment from 'moment';
 
 import TopicsOverview from './TopicsOverview';
 import { withRoles, userFragment } from './wrappers.js';
 import Layout from './Layout';
+import ButtonLink from './ButtonLink';
 
 import styles from './css/Dashboard.module.css';
 import headings from '../css/Headings.module.css';
@@ -47,7 +47,7 @@ export class Dashboard extends Component {
                 <Content>
                     <div>
                         <div className={styles.controls}>
-                            <Link to='/app/access' className={styles.button}>Access Form</Link>
+                            <ButtonLink to='/app/access'>Access Form</ButtonLink>
                         </div>
 
                         <div>

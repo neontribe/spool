@@ -80,7 +80,3 @@
 .field:checked + .message {
 	background-color: #34404c;
 }
-
-.btn {
-	composes: raised from './Button.module.css';
-}

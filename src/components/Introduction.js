@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import { Link } from 'react-router';
 import Layout from './Layout';
 import Button from './Button';
+import ButtonLink from './ButtonLink';
 import HideIntroductionMutation from './mutations/HideIntroductionMutation.js';
 import UpdatePrivacyMutation from './mutations/UpdatePrivacyMutation.js';
 
@@ -37,22 +37,26 @@ export default class Introduction extends Component {
         this.state = {
             step: 0,
             confirmedPrivacy: false,
-        }
+        };
+
         this.handleNextStep = this.handleNextStep.bind(this);
         this.handleBackStep = this.handleBackStep.bind(this);
         this.handleFinalStep = this.handleFinalStep.bind(this);
         this.handleSharingChange = this.handleSharingChange.bind(this);
     }
+
     handleSharingChange (evt) {
         const { user } = this.props;
         const value = parseInt(evt.target.value, 10);
+
         var onSuccess = () => {
-            // tell the UI to allow to continue to the next step
+            // Tell the UI to allow to continue to the next step
             // if they have confirmed their privacy settings
             this.setState({
                 confirmedPrivacy: true
             });
         };
+
         this.props.relay.commitUpdate(
             new UpdatePrivacyMutation({
                 user,
@@ -69,6 +73,7 @@ export default class Introduction extends Component {
 
     handleFinalStep() {
         const { user } = this.props;
+
         var onSuccess = () => {
             this.handleNextStep();
         };
@@ -118,6 +123,7 @@ export default class Introduction extends Component {
                                 <Button onClick={this.handleNextStep}>Next</Button>
                             </div>
                         </Step>
+
                         <Step>
                             <div>
                                 <h1 className={headings.large}>Adding an Entry</h1>
@@ -128,6 +134,7 @@ export default class Introduction extends Component {
                                 <Button onClick={this.handleNextStep}>Next</Button>
                             </div>
                         </Step>
+
                         <Step>
                             <div>
                                 <h1 className={headings.large}>Privacy Explainer</h1>
@@ -138,6 +145,7 @@ export default class Introduction extends Component {
                                 <Button onClick={this.handleNextStep}>Next</Button>
                             </div>
                         </Step>
+
                         <Step>
                             <div>
                                 <h1 className={headings.large}>Do you want to share?</h1>
@@ -168,16 +176,19 @@ export default class Introduction extends Component {
                             </div>
                             <div className={styles.controls}>
                                 <Button onClick={this.handleBackStep}>Back</Button>
-                                { this.state.confirmedPrivacy && <Button onClick={this.handleFinalStep}>Next</Button> }
+                                {this.state.confirmedPrivacy && (
+                                    <Button onClick={this.handleFinalStep}>Next</Button>
+                                )}
                             </div>
                         </Step>
+
                         <Step>
                             <div>
                                 <h1 className={headings.large}>You're Set Up!</h1>
                                 <p>Add an entry or do something&hellip;</p>
                             </div>
                             <div className={styles.controls}>
-                                <Link to='/app/home' className={styles.btn}>I'm Ready!</Link>
+                                <ButtonLink to='/app/home'>I'm Ready!</ButtonLink>
                             </div>
                         </Step>
                     </Stepper>

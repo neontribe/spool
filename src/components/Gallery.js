@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import { Link } from 'react-router';
 import { Carousel } from 'react-bootstrap';
 import _ from 'lodash';
 
 import { EntryContainer, Entry } from './Entry';
 import Layout from './Layout';
 import Grid from './Grid';
+import ButtonLink from './ButtonLink';
+import TouchIcon from './TouchIcon';
 import { withRoles, withRequiredIntroduction, withRequiredSetup, userFragment } from './wrappers.js';
 
 import styles from './css/Gallery.module.css';
@@ -183,24 +184,25 @@ export class Gallery extends Component {
 
     renderMenuContent () {
         return (
-            <IconFilter onChange={this.handleFilterChange} filters={this.state.filters}/>
+            <IconFilter onChange={this.handleFilterChange} filters={this.state.filters} />
         );
     }
 
     render () {
         var addEntryControl = (
-            <Link to='/app/add' className={styles.addEntryControl}>
-                <span className={styles.button}>
-                    <span className={styles.handIcon}></span> Add New Entry
-                </span>
-            </Link>
+            <span className={styles.addEntryControl}>
+                <ButtonLink to='/app/add'>
+                    <TouchIcon />Add New Entry
+                </ButtonLink>
+            </span>
         );
 
         return (
             <Layout>
                 <Header
                     auth={this.props.auth}
-                    menuContent={this.renderMenuContent()}/>
+                    menuContent={this.renderMenuContent()}
+                />
                 <Content>
                     <div className={styles.wrapper}>
                         <Grid callToAction={addEntryControl}>

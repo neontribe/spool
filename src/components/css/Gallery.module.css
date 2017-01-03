@@ -12,11 +12,3 @@
 	align-items: center;
 	justify-content: center;
 }
-
-.button {
-	composes: raised from './Button.module.css';
-}
-
-.handIcon {
-	composes: handIcon from './Button.module.css';
-}

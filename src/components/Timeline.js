@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import { Link } from 'react-router';
 import moment from 'moment';
 import _ from 'lodash';
 
 import { EntryContainer, Entry } from './Entry';
 import Layout from './Layout';
-// import Grid from './Grid';
+import ButtonLink from './ButtonLink';
+import TouchIcon from './TouchIcon';
 import { withRoles } from './wrappers.js';
 
 import styles from './css/Timeline.module.css';
@@ -14,10 +14,6 @@ import styles from './css/Timeline.module.css';
 const { Content, Header } = Layout;
 
 export class Timeline extends Component {
-    static propTypes = {
-        // creator: React.PropTypes.object.isRequired,
-    }
-
     constructor (props) {
         super(props);
 
@@ -92,9 +88,9 @@ export class Timeline extends Component {
                 <Content>
                     {!Object.keys(entries).length && (
                         <div className={styles.noResults}>
-                            <Link to='/app/add' className={styles.button}>
-                                <span className={styles.handIcon}></span> Add New Entry
-                            </Link>
+                            <ButtonLink to='/app/add'>
+                                <TouchIcon />Add New Entry
+                            </ButtonLink>
                         </div>
                     )}
 

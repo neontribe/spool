@@ -38,13 +38,13 @@ class Filter extends Component {
 
 class LinkFilter extends Component {
     render () {
-        var className = (window.location.href.indexOf(this.props.linkTo) !== -1)
+        var className = (window.location.href.indexOf(this.props.to) !== -1)
             ? styles.filterActive
             : styles.filter;
 
         return (
           <li className={className}>
-              <Link to={this.props.linkTo} className={styles.filterControl}>
+              <Link to={this.props.to} className={styles.filterControl}>
                   {this.props.children}
               </Link>
           </li>
@@ -100,7 +100,7 @@ export default class IconFilter extends Component {
         this.props.onChange(state);
     }
 
-    render() {
+    render () {
         const { happy, sad, work, learning, home, food, relationships, activities, travel, health, video, image, text } = this.state;
         const handlers = this.handlers;
 
@@ -109,8 +109,8 @@ export default class IconFilter extends Component {
               <h2 className={styles.filterHeader}>View Mode</h2>
 
               <FilterList>
-                  <LinkFilter linkTo='/app/home'>Gallery</LinkFilter>
-                  <LinkFilter linkTo='/app/timeline'>Timeline</LinkFilter>
+                  <LinkFilter to='/app/home'>Gallery</LinkFilter>
+                  <LinkFilter to='/app/timeline'>Timeline</LinkFilter>
               </FilterList>
           </div>
 
