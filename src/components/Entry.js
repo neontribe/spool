@@ -145,6 +145,7 @@ export class Entry extends Component {
         var lightIcon = true;
 
         if (isTextEntry) {
+            // eslint-disable-next-line new-cap
             randomisedStyle = this.constructor.ColourVariants[(new rand(entry.id)).range(this.constructor.ColourVariants.length - 1)];
 
             styleVariant = randomisedStyle.className;

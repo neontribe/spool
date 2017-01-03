@@ -85,7 +85,9 @@ export default class IconFilter extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handlers = {};
 
-        Object.keys(this.state).forEach((key) => this.handlers[key] = _.partial(this.handleChange, key));
+        Object.keys(this.state).forEach((key) => {
+            this.handlers[key] = _.partial(this.handleChange, key);
+        });
     }
 
     handleChange (key, value) {

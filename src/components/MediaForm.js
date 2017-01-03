@@ -72,11 +72,15 @@ class MediaForm extends Component {
         switch (this.state.form) {
             case SELECT:
                 return this.renderChooser();
+
             case VIDEO:
                 return <VideoForm save={this.handleSave} />;
+
             case PHOTO:
                 return <ImageForm save={this.handleSave} />;
+
             case TEXT:
+            default:
                 return <TextForm save={this.handleSave} />;
         }
     }

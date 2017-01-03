@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { Link } from 'react-router';
 import { Carousel } from 'react-bootstrap';
+import _ from 'lodash';
 
 import { EntryContainer, Entry } from './Entry';
 import Layout from './Layout';
@@ -105,24 +106,21 @@ export class Gallery extends Component {
                 slots = 4;
             }
 
-            var entryIndexCounter = 0;
             var slides = [];
 
             while (entries.length) {
-                for (var i = 0; i < slots; i++) {
+                for (let i = 0; i < slots; i++) {
                     if (entries.length) {
                         if (!slides[i]) {
                             slides[i] = [];
                         }
 
-                        var entry = entries.shift();
-
-                        slides[i].push(entry);
+                        slides[i].push(entries.shift());
                     }
                 }
             }
 
-            for (var i = 0; i < slides.length; i++) {
+            for (let i = 0; i < slides.length; i++) {
                 var _slides = [];
                 var maxSlides = slides[i].length;
 
@@ -130,11 +128,9 @@ export class Gallery extends Component {
                     maxSlides = MAX_CAROUSEL_ITEMS;
                 }
 
-                for (var j = 0; j < maxSlides; j++) {
-                    var entry = slides[i][j];
-
+                for (let j = 0; j < maxSlides; j++) {
                     _slides.push(
-                        <EntryComponent key={j} entry={entry.node} thumbnailMode={true} />
+                        <EntryComponent key={j} entry={slides[i][j].node} thumbnailMode={true} />
                     );
                 }
 

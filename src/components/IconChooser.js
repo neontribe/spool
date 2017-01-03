@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import { IconCard } from './IconCard';
-import Grid from './Grid';
 
 import styles from './css/IconChooser.module.css';
 import headings from '../css/Headings.module.css';
