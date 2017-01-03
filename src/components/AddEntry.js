@@ -93,11 +93,13 @@ class AddEntry extends Component {
         switch (this.state.form) {
             default:
             case ABOUT:
-                return <TopicForm save={this.transitions[ABOUT]} topics={this.props.creator.topics} />
+                return <TopicForm save={this.transitions[ABOUT]} topics={this.props.creator.topics} />;
+
             case SENTIMENT:
-                return <SentimentForm save={this.transitions[SENTIMENT]} />
+                return <SentimentForm save={this.transitions[SENTIMENT]} />;
+
             case MEDIA:
-                return <MediaForm save={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange} />
+                return <MediaForm save={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange} />;
         }
     }
 
@@ -131,9 +133,13 @@ class AddEntry extends Component {
                                 ) : '2. Sentiment'}
                             </div>
 
-                            <div>
-                                {/* Todo: Display media type selection */}
-                                3. Media type
+                            <div className={(this.state.mediaType && styles.stepComplete) || undefined}>
+                                {(this.state.mediaType) ? (
+                                    <Icon
+                                        icon={this.state.mediaType}
+                                        light={true}
+                                    />
+                                ) : '3. Media type'}
                             </div>
                         </div>
                     )}
@@ -153,7 +159,9 @@ AddEntry.defaultProps = {
 }
 
 AddEntry = withRouter(AddEntry);
+
 export default AddEntry;
+
 export const AddEntryContainer = Relay.createContainer(withRoles(AddEntry, ['creator']), {
     fragments: {
         user: () => Relay.QL`
