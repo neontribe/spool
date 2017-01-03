@@ -150,7 +150,7 @@ class Header extends Component {
                   </li>
                 )}
 
-                {(this.props.menuItems.length) && this.props.menuItems.map((item, i) => (
+                {(this.props.menuItems.length > 0) && this.props.menuItems.map((item, i) => (
                   <li key={i} className={styles.contextMenuItem}>{item}</li>
                 ))}
               </ul>
