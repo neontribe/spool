@@ -74,7 +74,12 @@ export class SettingsForm extends Component {
     handleChange (key, event) {
         const { value } = event.target;
 
-        this.setState({[key]: { value, changed: true }});
+        this.setState({
+            [key]: {
+                value,
+                changed: true
+            }
+        });
     }
 
     handleSubmit (event) {

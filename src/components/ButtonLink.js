@@ -11,10 +11,12 @@ export default class ButtonLink extends Component {
 
     render () {
         return (
-            <Link
-                to={this.props.to}
-                className={this.props.className || styles.raised}
-            >{this.props.children}</Link>
+            <span className={this.props.className || styles.raised}>
+                <Link
+                    to={this.props.to}
+                    className={styles.button}
+                >{this.props.children}</Link>
+            </span>
         );
     }
 };

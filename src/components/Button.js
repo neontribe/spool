@@ -20,10 +20,9 @@ export default class Button extends Component {
 
     render () {
         return (
-            <button
-                className={this.props.className || styles.raised}
-                onClick={this.onClick}
-            >{this.props.children}</button>
+            <span className={this.props.className || styles.raised}>
+                <button onClick={this.onClick} className={styles.button}>{this.props.children}</button>
+            </span>
         );
     }
 };
