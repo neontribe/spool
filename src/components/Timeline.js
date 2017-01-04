@@ -6,7 +6,6 @@ import _ from 'lodash';
 import { EntryContainer, Entry } from './Entry';
 import Layout from './Layout';
 import ButtonLink from './ButtonLink';
-import TouchIcon from './TouchIcon';
 import { withRoles } from './wrappers.js';
 
 import styles from './css/Timeline.module.css';

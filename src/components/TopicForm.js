@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import Button from './Button';
 import IconChooserGrid from './IconChooserGrid';
-import TouchIcon from './TouchIcon';
 
 import styles from './css/TopicForm.module.css';
 import helpers from '../css/Helpers.module.css';
