@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import uploadToS3 from '../s3';
 import Camera from './Camera';
+import Button from './Button';
 
 import styles from './css/ImageForm.module.css';
 
@@ -115,7 +116,7 @@ class ImageForm extends Component {
                             <h4>Oh Snap. We can&apos;t take a picture</h4>
                             <p>{errorMap[this.state.cameraError]}</p>
                             <p>
-                                <button onClick={this.requestUploadMode}>Try uploading</button>
+                                <Button onClick={this.requestUploadMode}>Try uploading</Button>
 								{this.renderBack()}
                             </p>
                         </div>

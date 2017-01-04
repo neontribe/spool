@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import uploadToS3 from '../s3';
 import VideoRecorder from './VideoRecorder';
+import Button from './Button';
 
 import styles from './css/VideoForm.module.css';
 
@@ -117,7 +118,7 @@ class VideoForm extends Component {
                             <h4>Oh Snap. We can&apos;t make a video</h4>
                             <p>{errorMap[this.state.recorderError]}</p>
                             <p>
-                                <button onClick={this.requestUploadMode}>Try uploading</button>
+                                <Button onClick={this.requestUploadMode}>Try uploading</Button>
 								{this.renderBack()}
                             </p>
                         </div>
