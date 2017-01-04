@@ -155,7 +155,9 @@ class Header extends Component {
                 ))}
               </ul>
 
-              {this.state.profile && this.props.menuContent}
+              {this.state.profile && (
+                <div className={styles.contextMenuContentWrapper}>{this.props.menuContent}</div>
+              )}
             </Hamburger>
           </div>
         </div>

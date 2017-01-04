@@ -194,7 +194,7 @@
 /* react-bootstrap Carousel */
 
 :global(.slide) {
-    position: absolute;
+    position: absolute !important;
     top: 0;
     left: 0;
     height: 100%;
@@ -206,11 +206,11 @@
 		0 6px 6px rgba(0, 0, 0, 0.3);
 }
 
-:global(.carousel-inner) {
+:global(.carousel .carousel-inner) {
 	height: 100%;
 }
 
-:global(.item) {
+:global(.carousel .item) {
 	position: absolute;
     top: 0;
     left: 0;

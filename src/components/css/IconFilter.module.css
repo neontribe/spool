@@ -1,7 +1,3 @@
-.filterBlock {
-	clear: left;
-}
-
 .filterHeader {
 	composes: regular from '../../css/Headings.module.css';
 	padding: 1rem .5rem 0;

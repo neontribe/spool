@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { Carousel } from 'react-bootstrap';
 import _ from 'lodash';
-import viewportUnitsBuggyfill from 'viewport-units-buggyfill';
 
 import { EntryContainer, Entry } from './Entry';
 import Layout from './Layout';
@@ -89,10 +88,6 @@ export class Gallery extends Component {
         };
 
         this.handleFilterChange = this.handleFilterChange.bind(this);
-    }
-
-    componentDidMount () {
-        viewportUnitsBuggyfill.refresh();
     }
 
     // Returns the latest entry followed by up to 4 randomised entry carousels

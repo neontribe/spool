@@ -81,6 +81,12 @@
 	content: 'viewport-units-buggyfill; top: calc((50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024)) + .5rem); height: calc(100vh - (50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024)) - .5rem);';
 }
 
+.contextMenuContentWrapper {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
 .contextMenu {
 	list-style: none;
 }

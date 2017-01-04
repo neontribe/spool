@@ -97,6 +97,7 @@ export default class IconFilter extends Component {
         };
 
         this.setState(state);
+
         this.props.onChange(state);
     }
 
@@ -105,7 +106,7 @@ export default class IconFilter extends Component {
         const handlers = this.handlers;
 
         return (<div>
-          <div className={styles.filterBlock}>
+          <div>
               <h2 className={styles.filterHeader}>View Mode</h2>
 
               <FilterList>
@@ -114,7 +115,7 @@ export default class IconFilter extends Component {
               </FilterList>
           </div>
 
-          <div className={styles.filterBlock}>
+          <div>
             <h2 className={styles.filterHeader}>Filters</h2>
             <FilterList>
                 <Filter
