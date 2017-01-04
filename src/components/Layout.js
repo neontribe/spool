@@ -15,7 +15,7 @@ class Header extends Component {
       menuItems: []
     }
 
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.logout = this.logout.bind(this);
@@ -34,22 +34,19 @@ class Header extends Component {
         this.onHamburgerExpand = _.partial(this.onHamburgerToggle.bind(this), 'expanded');
         this.onHamburgerCollapse = _.partial(this.onHamburgerToggle.bind(this), 'collapsed');
         this.handleProfileUpdated = this.handleProfileUpdated.bind(this);
-
-        this.goFullscreen = this.goFullscreen.bind(this);
-        this.exitFullscreen = this.exitFullscreen.bind(this);
     }
 
-    handleProfileUpdated(profile) {
+    handleProfileUpdated (profile) {
         this.setState({
             profile
         });
     }
 
-    componentDidMount() {
+    componentDidMount () {
         this.props.auth.on('profile_updated', this.handleProfileUpdated);
     }
 
-    componentWillUnmount() {
+    componentWillUnmount () {
         this.props.auth.removeListener('profile_updated', this.handleProfileUpdated);
     }
 
@@ -66,38 +63,6 @@ class Header extends Component {
     onHamburgerToggle (state) {
       this.setState({
         hamburgerExpanded: state === 'expanded'
-      });
-    }
-
-    goFullscreen () {
-      var el = document.documentElement;
-
-      if (el.requestFullscreen) {
-        el.requestFullscreen();
-      } else if (el.mozRequestFullscreen) {
-        el.mozRequestFullscreen();
-      } else if (el.webkitRequestFullscreen) {
-        el.webkitRequestFullscreen();
-      } else if (el.msRequestFullscreen) {
-        el.msRequestFullscreen();
-      }
-
-      this.setState({
-        fullscreen: true
-      });
-    }
-
-    exitFullscreen () {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.mozCancelFullscreen) {
-        document.mozCancelFullscreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      }
-
-      this.setState({
-        fullscreen: false
       });
     }
 
@@ -134,13 +99,6 @@ class Header extends Component {
                     <Link to='/app/settings'>Settings</Link>
                   </li>
                 )}
-
-                <li className={styles.contextMenuItemSettings}>
-                  <a
-                    role='button'
-                    onClick={(this.state.fullscreen) ? this.exitFullscreen : this.goFullscreen}
-                  >{(this.state.fullscreen) ? 'Exit Fullscreen' : 'Fullscreen'}</a>
-                </li>
 
                 {(this.state.profile) && (
                   <li className={styles.contextMenuItemLogout}>
