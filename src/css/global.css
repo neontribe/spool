@@ -160,3 +160,9 @@ table {
         font-size: 30px;
     }
 }
+
+@media all and (max-height: 500px) {
+    html {
+        font-size: 12px;
+    }
+}
