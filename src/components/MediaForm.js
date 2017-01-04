@@ -30,6 +30,15 @@ class MediaForm extends Component {
     static PHOTO = 'MEDIAFORM/PHOTO';
     static TEXT = 'MEDIAFORM/TEXT';
 
+    static propTypes = {
+        save: React.PropTypes.func,
+        saveKey: React.PropTypes.string
+    }
+
+    static defaultProps = {
+        saveKey: 'media'
+    }
+
     constructor (props) {
         super(props);
 
@@ -92,15 +101,6 @@ class MediaForm extends Component {
             </div>
         );
     }
-}
-
-MediaForm.propTypes = {
-    save: React.PropTypes.func,
-    saveKey: React.PropTypes.string
-}
-
-MediaForm.defaultProps = {
-    saveKey: 'media'
 }
 
 export default withRouter(MediaForm);

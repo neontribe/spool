@@ -92,17 +92,6 @@ class VideoForm extends Component {
         });
     }
 
-	renderBack () {
-		if (this.props.back) {
-            return (
-                <div>
-                    <span> or </span>
-                    <button onClick={this.back}>Go back</button>
-                </div>
-            );
-		}
-	}
-
     render () {
         return (
             <div className={styles.wrapper}>
@@ -115,7 +104,7 @@ class VideoForm extends Component {
                             <p>{errorMap[this.state.recorderError]}</p>
                             <p>
                                 <Button onClick={this.requestUploadMode}>Try uploading</Button>
-								<ButtonLink to='/'>Reset</ButtonLink>
+								<ButtonLink to='/app/home'>Reset</ButtonLink>
                             </p>
                         </div>
                     ),

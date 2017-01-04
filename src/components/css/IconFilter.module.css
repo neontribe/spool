@@ -40,7 +40,7 @@
 	padding: 1rem;
 	border: 1px solid #34404c;
 	color: #fff;
-	font-weight: bold;
+	font-weight: 500;
 }
 
 .filterControlOn {
@@ -54,6 +54,7 @@
 	height: 2em;
 	display: flex;
 	align-items: center;
+	white-space: normal;
 }
 
 .count {
@@ -65,7 +66,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-weight: bold;
+	font-weight: 500;
 	background-color: #34404c;
 }
 

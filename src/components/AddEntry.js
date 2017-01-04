@@ -26,7 +26,8 @@ class AddEntry extends Component {
 
         this.state = {
             entry: props.entry,
-            form: AddEntry.ABOUT
+            form: AddEntry.ABOUT,
+            saving: false
         }
 
         const { ABOUT, SENTIMENT, MEDIA } = AddEntry;
@@ -58,6 +59,10 @@ class AddEntry extends Component {
         var onSuccess = () => {
             this.props.router.push('/app/home');
         }
+
+        this.setState({
+            saving: true
+        });
 
         this.props.relay.commitUpdate(
             new AddEntryMutation({
@@ -104,6 +109,17 @@ class AddEntry extends Component {
         }
     }
 
+    renderSaveOverlay () {
+        return (
+            <div className={styles.saveOverlay}>
+                <div>
+                    <span>Saving.</span>
+                    Please wait&hellip;
+                </div>
+            </div>
+        );
+    }
+
     render () {
         return (
             <Layout className={styles.wrapper}>
@@ -145,7 +161,10 @@ class AddEntry extends Component {
                         </div>
                     )}
                 </Header>
-                <Content>{this.renderForm()}</Content>
+                <Content>
+                    {this.state.saving && this.renderSaveOverlay()}
+                    {this.renderForm()}
+                </Content>
             </Layout>
         );
     }

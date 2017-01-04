@@ -52,7 +52,7 @@ class TextForm extends Component {
 
                 <div className={(!this.state.value.length && helpers.hide) || undefined}>
                     <div className={styles.controls}>
-                        <Button onClick={this.continue}>Next</Button>
+                        <Button onClick={this.continue}>Save</Button>
                     </div>
                 </div>
             </form>

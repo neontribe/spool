@@ -7,7 +7,6 @@ import { EntryContainer, Entry } from './Entry';
 import Layout from './Layout';
 import Grid from './Grid';
 import ButtonLink from './ButtonLink';
-import TouchIcon from './TouchIcon';
 import { withRoles, withRequiredIntroduction, withRequiredSetup, userFragment } from './wrappers.js';
 
 import styles from './css/Gallery.module.css';
@@ -191,9 +190,7 @@ export class Gallery extends Component {
     render () {
         var addEntryControl = (
             <span className={styles.addEntryControl}>
-                <ButtonLink to='/app/add'>
-                    <TouchIcon />Add New Entry
-                </ButtonLink>
+                <ButtonLink to='/app/add'>Add New Entry</ButtonLink>
             </span>
         );
 

@@ -102,7 +102,7 @@ class ImageForm extends Component {
                             <p>{errorMap[this.state.cameraError]}</p>
                             <p>
                                 <Button onClick={this.requestUploadMode}>Try uploading</Button>
-								<ButtonLink to='/'>Reset</ButtonLink>
+								<ButtonLink to='/app/home'>Reset</ButtonLink>
                             </p>
                         </div>
                     ),

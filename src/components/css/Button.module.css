@@ -44,9 +44,9 @@
 }
 
 .button {
-	padding: 2rem;
+	padding: 1.5rem;
 	font-size: 1.75rem;
-	font-weight: bold;
+    font-weight: 500;
 
 	/* Prevent text selection by holding down on touch devices */
 	user-select: none;
