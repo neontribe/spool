@@ -57,6 +57,9 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	/* Prevent text selection by holding down on touch devices */
+	user-select: none;
 }
 
 .icon {
