@@ -92,6 +92,7 @@ textarea {
     width: 100%;
     padding: 1rem;
     border: 4px solid #1e2c37;
+    border-radius: 0;
     font-size: 1.25rem;
     background: #fff;
 }
