@@ -9,6 +9,17 @@
     outline: none;
 }
 
+/* iOS hack to prevent scroll + bounce effect */
+html,
+body {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
 html {
     /*
 
