@@ -13,6 +13,7 @@ import SentimentForm from './SentimentForm';
 import MediaForm from './MediaForm';
 
 import styles from './css/AddEntry.module.css';
+
 const { Content, Header } = Layout;
 
 class AddEntry extends Component {

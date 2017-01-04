@@ -4,6 +4,7 @@ import _ from 'lodash';
 import uploadToS3 from '../s3';
 import VideoRecorder from './VideoRecorder';
 import Button from './Button';
+import ButtonLink from './ButtonLink';
 
 import styles from './css/VideoForm.module.css';
 
@@ -21,7 +22,6 @@ class VideoForm extends Component {
             recorderError: props.recorderError
         };
 
-        this.back = this.back.bind(this);
         this.save = this.save.bind(this);
         this.requestUploadMode = this.requestUploadMode.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
@@ -40,10 +40,6 @@ class VideoForm extends Component {
                     mode: 'fallbackPrompt'
                 });
             });
-    }
-
-    back () {
-        this.props.back();
     }
 
     /**
@@ -119,7 +115,7 @@ class VideoForm extends Component {
                             <p>{errorMap[this.state.recorderError]}</p>
                             <p>
                                 <Button onClick={this.requestUploadMode}>Try uploading</Button>
-								{this.renderBack()}
+								<ButtonLink to='/'>Reset</ButtonLink>
                             </p>
                         </div>
                     ),

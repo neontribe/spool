@@ -4,6 +4,7 @@ import _ from 'lodash';
 import uploadToS3 from '../s3';
 import Camera from './Camera';
 import Button from './Button';
+import ButtonLink from './ButtonLink';
 
 import styles from './css/ImageForm.module.css';
 
@@ -21,7 +22,6 @@ class ImageForm extends Component {
             cameraError: props.cameraError
         };
 
-        this.back = this.back.bind(this);
         this.save = this.save.bind(this);
         this.requestUploadMode = this.requestUploadMode.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
@@ -41,21 +41,6 @@ class ImageForm extends Component {
                 });
             });
     }
-
-    back () {
-        this.props.back();
-    }
-
-	renderBack () {
-		if (this.props.back) {
-            return (
-                <div>
-                    <span> or </span>
-                    <button onClick={this.back}>Go back</button>
-                </div>
-            );
-		}
-	}
 
     /**
      * Get two blobs, 'thumbnail' and 'image' from the camera and save them
@@ -117,13 +102,12 @@ class ImageForm extends Component {
                             <p>{errorMap[this.state.cameraError]}</p>
                             <p>
                                 <Button onClick={this.requestUploadMode}>Try uploading</Button>
-								{this.renderBack()}
+								<ButtonLink to='/'>Reset</ButtonLink>
                             </p>
                         </div>
                     ),
                     upload: <h2>Uploader</h2>
-                }
-                )[this.state.mode]}
+                })[this.state.mode]}
             </div>
         );
     }

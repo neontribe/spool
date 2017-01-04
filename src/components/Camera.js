@@ -38,7 +38,6 @@ class Camera extends Component {
         this.startCountdown = _.debounce(this.startCountdown.bind(this), 500, { leading: true, trailing: false });
         this.shutter = this.shutter.bind(this);
         this.save = this.save.bind(this);
-        this.onMediaFailure = this.onMediaFailure.bind(this);
         this.getVideoDevices = this.getVideoDevices.bind(this);
         this.switchVideoDevices = _.debounce(this.switchVideoDevices.bind(this), 500, { leading: true, trailing: false });
         this.showDescripton = this.showDescripton.bind(this);
@@ -56,13 +55,19 @@ class Camera extends Component {
 
     startMediaStream () {
         // First get a hold of getUserMedia, if present
-        const getUserMedia = (navigator.getUserMedia ||
+        const getUserMedia =
+            navigator.getUserMedia ||
             navigator.webkitGetUserMedia ||
             navigator.mozGetUserMedia ||
-            navigator.msGetUserMedia);
+            navigator.msGetUserMedia;
 
         if (!getUserMedia) {
-            this.setState({ mediaFailure: { name: 'getUserMediaUnsupported' }});
+            this.setState({
+                mediaFailure: {
+                    name: 'getUserMediaUnsupported'
+                }
+            });
+
             return;
         }
 

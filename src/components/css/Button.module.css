@@ -19,6 +19,10 @@
 		inset 5px 5px 0 2px rgba(0, 0, 0, .2);
 }
 
+.raised + .raised {
+	margin-left: 1rem;
+}
+
 .raised:active {
 	box-shadow: none;
 	top: 10px;
