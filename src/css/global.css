@@ -7,6 +7,9 @@
     font-family: 'Quicksand', sans-serif;
     box-sizing: border-box;
     outline: none;
+
+    /* Prevent text selection by holding down on touch devices */
+    user-select: none;
 }
 
 /* iOS hack to prevent scroll + bounce effect */
