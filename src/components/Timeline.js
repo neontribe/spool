@@ -7,6 +7,7 @@ import { EntryContainer, Entry } from './Entry';
 import Layout from './Layout';
 import ButtonLink from './ButtonLink';
 import { withRoles } from './wrappers.js';
+import IconFilter from './IconFilter.js';
 
 import styles from './css/Timeline.module.css';
 
@@ -67,6 +68,16 @@ export class Timeline extends Component {
         this.setState(state);
     }
 
+    handleFilterChange () {
+        // Todo: handleFilterChange
+    }
+
+    renderMenuContent () {
+        return (
+            <IconFilter onChange={this.handleFilterChange} filters={this.state.filters} />
+        );
+    }
+
     render () {
         var EntryComponent = (this.props.relay) ? EntryContainer : Entry;
         var entries = this.props.creator.entries.edges.slice();
@@ -83,7 +94,10 @@ export class Timeline extends Component {
 
         return (
             <Layout>
-                <Header auth={this.props.auth} />
+                <Header
+                    auth={this.props.auth}
+                    menuContent={this.renderMenuContent()}
+                />
                 <Content>
                     {!Object.keys(entries).length && (
                         <div className={styles.noResults}>

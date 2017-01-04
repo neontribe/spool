@@ -8,10 +8,9 @@ import Layout from './Layout';
 import Grid from './Grid';
 import ButtonLink from './ButtonLink';
 import { withRoles, withRequiredIntroduction, withRequiredSetup, userFragment } from './wrappers.js';
+import IconFilter from './IconFilter.js';
 
 import styles from './css/Gallery.module.css';
-
-import IconFilter from './IconFilter.js';
 
 const { Content, Header } = Layout;
 
@@ -162,7 +161,9 @@ export class Gallery extends Component {
 
         if (text || video || image) {
             mediaArguments = {
-                text, video, image
+                text,
+                video,
+                image
             };
         }
 
@@ -231,7 +232,7 @@ export const GalleryContainer = Relay.createContainer(WrappedGallery, {
     fragments: {
         user: () => Relay.QL`
         fragment on User {
-                ${userFragment}
+            ${userFragment}
         }`,
         creator: () => Relay.QL`
         fragment on Creator {
