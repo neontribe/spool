@@ -29,7 +29,7 @@ export class Timeline extends Component {
 
         this.togglePanel = this.togglePanel.bind(this);
 
-        window.addEventListener('scroll', this.onScroll, false);
+        window.addEventListener('scroll', this.onScroll, true);
     }
 
     componentDidMount () {
@@ -37,15 +37,15 @@ export class Timeline extends Component {
     }
 
     componentWillUnmount () {
-        window.removeEventListener('scroll', this.onScroll, false);
+        window.removeEventListener('scroll', this.onScroll, true);
     }
 
     onScroll () {
-        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        var viewportHeight = document.documentElement.clientHeight;
         var showScrollMore = false;
+        var scrollTop = Math.abs(Math.ceil(this.refs.wrapper.getBoundingClientRect().top) - this.refs.wrapper.offsetTop);
+        var entries = this.props.creator.entries.edges.slice();
 
-        if ((scrollTop < 25) && (this.refs.wrapper.offsetHeight > viewportHeight)) {
+        if (scrollTop < 25 && Object.keys(entries).length > 3) {
             showScrollMore = true;
         }
 
