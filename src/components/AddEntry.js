@@ -11,6 +11,7 @@ import { withRoles, userFragment } from './wrappers.js';
 import TopicForm from './TopicForm';
 import SentimentForm from './SentimentForm';
 import MediaForm from './MediaForm';
+import PageOverlay from './PageOverlay';
 
 import styles from './css/AddEntry.module.css';
 
@@ -57,6 +58,10 @@ class AddEntry extends Component {
         var creator = this.props.creator;
 
         var onSuccess = () => {
+            this.setState({
+                saving: false
+            });
+
             this.props.router.push('/app/home');
         }
 
@@ -109,17 +114,6 @@ class AddEntry extends Component {
         }
     }
 
-    renderSaveOverlay () {
-        return (
-            <div className={styles.saveOverlay}>
-                <div>
-                    <span>Saving.</span>
-                    Please wait&hellip;
-                </div>
-            </div>
-        );
-    }
-
     render () {
         return (
             <Layout className={styles.wrapper}>
@@ -162,7 +156,7 @@ class AddEntry extends Component {
                     )}
                 </Header>
                 <Content>
-                    {this.state.saving && this.renderSaveOverlay()}
+                    {this.state.saving && <PageOverlay title='Saving.' />}
                     {this.renderForm()}
                 </Content>
             </Layout>

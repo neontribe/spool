@@ -5,6 +5,7 @@ import _ from 'lodash';
 import Grid from './Grid';
 import Button from './Button';
 import CountdownClock from './CountdownClock';
+import PageOverlay from './PageOverlay';
 
 import styles from './css/Camera.module.css';
 import headings from '../css/Headings.module.css';
@@ -195,14 +196,7 @@ class Camera extends Component {
 
                 <Grid enforceConsistentSize={true}>
                     <div className={styles.outputWrapper}>
-                        {this.state.connecting && (
-                            <div className={styles.connecting}>
-                                <div>
-                                    <span>Connecting</span>
-                                    Please Wait&hellip;
-                                </div>
-                            </div>
-                        )}
+                        {this.state.connecting && <PageOverlay title='Connecting.' />}
 
                         {this.state.streaming && (
                             <video

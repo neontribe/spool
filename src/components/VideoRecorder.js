@@ -6,6 +6,7 @@ import _ from 'lodash';
 import Grid from './Grid';
 import Button from './Button';
 import CountdownClock from './CountdownClock';
+import PageOverlay from './PageOverlay';
 
 import styles from './css/VideoRecorder.module.css';
 import headings from '../css/Headings.module.css';
@@ -65,10 +66,11 @@ class VideoRecorder extends Component {
 
     startMediaStream () {
         // First get a hold of getUserMedia, if present
-		const getUserMedia = (navigator.getUserMedia ||
-				navigator.webkitGetUserMedia ||
-				navigator.mozGetUserMedia ||
-				navigator.msGetUserMedia);
+		const getUserMedia =
+            navigator.getUserMedia ||
+			navigator.webkitGetUserMedia ||
+			navigator.mozGetUserMedia ||
+			navigator.msGetUserMedia;
 
         if (!getUserMedia) {
             this.setState({
@@ -270,14 +272,7 @@ class VideoRecorder extends Component {
 
                 <Grid enforceConsistentSize={true}>
                     <div className={styles.outputWrapper}>
-                        {this.state.connecting && (
-                            <div className={styles.connecting}>
-                                <div>
-                                    <span>Connecting</span>
-                                    Please Wait&hellip;
-                                </div>
-                            </div>
-                        )}
+                        {this.state.connecting && <PageOverlay title='Connecting.' />}
 
                         {this.state.streaming && (
                             <video
