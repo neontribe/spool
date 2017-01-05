@@ -28,67 +28,67 @@
 .entryVariantA {
 	composes: entry;
 	background-color: #e91e63;
-	border: 4px solid rgba(0, 0, 0, .1);
+	border: 4px solid rgba(0, 0, 0, .2);
 }
 
 .entryVariantB {
 	composes: entry;
 	background-color: #607d8b;
-	border: 4px solid rgba(0, 0, 0, .1);
+	border: 4px solid rgba(0, 0, 0, .2);
 }
 
 .entryVariantC {
 	composes: entry;
 	background-color: #009688;
-	border: 4px solid rgba(0, 0, 0, .1);
+	border: 4px solid rgba(0, 0, 0, .2);
 }
 
 .entryVariantD {
 	composes: entryDark;
 	background-color: #ffeb3b;
-	border: 4px solid rgba(0, 0, 0, .1);
+	border: 4px solid rgba(0, 0, 0, .2);
 }
 
 .entryVariantE {
 	composes: entry;
 	background-color: #9c27b0;
-	border: 4px solid rgba(0, 0, 0, .1);
+	border: 4px solid rgba(0, 0, 0, .2);
 }
 
 .entryVariantF {
 	composes: entry;
 	background-color: #3f51b5;
-	border: 4px solid rgba(0, 0, 0, .1);
+	border: 4px solid rgba(0, 0, 0, .2);
 }
 
 .entryVariantG {
 	composes: entryDark;
 	background-color: #ffc107;
-	border: 4px solid rgba(0, 0, 0, .1);
+	border: 4px solid rgba(0, 0, 0, .2);
 }
 
 .entryVariantH {
 	composes: entry;
 	background-color: #f44336;
-	border: 4px solid rgba(0, 0, 0, .1);
+	border: 4px solid rgba(0, 0, 0, .2);
 }
 
 .entryVariantI {
 	composes: entry;
 	background-color: #673ab7;
-	border: 4px solid rgba(0, 0, 0, .1);
+	border: 4px solid rgba(0, 0, 0, .2);
 }
 
 .entryVariantJ {
 	composes: entryDark;
 	background-color: #cddc39;
-	border: 4px solid rgba(0, 0, 0, .1);
+	border: 4px solid rgba(0, 0, 0, .2);
 }
 
 .entryVariantK {
 	composes: entry;
 	background-color: #4caf50;
-	border: 4px solid rgba(0, 0, 0, .1);
+	border: 4px solid rgba(0, 0, 0, .2);
 }
 
 .sentiment {
@@ -140,9 +140,10 @@
 	left: 0;
 	bottom: 0;
 	width: 100%;
-	padding: .5rem;
+	padding: .75rem .5rem;
+	padding-top: 2rem;
 	text-align: left;
-	background-color: rgba(0, 0, 0, .1);
+	background-image: linear-gradient(transparent, rgba(0, 0, 0, .2));
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -218,11 +219,14 @@
 }
 
 :global(.carousel .carousel-indicators) {
-	right: .5rem;
-	bottom: .7rem;
+	right: calc(.5rem + 3px);
+	bottom: 1rem;
 	left: auto;
 	width: auto;
 	margin: 0;
+
+	/* hack to engage viewport-units-buggyfill */
+	content: 'viewport-units-buggyfill; right: calc(.5rem + 3px);';
 }
 
 :global(.carousel .carousel-indicators li) {

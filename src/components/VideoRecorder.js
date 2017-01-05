@@ -212,8 +212,9 @@ class VideoRecorder extends Component {
 
     save () {
         // Take a thumb from the replay, or from the recorder if it is a direct save
-        const thumb = captureVideoFrame(this._player, 'png')
-            || captureVideoFrame(this._recorder, 'png');
+        const thumb =
+            captureVideoFrame(this._player, 'png') ||
+            captureVideoFrame(this._recorder, 'png');
 
         this.props.save({
             text: this.state.text,

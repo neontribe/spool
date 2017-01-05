@@ -123,7 +123,7 @@ export class Entry extends Component {
                 {this.props.showTopicOverlay && (
                     <ul className={styles.topics}>
                         {entry.topics.map((topic, i) => (
-                            <li key={i}>
+                            <li key={i} className={styles.topic}>
                                 <Icon
                                     icon={topic.type}
                                     light={lightIcon}
