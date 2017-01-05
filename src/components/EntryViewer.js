@@ -1,84 +1,146 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Image, ResponsiveEmbed } from 'react-bootstrap';
+import Relay from 'react-relay';
 import moment from 'moment';
+import { browserHistory } from 'react-router';
 
-class EntryViewer extends Component {
-    constructor(props) {
-        super(props);
+import { EntryContainer } from './Entry';
+import Layout from './Layout';
+import Grid from './Grid';
+import Icon from './Icon';
+import Button from './Button';
+import DeleteEntryMutation from './mutations/DeleteEntryMutation.js';
 
-        this.getStyles = this.getStyles.bind(this);
-    }
+import styles from './css/EntryViewer.module.css';
 
-    formatTimestamp() {
-        return moment(this.props.entry.timestamp).fromNow();
-    }
+const { Content, Header } = Layout;
 
-    getStyles() {
-        var thumb = this.props.entry.media.videoThumbnail || this.props.entry.media.imageThumbnail;
-        return (thumb)
-            ? { backgroundImage: 'url('+ thumb + ')' }
-            : {};
-    }
+class Paragraph extends Component {
+    render () {
+        const text = this.props.children;
 
-    render() {
+        const paragraphs = text.split(/\n/).map((text, i) => (
+            <p key={i}>{text}</p>
+        ));
+
         return (
-            <div className='entry-viewer'>
-                <Grid>
-                    <Row>
-                        <Col xs={12}>
-                            <div style={{ position: 'relative' }}>
-                                { this.props.entry.media.video &&
-                                    <ResponsiveEmbed a4by3>
-                                        <video
-                                            src={this.props.entry.media.video}
-                                            controls
-                                            autoPlay
-                                        />
-                                    </ResponsiveEmbed>
-                                }
-                                { this.props.entry.media.image &&
-                                    <ResponsiveEmbed a4by3>
-                                        <Image
-                                            src={this.props.entry.media.image}
-                                            alt={this.props.entry.media.text || this.props.entry.topics.type}
-                                        />
-                                    </ResponsiveEmbed>
-                                }
-
-                                <div style={{ position: 'relative' }}>
-                                    <div className={'entry entry--' + this.props.entry.sentiment.type}>
-                                        <div className='entry-content'>
-                                            <div className='entry-quote-container'>
-                                                { this.props.entry.media.text &&
-                                                    <blockquote className={'entry--quote entry--quote-' + this.props.entry.sentiment.type}>{this.props.entry.media.text}</blockquote>
-                                                }
-                                            </div>
-
-                                            <Image
-                                                src={'/static/' + this.props.entry.sentiment.type + '.png'}
-                                                alt={this.props.entry.sentiment.type}
-                                            />
-
-                                            <div className='entry--meta'>
-                                                <div className="entry--time">{this.formatTimestamp()}</div>
-                                                <div className="entry--tags">
-                                                    <span className="entry--tag">{this.props.entry.topics.map((t) => t.name).join(' ')}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
-                    </Row>
-                </Grid>
-            </div>
+            <div className={styles.text}>{paragraphs}</div>
         );
     }
 }
 
-EntryViewer.propTypes = {
-    entry: React.PropTypes.object.isRequired
+export default class EntryViewer extends Component {
+    constructor (props) {
+        super(props);
+
+        this.handleOnClick = this.handleOnClick.bind(this);
+    }
+
+    handleOnClick () {
+        var onSuccess = () => {
+            browserHistory.goBack();
+        };
+
+        const { node, creator } = this.props;
+
+        this.props.relay.commitUpdate(
+            new DeleteEntryMutation({
+                entry: node,
+                creator
+            }),
+            {
+                onSuccess
+            }
+        );
+    }
+
+
+    render () {
+        var entry = this.props.node;
+
+        if (!entry) {
+            return null;
+        }
+
+        return (
+            <Layout>
+                <Header
+                    auth={this.props.auth}
+                    menuItems={[
+                        <a role='button' className={styles.delete} onClick={this.handleOnClick}>Delete</a>
+                    ]}
+                >
+                    <div className={styles.header}>
+                        <div>Created {moment(entry.created).format('Do MMMM')}</div>
+                        <Icon
+                            icon={entry.sentiment.type}
+                            light={true}
+                        />
+
+                        <ul className={styles.topics}>
+                            {entry.topics.map((topic, i) => (
+                                <li key={i}>
+                                    <Icon
+                                        icon={topic.type}
+                                        light={true}
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+
+                        {/* Todo: Add view counter */}
+                        <span>8 views</span>
+                    </div>
+                </Header>
+                <Content>
+                    <div className={styles.wrapper}>
+                        <Grid enforceConsistentSize={true}>
+                            <EntryContainer
+                                entry={entry}
+                                showSentimentOverlay={false}
+                                showTopicOverlay={false}
+                            />
+
+                            <div className={styles.contentWrapper}>
+                                {entry.media.text && (
+                                    <div className={styles.content}>
+                                        <Paragraph>{entry.media.text}</Paragraph>
+                                    </div>
+                                )}
+
+                                <div className={styles.controls}>
+                                    <Button onClick={browserHistory.goBack}>Back</Button>
+                                </div>
+                            </div>
+                        </Grid>
+                    </div>
+                </Content>
+            </Layout>
+        );
+    }
 }
 
-export default EntryViewer;
+export const EntryViewerContainer = Relay.createContainer(EntryViewer, {
+    fragments: {
+        node: () => Relay.QL`
+        fragment on Entry {
+            id
+            media {
+                text
+            }
+            topics {
+                type
+            }
+            sentiment {
+                type
+            }
+            ${EntryContainer.getFragment('entry')}
+            ${DeleteEntryMutation.getFragment('entry')}
+        }
+        `,
+        creator: () => Relay.QL`
+        fragment on Creator {
+            id
+            ${DeleteEntryMutation.getFragment('creator')}
+        }`,
+    }
+});
