@@ -5,8 +5,7 @@ import styles from './css/Button.module.css';
 
 export default class Button extends Component {
     static propTypes = {
-        onClick: React.PropTypes.func.isRequired,
-        className: React.PropTypes.string
+        onClick: React.PropTypes.func.isRequired
     }
 
     constructor (props) {
@@ -20,9 +19,11 @@ export default class Button extends Component {
 
     render () {
         return (
-            <span className={this.props.className || styles.raised}>
-                <button onClick={this.onClick} className={styles.button}>{this.props.children}</button>
-            </span>
+            <button onClick={this.onClick} className={styles.wrapper}>
+                <span className={styles.raised}>
+                    <span className={styles.button}>{this.props.children}</span>
+                </span>
+            </button>
         );
     }
 };
