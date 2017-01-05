@@ -190,7 +190,7 @@ export class Gallery extends Component {
 
     render () {
         var addEntryControl = (
-            <span className={styles.addEntryControl}>
+            <span className={styles.addEntryControl} onClick={() => { this.props.router.push('/app/add') }}>
                 <ButtonLink to='/app/add'>Add New Entry</ButtonLink>
             </span>
         );
