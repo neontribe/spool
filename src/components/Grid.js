@@ -117,6 +117,10 @@ export default class Grid extends Component {
             case 3: {
                 length = calculateMaxCellSize(6);
 
+                if (this.props.enforceConsistentSize) {
+                    length = calculateMaxCellSize(3);
+                }
+
                 for (; i < children.length; i++) {
                     itemStyle[i] = {
                         height: length,
