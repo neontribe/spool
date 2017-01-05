@@ -13,7 +13,7 @@
 
 .form {
 	display: flex;
-	flex: 1;
+	flex: 1 0 auto;
 	flex-direction: column;
 	justify-content: space-between;
 }
@@ -47,8 +47,8 @@
 	width: 5rem;
 }
 
-.controls {
-	text-align: center;
+.block {
+	margin-bottom: 1rem;
 }
 
 .service {

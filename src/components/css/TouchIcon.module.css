@@ -1,4 +1,6 @@
 .icon {
+	position: relative;
+	top: 3px;
 	display: inline-block;
 	height: 1em;
 	width: .75em;

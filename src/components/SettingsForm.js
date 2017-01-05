@@ -3,6 +3,7 @@ import Relay from 'react-relay';
 import _ from 'lodash';
 
 import Button from './Button';
+import TouchIcon from './TouchIcon';
 
 import styles from './css/SettingsForm.module.css';
 import headings from '../css/Headings.module.css';
@@ -246,24 +247,30 @@ export class SettingsForm extends Component {
                     </div>
 
                     <div className={styles.column}>
-                        <h3 className={headings.regular}>Residence Type *</h3>
-                        {this.renderResidences()}
-                        {this.state.residence.changed && this.renderError(errors.residence)}
+                        <div className={styles.block}>
+                            <h3 className={headings.regular}>Residence Type *</h3>
+                            {this.renderResidences()}
+                            {this.state.residence.changed && this.renderError(errors.residence)}
+                        </div>
+
+                        <div className={styles.block}>
+                            {this.state.region.value && (
+                                <div>
+                                    <h3 className={headings.regular}>Services Used *</h3>
+                                    {this.renderServices()}
+                                    {this.state.services.changed && this.renderError(errors.services)}
+                                </div>
+                            )}
+                        </div>
                     </div>
 
-                    {this.state.region.value && (
-                        <div className={styles.column}>
-                            <h3 className={headings.regular}>Services Used *</h3>
-                            {this.renderServices()}
-                            {this.state.services.changed && this.renderError(errors.services)}
-                        </div>
-                    )}
-                </div>
-
-                <div className={styles.controls}>
-                    {!errors && (
-                        <Button onClick={this.handleSubmit}>OK</Button>
-                    )}
+                    <div className={styles.column}>
+                        {!errors && (
+                            <Button onClick={this.handleSubmit}>
+                                <TouchIcon />OK
+                            </Button>
+                        )}
+                    </div>
                 </div>
             </form>
         )
