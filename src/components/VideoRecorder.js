@@ -54,10 +54,13 @@ class VideoRecorder extends Component {
         this.onTextChange = this.onTextChange.bind(this);
         this.pausePlayback = this.pausePlayback.bind(this);
         this.playRecording = this.playRecording.bind(this);
+        this.onPlaybackEnded = this.onPlaybackEnded.bind(this);
     }
 
     componentDidMount () {
         this.startMediaStream();
+
+        // this._player.on('ended', () => { console.log('video ended'); });
     }
 
     componentWillUnmount () {
@@ -156,6 +159,12 @@ class VideoRecorder extends Component {
             recording: true,
             lastTakeURL: null,
             lastTakeBlob: null
+        });
+    }
+
+    onPlaybackEnded () {
+        this.setState({
+            playing: false
         });
     }
 
@@ -293,6 +302,7 @@ class VideoRecorder extends Component {
                                     src={this.state.lastTakeURL}
                                     controls={true}
                                     autoPlay={true}
+                                    onEnded={this.onPlaybackEnded}
                                 />
                                 {this.state.text && (
                                     <div className={styles.text}>{this.state.text}</div>
