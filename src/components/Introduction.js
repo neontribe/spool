@@ -152,26 +152,28 @@ export default class Introduction extends Component {
                                 <p>Blabla bla</p>
                                 <form>
                                     <legend>Share Settings</legend>
-                                    <label className={styles.option}>
-                                        <input
-                                            type='radio'
-                                            name='share'
-                                            value='1'
-                                            onClick={this.handleSharingChange}
-                                            className={styles.field}
-                                        />
-                                        <span className={styles.message}>Yes</span>
-                                    </label>
-                                    <label className={styles.option}>
-                                        <input
-                                            type='radio'
-                                            name='share'
-                                            value='0'
-                                            onClick={this.handleSharingChange}
-                                            className={styles.field}
-                                        />
-                                        <span className={styles.message}>No</span>
-                                    </label>
+                                    <div>
+                                        <label className={styles.option}>
+                                            <input
+                                                type='radio'
+                                                name='share'
+                                                value='1'
+                                                onClick={this.handleSharingChange}
+                                                className={styles.field}
+                                            />
+                                            <span className={styles.message}>Yes</span>
+                                        </label>
+                                        <label className={styles.option}>
+                                            <input
+                                                type='radio'
+                                                name='share'
+                                                value='0'
+                                                onClick={this.handleSharingChange}
+                                                className={styles.field}
+                                            />
+                                            <span className={styles.message}>No</span>
+                                        </label>
+                                    </div>
                                 </form>
                             </div>
                             <div className={styles.controls}>
