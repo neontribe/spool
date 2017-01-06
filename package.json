@@ -35,7 +35,7 @@
     "url": "https://github.com/neontribe/spool/issues"
   },
   "devDependencies": {
-    "@neontribe/react-scripts": "^0.7.24",
+    "@neontribe/react-scripts": "^0.8.0",
     "detect-port": "1.0.1",
     "enzyme": "^2.4.1",
     "http-proxy-middleware": "0.17.1",
