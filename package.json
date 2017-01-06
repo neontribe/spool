@@ -55,7 +55,7 @@
     "webpack-dev-server": "1.16.1"
   },
   "dependencies": {
-    "auth0-js": "^7.1.0",
+    "auth0-js": "^8.0.3",
     "autoprefixer": "6.4.0",
     "aws-sdk": "^2.5.2",
     "babel-cli": "^6.11.4",
