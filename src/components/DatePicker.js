@@ -8,9 +8,9 @@ export class DatePicker extends Component {
         return (
             <div className={styles.wrapper}>
                 <BootstrapDatePicker
-                	dateFormat='DD/MM/YYYY'
-                	showClearButton={false}
-                	{...this.props}
+                    dateFormat='DD/MM/YYYY'
+                    showClearButton={false}
+                    {...this.props}
                 />
             </div>
         );

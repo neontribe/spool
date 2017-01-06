@@ -3,6 +3,10 @@ import styles from './css/TopicsOverview.module.css';
 import headings from '../css/Headings.module.css';
 
 class TopicsOverview extends Component {
+    static propTypes = {
+        topics: React.PropTypes.array
+    }
+
     render () {
         return (
             <div>
@@ -21,10 +25,6 @@ class TopicsOverview extends Component {
             </div>
         );
     }
-}
-
-TopicsOverview.propTypes = {
-    topics: React.PropTypes.array
 }
 
 export default TopicsOverview;

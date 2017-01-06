@@ -24,7 +24,8 @@ class App extends Component {
     }
 }
 
-export default App = withRouter(App);
+// export default App = withRouter(App);
+export default withRouter(App);
 
 class RoleWrapper extends Component {
     componentDidMount () {
@@ -51,14 +52,14 @@ class RoleWrapper extends Component {
         var path = '';
 
         switch (this.props.user.role) {
-            default:
-            case 'creator': 
-                path = '/app/home';
-                break;
+                default:
+                case 'creator':
+                    path = '/app/home';
+                    break;
 
-            case 'consumer':
-                path = '/app/dashboard';
-                break;
+                case 'consumer':
+                    path = '/app/dashboard';
+                    break;
         }
 
         this.props.router.push(path);
@@ -74,7 +75,7 @@ class RoleWrapper extends Component {
         }
 
         return (
-            <div style={{ height: '100%'}}>{children}</div>
+            <div style={{ height: '100%' }}>{children}</div>
         );
     }
 }
@@ -85,6 +86,6 @@ export const RoleWrapperContainer = Relay.createContainer(withRouter(RoleWrapper
             fragment on User {
                 id
                 role
-            }`,
+            }`
     }
 });

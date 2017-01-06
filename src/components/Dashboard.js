@@ -18,7 +18,7 @@ export class Dashboard extends Component {
 
         this.state = {
             rangeFrom: '-1,months'
-        }
+        };
 
         this.changeRange = this.changeRange.bind(this);
     }
@@ -102,7 +102,8 @@ export const DashboardContainer = Relay.createContainer(withRoles(Dashboard, ['c
         user: () => Relay.QL`
             fragment on User {
                 ${userFragment}
-            }`,
+            }
+        `,
         consumer: () => Relay.QL`
             fragment on Consumer {
                 access(range: $range) {
@@ -123,6 +124,7 @@ export const DashboardContainer = Relay.createContainer(withRoles(Dashboard, ['c
                         sad
                     }
                 }
-            }`,
+            }
+        `
     }
 });

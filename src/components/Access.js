@@ -28,7 +28,7 @@ export default class Access extends Component {
         });
 
         this.state = {
-            form: {},
+            form: {}
         };
     }
 
@@ -36,10 +36,10 @@ export default class Access extends Component {
         const form = {
             range: {
                 from,
-                to,
+                to
             },
             topics: topics,
-            ready: true,
+            ready: true
         };
 
         // Not much need for this in state, but the contents are helpful
@@ -59,7 +59,7 @@ export default class Access extends Component {
                 creationDate: node.created,
                 creatorAge: node.owner.age,
                 creatorResidency: node.owner.residency,
-                creatorServices: node.owner.services && node.owner.services.map(({ name }) => name).join(', '),
+                creatorServices: node.owner.services && node.owner.services.map(({ name }) => name).join(', ')
             };
 
             return row;
@@ -131,15 +131,16 @@ export const AccessContainer = Relay.createContainer(withRoles(Access, ['consume
         ready: false,
         range: {
             from: moment(),
-            to: moment(),
+            to: moment()
         },
-        topics: [],
+        topics: []
     },
     fragments: {
         user: () => Relay.QL`
             fragment on User {
                 ${userFragment}
-            }`,
+            }
+        `,
         consumer: () => Relay.QL`
             fragment on Consumer {
                 access(range: $range) @include(if: $ready) {
@@ -172,6 +173,7 @@ export const AccessContainer = Relay.createContainer(withRoles(Access, ['consume
                     }
                 }
                 ${AccessFormContainer.getFragment('consumer')}
-            }`,
+            }
+        `
     }
 });

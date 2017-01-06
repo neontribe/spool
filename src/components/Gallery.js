@@ -75,7 +75,7 @@ class EntryCarousel extends Component {
 
 export class Gallery extends Component {
     static propTypes = {
-        creator: React.PropTypes.object.isRequired,
+        creator: React.PropTypes.object.isRequired
     }
 
     constructor (props) {
@@ -179,7 +179,7 @@ export class Gallery extends Component {
 
         this.props.relay.setVariables({
             filter: filterArguments
-        }); 
+        });
     }
 
     renderMenuContent () {
@@ -190,7 +190,7 @@ export class Gallery extends Component {
 
     render () {
         var addEntryControl = (
-            <span className={styles.addEntryControl} onClick={() => { this.props.router.push('/app/add') }}>
+            <span className={styles.addEntryControl} onClick={() => { this.props.router.push('/app/add'); }}>
                 <ButtonLink to='/app/add'>Add New Entry</ButtonLink>
             </span>
         );
@@ -225,27 +225,29 @@ export const GalleryContainer = Relay.createContainer(WrappedGallery, {
             media: {
                 text: true,
                 video: true,
-                image: true,
+                image: true
             }
         }
     },
     fragments: {
         user: () => Relay.QL`
-        fragment on User {
-            ${userFragment}
-        }`,
+            fragment on User {
+                ${userFragment}
+            }
+        `,
         creator: () => Relay.QL`
-        fragment on Creator {
-            happyCount
-            sadCount
-            entries(first: $first, random: $random, filter: $filter) {
-                edges {
-                    node {
-                        id,
-                        ${EntryContainer.getFragment('entry')}
+            fragment on Creator {
+                happyCount
+                sadCount
+                entries(first: $first, random: $random, filter: $filter) {
+                    edges {
+                        node {
+                            id,
+                            ${EntryContainer.getFragment('entry')}
+                        }
                     }
                 }
             }
-        }`,
+        `
     }
 });

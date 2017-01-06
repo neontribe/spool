@@ -55,7 +55,7 @@ class VideoForm extends Component {
                 .then((s3Info) => {
                     return {
                         [item[0]]: s3Info
-                    }
+                    };
                 });
         });
 
@@ -104,7 +104,7 @@ class VideoForm extends Component {
                             <p>{errorMap[this.state.recorderError]}</p>
                             <p>
                                 <Button onClick={this.requestUploadMode}>Try uploading</Button>
-								<ButtonLink to='/app/home'>Reset</ButtonLink>
+                                <ButtonLink to='/app/home'>Reset</ButtonLink>
                             </p>
                         </div>
                     ),

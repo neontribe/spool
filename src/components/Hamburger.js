@@ -3,12 +3,27 @@ import React, { Component } from 'react';
 import styles from './css/Hamburger.module.css';
 
 class Hamburger extends Component {
+    static propTypes = {
+        text: React.PropTypes.string,
+        contentClassName: React.PropTypes.string,
+        toggleClassName: React.PropTypes.string,
+        onExpand: React.PropTypes.func,
+        onCollapse: React.PropTypes.func
+    }
+
+    static defaultProps = {
+        contentClassName: '',
+        toggleClassName: '',
+        onExpand: Function.prototype,
+        onCollapse: Function.prototype
+    }
+
     constructor (props) {
         super(props);
 
         this.state = {
             expanded: false
-        }
+        };
 
         this.toggleContent = this.toggleContent.bind(this);
     }
@@ -48,21 +63,6 @@ class Hamburger extends Component {
             </div>
         );
     }
-}
-
-Hamburger.propTypes = {
-    text: React.PropTypes.string,
-    contentClassName: React.PropTypes.string,
-    toggleClassName: React.PropTypes.string,
-    onExpand: React.PropTypes.func,
-    onCollapse: React.PropTypes.func
-}
-
-Hamburger.defaultProps = {
-    contentClassName: '',
-    toggleClassName: '',
-    onExpand: Function.prototype,
-    onCollapse: Function.prototype
 }
 
 export default Hamburger;

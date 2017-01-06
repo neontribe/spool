@@ -48,7 +48,7 @@ class MediaForm extends Component {
         const choiceMap = {
             video: VIDEO,
             photo: PHOTO,
-            typing: TEXT,
+            typing: TEXT
         };
 
         this.state = {
@@ -61,7 +61,7 @@ class MediaForm extends Component {
             return this.setState({
                 form: choiceMap[values[0]]
             });
-        }
+        };
     }
 
     renderChooser () {
@@ -79,18 +79,18 @@ class MediaForm extends Component {
         const { SELECT, VIDEO, PHOTO, TEXT } = MediaForm;
 
         switch (this.state.form) {
-            case SELECT:
-                return this.renderChooser();
+                case SELECT:
+                    return this.renderChooser();
 
-            case VIDEO:
-                return <VideoForm save={this.handleSave} />;
+                case VIDEO:
+                    return <VideoForm save={this.handleSave} />;
 
-            case PHOTO:
-                return <ImageForm save={this.handleSave} />;
+                case PHOTO:
+                    return <ImageForm save={this.handleSave} />;
 
-            case TEXT:
-            default:
-                return <TextForm save={this.handleSave} />;
+                case TEXT:
+                default:
+                    return <TextForm save={this.handleSave} />;
         }
     }
 

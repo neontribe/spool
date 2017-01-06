@@ -53,7 +53,6 @@ export default class EntryViewer extends Component {
         );
     }
 
-
     render () {
         var entry = this.props.node;
 
@@ -141,6 +140,6 @@ export const EntryViewerContainer = Relay.createContainer(EntryViewer, {
         fragment on Creator {
             id
             ${DeleteEntryMutation.getFragment('creator')}
-        }`,
+        }`
     }
 });

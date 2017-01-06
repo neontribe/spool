@@ -30,7 +30,7 @@ class Camera extends Component {
             devices: [],
             activeDevice: null,
             showDescriptionField: false
-        }
+        };
 
         this.startMediaStream = this.startMediaStream.bind(this);
         this.stopMediaStream = this.stopMediaStream.bind(this);

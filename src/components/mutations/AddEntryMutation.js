@@ -9,56 +9,60 @@ export default class AddEntryMutation extends Relay.Mutation {
             sadCount
         }`
     }
-    getMutation() {
-        return Relay.QL`mutation {createEntry}`
+
+    getMutation () {
+        return Relay.QL`mutation {createEntry}`;
     }
 
-    getVariables() {
+    getVariables () {
         var entry = this.props.entry;
         var media = this.props.entry.media;
         var mediaInput = {};
-        if(media.video) {
+
+        if (media.video) {
             mediaInput.video = media.video.key;
             mediaInput.videoThumbnail = media.videoThumbnail.key;
         }
-        if(media.image) {
+
+        if (media.image) {
             mediaInput.image = media.image.key;
             mediaInput.imageThumbnail = media.imageThumbnail.key;
         }
 
         mediaInput.text = media.text;
+
         return {
             entry: {
                 media: mediaInput,
                 sentiment: entry.sentiment,
                 topics: entry.topics
             }
-        }
+        };
     }
 
-    getFatQuery() {
+    getFatQuery () {
         return Relay.QL`
-        fragment on CreateEntryPayload {
-            creator {
-                entries
-                happyCount
-                sadCount
+            fragment on CreateEntryPayload {
+                creator {
+                    entries
+                    happyCount
+                    sadCount
+                }
+                entryEdge
             }
-            entryEdge
-        }`
+        `;
     }
 
-
-  getConfigs() {
-    return [{
-        type: 'RANGE_ADD',
-        parentName: 'creator',
-        parentID: this.props.creator.id,
-        connectionName: 'entries',
-        edgeName: 'entryEdge',
-        rangeBehaviors: ({ status }) => (
-            status === 'completed' ? 'ignore' : 'prepend'
-        ),
-    }]
-  }
+    getConfigs () {
+        return [{
+            type: 'RANGE_ADD',
+            parentName: 'creator',
+            parentID: this.props.creator.id,
+            connectionName: 'entries',
+            edgeName: 'entryEdge',
+            rangeBehaviors: ({ status }) => (
+                status === 'completed' ? 'ignore' : 'prepend'
+            )
+        }];
+    }
 }

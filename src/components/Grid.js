@@ -4,6 +4,18 @@ import _ from 'lodash';
 import styles from './css/Grid.module.css';
 
 export default class Grid extends Component {
+    static propTypes = {
+        // Makes all grid items equal width
+        enforceConsistentSize: React.PropTypes.bool,
+
+        // Appends an element as the last grid item
+        callToAction: React.PropTypes.element
+    }
+
+    static defaultProps = {
+        enforceConsistentSize: false
+    }
+
     constructor (props) {
         super(props);
 
@@ -56,7 +68,8 @@ export default class Grid extends Component {
         var containerHeight = this.state.height;
         var containerWidth = this.state.width;
         var itemStyle = [];
-        var length, i = 0;
+        var length;
+        var i = 0;
 
         var children = _.filter(React.Children.toArray(this.props.children), (child) => {
             return child !== false;
@@ -85,130 +98,130 @@ export default class Grid extends Component {
         }
 
         switch (children.length) {
-            case 1:
-            default: {
-                length = calculateMaxCellSize(2);
+                case 1:
+                default: {
+                    length = calculateMaxCellSize(2);
 
-                itemStyle[0] = {
-                    height: length,
-                    width: length
-                }
-
-                break;
-            }
-
-            case 2: {
-                length = calculateMaxCellSize(2);
-
-                for (; i < children.length; i++) {
-                    itemStyle[i] = {
+                    itemStyle[0] = {
                         height: length,
                         width: length
+                    };
+
+                    break;
+                }
+
+                case 2: {
+                    length = calculateMaxCellSize(2);
+
+                    for (; i < children.length; i++) {
+                        itemStyle[i] = {
+                            height: length,
+                            width: length
+                        };
                     }
-                }
 
-                if (!this.props.enforceConsistentSize) {
-                    itemStyle[1].width /= 2;
-                }
-
-                break;
-            }
-
-            case 3: {
-                length = calculateMaxCellSize(6);
-
-                if (this.props.enforceConsistentSize) {
-                    length = calculateMaxCellSize(3);
-                }
-
-                for (; i < children.length; i++) {
-                    itemStyle[i] = {
-                        height: length,
-                        width: length
+                    if (!this.props.enforceConsistentSize) {
+                        itemStyle[1].width /= 2;
                     }
+
+                    break;
                 }
 
-                if (!this.props.enforceConsistentSize) {
-                    itemStyle[0].height *= 2;
-                    itemStyle[0].width *= 2;
+                case 3: {
+                    length = calculateMaxCellSize(6);
+
+                    if (this.props.enforceConsistentSize) {
+                        length = calculateMaxCellSize(3);
+                    }
+
+                    for (; i < children.length; i++) {
+                        itemStyle[i] = {
+                            height: length,
+                            width: length
+                        };
+                    }
+
+                    if (!this.props.enforceConsistentSize) {
+                        itemStyle[0].height *= 2;
+                        itemStyle[0].width *= 2;
+                        itemStyle[2].marginTop = length;
+                        itemStyle[2].marginLeft = -length;
+                    }
+
+                    break;
+                }
+
+                case 4: {
+                    length = calculateMaxCellSize(6); // Incorrect when this is 4, why?
+
+                    for (; i < children.length; i++) {
+                        itemStyle[i] = {
+                            height: length,
+                            width: length
+                        };
+                    }
+
                     itemStyle[2].marginTop = length;
-                    itemStyle[2].marginLeft = -length;
+                    itemStyle[2].marginLeft = -(length * 2);
+                    itemStyle[3].marginTop = length;
+                    break;
                 }
 
-                break;
-            }
+                case 5: {
+                    length = calculateMaxCellSize(6);
 
-            case 4: {
-                length = calculateMaxCellSize(6); // Incorrect when this is 4, why?
-
-                for (; i < children.length; i++) {
-                    itemStyle[i] = {
-                        height: length,
-                        width: length
+                    for (; i < children.length; i++) {
+                        itemStyle[i] = {
+                            height: length,
+                            width: length
+                        };
                     }
-                }
 
-                itemStyle[2].marginTop = length;
-                itemStyle[2].marginLeft = -(length * 2);
-                itemStyle[3].marginTop = length;
-                break;
-            }
+                    itemStyle[2].marginTop = length;
+                    itemStyle[2].marginLeft = -(length * 2);
+                    itemStyle[3].marginTop = length;
 
-            case 5: {
-                length = calculateMaxCellSize(6);
-
-                for (; i < children.length; i++) {
-                    itemStyle[i] = {
-                        height: length,
-                        width: length
+                    if (!this.props.enforceConsistentSize) {
+                        itemStyle[4].height *= 2;
                     }
+
+                    break;
                 }
 
-                itemStyle[2].marginTop = length;
-                itemStyle[2].marginLeft = -(length * 2);
-                itemStyle[3].marginTop = length;
+                case 6: {
+                    length = calculateMaxCellSize(6);
 
-                if (!this.props.enforceConsistentSize) {
-                    itemStyle[4].height *= 2;
-                }
-
-                break;
-            }
-
-            case 6: {
-                length = calculateMaxCellSize(6);
-
-                for (; i < children.length; i++) {
-                    itemStyle[i] = {
-                        height: length,
-                        width: length
+                    for (; i < children.length; i++) {
+                        itemStyle[i] = {
+                            height: length,
+                            width: length
+                        };
                     }
+
+                    itemStyle[2].marginTop = length;
+                    itemStyle[2].marginLeft = -(length * 2);
+                    itemStyle[3].marginTop = length;
+                    itemStyle[5].marginTop = length;
+                    itemStyle[5].marginLeft = -length;
+                    break;
                 }
 
-                itemStyle[2].marginTop = length;
-                itemStyle[2].marginLeft = -(length * 2);
-                itemStyle[3].marginTop = length;
-                itemStyle[5].marginTop = length;
-                itemStyle[5].marginLeft = -length;
-                break;
-            }
+                case 8: {
+                    length = calculateMaxCellSize(8);
 
-            case 8: {
-                length = calculateMaxCellSize(8);
-
-                for (; i < children.length; i++) {
-                    itemStyle[i] = {
-                        height: length,
-                        width: length
+                    for (; i < children.length; i++) {
+                        itemStyle[i] = {
+                            height: length,
+                            width: length
+                        };
                     }
-                }
 
-                itemStyle[4].marginTop = length;
-                itemStyle[4].marginLeft = -(length * 4);
-                itemStyle[5].marginTop = length;
-                itemStyle[6].marginTop = length;
-                itemStyle[7].marginTop = length;
-            }
+                    itemStyle[4].marginTop = length;
+                    itemStyle[4].marginLeft = -(length * 4);
+                    itemStyle[5].marginTop = length;
+                    itemStyle[6].marginTop = length;
+                    itemStyle[7].marginTop = length;
+                }
         }
 
         return itemStyle;
@@ -249,16 +262,4 @@ export default class Grid extends Component {
             </div>
         );
     }
-}
-
-Grid.propTypes = {
-    // Makes all grid items equal width
-    enforceConsistentSize: React.PropTypes.bool,
-
-    // Appends an element as the last grid item
-    callToAction: React.PropTypes.element
-}
-
-Grid.defaultProps = {
-    enforceConsistentSize: false
 }

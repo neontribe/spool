@@ -22,6 +22,14 @@ class AddEntry extends Component {
     static SENTIMENT = 'ENTRY/SENTIMENT';
     static MEDIA = 'ENTRY/MEDIA';
 
+    static propTypes = {
+        entry: React.PropTypes.object
+    }
+
+    static defaultProps = {
+        entry: {}
+    }
+
     constructor (props) {
         super(props);
 
@@ -29,7 +37,7 @@ class AddEntry extends Component {
             entry: props.entry,
             form: AddEntry.ABOUT,
             saving: false
-        }
+        };
 
         const { ABOUT, SENTIMENT, MEDIA } = AddEntry;
 
@@ -38,13 +46,13 @@ class AddEntry extends Component {
                 this.setEntryData(key, value);
                 this.setState({
                     form: SENTIMENT
-                })
+                });
             },
             [SENTIMENT]: (key, value) => {
                 this.setEntryData(key, value);
                 this.setState({
                     form: MEDIA
-                })
+                });
             },
             [MEDIA]: (key, value) => {
                 this.setEntryData(key, value, true);
@@ -63,7 +71,7 @@ class AddEntry extends Component {
             });
 
             this.props.router.push('/app/home');
-        }
+        };
 
         this.setState({
             saving: true
@@ -102,15 +110,15 @@ class AddEntry extends Component {
         const { ABOUT, SENTIMENT, MEDIA } = AddEntry;
 
         switch (this.state.form) {
-            default:
-            case ABOUT:
-                return <TopicForm save={this.transitions[ABOUT]} topics={this.props.creator.topics} />;
+                default:
+                case ABOUT:
+                    return <TopicForm save={this.transitions[ABOUT]} topics={this.props.creator.topics} />;
 
-            case SENTIMENT:
-                return <SentimentForm save={this.transitions[SENTIMENT]} />;
+                case SENTIMENT:
+                    return <SentimentForm save={this.transitions[SENTIMENT]} />;
 
-            case MEDIA:
-                return <MediaForm save={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange} />;
+                case MEDIA:
+                    return <MediaForm save={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange} />;
         }
     }
 
@@ -164,19 +172,11 @@ class AddEntry extends Component {
     }
 };
 
-AddEntry.propTypes = {
-    entry: React.PropTypes.object
-}
+// AddEntry = withRouter(AddEntry);
 
-AddEntry.defaultProps = {
-    entry: {}
-}
+export default withRouter(AddEntry);
 
-AddEntry = withRouter(AddEntry);
-
-export default AddEntry;
-
-export const AddEntryContainer = Relay.createContainer(withRoles(AddEntry, ['creator']), {
+export const AddEntryContainer = Relay.createContainer(withRoles(withRouter(AddEntry), ['creator']), {
     fragments: {
         user: () => Relay.QL`
         fragment on User {
@@ -191,6 +191,6 @@ export const AddEntryContainer = Relay.createContainer(withRoles(AddEntry, ['cre
                 }
                 ${AddEntryMutation.getFragment('creator')}
             }
-        `,
+        `
     }
 });

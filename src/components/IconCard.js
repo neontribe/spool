@@ -11,11 +11,11 @@ export class IconCard extends Component {
         value: React.PropTypes.string,
         icon: React.PropTypes.string.isRequired,
         message: React.PropTypes.string.isRequired,
-        classNames: React.PropTypes.object,
+        classNames: React.PropTypes.object
     }
 
     static defaultProps = {
-        classNames: {},
+        classNames: {}
     }
 
     renderStatic () {

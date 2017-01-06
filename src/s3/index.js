@@ -1,5 +1,6 @@
-function getSignedUrl(fileinfo) {
+function getSignedUrl (fileinfo) {
     let queryString = '?contentType=' + encodeURIComponent(fileinfo.type);
+
     return fetch('/s3/sign' + queryString)
         .then((response) => {
             return response.json();
@@ -13,30 +14,30 @@ function getSignedUrl(fileinfo) {
  * Provide a method which will accept a blob
  * and upload it to s3
  */
-export default function uploadToS3(blob) {
+export default function uploadToS3 (blob) {
     let params = {
         type: blob.type,
         data: blob
     };
 
-    return new Promise(function(resolve, reject){
+    return new Promise(function (resolve, reject) {
         getSignedUrl(params)
-        .then((s3Info) => {
-            fetch(s3Info.uploadUrl, {
-                method: 'PUT',
-                cors: true,
-                headers: new Headers({
-                    'Content-Type': params.type,
-                    'x-amz-acl': 'private'
-                }),
-                body: params.data
-            })
-            .then(() => {
-                resolve(s3Info);
-            })
-            .catch((error) => {
-                reject(error)
+            .then((s3Info) => {
+                fetch(s3Info.uploadUrl, {
+                    method: 'PUT',
+                    cors: true,
+                    headers: new Headers({
+                        'Content-Type': params.type,
+                        'x-amz-acl': 'private'
+                    }),
+                    body: params.data
+                })
+                .then(() => {
+                    resolve(s3Info);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
             });
-        });
     });
 }

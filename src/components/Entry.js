@@ -21,6 +21,21 @@ export class Entry extends Component {
         { className: styles.entryVariantJ, dark: true }
     ];
 
+    static propTypes = {
+        thumbnailMode: React.PropTypes.bool,
+        entry: React.PropTypes.object.isRequired,
+        showSentimentOverlay: React.PropTypes.bool,
+        showTopicOverlay: React.PropTypes.bool,
+        withViewer: React.PropTypes.bool
+    }
+
+    static defaultProps = {
+        thumbnailMode: false,
+        showSentimentOverlay: true,
+        showTopicOverlay: true,
+        withViewer: true
+    }
+
     constructor (props) {
         super(props);
 
@@ -166,7 +181,7 @@ export class Entry extends Component {
         if (backgroundImage) {
             props.style = {
                 backgroundImage: `url(${backgroundImage})`
-            }
+            };
         }
 
         if (this.props.thumbnailMode) {
@@ -175,28 +190,13 @@ export class Entry extends Component {
                     {...props}
                     to={`/app/entry/${entry.id}`}
                 >{this.renderEntry(entry, randomisedStyle, isTextEntry, lightIcon)}</Link>
-            );            
+            );
         }
 
         return (
             <div {...props}>{this.renderEntry(entry, randomisedStyle, isTextEntry, lightIcon)}</div>
         );
     }
-}
-
-Entry.propTypes = {
-    thumbnailMode: React.PropTypes.bool,
-    entry: React.PropTypes.object.isRequired,
-    showSentimentOverlay: React.PropTypes.bool,
-    showTopicOverlay: React.PropTypes.bool,
-    withViewer: React.PropTypes.bool
-}
-
-Entry.defaultProps = {
-    thumbnailMode: false,
-    showSentimentOverlay: true,
-    showTopicOverlay: true,
-    withViewer: true
 }
 
 export const EntryContainer = Relay.createContainer(Entry, {
@@ -219,6 +219,6 @@ export const EntryContainer = Relay.createContainer(Entry, {
             },
             created
             updated
-        }`,
+        }`
     }
 });

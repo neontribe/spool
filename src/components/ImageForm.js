@@ -53,7 +53,9 @@ class ImageForm extends Component {
         var savers = _.toPairs(_.pick(data, 'image', 'imageThumbnail', 'video', 'videoThumbnail')).map((item) => {
             return uploadToS3(item[1])
                 .then((s3Info) => {
-                    return { [item[0]]: s3Info }
+                    return {
+                        [item[0]]: s3Info
+                    };
                 });
         });
 
@@ -102,7 +104,7 @@ class ImageForm extends Component {
                             <p>{errorMap[this.state.cameraError]}</p>
                             <p>
                                 <Button onClick={this.requestUploadMode}>Try uploading</Button>
-								<ButtonLink to='/app/home'>Reset</ButtonLink>
+                                <ButtonLink to='/app/home'>Reset</ButtonLink>
                             </p>
                         </div>
                     ),
