@@ -15,8 +15,8 @@ export const textEntry = {
 
 export const videoEntry = {
     media: {
-        video: "/static/example.webm",
-        videoThumbnail: "/static/queue.jpg",
+        video: "/public/example.webm",
+        videoThumbnail: "/public/queue.jpg",
     },
     sentiment: {
         type: "sad",
@@ -29,8 +29,8 @@ export const videoEntry = {
 
 export const videoEntryWithText = {
     media: {
-        video: "/static/example.webm",
-        videoThumbnail: "/static/queue.jpg",
+        video: "/public/example.webm",
+        videoThumbnail: "/public/queue.jpg",
         text: "Queuing for the bus sucks"
     },
     sentiment: {
@@ -44,8 +44,8 @@ export const videoEntryWithText = {
 
 export const imageEntry = {
     media: {
-        image: "/static/queue.jpg",
-        imageThumbnail: "/static/queue.jpg",
+        image: "/public/queue.jpg",
+        imageThumbnail: "/public/queue.jpg",
     },
     sentiment: {
         type: "sad",
@@ -58,8 +58,8 @@ export const imageEntry = {
 
 export const imageEntryWithText = {
     media: {
-        image: "/static/queue.jpg",
-        imageThumbnail: "/static/queue.jpg",
+        image: "/public/queue.jpg",
+        imageThumbnail: "/public/queue.jpg",
         text: "Queuing for the bus sucks"
     },
     sentiment: {
@@ -148,16 +148,6 @@ export const googleProfile = {
 
 export const auth = {
     getProfile: function() { return googleProfile; }
-};
-
-export const request = {
-    avatar: googleProfile.picture,
-    name: googleProfile.name,
-    fromDate: '10/10/2017',
-    toDate: '11/11/2017',
-    reason: 'researching the best way to make catching buses easier',
-    topics: ['transport'],
-    org: 'Spool'
 };
 
 export const topicCounts = [

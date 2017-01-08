@@ -1,0 +1,77 @@
+.filterHeader {
+	margin-top: 1rem;
+	padding: 0 .5rem;
+	font-weight: 500;
+}
+
+.filter {
+	position: relative;
+	float: left;
+	width: 50%;
+	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.filterActive {
+	composes: filter;
+	background-color: #34404c;
+}
+
+.filterNewRow {
+	composes: filter;
+	clear: left;
+}
+
+.filterMedia {
+	composes: filter;
+	width: 33%;
+}
+
+.filterList {
+	padding: .5rem;
+	overflow: auto;
+}
+
+.filterControl {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+	border: 1px solid #34404c;
+	color: #fff;
+	font-weight: 500;
+}
+
+.filterControlOn {
+	composes: filterControl;
+	/*color: #1e2c37;*/
+	background-color: #34404c;
+}
+
+.filterText {
+	margin-top: .5rem;
+	height: 2em;
+	display: flex;
+	align-items: center;
+	white-space: normal;
+}
+
+.count {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 2rem;
+	width: 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 500;
+	background-color: #34404c;
+}
+
+.countZero {
+	composes: count;
+	color: #1e2c37;
+}
