@@ -5,7 +5,6 @@
     "node": "6.2.1",
     "npm": "3.10.3"
   },
-  "homepage": "./",
   "description": "Helping folk with learning disabilities get involved in policy consultations",
   "main": "src/server/index.js",
   "private": true,
