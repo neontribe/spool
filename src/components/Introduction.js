@@ -137,7 +137,7 @@ export default class Introduction extends Component {
 
                         <Step>
                             <div>
-                                <h1 className={headings.large}>Privacy Explainer</h1>
+                                <h1 className={headings.large}>Privacy</h1>
                                 <p>Blabla bla</p>
                             </div>
                             <div className={styles.controls}>
@@ -151,7 +151,6 @@ export default class Introduction extends Component {
                                 <h1 className={headings.large}>Do you want to share?</h1>
                                 <p>Blabla bla</p>
                                 <form>
-                                    <legend>Share Settings</legend>
                                     <div>
                                         <label className={styles.option}>
                                             <input
