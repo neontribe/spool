@@ -6,7 +6,13 @@
         "AUTH0_DOMAIN": {
             "required": true
         },
+        "REACT_APP_AUTH0_DOMAIN": {
+            "required": true
+        },
         "AUTH0_CLIENT_ID": {
+            "required": true
+        },
+        "REACT_APP_AUTH0_CLIENT_ID": {
             "required": true
         },
         "AUTH0_CLIENT_SECRET": {
