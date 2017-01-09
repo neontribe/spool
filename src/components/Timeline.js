@@ -147,26 +147,28 @@ export class Timeline extends Component {
 
 export const TimelineContainer = Relay.createContainer(withRoles(Timeline, ['creator']), {
     initialVariables: {
-        first: 100,
+        first: 100
     },
     fragments: {
         user: () => Relay.QL`
-        fragment on User {
-            role
-        }`,
+            fragment on User {
+                role
+            }
+        `,
         creator: () => Relay.QL`
-        fragment on Creator {
-            happyCount
-            sadCount
-            entries(first: $first) {
-                edges {
-                    node {
-                        id,
-                        created,
-                        ${EntryContainer.getFragment('entry')}
+            fragment on Creator {
+                happyCount
+                sadCount
+                entries(first: $first) {
+                    edges {
+                        node {
+                            id,
+                            created,
+                            ${EntryContainer.getFragment('entry')}
+                        }
                     }
                 }
             }
-        }`,
+        `
     }
 });

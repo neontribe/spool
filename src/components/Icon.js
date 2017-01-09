@@ -19,6 +19,21 @@ const ICONS = [
 ];
 
 export class Icon extends Component {
+    static propTypes = {
+        className: React.PropTypes.string,
+        icon: React.PropTypes.oneOf(ICONS).isRequired,
+        light: React.PropTypes.bool,
+        size: React.PropTypes.number
+    }
+
+    static defaultProps = {
+        /* Show a lighter version of the icon */
+        light: false,
+
+        /* Icon size multiplier */
+        size: 2
+    }
+
     render () {
         var className = this.props.icon;
 
@@ -38,21 +53,6 @@ export class Icon extends Component {
             </div>
         );
     }
-}
-
-Icon.propTypes = {
-    className: React.PropTypes.string,
-    icon: React.PropTypes.oneOf(ICONS).isRequired,
-    light: React.PropTypes.bool,
-    size: React.PropTypes.number
-}
-
-Icon.defaultProps = {
-    /* Show a lighter version of the icon */
-    light: false,
-
-    /* Icon size multiplier */
-    size: 2
 }
 
 export default Icon;

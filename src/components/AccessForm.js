@@ -21,7 +21,7 @@ export class AccessForm extends Component {
         this.state = {
             from: moment().add(-1, 'months').toISOString(),
             to: moment().add(1, 'months').toISOString(),
-            topics: [],
+            topics: []
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -49,7 +49,7 @@ export class AccessForm extends Component {
 
     handleChange (key, value) {
         this.setState({
-            [key]: value,
+            [key]: value
         });
     }
 
@@ -94,11 +94,11 @@ export class AccessForm extends Component {
     }
 }
 
-AccessForm = withRouter(AccessForm);
+// AccessForm = withRouter(AccessForm);
 
-export default AccessForm;
+export default withRouter(AccessForm);
 
-export const AccessFormContainer = Relay.createContainer(AccessForm, {
+export const AccessFormContainer = Relay.createContainer(withRouter(AccessForm), {
     fragments: {
         consumer: () => Relay.QL`
         fragment on Consumer {

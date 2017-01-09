@@ -32,7 +32,7 @@ class VideoRecorder extends Component {
             text: '',
             devices: [],
             activeDevice: null
-        }
+        };
 
         this.startMediaStream = this.startMediaStream.bind(this);
         this.stopMediaStream = this.stopMediaStream.bind(this);
@@ -69,11 +69,11 @@ class VideoRecorder extends Component {
 
     startMediaStream () {
         // First get a hold of getUserMedia, if present
-		const getUserMedia =
+        const getUserMedia =
             navigator.getUserMedia ||
-			navigator.webkitGetUserMedia ||
-			navigator.mozGetUserMedia ||
-			navigator.msGetUserMedia;
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia;
 
         if (!getUserMedia) {
             this.setState({
@@ -109,7 +109,7 @@ class VideoRecorder extends Component {
         });
     }
 
-    switchVideoDevices() {
+    switchVideoDevices () {
         var currentIndex = _.findIndex(this.state.devices, { deviceId: this.state.activeDevice });
         var nextIndex = (currentIndex + 1) % this.state.devices.length;
         var newDevice = this.state.devices[nextIndex].deviceId || this.state.activeDevice;
@@ -287,7 +287,7 @@ class VideoRecorder extends Component {
                         {this.state.streaming && (
                             <video
                                 className={styles.video}
-                                ref={(ref) => { this._recorder = ref }}
+                                ref={(ref) => { this._recorder = ref; }}
                                 src={this.state.streamURL}
                                 muted={true}
                                 autoPlay={true}
@@ -298,7 +298,7 @@ class VideoRecorder extends Component {
                             <div className={styles.videoContainer}>
                                 <video
                                     className={styles.video}
-                                    ref={(ref) => { this._player = ref }}
+                                    ref={(ref) => { this._player = ref; }}
                                     src={this.state.lastTakeURL}
                                     controls={true}
                                     autoPlay={true}
@@ -380,10 +380,11 @@ VideoRecorder.mediaCheck = function () {
         }
 
         // First get a hold of getUserMedia, if present
-    	const getUserMedia = (navigator.getUserMedia ||
-    			navigator.webkitGetUserMedia ||
-    			navigator.mozGetUserMedia ||
-    			navigator.msGetUserMedia);
+        const getUserMedia =
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia;
 
         if (!getUserMedia) {
             reject({ name: 'getUserMediaUnsupported' });

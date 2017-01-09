@@ -10,6 +10,16 @@ import styles from './css/SimpleLogin.module.css';
 const { Content } = Layout;
 
 class SimpleLogin extends Component {
+    static propTypes = {
+        location: React.PropTypes.object,
+        auth: React.PropTypes.instanceOf(AuthService)
+    }
+
+    static defaultProps = {
+        email: '',
+        password: ''
+    }
+
     constructor (props) {
         super(props);
 
@@ -51,16 +61,6 @@ class SimpleLogin extends Component {
             </Layout>
         );
     }
-}
-
-SimpleLogin.propTypes = {
-    location: React.PropTypes.object,
-    auth: React.PropTypes.instanceOf(AuthService)
-}
-
-SimpleLogin.defaultProps = {
-    email: '',
-    password: ''
 }
 
 export default SimpleLogin;

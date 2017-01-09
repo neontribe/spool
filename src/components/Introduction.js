@@ -36,7 +36,7 @@ export default class Introduction extends Component {
 
         this.state = {
             step: 0,
-            confirmedPrivacy: false,
+            confirmedPrivacy: false
         };
 
         this.handleNextStep = this.handleNextStep.bind(this);
@@ -71,7 +71,7 @@ export default class Introduction extends Component {
         });
     }
 
-    handleFinalStep() {
+    handleFinalStep () {
         const { user } = this.props;
 
         var onSuccess = () => {
@@ -90,13 +90,13 @@ export default class Introduction extends Component {
 
     handleNextStep () {
         this.setState({
-            step: this.state.step + 1,
+            step: this.state.step + 1
         });
     }
 
     handleBackStep () {
         this.setState({
-            step: this.state.step - 1,
+            step: this.state.step - 1
         });
     }
 
@@ -137,7 +137,7 @@ export default class Introduction extends Component {
 
                         <Step>
                             <div>
-                                <h1 className={headings.large}>Privacy Explainer</h1>
+                                <h1 className={headings.large}>Privacy</h1>
                                 <p>Blabla bla</p>
                             </div>
                             <div className={styles.controls}>
@@ -151,7 +151,6 @@ export default class Introduction extends Component {
                                 <h1 className={headings.large}>Do you want to share?</h1>
                                 <p>Blabla bla</p>
                                 <form>
-                                    <legend>Share Settings</legend>
                                     <div>
                                         <label className={styles.option}>
                                             <input
@@ -211,6 +210,6 @@ export const IntroductionContainer = Relay.createContainer(Introduction, {
                     isSharing
                 }
             }
-        `,
+        `
     }
 });

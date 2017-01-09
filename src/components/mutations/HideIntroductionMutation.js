@@ -3,31 +3,36 @@ import Relay from 'react-relay';
 export default class HideIntroductionMutation extends Relay.Mutation {
     static fragments = {
         user: () => Relay.QL`
-        fragment on User {
-            id
-        }`
-    }
-    getMutation() {
-        return Relay.QL`mutation {hideIntroduction}`
+            fragment on User {
+                id
+            }
+        `
     }
 
-    getVariables() {
+    getMutation () {
+        return Relay.QL`mutation {hideIntroduction}`;
+    }
+
+    getVariables () {
         return {};
     }
 
-    getFatQuery() {
+    getFatQuery () {
         return Relay.QL`
-        fragment on HideIntroductionPayload {
-            user {
-                profile
+            fragment on HideIntroductionPayload {
+                user {
+                    profile
+                }
             }
-        }`
+        `;
     }
 
-    getConfigs() {
+    getConfigs () {
         return [{
             type: 'FIELDS_CHANGE',
-            fieldIDs: {user: this.props.user.id}
+            fieldIDs: {
+                user: this.props.user.id
+            }
         }];
     }
 }

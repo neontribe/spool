@@ -12,11 +12,11 @@ const { Content, Header } = Layout;
 
 export class Settings extends React.Component {
     static propTypes = {
-        defaultRole: React.PropTypes.string,
+        defaultRole: React.PropTypes.string
     }
 
     static defaultProps = {
-        defaultRole: 'creator',
+        defaultRole: 'creator'
     }
 
     constructor (props) {
@@ -62,9 +62,9 @@ export class Settings extends React.Component {
     }
 }
 
-Settings = withRouter(Settings);
+// Settings = withRouter(Settings);
 
-export const SettingsContainer = Relay.createContainer(Settings, {
+export const SettingsContainer = Relay.createContainer(withRouter(Settings), {
     fragments: {
         meta: () => Relay.QL`
         fragment on Meta {
@@ -79,6 +79,6 @@ export const SettingsContainer = Relay.createContainer(Settings, {
         fragment on User {
             ${SettingsFormContainer.getFragment('user')}
             ${UpdateUserMutation.getFragment('user')}
-        }`,
+        }`
     }
 });

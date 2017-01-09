@@ -17,6 +17,7 @@
 	flex: 1;
 	margin: 0;
 	background-color: #34404c;
+	border-radius: 1rem;
 
 	box-shadow:
 		0 10px 20px rgba(0, 0, 0, 0.19),
@@ -49,7 +50,6 @@
 	border: 1px solid rgba(0, 0, 0, .2);
 	border-top-width: 2px;
 	background-color: rgba(0, 0, 0, .2);
-	text-transform: uppercase;
 	letter-spacing: 1px;
 	text-align: center;
 	font-size: 1.25rem;
@@ -57,6 +57,8 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	border-bottom-left-radius: 1rem;
+	border-bottom-right-radius: 1rem;
 
 	/* Prevent text selection by holding down on touch devices */
 	user-select: none;

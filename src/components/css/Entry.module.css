@@ -13,10 +13,7 @@
 	color: #fff;
 	text-shadow: 0 0 1px rgba(0, 0, 0, .6);
 	background-size: cover;
-
-	box-shadow:
-		0 10px 20px rgba(0, 0, 0, 0.2),
-		0 6px 6px rgba(0, 0, 0, 0.3);
+	border-radius: 1rem;
 }
 
 .entryDark {
@@ -149,6 +146,8 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	border-bottom-left-radius: .7rem;
+	border-bottom-right-radius: .7rem;
 }
 
 .videoOverlay {
@@ -180,7 +179,7 @@
 .videoOverlayPlay:before {
 	content: '';
 	display: block;
-	background: url('/static/video-play.svg') no-repeat;
+	background: url('./assets/video-play.svg') no-repeat;
 	background-size: contain;
 	position: absolute;
 	top: 0;
@@ -201,6 +200,7 @@
     left: 0;
     height: 100%;
     width: 100%;
+    border-radius: 1rem;
 
     /* .entry->boxShadow */
     box-shadow:

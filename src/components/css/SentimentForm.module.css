@@ -15,10 +15,10 @@
 
 .optionHappy {
 	composes: option;
-	background-image: url('/static/icon-happy-light.svg');
+	background-image: url('./assets/icon-happy-light.svg');
 }
 
 .optionSad {
 	composes: option;
-	background-image: url('/static/icon-sad-light.svg');
+	background-image: url('./assets/icon-sad-light.svg');
 }

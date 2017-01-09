@@ -54,7 +54,7 @@ export class SettingsForm extends Component {
             age: _.partial(this.handleChange, 'age'),
             residence: _.partial(this.handleChange, 'residence'),
             services: _.partial(this.handleArrayChange, 'services')
-        }
+        };
     }
 
     handleArrayChange (key, event) {
@@ -95,7 +95,7 @@ export class SettingsForm extends Component {
             age: age.value,
             residence: residence.value,
             services: services.value
-        }
+        };
 
         this.props.onSubmit(payload);
     }
@@ -273,7 +273,7 @@ export class SettingsForm extends Component {
                     </div>
                 </div>
             </form>
-        )
+        );
     }
 }
 
@@ -313,6 +313,6 @@ export const SettingsFormContainer = Relay.createContainer(SettingsForm, {
                     }
                 }
             }
-        `,
+        `
     }
 });
