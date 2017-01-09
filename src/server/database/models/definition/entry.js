@@ -73,22 +73,13 @@ module.exports.initRelations = function() {
     var model = require('../index');
     var Entry = model.Entry;
     var EntryTopic = model.EntryTopic;
-    var EntryUserRequest = model.EntryUserRequest;
     var UserAccount = model.UserAccount;
     var Medium = model.Medium;
     var Sentiment = model.Sentiment;
     var Topic = model.Topic;
-    var UserRequest = model.UserRequest;
 
     Entry.hasMany(EntryTopic, {
         as: 'TopicEntryIdFkeys',
-        foreignKey: 'entry_id',
-        onDelete: 'CASCADE',
-        onUpdate: 'NO ACTION'
-    });
-
-    Entry.hasMany(EntryUserRequest, {
-        as: 'UserRequestEntryIdFkeys',
         foreignKey: 'entry_id',
         onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
@@ -130,14 +121,4 @@ module.exports.initRelations = function() {
         onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
     });
-
-    Entry.belongsToMany(UserRequest, {
-        as: 'EntryUserRequestUserRequests',
-        through: EntryUserRequest,
-        foreignKey: 'entry_id',
-        otherKey: 'user_request_id',
-        onDelete: 'CASCADE',
-        onUpdate: 'NO ACTION'
-    });
-
 };

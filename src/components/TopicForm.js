@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
-import AddControls from './AddControls';
-import IconChooser from './IconChooser';
+
+import Button from './Button';
+import IconChooserGrid from './IconChooserGrid';
+
+import styles from './css/TopicForm.module.css';
+import helpers from '../css/Helpers.module.css';
 
 class TopicForm extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
@@ -15,35 +18,32 @@ class TopicForm extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    continue() {
+    continue () {
         this.props.save(this.props.saveKey, this.state.value);
     }
 
-    handleChange(value) {
-        this.setState({ value })
+    handleChange (value) {
+        this.setState({
+            value
+        });
     }
 
-    render() {
+    render () {
         return (
+            <div className={styles.wrapper}>
+                <IconChooserGrid
+                    label='What do you want to talk about?'
+                    choices={this.props.topics}
+                    onChange={this.handleChange}
+                    initialValue={this.props.initialValue}
+                />
 
-
-                <Grid>
-                    <Row>
-                        <IconChooser
-                            label="Add some labels..."
-                            choices={this.props.topics}
-                            onChange={this.handleChange}
-                            initialValue={this.props.initialValue} />
-                    </Row>
-                    <Row>
-                        <Col>
-                            <AddControls
-                                onNext={this.continue}
-                                disableNext={this.state.value.length === 0}
-                                />
-                        </Col>
-                    </Row>
-                </Grid>
+                <div className={(!this.state.value.length && helpers.hide) || undefined}>
+                    <div className={styles.controls}>
+                        <Button onClick={this.continue}>Continue</Button>
+                    </div>
+                </div>
+            </div>
         );
     }
 }

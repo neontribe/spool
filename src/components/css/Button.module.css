@@ -1,0 +1,58 @@
+.wrapper {
+	/* Extends the button surface area beyond its visual boundaries */
+	padding: .5rem;
+}
+
+.raised {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 10rem;
+	border-radius: 4rem;
+	vertical-align: middle;
+	color: #fff;
+	text-align: center;
+	text-shadow: 0 0 2px #000;
+	border: 4px solid #2fd9b5;
+	background-color: #34404c;
+	margin: 0 10px 10px 0;
+	text-shadow: 0 0 1px rgba(0, 0, 0, .6);
+
+	box-shadow:
+		10px 10px 0 2px #000,
+		inset 5px 5px 0 2px rgba(0, 0, 0, .2);
+}
+
+.raised + .raised {
+	margin-left: 1rem;
+}
+
+.raised:active {
+	box-shadow: none;
+	top: 10px;
+	left: 10px;
+}
+
+.round {
+	composes: raised;
+	min-width: 0;
+	padding: 2rem;
+	border-radius: 50%;
+}
+
+.round:before {
+	content: '';
+	float: left;
+	width: auto;
+	padding-bottom: 100%;
+}
+
+.button {
+	padding: 1.5rem;
+	font-size: 1.75rem;
+    font-weight: 500;
+
+	/* Prevent text selection by holding down on touch devices */
+	user-select: none;
+}
