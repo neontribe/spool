@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Image } from 'react-bootstrap';
-import AddControls from './AddControls';
 import _ from 'lodash';
 
+import Grid from './Grid';
+
+import styles from './css/SentimentForm.module.css';
+import headings from '../css/Headings.module.css';
+import a11y from '../css/A11y.module.css';
+
 class SentimentForm extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
@@ -12,65 +16,26 @@ class SentimentForm extends Component {
         };
 
         this.continue = this.continue.bind(this);
-        this.handleChange = this.handleChange.bind(this);
     }
 
-    continue() {
-        this.props.save(this.props.saveKey, this.state.value);
+    continue (value) {
+        this.props.save(this.props.saveKey, value);
     }
 
-    handleChange(value) {
-        this.setState({
-            value: value
-        })
-    }
-
-    render() {
+    render () {
         return (
-            <Grid>
-                <Row>
-                    <Col>
-                        <p><strong>Does it make you happy or sad?</strong></p>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={6}>
-                        <div
-                            className="happy-container"
-                            onClick={_.partial(this.handleChange, 'happy')}
-                        >
-                            <div className={this.state.value === 'happy' ? 'selected-emoji' : ''}>
-                                <Image
-                                    src="/static/happy.png"
-                                    alt="Happy"
-                                />
-                            </div>
-                        </div>
-                    </Col>
-                    <Col xs={6}>
-                        <div
-                            className="sad-container"
-                            onClick={_.partial(this.handleChange, 'sad')}
-                        >
-                            <div className={this.state.value === 'sad' ? 'selected-emoji' : ''}>
-                                <Image
-                                    src="/static/sad.png"
-                                    alt="Sad"
-                                />
-                            </div>
-                        </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <AddControls
-                            onNext={this.continue}
-                            disableNext={!this.state.value}
-                            />
-                    </Col>
-                </Row>
-            </Grid>
+            <div className={styles.wrapper}>
+                <h2 className={headings.large}>How does it make you feel?</h2>
 
+                <Grid enforceConsistentSize={true}>
+                    <button className={styles.optionHappy} onClick={_.partial(this.continue, 'happy')}>
+                        <span className={a11y.vh}>I feel happy</span>
+                    </button>
+                    <button className={styles.optionSad} onClick={_.partial(this.continue, 'sad')}>
+                        <span className={a11y.vh}>I feel sad</span>
+                    </button>
+                </Grid>
+            </div>
         );
     }
 }

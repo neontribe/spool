@@ -1,112 +1,174 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import { Link } from 'react-router';
-import { ListGroup, Glyphicon } from 'react-bootstrap';
-import { EntryContainer, Entry } from './Entry';
-import Intro from './Intro';
-import UserRequest, { UserRequestContainer } from './UserRequest';
+import moment from 'moment';
 import _ from 'lodash';
-import withRoles from '../auth/withRoles.js';
+
+import { EntryContainer, Entry } from './Entry';
+import Layout from './Layout';
+import ButtonLink from './ButtonLink';
+import { withRoles } from './wrappers.js';
+import IconFilter from './IconFilter.js';
+
+import styles from './css/Timeline.module.css';
+
+const { Content, Header } = Layout;
 
 export class Timeline extends Component {
-    static propTypes = {
-        creator: React.PropTypes.object.isRequired,
-    }
-
-    constructor(props) {
+    constructor (props) {
         super(props);
+
         this.state = {
-            hasEntries: props.creator.entries.edges.length
+            showScrollMore: false,
+            panel: []
         };
+
+        this.onScroll = _.debounce(this.onScroll.bind(this), 100, {
+            leading: false,
+            trailing: true
+        });
+
+        this.togglePanel = this.togglePanel.bind(this);
+
+        window.addEventListener('scroll', this.onScroll, true);
     }
 
-    renderEntries() {
-        return this.props.creator.entries.edges.map((entry) => {
-            if (this.props.relay) {
-                return (<EntryContainer key={entry.node.id} entry={entry.node} />);
-            } else {
-                return (<Entry key={entry.node.id} entry={entry.node} />);
-            }
+    componentDidMount () {
+        this.onScroll();
+    }
 
+    componentWillUnmount () {
+        window.removeEventListener('scroll', this.onScroll, true);
+    }
+
+    onScroll () {
+        var showScrollMore = false;
+        var scrollTop = Math.abs(Math.ceil(this.refs.wrapper.getBoundingClientRect().top) - this.refs.wrapper.offsetTop);
+        var entries = this.props.creator.entries.edges.slice();
+
+        if (scrollTop < 25 && Object.keys(entries).length > 3) {
+            showScrollMore = true;
+        }
+
+        this.setState({
+            showScrollMore
         });
     }
 
-    renderRequests() {
-        if (this.props.creator.requests.edges.length) {
-            var request = _.first(this.props.creator.requests.edges).node
-            if (this.props.relay) {
-                return (
-                    <UserRequestContainer userRequest={request} creator={this.props.creator} />
-                );
-            } else {
-                return (
-                    <UserRequest userRequest={request} creator={this.props.creator}/>
-                );
-            }
+    togglePanel (index) {
+        var state = Object.assign({}, this.state);
+
+        if (!state.panel[index]) {
+            state.panel[index] = {
+                expanded: true
+            };
+        } else {
+            state.panel[index].expanded = !state.panel[index].expanded;
         }
+
+        this.setState(state);
     }
 
-    render() {
+    handleFilterChange () {
+        // Todo: handleFilterChange
+    }
+
+    renderMenuContent () {
         return (
-            <div>
+            <IconFilter onChange={this.handleFilterChange} filters={this.state.filters} />
+        );
+    }
 
-                <div className="centered" >
-                    <div style={{width: '60%', margin:'auto'}}>
-                        {this.renderRequests()}
+    render () {
+        var EntryComponent = (this.props.relay) ? EntryContainer : Entry;
+        var entries = this.props.creator.entries.edges.slice();
+
+        // Chronologically sort entries
+        entries = entries.sort((a, b) => {
+            return moment(b.node.created) - moment(a.node.created);
+        });
+
+        // Group by month
+        entries = _.groupBy(entries, (entry) => {
+            return moment(entry.node.created).startOf('week').format('YYYY-MM-DD');
+        });
+
+        return (
+            <Layout>
+                <Header
+                    auth={this.props.auth}
+                    menuContent={this.renderMenuContent()}
+                />
+                <Content>
+                    {!Object.keys(entries).length && (
+                        <div className={styles.noResults}>
+                            <ButtonLink to='/app/add'>Add New Entry</ButtonLink>
+                        </div>
+                    )}
+
+                    <div ref='wrapper'>
+                        {Object.keys(entries).map((date, i) => {
+                            var _entries = entries[date];
+                            var dateRange = `${moment(date).startOf('week').format('YYYY, MMMM Do')} — ${moment(date).endOf('week').format('MMMM Do')}`;
+                            var showEntries = this.state.panel[i] && this.state.panel[i].expanded;
+
+                            return (
+                                <div key={i} className={styles.section}>
+                                    <h2>
+                                        <button
+                                            className={styles.header}
+                                            onClick={_.partial(this.togglePanel, i)}
+                                        >{dateRange} <span className={styles.toggle}>{(showEntries) ? '▼' : '▲'}</span></button>
+                                    </h2>
+
+                                    <div style={{ display: (showEntries) ? 'none' : 'block' }}>
+                                        {_entries.map((entry, j) => (
+                                            <div key={j} className={((j + 1) % 3 === 0) ? styles.entryLastRowItem : styles.entry}>
+                                                <EntryComponent entry={entry.node} thumbnailMode={true} />
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {this.state.showScrollMore && (
+                                        <div className={styles.moreWrapper}>
+                                            <div className={styles.more}>
+                                                Scroll for more&hellip;
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
-                </div>
-
-                <div className="centered">
-                    <Link className="btn" to={'/add'}>
-                        <Glyphicon glyph="plus"/> {this.state.hasEntries ? 'Add New Entry' : 'Get Started'}
-                    </Link>
-                </div>
-
-                <ListGroup componentClass="div">
-                    {this.renderEntries()}
-                    {!this.state.hasEntries &&
-                        <Intro />
-                    }
-                </ListGroup>
-            </div>
-
+                </Content>
+            </Layout>
         );
     }
 }
 
-export const TimelineContainer = Relay.createContainer(withRoles(Timeline, {
-    roles: ['creator'],
-    fallback: '/settings/configure',
-}), {
+export const TimelineContainer = Relay.createContainer(withRoles(Timeline, ['creator']), {
     initialVariables: {
-        first: 100,
+        first: 100
     },
     fragments: {
         user: () => Relay.QL`
-        fragment on User {
-            role
-        }`,
+            fragment on User {
+                role
+            }
+        `,
         creator: () => Relay.QL`
-        fragment on Creator {
-            happyCount
-            sadCount
-            entries(first: $first) {
-                edges {
-                    node {
-                        id,
-                        ${EntryContainer.getFragment('entry')}
+            fragment on Creator {
+                happyCount
+                sadCount
+                entries(first: $first) {
+                    edges {
+                        node {
+                            id,
+                            created,
+                            ${EntryContainer.getFragment('entry')}
+                        }
                     }
                 }
             }
-            requests(first: $first) {
-                edges {
-                    node {
-                        id,
-                        ${UserRequestContainer.getFragment('userRequest')}
-                    }
-                }
-            }
-            ${UserRequestContainer.getFragment('creator')}
-        }`,
+        `
     }
 });

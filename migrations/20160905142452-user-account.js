@@ -16,7 +16,14 @@ module.exports = {
               autoIncrement: true
           },
           auth_hash: {
-              type: Sequelize.STRING,
+              type: Sequelize.STRING(256),
+          },
+          profile_id: {
+            type: Sequelize.INTEGER,
+            references: {
+                model: 'profile',
+                key: 'profile_id'
+            }
           },
           role_id: {
             type: Sequelize.INTEGER,
