@@ -14,6 +14,7 @@ coverage
 .DS_Store
 npm-debug.log
 storybook-static
+.nyc_output
 
 # anthony
 .vim.project
