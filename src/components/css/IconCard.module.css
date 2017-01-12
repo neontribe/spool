@@ -1,0 +1,61 @@
+.field {
+	composes: vh from '../../css/A11y.module.css';
+}
+
+.wrapper {
+	position: relative;
+	display: inline-block;
+	margin: 0;
+	margin-bottom: 2px;
+	margin-right: 2px;
+	border: 2px solid #34404c;
+	background-color: #1e2c37;
+}
+
+.option {
+	display: flex;
+	justify-content: center;
+	align-self: stretch;
+	align-items: center;
+	flex: 1;
+	height: 100%;
+	cursor: pointer;
+}
+
+.field:checked + .option,
+.field:checked + .option .message {
+	background-color: #34404c;
+}
+
+.message {
+	width: 100%;
+	letter-spacing: 1px;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	font-size: 1rem;
+	white-space: nowrap;
+}
+
+.icon {
+	height: 100%;
+	width: 100%;
+	padding: .5rem 1rem;
+}
+
+/*
+
+Overrides <Icon /> style. Shouldn't really do this
+with CSSModules but can't find an alternative.
+
+*/
+.icon > div {
+	height: 2rem !important;
+	width: 2rem !important;
+	margin: 0;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: contain;
+}

@@ -8,9 +8,20 @@ module.exports = function(sequelize, DataTypes) {
             autoIncrement: true
         },
         authHash: {
-            type: DataTypes.STRING(255),
+            type: DataTypes.STRING(256),
             field: 'auth_hash',
             allowNull: true
+        },
+        profileId: {
+            type: DataTypes.INTEGER,
+            field: 'profile_id',
+            allowNull: true,
+            references: {
+                model: 'profile',
+                key: 'profile_id'
+            },
+            onUpdate: 'NO ACTION',
+            onDelete: 'NO ACTION'
         },
         roleId: {
             type: DataTypes.INTEGER,
@@ -56,12 +67,18 @@ module.exports.initRelations = function() {
     var model = require('../index');
     var UserAccount = model.UserAccount;
     var Entry = model.Entry;
-    var Request = model.Request;
-    var UserRequest = model.UserRequest;
     var Region = model.Region;
     var Role = model.Role;
     var Medium = model.Medium;
+    var Profile = model.Profile;
     var Sentiment = model.Sentiment;
+
+    UserAccount.belongsTo(Profile, {
+        as: 'Profile',
+        foreignKey: 'profile_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
 
     UserAccount.hasMany(Entry, {
         as: 'EntryAuthorIdFkeys',
@@ -73,20 +90,6 @@ module.exports.initRelations = function() {
     UserAccount.hasMany(Entry, {
         as: 'EntryOwnerIdFkeys',
         foreignKey: 'owner_id',
-        onDelete: 'CASCADE',
-        onUpdate: 'NO ACTION'
-    });
-
-    UserAccount.hasMany(Request, {
-        as: 'RequestUserIdFkeys',
-        foreignKey: 'user_id',
-        onDelete: 'NO ACTION',
-        onUpdate: 'NO ACTION'
-    });
-
-    UserAccount.hasMany(UserRequest, {
-        as: 'UserRequestUserIdFkeys',
-        foreignKey: 'user_id',
         onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
     });
@@ -158,23 +161,4 @@ module.exports.initRelations = function() {
         onDelete: 'CASCADE',
         onUpdate: 'NO ACTION'
     });
-
-    UserAccount.belongsToMany(Region, {
-        as: 'RequestRegions',
-        through: Request,
-        foreignKey: 'user_id',
-        otherKey: 'region_id',
-        onDelete: 'NO ACTION',
-        onUpdate: 'NO ACTION'
-    });
-
-    UserAccount.belongsToMany(Request, {
-        as: 'UserRequestRequests',
-        through: UserRequest,
-        foreignKey: 'user_id',
-        otherKey: 'request_id',
-        onDelete: 'CASCADE',
-        onUpdate: 'NO ACTION'
-    });
-
 };

@@ -9,12 +9,12 @@ build
 
 #coverage
 coverage
-.nyc_output
 
 # misc
 .DS_Store
 npm-debug.log
 storybook-static
+.nyc_output
 
 # anthony
 .vim.project

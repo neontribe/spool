@@ -1,0 +1,32 @@
+.wrapper {
+	display: flex;
+	flex: 1 0 auto;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.content {
+	position: relative;
+	display: flex;
+	flex: 1;
+	margin-bottom: 1rem;
+}
+
+.controls {
+	text-align: center;
+}
+
+.textarea {
+	flex: 1;
+	border-color: #2fd9b5;
+}
+
+.charCounter {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	padding: .5rem 1rem;
+	border-top-left-radius: 20px;
+	color: #1e2c37;
+	background-color: #2fd9b5;
+}

@@ -6,7 +6,13 @@
         "AUTH0_DOMAIN": {
             "required": true
         },
+        "REACT_APP_AUTH0_DOMAIN": {
+            "required": true
+        },
         "AUTH0_CLIENT_ID": {
+            "required": true
+        },
+        "REACT_APP_AUTH0_CLIENT_ID": {
             "required": true
         },
         "AUTH0_CLIENT_SECRET": {
@@ -25,6 +31,9 @@
             "required": true
         },
         "AWS_SECRET_ACCESS_KEY": {
+            "required": true
+        },
+        "RELAY": {
             "required": true
         },
         "NODE_ENV": "production"

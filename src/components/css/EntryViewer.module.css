@@ -1,0 +1,49 @@
+.wrapper {
+	display: flex;
+	flex: 1;
+}
+
+.contentWrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 100%;
+	width: 100%;
+
+	/* iOS Webkit fix */
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.content {
+	height: 100%;
+	overflow: auto;
+	padding: 1rem;
+	background-color: rgba(0, 0, 0, .25);
+}
+
+.text {
+	font-size: 1.25rem;
+}
+
+.header > * {
+	margin: 0 1rem;
+}
+
+.topics {
+	display: flex;
+}
+
+.topics > * {
+	margin: 0 .5rem;
+}
+
+.controls {
+	margin-top: 1rem;
+	text-align: center;
+}
+
+.delete {
+	background-color: #ce1d2b;
+}

@@ -1,0 +1,91 @@
+.field {
+	composes: vh from '../../css/A11y.module.css';
+}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	flex: 1 0 auto;
+	justify-content: center;
+	margin-bottom: 1rem;
+}
+
+.iconWrapper {
+	position: relative;
+	display: flex;
+	align-self: stretch;
+	flex: 1;
+	margin: 0;
+	background-color: #34404c;
+	border-radius: 1rem;
+
+	box-shadow:
+		0 10px 20px rgba(0, 0, 0, 0.19),
+		0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.option {
+	display: flex;
+	justify-content: center;
+	align-self: stretch;
+	align-items: center;
+	flex: 1;
+	height: auto;
+	cursor: pointer;
+}
+
+.field:checked + .option .message {
+	color: #1e2c37;
+	border-color: #2fd9b5;
+	background-color: #2fd9b5;
+}
+
+.message {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	height: 4rem;
+	width: 100%;
+	padding: .5rem;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-top-width: 2px;
+	background-color: rgba(0, 0, 0, .2);
+	letter-spacing: 1px;
+	text-align: center;
+	font-size: 1.25rem;
+	font-weight: 500;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-bottom-left-radius: 1rem;
+	border-bottom-right-radius: 1rem;
+
+	/* Prevent text selection by holding down on touch devices */
+	user-select: none;
+}
+
+.icon {
+	position: absolute;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	padding: 0;
+}
+
+/*
+
+Overrides <Icon /> style. Shouldn't really do this
+with CSSModules but can't find an alternative.
+
+*/
+.icon > div {
+	height: calc(100% - 6rem) !important;
+	width: calc(100% - 6rem) !important;
+	margin: 1rem auto;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: contain;
+
+	/* hack to engage viewport-units-buggyfill */
+	content: 'viewport-units-buggyfill; height: calc(100% - 6rem) !important; width: calc(100% - 6rem) !important;';
+}
