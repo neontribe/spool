@@ -36,7 +36,6 @@
   "devDependencies": {
     "enzyme": "^2.4.1",
     "http-proxy-middleware": "^0.17.3",
-    "lodash": "^4.17.2",
     "mocha": "^3.0.1",
     "pg-generator": "^3.4.2",
     "react-addons-test-utils": "^15.3.0",
