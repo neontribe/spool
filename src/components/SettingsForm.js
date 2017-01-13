@@ -4,6 +4,8 @@ import _ from 'lodash';
 
 import Button from './Button';
 import TouchIcon from './TouchIcon';
+import PrivacyForm from './PrivacyForm.js';
+import UpdatePrivacyMutation from './mutations/UpdatePrivacyMutation.js';
 
 import styles from './css/SettingsForm.module.css';
 import headings from '../css/Headings.module.css';
@@ -15,6 +17,7 @@ export class SettingsForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleArrayChange = this.handleArrayChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handlePrivacyChange = this.handlePrivacyChange.bind(this);
 
         const changed = false;
         const user = this.props.user;
@@ -98,6 +101,15 @@ export class SettingsForm extends Component {
         };
 
         this.props.onSubmit(payload);
+    }
+
+    handlePrivacyChange (isSharing) {
+        const { user } = this.props;
+        this.props.relay.commitUpdate(
+            new UpdatePrivacyMutation({
+                user,
+                sharing: isSharing 
+            }));
     }
 
     errors () {
@@ -264,6 +276,13 @@ export class SettingsForm extends Component {
                         </div>
                     </div>
 
+                    { this.props.showPrivacyForm && (
+                        <div>
+                            <h3 className={headings.regular}>Sharing</h3>
+                            <PrivacyForm onChange={this.handlePrivacyChange} sharing={this.props.user.profile.isSharing}/>
+                        </div>
+                    )}
+
                     <div className={styles.column}>
                         {!errors && (
                             <Button onClick={this.handleSubmit}>
@@ -297,12 +316,14 @@ export const SettingsFormContainer = Relay.createContainer(SettingsForm, {
         user: () => Relay.QL`
             fragment on User {
                 id
+                ${UpdatePrivacyMutation.getFragment('user')}
                 region
                 profile {
                     id
                     name
                     age
                     nickname
+                    isSharing
                     services {
                         type
                         name
