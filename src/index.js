@@ -4,6 +4,7 @@ import Relay from 'react-relay';
 import { RelayNetworkLayer, urlMiddleware, authMiddleware } from 'react-relay-network-layer';
 import { Router, Route, IndexRoute, IndexRedirect, Redirect, browserHistory, applyRouterMiddleware } from 'react-router';
 import useRelay from 'react-router-relay';
+import ReactGA from 'react-ga';
 
 import AuthService from './auth/AuthService';
 import App, { RoleWrapperContainer } from './App';
@@ -72,9 +73,17 @@ const EntryViewerQueries = {
 };
 
 setupRelayNetworkLayer();
-
+ReactGA.initialize(process.env.REACT_APP_GA_ID);
+function logPageViewTracking() {
+        ReactGA.set({ page: window.location.pathname })
+        ReactGA.pageview(window.location.pathname);
+}
 ReactDOM.render(
-    <Router history={browserHistory} environment={Relay.Store} render={applyRouterMiddleware(useRelay)}>
+    <Router
+        onUpdate={logPageViewTracking}
+        history={browserHistory}
+        environment={Relay.Store}
+        render={applyRouterMiddleware(useRelay)}>
         <Route path="/" component={App} auth={auth}>
             <IndexRedirect to="/app" />
             <Route path="login">
