@@ -54,6 +54,7 @@ export class Settings extends React.Component {
                     <SettingsFormContainer
                         user={this.props.user}
                         meta={this.props.meta}
+                        showPrivacyForm={this.props.user.profile && this.props.user.profile.isIntroduced}
                         onSubmit={this.handleSubmit}
                     />
                 </Content>
@@ -77,6 +78,9 @@ export const SettingsContainer = Relay.createContainer(withRouter(Settings), {
         }`,
         user: () => Relay.QL`
         fragment on User {
+            profile {
+                isIntroduced
+            }
             ${SettingsFormContainer.getFragment('user')}
             ${UpdateUserMutation.getFragment('user')}
         }`
