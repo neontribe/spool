@@ -19,8 +19,10 @@ export class Timeline extends Component {
 
         this.state = {
             showScrollMore: false,
-            panel: []
+            filters: {},
+            panel: [],
         };
+        this.handleFilterChange = this.handleFilterChange.bind(this);
 
         this.onScroll = _.debounce(this.onScroll.bind(this), 100, {
             leading: false,
@@ -68,8 +70,40 @@ export class Timeline extends Component {
         this.setState(state);
     }
 
-    handleFilterChange () {
-        // Todo: handleFilterChange
+    handleFilterChange (filters) {
+        var active = _.reduce(filters, (reduction, value, key) => {
+            if (value) {
+                reduction.push(key);
+            }
+
+            return reduction;
+        }, []);
+
+        var mediaArguments;
+
+        const { text, video, image } = filters;
+
+        if (text || video || image) {
+            mediaArguments = {
+                text,
+                video,
+                image
+            };
+        }
+
+        const filterArguments = {
+            topics: _.intersection(active, ['work', 'learning', 'home', 'food', 'relationships', 'activities', 'travel', 'health']),
+            sentiment: _.intersection(active, ['happy', 'sad']),
+            media: mediaArguments
+        };
+
+        this.setState({
+            filters
+        });
+
+        this.props.relay.setVariables({
+            filter: filterArguments
+        });
     }
 
     renderMenuContent () {
@@ -147,7 +181,16 @@ export class Timeline extends Component {
 
 export const TimelineContainer = Relay.createContainer(withRoles(Timeline, ['creator']), {
     initialVariables: {
-        first: 100
+        first: 100,
+        filter: {
+            sentiment: ['happy', 'sad'],
+            topics: ['work', 'learning', 'home', 'food', 'relationships', 'activities', 'travel', 'health'],
+            media: {
+                text: true,
+                video: true,
+                image: true
+            }
+        }
     },
     fragments: {
         user: () => Relay.QL`
@@ -159,7 +202,7 @@ export const TimelineContainer = Relay.createContainer(withRoles(Timeline, ['cre
             fragment on Creator {
                 happyCount
                 sadCount
-                entries(first: $first) {
+                entries(first: $first, filter: $filter) {
                     edges {
                         node {
                             id,
