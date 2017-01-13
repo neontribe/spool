@@ -86,7 +86,7 @@ export default class Access extends Component {
                 <div>
                     {access.entries.edges.map((entry, i) => (
                         <div key={i} className={((i + 1) % 3 === 0) ? styles.entryLastRowItem : styles.entry}>
-                            <EntryContainer entry={entry} />
+                            <EntryContainer entry={entry.node} />
                         </div>
                     ))}
                 </div>

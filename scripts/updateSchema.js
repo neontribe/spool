@@ -15,7 +15,7 @@ ql.graphql(Schema, introspectionQuery).then(function(result) {
       );
   } else {
       fs.writeFileSync(
-          path.join(__dirname, '..', process.env.REACT_APP_GRAPHQL_URL),
+          path.join(__dirname, '../config/schema.json'),
           JSON.stringify(result, null, 2)
       );
   }

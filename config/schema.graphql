@@ -70,6 +70,7 @@ type Entry implements Node {
   media: Media
   sentiment: Sentiment
   topics: [Topic]
+  views: Int
   created: String
   updated: String
 }

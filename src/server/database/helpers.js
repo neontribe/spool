@@ -128,6 +128,15 @@ module.exports = {
             GROUP BY
                 user_account.user_id
             `.useBind()
+        },
+        Entry: {
+            incrementViews: (entries) => SQL`
+                UPDATE
+                    entry
+                SET
+                    views = views + 1
+                WHERE
+                    entry_id = ANY(${entries})`.useBind()
         }
     }
 }
