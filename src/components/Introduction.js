@@ -5,6 +5,7 @@ import Button from './Button';
 import ButtonLink from './ButtonLink';
 import HideIntroductionMutation from './mutations/HideIntroductionMutation.js';
 import UpdatePrivacyMutation from './mutations/UpdatePrivacyMutation.js';
+import PrivacyForm from './PrivacyForm.js';
 
 import styles from './css/Introduction.module.css';
 import headings from '../css/Headings.module.css';
@@ -42,13 +43,11 @@ export default class Introduction extends Component {
         this.handleNextStep = this.handleNextStep.bind(this);
         this.handleBackStep = this.handleBackStep.bind(this);
         this.handleFinalStep = this.handleFinalStep.bind(this);
-        this.handleSharingChange = this.handleSharingChange.bind(this);
+        this.handlePrivacyChange = this.handlePrivacyChange.bind(this);
     }
 
-    handleSharingChange (evt) {
+    handlePrivacyChange (isSharing) {
         const { user } = this.props;
-        const value = parseInt(evt.target.value, 10);
-
         var onSuccess = () => {
             // Tell the UI to allow to continue to the next step
             // if they have confirmed their privacy settings
@@ -56,19 +55,14 @@ export default class Introduction extends Component {
                 confirmedPrivacy: true
             });
         };
-
         this.props.relay.commitUpdate(
             new UpdatePrivacyMutation({
                 user,
-                sharing: !!value
+                sharing: isSharing 
             }),
             {
                 onSuccess
             });
-
-        this.setState({
-            sharing: !!value
-        });
     }
 
     handleFinalStep () {
@@ -150,30 +144,7 @@ export default class Introduction extends Component {
                             <div>
                                 <h1 className={headings.large}>Do you want to share?</h1>
                                 <p>Blabla bla</p>
-                                <form>
-                                    <div>
-                                        <label className={styles.option}>
-                                            <input
-                                                type='radio'
-                                                name='share'
-                                                value='1'
-                                                onClick={this.handleSharingChange}
-                                                className={styles.field}
-                                            />
-                                            <span className={styles.message}>Yes</span>
-                                        </label>
-                                        <label className={styles.option}>
-                                            <input
-                                                type='radio'
-                                                name='share'
-                                                value='0'
-                                                onClick={this.handleSharingChange}
-                                                className={styles.field}
-                                            />
-                                            <span className={styles.message}>No</span>
-                                        </label>
-                                    </div>
-                                </form>
+                                <PrivacyForm onChange={this.handlePrivacyChange} />
                             </div>
                             <div className={styles.controls}>
                                 <Button onClick={this.handleBackStep}>Back</Button>
