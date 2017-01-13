@@ -71,8 +71,10 @@ export default class Access extends Component {
             if (!csv.match(/^data:text\/csv/i)) {
                 csv = 'data:text/csv;charset=utf-8,' + csv;
             }
-
-            link.setAttribute('download', 'spool-entry-access.csv');
+            
+            const { from, to } = this.state.form.range;
+            const name = 'entries-' + moment(from).format() + '-' + moment(to).format() + '.csv';
+            link.setAttribute('download', name);
             link.setAttribute('href', encodeURI(csv));
             link.click();
         }
@@ -86,7 +88,7 @@ export default class Access extends Component {
                 <div>
                     {access.entries.edges.map((entry, i) => (
                         <div key={i} className={((i + 1) % 3 === 0) ? styles.entryLastRowItem : styles.entry}>
-                            <EntryContainer entry={entry} />
+                            <EntryContainer entry={entry.node} />
                         </div>
                     ))}
                 </div>

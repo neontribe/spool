@@ -17,7 +17,11 @@ export class Dashboard extends Component {
         super(props);
 
         this.state = {
-            rangeFrom: '-1,months'
+            rangeFrom: '-1,months',
+            range: {
+                from: moment().add(-1, 'months').startOf('date').format(),
+                to: moment().endOf('date').format()
+            },
         };
 
         this.changeRange = this.changeRange.bind(this);
@@ -25,16 +29,16 @@ export class Dashboard extends Component {
 
     changeRange (evt) {
         var [qty, step] = evt.target.value.split(',');
-
+        const range = {
+            from: moment().add(qty, step).startOf('date').format(),
+            to: moment().startOf('date').format()
+        };
         this.setState({
-            rangeFrom: evt.target.value
+            rangeFrom: evt.target.value,
+            range
         });
-
         this.props.relay.setVariables({
-            range: {
-                from: moment().add(qty, step).startOf('date').format(),
-                to: moment().startOf('date').format()
-            }
+            range
         });
     }
 
@@ -84,7 +88,7 @@ export class Dashboard extends Component {
                         </tbody>
                     </table>
 
-                    <TopicsOverview topics={access.topics} />
+                    <TopicsOverview topics={access.topics} dataRange={this.state.range}/>
                </Content>
             </Layout>
         );
