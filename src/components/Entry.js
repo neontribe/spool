@@ -135,6 +135,12 @@ export class Entry extends Component {
                     </div>
                 )}
 
+                {this.props.thumbnailMode && !!entry.views && (
+                    <div>
+                       {entry.views}
+                    </div>
+                )}
+
                 {this.props.showTopicOverlay && (
                     <ul className={styles.topics}>
                         {entry.topics.map((topic, i) => (
@@ -216,7 +222,8 @@ export const EntryContainer = Relay.createContainer(Entry, {
             }
             sentiment {
                 type
-            },
+            }
+            views
             created
             updated
         }`

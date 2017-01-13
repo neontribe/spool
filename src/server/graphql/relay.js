@@ -276,6 +276,12 @@ const EntryType = new ql.GraphQLObjectType({
                 return root.EntryTopicTopics;
             },
         },
+        views: {
+            type: ql.GraphQLInt,
+            resolve: (root) => {
+                return root.views
+            }
+        },
         created: {
             type: ql.GraphQLString,
             resolve: (root) => {
@@ -460,6 +466,12 @@ const DataAccessType = new ql.GraphQLObjectType({
                             }]
                         },
                     ]
+                }).then(function(entries) {
+                    // we don't need to wait for this to complete
+                    const ids = entries.map((entry) => parseInt(entry.entryId, 10));
+                    winston.warn(ids);
+                    sequelize.query(helpers.queries.Entry.incrementViews(ids))
+                    return entries;
                 }).catch((e) => winston.warn(e)), args);
             }
         }

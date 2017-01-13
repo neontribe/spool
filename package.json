@@ -17,6 +17,7 @@
     "start-ui": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && react-scripts start",
     "start": "node src/server/index.js",
     "start-dev": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && npm start",
+    "build-schema": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && node ./scripts/updateSchema.js",
     "setup-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && sequelize --config config/database.js --env spool db:seed:all",
     "build-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && sequelize --config config/database.js --env spool db:migrate && npm run setup-database",
     "reset-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && npm run reset-seeds && sequelize --config config/database.js --env spool db:migrate:undo:all",

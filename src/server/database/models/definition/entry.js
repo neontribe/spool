@@ -51,6 +51,12 @@ module.exports = function(sequelize, DataTypes) {
             onUpdate: 'NO ACTION',
             onDelete: 'NO ACTION'
         },
+        views: {
+            type: DataTypes.INTEGER,
+            field: 'views',
+            allowNull: false,
+            defaultValue: 0
+        },
         createdAt: {
             type: DataTypes.DATE,
             field: 'created_at',

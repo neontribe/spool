@@ -46,6 +46,9 @@ module.exports = {
                   key: 'sentiment_id'
               }
           },
+          views: {
+            type: Sequelize.INTEGER,
+          },
           created_at: { 
               type: Sequelize.DATE
           },
