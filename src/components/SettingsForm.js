@@ -259,37 +259,32 @@ export class SettingsForm extends Component {
                     </div>
 
                     <div className={styles.column}>
-                        <div className={styles.block}>
-                            <h3 className={headings.regular}>Residence Type *</h3>
-                            {this.renderResidences()}
-                            {this.state.residence.changed && this.renderError(errors.residence)}
-                        </div>
-
-                        <div className={styles.block}>
-                            {this.state.region.value && (
-                                <div>
-                                    <h3 className={headings.regular}>Services Used *</h3>
-                                    {this.renderServices()}
-                                    {this.state.services.changed && this.renderError(errors.services)}
-                                </div>
-                            )}
-                        </div>
+                        <h3 className={headings.regular}>Residence Type *</h3>
+                        {this.renderResidences()}
+                        {this.state.residence.changed && this.renderError(errors.residence)}
                     </div>
 
-                    { this.props.showPrivacyForm && (
-                        <div>
-                            <h3 className={headings.regular}>Sharing</h3>
-                            <PrivacyForm onChange={this.handlePrivacyChange} sharing={this.props.user.profile.isSharing}/>
+                    {this.state.region.value && (
+                        <div className={styles.column}>
+                            <h3 className={headings.regular}>Services Used *</h3>
+                            {this.renderServices()}
+                            {this.state.services.changed && this.renderError(errors.services)}
                         </div>
                     )}
 
-                    <div className={styles.column}>
-                        {!errors && (
-                            <Button onClick={this.handleSubmit}>
-                                <TouchIcon />OK
-                            </Button>
-                        )}
-                    </div>
+                    {this.props.showPrivacyForm && (
+                        <div className={styles.column}>
+                            <h3 className={headings.regular}>Sharing</h3>
+                            <PrivacyForm onChange={this.handlePrivacyChange} sharing={this.props.user.profile.isSharing} />
+                        </div>
+                    )}
+                </div>
+                <div className={styles.submitWrapper}>
+                    {!errors && (
+                        <Button onClick={this.handleSubmit}>
+                            <TouchIcon />OK
+                        </Button>
+                    )}
                 </div>
             </form>
         );
