@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
+
 import Layout from './Layout';
 import Button from './Button';
 
 import styles from './css/Login.module.css';
 
-const { Content } = Layout;
+const { Content, Header } = Layout;
+
 class Welcome extends Component {
     constructor (props) {
         super(props);
@@ -13,21 +15,21 @@ class Welcome extends Component {
         this.handleRedirectToSignup = this.handleRedirectToSignup.bind(this);
     }
 
-    handleRedirectToLogin() {
+    handleRedirectToLogin () {
         this.props.router.push('/login/continue');
     }
 
-    handleRedirectToSignup() {
+    handleRedirectToSignup () {
         this.props.router.push('/login/signup');
     }
 
     render () {
         return (
             <Layout>
+                <Header auth={this.props.auth} showHamburger={false} />
                 <Content>
                     <div className={styles.wrapper}>
                         <div className={styles.btnWrapper}>
-                            <h1>Welcome!</h1>
                             <Button onClick={this.handleRedirectToLogin}>Login</Button>
                             <Button onClick={this.handleRedirectToSignup}>Signup</Button>
                         </div>

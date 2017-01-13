@@ -5,12 +5,11 @@ import AuthService from '../auth/AuthService';
 import Layout from './Layout';
 import Button from './Button';
 import EmailLogin from './EmailLogin.js';
+import { GoogleLogin, TwitterLogin } from './Login.js';
 
 import styles from './css/Login.module.css';
 
-import { GoogleLogin, TwitterLogin } from './Login.js';
-
-const { Content } = Layout;
+const { Header, Content } = Layout;
 
 class Signup extends Component {
     constructor (props) {
@@ -21,6 +20,7 @@ class Signup extends Component {
         };
 
         this.handleUseEmail = this.handleUseEmail.bind(this);
+        this.hideLogin = this.hideLogin.bind(this);
         this.handleEmailLoginSubmit = this.handleEmailLoginSubmit.bind(this);
     }
 
@@ -42,38 +42,57 @@ class Signup extends Component {
         });
     }
 
+    hideLogin () {
+        this.setState({
+            emailLogin: false
+        });
+    }
+
     handleEmailLoginSubmit (payload) {
         this.emailSignup(payload);
     }
 
-    renderEmailSignup() {
-        if (!this.state.emailLogin) {
-            return null;
-        }
+    renderEmailSignup () {
         return (
-            <div>
-                <EmailLogin
-                    submitText={'Signup'}
-                    confirmPassword={true}
-                    onSubmit={this.handleEmailLoginSubmit} />
+            <div className={styles.emailLoginWrapper}>
+                <Button onClick={this.hideLogin}>Back</Button>
+                <div className={styles.emailLogin}>
+                    <EmailLogin
+                        submitText='Signup'
+                        confirmPassword={true}
+                        onSubmit={this.handleEmailLoginSubmit}
+                    />
+                </div>
             </div>
         )
     }
 
+    renderButtonForm () {
+        return (
+            <div className={styles.btnWrapper}>
+                <div>
+                    <GoogleLogin auth={this.props.auth}>Signup using Google</GoogleLogin>
+                </div>
+                <div>
+                    <TwitterLogin auth={this.props.auth}>Signup using Twitter</TwitterLogin>
+                </div>
+                <div>
+                    <Button onClick={this.handleUseEmail}>Signup using Email</Button>
+                </div>
+            </div>
+        );
+    }
+
     render () {
         const { children } = this.props;
+
         return (
             <Layout>
+                <Header auth={this.props.auth} showHamburger={false} />
                 <Content>
                     <div className={styles.wrapper}>
-                        <div className={styles.btnWrapper}>
-                            <h1>Signup</h1>
-                            <GoogleLogin auth={this.props.auth}>Signup using Google</GoogleLogin>
-                            <TwitterLogin auth={this.props.auth}>Signup using Twitter</TwitterLogin>
-                            <Button onClick={this.handleUseEmail}>Signup using Email</Button>
-                        </div>
+                        {this.state.emailLogin ? this.renderEmailSignup() : this.renderButtonForm()}
                     </div>
-                    { this.renderEmailSignup() }
                 </Content>
             </Layout>
         );
@@ -83,4 +102,5 @@ class Signup extends Component {
 Signup.propTypes = {
     auth: React.PropTypes.instanceOf(AuthService)
 }
+
 export default Signup;

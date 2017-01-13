@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+
 import Button from './Button';
 
 import styles from './css/Login.module.css';
@@ -15,11 +16,15 @@ export default class EmailLogin extends Component {
         email: '',
         password: ''
     }
+
     constructor (props) {
         super(props);
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
         const changed = false;
+
         this.state = {
             email: {
                 value: '',
@@ -34,6 +39,7 @@ export default class EmailLogin extends Component {
                 changed
             }
         };
+
         this.handleChanges = {
             email: _.partial(this.handleChange, 'email'),
             password: _.partial(this.handleChange, 'password'),
@@ -41,9 +47,11 @@ export default class EmailLogin extends Component {
         };
     }
 
-    handleSubmit(evt) {
+    handleSubmit (evt) {
         evt.preventDefault();
+
         const { email, password } = this.state;
+
         this.props.onSubmit({
             email: email.value,
             password: password.value
@@ -52,9 +60,11 @@ export default class EmailLogin extends Component {
 
     errors () {
         var errors = {};
+
         const { email, password, confirm } = this.state;
+
         if (!email.value && email.changed) {
-            errors['email'] = 'Your password is required';
+            errors['email'] = 'Your email is required';
         }
 
         if (this.props.confirmPassword && confirm.changed && (password.value !== confirm.value)) {
@@ -70,33 +80,63 @@ export default class EmailLogin extends Component {
 
     handleChange (key, event) {
         const { value } = event.target;
-        this.setState({[key]: { value, changed: true }});
+
+        this.setState({
+            [key]: {
+                value,
+                changed: true
+            }
+        });
     }
 
-    render() {
+    render () {
         const { email, password } = this.state;
         const { confirmPassword } = this.props;
         const errors = this.errors();
+
         return (
-        <div className={styles.wrapper}>
-            <form>
-                <label>
-                    Email Address
-                    <input type='email' onChange={this.handleChanges.email} value={email.value}/>
-                    { errors.email && (<p>{errors.email}</p>) }
-                </label>
-                <label>
-                    Password
-                    <input type='password' onChange={this.handleChanges.password} value={password.value}/>
-                    { errors.password && (<p>{errors.password}</p>) }
-                </label>
-                { confirmPassword && (<label>
-                    Confirm Password
-                    <input type='password' onChange={this.handleChanges.confirm} value={confirm.value}/>
-                </label>) }
-                <Button disabled={!!errors} onClick={this.handleSubmit}>{this.props.submitText}</Button>
-            </form>
-        </div>
+            <div className={styles.wrapper}>
+                <form>
+                    <label>
+                        <input
+                            type='email'
+                            onChange={this.handleChanges.email}
+                            value={email.value}
+                            placeholder='Email Address'
+                        />
+                        {errors.email && (
+                            <p className={styles.error}><span>{errors.email}</span></p>
+                        )}
+                    </label>
+
+                    <label>
+                        <input
+                            type='password'
+                            onChange={this.handleChanges.password}
+                            value={password.value}
+                            placeholder='Password'
+                        />
+                        {errors.password && (
+                            <p className={styles.error}><span>{errors.password}</span></p>
+                        )}
+                    </label>
+
+                    {confirmPassword && (
+                        <label>
+                            <input
+                                type='password'
+                                onChange={this.handleChanges.confirm}
+                                value={confirm.value}
+                                placeholder='Confirm Password'
+                            />
+                        </label>
+                    )}
+
+                    {(email.value && password.value && confirmPassword && !errors) && (
+                        <Button onClick={this.handleSubmit}>{this.props.submitText}</Button>
+                    )}
+                </form>
+            </div>
         );
     }
 }

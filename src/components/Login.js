@@ -8,7 +8,7 @@ import EmailLogin from './EmailLogin.js';
 
 import styles from './css/Login.module.css';
 
-const { Content } = Layout;
+const { Content, Header } = Layout;
 
 class Auth0Login extends Component {
     constructor (props) {
@@ -31,7 +31,9 @@ class Auth0Login extends Component {
     }
 
     render () {
-        return (<Button onClick={this.handleLogin}>{this.props.children}</Button>);
+        return (
+            <Button onClick={this.handleLogin}>{this.props.children}</Button>
+        );
     }
 }
 
@@ -52,9 +54,11 @@ class Login extends Component {
         super(props);
 
         this.state = {
-            emailLogin: false
+            showEmailLogin: false
         };
+
         this.handleUseEmail = this.handleUseEmail.bind(this);
+        this.hideLogin = this.hideLogin.bind(this);
         this.handleEmailLoginFormSubmit = this.handleEmailLoginFormSubmit.bind(this);
     }
 
@@ -72,7 +76,13 @@ class Login extends Component {
 
     handleUseEmail () {
         this.setState({
-            emailLogin: true
+            showEmailLogin: true
+        });
+    }
+
+    hideLogin () {
+        this.setState({
+            showEmailLogin: false
         });
     }
 
@@ -80,32 +90,46 @@ class Login extends Component {
         this.emailLogin(payload);
     }
 
-    renderEmailLogin() {
-        if (!this.state.emailLogin) {
-            return null;
-        }
+    renderEmailLogin () {
         return (
-            <div>
-                <EmailLogin
-                    submitText={'Login'}
-                    onSubmit={this.handleEmailLoginFormSubmit} />
+            <div className={styles.emailLoginWrapper}>
+                <Button onClick={this.hideLogin}>Back</Button>
+                <div className={styles.emailLogin}>
+                    <EmailLogin
+                        submitText='Login'
+                        onSubmit={this.handleEmailLoginFormSubmit}
+                    />
+                </div>
             </div>
         )
     }
+
+    renderButtonForm () {
+        return (
+            <div className={styles.btnWrapper}>
+                <div>
+                    <GoogleLogin auth={this.props.auth}>Login using Google</GoogleLogin>
+                </div>
+                <div>
+                    <TwitterLogin auth={this.props.auth}>Login using Twitter</TwitterLogin>
+                </div>
+                <div>
+                    <Button onClick={this.handleUseEmail}>Login using Email</Button>
+                </div>
+            </div>
+        );
+    }
+
     render () {
         const { children } = this.props;
+
         return (
             <Layout>
+                <Header auth={this.props.auth} showHamburger={false} />
                 <Content>
                     <div className={styles.wrapper}>
-                        <div className={styles.btnWrapper}>
-                            <h1>Login</h1>
-                            <GoogleLogin auth={this.props.auth}>Login using Google</GoogleLogin>
-                            <TwitterLogin auth={this.props.auth}>Login using Twitter</TwitterLogin>
-                            <Button onClick={this.handleUseEmail}>Login using Email</Button>
-                        </div>
+                        {this.state.showEmailLogin ? this.renderEmailLogin() : this.renderButtonForm()}
                     </div>
-                    { this.renderEmailLogin() }
                 </Content>
             </Layout>
         );
