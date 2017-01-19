@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@neontribe/react-scripts": "^0.8.0",
-    "auth0-js": "^7.1.0",
+    "auth0-js": "^8.1.2",
     "aws-sdk": "^2.5.2",
     "babel-relay-plugin": "^0.10.0",
     "body-parser": "^1.15.2",
