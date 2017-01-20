@@ -34,7 +34,6 @@
 
 .filterControl {
 	display: flex;
-	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	padding: 1rem;
@@ -45,14 +44,15 @@
 
 .filterControlOn {
 	composes: filterControl;
-	/*color: #1e2c37;*/
 	background-color: #34404c;
 }
 
 .filterText {
-	margin-top: .5rem;
+	flex: 1;
 	height: 2em;
+	margin-left: 1rem;
 	display: flex;
 	align-items: center;
 	white-space: normal;
+	text-align: left;
 }
