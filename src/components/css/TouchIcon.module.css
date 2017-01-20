@@ -5,6 +5,6 @@
 	height: 1em;
 	width: .75em;
 	margin-right: .5em;
-	background: url('./assets/icon-hand.svg') no-repeat;
+	background: url('./assets/compressed/icon-hand.svg') no-repeat;
 	background-size: cover;
 }
