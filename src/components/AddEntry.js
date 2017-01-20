@@ -75,17 +75,17 @@ class AddEntry extends Component {
 
         this.setState({
             saving: true
+        }, () => {
+            this.props.relay.commitUpdate(
+                new AddEntryMutation({
+                    creator,
+                    entry
+                }),
+                {
+                    onSuccess
+                }
+            );
         });
-
-        this.props.relay.commitUpdate(
-            new AddEntryMutation({
-                creator,
-                entry
-            }),
-            {
-                onSuccess
-            }
-        );
     }
 
     setEntryData (key, value, save) {
