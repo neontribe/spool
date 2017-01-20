@@ -60,6 +60,13 @@ class AddEntry extends Component {
         };
 
         this.handleMediaTypeChange = this.handleMediaTypeChange.bind(this);
+        this.onSaveStart = this.onSaveStart.bind(this);
+    }
+
+    onSaveStart () {
+        this.setState({
+            saving: true
+        });
     }
 
     saveEntry (entry) {
@@ -73,19 +80,15 @@ class AddEntry extends Component {
             this.props.router.push('/app/home');
         };
 
-        this.setState({
-            saving: true
-        }, () => {
-            this.props.relay.commitUpdate(
-                new AddEntryMutation({
-                    creator,
-                    entry
-                }),
-                {
-                    onSuccess
-                }
-            );
-        });
+        this.props.relay.commitUpdate(
+            new AddEntryMutation({
+                creator,
+                entry
+            }),
+            {
+                onSuccess
+            }
+        );
     }
 
     setEntryData (key, value, save) {
@@ -118,7 +121,7 @@ class AddEntry extends Component {
                     return <SentimentForm save={this.transitions[SENTIMENT]} />;
 
                 case MEDIA:
-                    return <MediaForm save={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange} />;
+                    return <MediaForm onSaveStart={this.onSaveStart} onSaveEnd={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange} />;
         }
     }
 

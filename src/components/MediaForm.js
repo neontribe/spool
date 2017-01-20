@@ -31,7 +31,8 @@ class MediaForm extends Component {
     static TEXT = 'MEDIAFORM/TEXT';
 
     static propTypes = {
-        save: React.PropTypes.func,
+        onSaveEnd: React.PropTypes.func,
+        onSaveStart: React.PropTypes.func,
         saveKey: React.PropTypes.string
     }
 
@@ -42,7 +43,7 @@ class MediaForm extends Component {
     constructor (props) {
         super(props);
 
-        this.handleSave = _.partial(props.save, props.saveKey);
+        this.onSaveEnd = _.partial(props.onSaveEnd, props.saveKey);
 
         const { SELECT, VIDEO, PHOTO, TEXT } = MediaForm;
         const choiceMap = {
@@ -83,14 +84,14 @@ class MediaForm extends Component {
                     return this.renderChooser();
 
                 case VIDEO:
-                    return <VideoForm save={this.handleSave} />;
+                    return <VideoForm onSaveStart={this.props.onSaveStart} onSaveEnd={this.onSaveEnd} />;
 
                 case PHOTO:
-                    return <ImageForm save={this.handleSave} />;
+                    return <ImageForm onSaveStart={this.props.onSaveStart} onSaveEnd={this.onSaveEnd} />;
 
                 case TEXT:
                 default:
-                    return <TextForm save={this.handleSave} />;
+                    return <TextForm save={this.onSaveEnd} />;
         }
     }
 
