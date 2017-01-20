@@ -1,43 +1,44 @@
 .icon {
 	background-repeat: no-repeat;
-	background-size: cover;
+	background-size: contain;
+	background-position: center;
 }
 
 .happy { composes: icon; background-image: url('./assets/icon-happy.svg'); }
-.happyLight { composes: icon; background-image: url('./assets/icon-happy-light.svg'); }
+.happySmall { composes: icon; background-image: url('./assets/icon-happy-thick.svg'); }
 
 .sad { composes: icon; background-image: url('./assets/icon-sad.svg'); }
-.sadLight { composes: icon; background-image: url('./assets/icon-sad-light.svg'); }
+.sadSmall { composes: icon; background-image: url('./assets/icon-sad-thick.svg'); }
 
-.work { composes: icon; background-image: url('./assets/icon-work.svg'); }
-.workLight { composes: icon; background-image: url('./assets/icon-work-light.svg'); }
+.work { composes: icon; background-image: url('./assets/icon-id-card.svg'); }
+.workSmall { composes: icon; background-image: url('./assets/icon-id-card-thick.svg'); }
 
-.learning { composes: icon; background-image: url('./assets/icon-learning.svg'); }
-.learningLight { composes: icon; background-image: url('./assets/icon-learning-light.svg'); }
+.learning { composes: icon; background-image: url('./assets/icon-book.svg'); }
+.learningSmall { composes: icon; background-image: url('./assets/icon-book-thick.svg'); }
 
-.home { composes: icon; background-image: url('./assets/icon-home.svg'); }
-.homeLight { composes: icon; background-image: url('./assets/icon-home-light.svg'); }
+.home { composes: icon; background-image: url('./assets/icon-house.svg'); }
+.homeSmall { composes: icon; background-image: url('./assets/icon-house-thick.svg'); }
 
-.food { composes: icon; background-image: url('./assets/icon-food.svg'); }
-.foodLight { composes: icon; background-image: url('./assets/icon-food-light.svg'); }
+.food { composes: icon; background-image: url('./assets/icon-burger.svg'); }
+.foodSmall { composes: icon; background-image: url('./assets/icon-burger-plain-thick.svg'); }
 
-.relationships { composes: icon; background-image: url('./assets/icon-people.svg'); }
-.relationshipsLight { composes: icon; background-image: url('./assets/icon-people-light.svg'); }
+.relationships { composes: icon; background-image: url('./assets/icon-hug.svg'); }
+.relationshipsSmall { composes: icon; background-image: url('./assets/icon-hug-thick.svg'); }
 
-/*.activities { composes: icon; background-image: url('./assets/icon-activities.svg'); }*/
-/*.activitiesLight { composes: icon; background-image: url('./assets/icon-activities-light.svg'); }*/
+.activities { composes: icon; background-image: url('./assets/icon-activities-alt.svg'); }
+.activitiesSmall { composes: icon; background-image: url('./assets/icon-activities-thick-alt.svg'); }
 
-.travel { composes: icon; background-image: url('./assets/icon-transport.svg'); }
-.travelLight { composes: icon; background-image: url('./assets/icon-transport-light.svg'); }
+.travel { composes: icon; background-image: url('./assets/icon-bus.svg'); }
+.travelSmall { composes: icon; background-image: url('./assets/icon-bus-thick.svg'); }
 
-.health { composes: icon; background-image: url('./assets/icon-health.svg'); }
-.healthLight { composes: icon; background-image: url('./assets/icon-health-light.svg'); }
+.health { composes: icon; background-image: url('./assets/icon-medical-professional.svg'); }
+.healthSmall { composes: icon; background-image: url('./assets/icon-medical-professional-thick-alt.svg'); }
 
 .video { composes: icon; background-image: url('./assets/icon-video.svg'); }
-.videoLight { composes: icon; background-image: url('./assets/icon-video-light.svg'); }
+.videoSmall { composes: icon; background-image: url('./assets/icon-video-thick.svg'); }
 
-.photo { composes: icon; background-image: url('./assets/icon-photo.svg'); }
-.photoLight { composes: icon; background-image: url('./assets/icon-photo-light.svg'); }
+.photo { composes: icon; background-image: url('./assets/icon-camera.svg'); }
+.photoSmall { composes: icon; background-image: url('./assets/icon-camera-thick.svg'); }
 
 .typing { composes: icon; background-image: url('./assets/icon-text.svg'); }
-.typingLight { composes: icon; background-image: url('./assets/icon-text-light.svg'); }
+.typingSmall { composes: icon; background-image: url('./assets/icon-text-thick.svg'); }

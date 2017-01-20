@@ -22,13 +22,12 @@ export class Icon extends Component {
     static propTypes = {
         className: React.PropTypes.string,
         icon: React.PropTypes.oneOf(ICONS).isRequired,
-        light: React.PropTypes.bool,
+        small: React.PropTypes.bool,
         size: React.PropTypes.number
     }
 
     static defaultProps = {
-        /* Show a lighter version of the icon */
-        light: false,
+        small: false,
 
         /* Icon size multiplier */
         size: 2
@@ -37,8 +36,8 @@ export class Icon extends Component {
     render () {
         var className = this.props.icon;
 
-        if (this.props.light) {
-            className += 'Light';
+        if (this.props.small) {
+            className += 'Small';
         }
 
         return (

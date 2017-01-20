@@ -20,7 +20,7 @@ class Filter extends Component {
         return (
             <li className={this.props.className || styles.filter} onClick={this.handleClick}>
                 <a role='button' className={this.props.active ? styles.filterControlOn : styles.filterControl}>
-                    <Icon icon={this.props.icon} light={true} />
+                    <Icon icon={this.props.icon} small={true} />
                     <span className={styles.filterText}>{this.props.children}</span>
                 </a>
             </li>
