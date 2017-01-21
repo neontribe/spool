@@ -123,7 +123,7 @@ export class Entry extends Component {
                 {this.props.showSentimentOverlay && (
                     <Icon
                         icon={entry.sentiment.type}
-                        light={lightIcon}
+                        small={true}
                         size={4}
                         className={styles.sentiment}
                     />
@@ -147,7 +147,7 @@ export class Entry extends Component {
                             <li key={i} className={styles.topic}>
                                 <Icon
                                     icon={topic.type}
-                                    light={lightIcon}
+                                    small={true}
                                 />
                             </li>
                         ))}

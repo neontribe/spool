@@ -50,6 +50,8 @@ class VideoForm extends Component {
             uploading: true
         });
 
+        this.props.onSaveStart();
+
         var savers = _.toPairs(_.pick(data, 'image', 'imageThumbnail', 'video', 'videoThumbnail')).map((item) => {
             return uploadToS3(item[1])
                 .then((s3Info) => {
@@ -74,7 +76,7 @@ class VideoForm extends Component {
                     uploaded: true
                 });
 
-                this.props.save(info);
+                this.props.onSaveEnd(info);
             })
             .catch((e) => console.log('Error during file save: ', e));
     }
@@ -116,7 +118,8 @@ class VideoForm extends Component {
 }
 
 VideoForm.propTypes = {
-    save: React.PropTypes.func,
+    onSaveStart: React.PropTypes.func,
+    onSaveEnd: React.PropTypes.func,
     back: React.PropTypes.func,
     mode: React.PropTypes.string
 };

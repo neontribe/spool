@@ -60,6 +60,13 @@ class AddEntry extends Component {
         };
 
         this.handleMediaTypeChange = this.handleMediaTypeChange.bind(this);
+        this.onSaveStart = this.onSaveStart.bind(this);
+    }
+
+    onSaveStart () {
+        this.setState({
+            saving: true
+        });
     }
 
     saveEntry (entry) {
@@ -72,10 +79,6 @@ class AddEntry extends Component {
 
             this.props.router.push('/app/home');
         };
-
-        this.setState({
-            saving: true
-        });
 
         this.props.relay.commitUpdate(
             new AddEntryMutation({
@@ -118,7 +121,7 @@ class AddEntry extends Component {
                     return <SentimentForm save={this.transitions[SENTIMENT]} />;
 
                 case MEDIA:
-                    return <MediaForm save={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange} />;
+                    return <MediaForm onSaveStart={this.onSaveStart} onSaveEnd={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange} />;
         }
     }
 
@@ -130,16 +133,16 @@ class AddEntry extends Component {
                         <div className={styles.header}>
                             <div className={styles.stepComplete}>
                                 {(this.state.entry.topics) ? (
-                                    <ol className={styles.topics}>
+                                    <ul className={styles.topics}>
                                         {this.state.entry.topics.map((topic, i) => (
                                             <li key={i}>
                                                 <Icon
                                                     icon={topic}
-                                                    light={true}
+                                                    small={true}
                                                 />
                                             </li>
                                         ))}
-                                    </ol>
+                                    </ul>
                                 ) : '1. Topic'}
                             </div>
 
@@ -147,7 +150,7 @@ class AddEntry extends Component {
                                 {(this.state.entry.sentiment) ? (
                                     <Icon
                                         icon={this.state.entry.sentiment}
-                                        light={true}
+                                        small={true}
                                     />
                                 ) : '2. Sentiment'}
                             </div>
@@ -156,7 +159,7 @@ class AddEntry extends Component {
                                 {(this.state.mediaType) ? (
                                     <Icon
                                         icon={this.state.mediaType}
-                                        light={true}
+                                        small={true}
                                     />
                                 ) : '3. Media type'}
                             </div>

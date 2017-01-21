@@ -72,7 +72,7 @@ export default class EntryViewer extends Component {
                         <div>Created {moment(entry.created).format('Do MMMM')}</div>
                         <Icon
                             icon={entry.sentiment.type}
-                            light={true}
+                            small={true}
                         />
 
                         <ul className={styles.topics}>
@@ -80,7 +80,7 @@ export default class EntryViewer extends Component {
                                 <li key={i}>
                                     <Icon
                                         icon={topic.type}
-                                        light={true}
+                                        small={true}
                                     />
                                 </li>
                             ))}

@@ -179,7 +179,7 @@
 .videoOverlayPlay:before {
 	content: '';
 	display: block;
-	background: url('./assets/video-play.svg') no-repeat;
+	background: url('./assets/compressed/video-play.svg') no-repeat;
 	background-size: contain;
 	position: absolute;
 	top: 0;

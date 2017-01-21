@@ -79,13 +79,13 @@ with CSSModules but can't find an alternative.
 
 */
 .icon > div {
-	height: calc(100% - 6rem) !important;
-	width: calc(100% - 6rem) !important;
-	margin: 1rem auto;
+	height: calc(100% - 5rem) !important;
+	width: calc(100% - 5rem) !important;
+	margin: 1rem auto 0;
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: contain;
 
 	/* hack to engage viewport-units-buggyfill */
-	content: 'viewport-units-buggyfill; height: calc(100% - 6rem) !important; width: calc(100% - 6rem) !important;';
+	content: 'viewport-units-buggyfill; height: calc(100% - 5rem) !important; width: calc(100% - 5rem) !important;';
 }
