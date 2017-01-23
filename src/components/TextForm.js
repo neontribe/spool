@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Button from './Button';
+import TouchIcon from './TouchIcon';
 
 import styles from './css/TextForm.module.css';
 import headings from '../css/Headings.module.css';
@@ -52,7 +53,7 @@ class TextForm extends Component {
 
                 <div className={(!this.state.value.length && helpers.hide) || undefined}>
                     <div className={styles.controls}>
-                        <Button onClick={this.continue}>Save</Button>
+                        <Button onClick={this.continue}><TouchIcon />Save</Button>
                     </div>
                 </div>
             </form>

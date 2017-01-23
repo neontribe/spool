@@ -152,7 +152,7 @@ class AddEntry extends Component {
                                         icon={this.state.entry.sentiment}
                                         small={true}
                                     />
-                                ) : '2. Sentiment'}
+                                ) : '2. Feeling'}
                             </div>
 
                             <div className={(this.state.mediaType && styles.stepComplete) || undefined}>
@@ -161,7 +161,7 @@ class AddEntry extends Component {
                                         icon={this.state.mediaType}
                                         small={true}
                                     />
-                                ) : '3. Media type'}
+                                ) : '3. Explain'}
                             </div>
                         </div>
                     )}

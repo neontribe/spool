@@ -156,10 +156,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.95;
+    opacity: 0.8;
 	box-sizing: border-box;
     background-image: linear-gradient(transparent, #000);
     cursor: pointer;
+    border-bottom-left-radius: .95rem;
+	border-bottom-right-radius: .95rem;
 }
 
 .videoOverlayPlay {

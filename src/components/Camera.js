@@ -6,6 +6,7 @@ import Grid from './Grid';
 import Button from './Button';
 import CountdownClock from './CountdownClock';
 import PageOverlay from './PageOverlay';
+import TouchIcon from './TouchIcon';
 
 import styles from './css/Camera.module.css';
 import headings from '../css/Headings.module.css';
@@ -189,7 +190,7 @@ class Camera extends Component {
                             </p>
                         </div>
                         <div className={styles.descriptionControls}>
-                            <Button onClick={this.hideDescripton}>Close</Button>
+                            <Button onClick={this.hideDescripton}><TouchIcon />Save</Button>
                         </div>
                     </div>
                 )}
@@ -239,7 +240,7 @@ class Camera extends Component {
                         {(!this.state.countdown && !this.state.image) && (
                             <Button
                                 onClick={this.startCountdown}
-                            >Take Picture</Button>
+                            ><TouchIcon />Take Picture</Button>
                         )}
 
                         {this.state.image && [
@@ -254,7 +255,7 @@ class Camera extends Component {
                             <Button
                                 key={2}
                                 onClick={this.save}
-                            >Save</Button>
+                            ><TouchIcon />Save</Button>
                         ]}
                     </div>
                 </Grid>
