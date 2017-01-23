@@ -7,6 +7,7 @@ import Grid from './Grid';
 import Button from './Button';
 import CountdownClock from './CountdownClock';
 import PageOverlay from './PageOverlay';
+import TouchIcon from './TouchIcon';
 
 import styles from './css/VideoRecorder.module.css';
 import headings from '../css/Headings.module.css';
@@ -275,7 +276,7 @@ class VideoRecorder extends Component {
                             </p>
                         </div>
                         <div className={styles.descriptionControls}>
-                            <Button onClick={this.hideDescripton}>Close</Button>
+                            <Button onClick={this.hideDescripton}><TouchIcon />Save</Button>
                         </div>
                     </div>
                 )}
@@ -324,7 +325,7 @@ class VideoRecorder extends Component {
                         )}
 
                         {(!this.state.countdown && !this.state.recording && !this.state.lastTakeURL) && (
-                            <Button onClick={this.startCountdown}>Start Recording</Button>
+                            <Button onClick={this.startCountdown}><TouchIcon />Start Recording</Button>
                         )}
 
                         {(this.state.recording && !this.state.countdown) && (
@@ -345,7 +346,7 @@ class VideoRecorder extends Component {
                         {(this.state.lastTakeURL && !this.state.countdown) && [
                             <Button key={0} onClick={this.startCountdown}>Try Again</Button>,
                             <Button key={1} onClick={this.showDescripton}>Add Description</Button>,
-                            <Button key={2} onClick={this.save}>Save</Button>
+                            <Button key={2} onClick={this.save}><TouchIcon />Save</Button>
                         ]}
                     </div>
                 </Grid>

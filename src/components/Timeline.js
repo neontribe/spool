@@ -8,6 +8,7 @@ import Layout from './Layout';
 import ButtonLink from './ButtonLink';
 import { withRoles } from './wrappers.js';
 import IconFilter from './IconFilter.js';
+import TouchIcon from './TouchIcon.js';
 
 import styles from './css/Timeline.module.css';
 
@@ -135,7 +136,7 @@ export class Timeline extends Component {
                 <Content>
                     {!Object.keys(entries).length && (
                         <div className={styles.noResults}>
-                            <ButtonLink to='/app/add'>Add New Entry</ButtonLink>
+                            <ButtonLink to='/app/add'><TouchIcon />Add New Entry</ButtonLink>
                         </div>
                     )}
 

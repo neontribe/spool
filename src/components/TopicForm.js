@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Button from './Button';
 import IconChooserGrid from './IconChooserGrid';
+import TouchIcon from './TouchIcon';
 
 import styles from './css/TopicForm.module.css';
 import helpers from '../css/Helpers.module.css';
@@ -40,7 +41,7 @@ class TopicForm extends Component {
 
                 <div className={(!this.state.value.length && helpers.hide) || undefined}>
                     <div className={styles.controls}>
-                        <Button onClick={this.continue}>Continue</Button>
+                        <Button onClick={this.continue}><TouchIcon />Continue</Button>
                     </div>
                 </div>
             </div>
