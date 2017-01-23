@@ -85,7 +85,7 @@
     "react-router-relay": "^0.13.4",
     "sequelize": "^3.24.1",
     "sequelize-cli": "^2.4.0",
-    "serve-static": "^1.11.1",
+    "serve-static": "^1.11.2",
     "sha.js": "^2.4.5",
     "shuffle-array": "^1.0.0",
     "sql-template-strings": "^2.2.0",
