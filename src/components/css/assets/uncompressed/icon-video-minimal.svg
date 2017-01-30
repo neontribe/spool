@@ -9,11 +9,11 @@
 	 xml:space="preserve">
 <defs>
 </defs>
-<path fill="#58595B" stroke="#231F20" stroke-width="3" stroke-miterlimit="10" d="M1.5,1.5v188.36h239.216V1.5H1.5z M43.14,182.074
+<path fill="#CDD5E1" stroke="#231F20" stroke-width="3" stroke-miterlimit="10" d="M1.5,1.5v188.36h239.216V1.5H1.5z M43.14,182.074
 	H9.205v-38.033H43.14V182.074z M43.14,137.074H9.205V99.041H43.14V137.074z M43.14,92.074H9.205V54.041H43.14V92.074z M43.14,47.074
 	H9.205V9.041H43.14V47.074z M233.14,182.074h-33.935v-38.033h33.935V182.074z M233.14,137.074h-33.935V99.041h33.935V137.074z
 	 M233.14,92.074h-33.935V54.041h33.935V92.074z M233.14,47.074h-33.935V9.041h33.935V47.074z"/>
-<rect x="51.188" y="9.041" fill="#F3797A" stroke="#231F20" stroke-width="3" stroke-miterlimit="10" width="139.836" height="173.033"/>
+<rect x="51.188" y="9.041" fill="#FF7058" stroke="#231F20" stroke-width="3" stroke-miterlimit="10" width="139.836" height="173.033"/>
 <polyline fill="#FFFFFF" stroke="#231F20" stroke-width="3" stroke-miterlimit="10" points="96.746,132.319 96.746,60.188 
 	160.681,96.254 96.254,132.319 "/>
 </svg>

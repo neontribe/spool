@@ -86,8 +86,7 @@ export default class EntryViewer extends Component {
                             ))}
                         </ul>
 
-                        {/* Todo: Add view counter */}
-                        <span>8 views</span>
+                        <span>{entry.views} view{(entry.views > 1) ? 's' : ''}</span>
                     </div>
                 </Header>
                 <Content>
@@ -132,6 +131,7 @@ export const EntryViewerContainer = Relay.createContainer(EntryViewer, {
             sentiment {
                 type
             }
+            views
             ${EntryContainer.getFragment('entry')}
             ${DeleteEntryMutation.getFragment('entry')}
         }

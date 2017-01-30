@@ -14,7 +14,7 @@ export class Entry extends Component {
         { className: styles.entryVariantB, dark: false },
         { className: styles.entryVariantC, dark: false },
         { className: styles.entryVariantD, dark: true },
-        { className: styles.entryVariantE, dark: true }
+        { className: styles.entryVariantE, dark: false }
     ];
 
     static propTypes = {
@@ -131,12 +131,6 @@ export class Entry extends Component {
                     </div>
                 )}
 
-                {this.props.thumbnailMode && !!entry.views && (
-                    <div>
-                       {entry.views}
-                    </div>
-                )}
-
                 {this.props.showTopicOverlay && (
                     <ul className={styles.topics}>
                         {entry.topics.map((topic, i) => (
@@ -153,8 +147,6 @@ export class Entry extends Component {
         );
     }
 
-    static i = 0
-
     render () {
         var entry = this.props.entry;
         var isTextEntry = entry.media.text && !entry.media.image && !entry.media.video;
@@ -165,13 +157,7 @@ export class Entry extends Component {
 
         if (isTextEntry) {
             // eslint-disable-next-line new-cap
-            // randomisedStyle = this.constructor.ColourVariants[(new rand(entry.id)).range(this.constructor.ColourVariants.length - 1)];
-            randomisedStyle = this.constructor.ColourVariants[this.constructor.i];
-            this.constructor.i++;
-
-            if (this.constructor.i >= this.constructor.ColourVariants.length) {
-                this.constructor.i = 0;
-            }
+            randomisedStyle = this.constructor.ColourVariants[(new rand(entry.id)).range(this.constructor.ColourVariants.length - 1)];
 
             styleVariant = randomisedStyle.className;
 
@@ -227,7 +213,6 @@ export const EntryContainer = Relay.createContainer(Entry, {
             sentiment {
                 type
             }
-            views
             created
             updated
         }`
