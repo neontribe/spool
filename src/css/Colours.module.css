@@ -1,0 +1,7 @@
+/* Slide #2 + 10% brightness */
+@value Blue100: #59ccf2; 	/* 10% saturation: #4cc3f3; 15% saturation: #40c8ff; */
+@value Blue200: #354f64; 	/* 10% saturation: #2f4a60; 15% saturation: #2b4a64; */
+@value Green100: #51e5d0; 	/* 10% saturation: #44e2c8; 15% saturation: #36efd0; */
+@value Red100: #ff775e; 	/* 10% saturation: #ff7058; 15% saturation: #ff7058; */
+@value Yellow100: #ffdc61; 	/* 10% saturation: #ffd05b; 15% saturation: #ffd05b; */
+@value Grey100: #dae0e9; 	/* 10% saturation: #cdd5e1; 15% saturation: #cbd4e2; */

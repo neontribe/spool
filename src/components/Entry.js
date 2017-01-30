@@ -14,11 +14,7 @@ export class Entry extends Component {
         { className: styles.entryVariantB, dark: false },
         { className: styles.entryVariantC, dark: false },
         { className: styles.entryVariantD, dark: true },
-        { className: styles.entryVariantE, dark: false },
-        { className: styles.entryVariantF, dark: false },
-        { className: styles.entryVariantG, dark: true },
-        { className: styles.entryVariantI, dark: false },
-        { className: styles.entryVariantJ, dark: true }
+        { className: styles.entryVariantE, dark: true }
     ];
 
     static propTypes = {
@@ -157,6 +153,8 @@ export class Entry extends Component {
         );
     }
 
+    static i = 0
+
     render () {
         var entry = this.props.entry;
         var isTextEntry = entry.media.text && !entry.media.image && !entry.media.video;
@@ -167,7 +165,13 @@ export class Entry extends Component {
 
         if (isTextEntry) {
             // eslint-disable-next-line new-cap
-            randomisedStyle = this.constructor.ColourVariants[(new rand(entry.id)).range(this.constructor.ColourVariants.length - 1)];
+            // randomisedStyle = this.constructor.ColourVariants[(new rand(entry.id)).range(this.constructor.ColourVariants.length - 1)];
+            randomisedStyle = this.constructor.ColourVariants[this.constructor.i];
+            this.constructor.i++;
+
+            if (this.constructor.i >= this.constructor.ColourVariants.length) {
+                this.constructor.i = 0;
+            }
 
             styleVariant = randomisedStyle.className;
 
