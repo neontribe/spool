@@ -1,3 +1,9 @@
+@value (
+    Red100,
+    Yellow100,
+    Green100
+) from '../../css/Colours.module.css';
+
 .app {
 	max-width: 1920px;
 	display: flex;
@@ -115,26 +121,20 @@
 
 .contextMenuItemHome,
 .contextMenuItemLogout,
-.contextMenuItemFullscreen,
 .contextMenuItemSettings {
 	composes: contextMenuItem;
 }
 
 .contextMenuItemSettings > a:before {
-	background-color: #008946;
-}
-
-.contextMenuItemFullscreen > a:before {
-	background-color: #008946;
+	background-color: Green100;
 }
 
 .contextMenuItemHome > a:before {
-	color: #1e2c37;
-	background-color: #fece4f;
+	background-color: Yellow100;
 }
 
 .contextMenuItemLogout > a:before {
-	background-color: #ce1d2b;
+	background-color: Red100;
 }
 
 .content {
