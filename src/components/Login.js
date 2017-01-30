@@ -18,7 +18,7 @@ class Auth0Login extends Component {
 
     handleLogin () {
         this.props.auth.login({
-            connection: this.connection 
+            connection: this.connection
         }, function (err) {
             if (err) {
                 alert('something went wrong: ' + err.message);
@@ -101,7 +101,7 @@ class Login extends Component {
                     />
                 </div>
             </div>
-        )
+        );
     }
 
     renderButtonForm () {
@@ -121,8 +121,6 @@ class Login extends Component {
     }
 
     render () {
-        const { children } = this.props;
-
         return (
             <Layout>
                 <Header auth={this.props.auth} showHamburger={false} />
@@ -138,5 +136,6 @@ class Login extends Component {
 
 Login.propTypes = {
     auth: React.PropTypes.instanceOf(AuthService)
-}
+};
+
 export default Login;
