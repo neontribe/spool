@@ -45,9 +45,6 @@ class TopicsOverview extends Component {
         return (
             <div>
                 <h2 className={headings.regular}>Entries by topic</h2>
-                <div>
-                    <Button onClick={this.handleCSVClick}>Download as CSV</Button>
-                </div>
                 <table className={styles.table}>
                     <tbody>
                         {this.props.topics.map((item, i) => (
@@ -58,6 +55,7 @@ class TopicsOverview extends Component {
                         ))}
                     </tbody>
                 </table>
+                <Button onClick={this.handleCSVClick}>Download as CSV</Button>
             </div>
         );
     }
