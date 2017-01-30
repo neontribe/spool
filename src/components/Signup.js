@@ -64,7 +64,7 @@ class Signup extends Component {
                     />
                 </div>
             </div>
-        )
+        );
     }
 
     renderButtonForm () {
@@ -84,8 +84,6 @@ class Signup extends Component {
     }
 
     render () {
-        const { children } = this.props;
-
         return (
             <Layout>
                 <Header auth={this.props.auth} showHamburger={false} />
@@ -101,6 +99,6 @@ class Signup extends Component {
 
 Signup.propTypes = {
     auth: React.PropTypes.instanceOf(AuthService)
-}
+};
 
 export default Signup;

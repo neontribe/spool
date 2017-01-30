@@ -74,9 +74,9 @@ const EntryViewerQueries = {
 
 setupRelayNetworkLayer();
 ReactGA.initialize(process.env.REACT_APP_GA_ID);
-function logPageViewTracking() {
-        ReactGA.set({ page: window.location.pathname })
-        ReactGA.pageview(window.location.pathname);
+function logPageViewTracking () {
+    ReactGA.set({ page: window.location.pathname });
+    ReactGA.pageview(window.location.pathname);
 }
 ReactDOM.render(
     <Router

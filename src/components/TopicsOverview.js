@@ -23,7 +23,7 @@ class TopicsOverview extends Component {
             const row = {
                 topic: item.topic.name,
                 entries: item.entryCount,
-                creators: item.creatorCount,
+                creators: item.creatorCount
             };
             return row;
         });

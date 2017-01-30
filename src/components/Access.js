@@ -71,7 +71,7 @@ export default class Access extends Component {
             if (!csv.match(/^data:text\/csv/i)) {
                 csv = 'data:text/csv;charset=utf-8,' + csv;
             }
-            
+
             const { from, to } = this.state.form.range;
             const name = 'entries-' + moment(from).format() + '-' + moment(to).format() + '.csv';
             link.setAttribute('download', name);

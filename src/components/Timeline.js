@@ -21,7 +21,7 @@ export class Timeline extends Component {
         this.state = {
             showScrollMore: false,
             filters: {},
-            panel: [],
+            panel: []
         };
         this.handleFilterChange = this.handleFilterChange.bind(this);
 

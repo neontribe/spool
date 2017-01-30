@@ -108,7 +108,7 @@ export class SettingsForm extends Component {
         this.props.relay.commitUpdate(
             new UpdatePrivacyMutation({
                 user,
-                sharing: isSharing 
+                sharing: isSharing
             }));
     }
 

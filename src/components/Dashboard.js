@@ -21,7 +21,7 @@ export class Dashboard extends Component {
             range: {
                 from: moment().add(-1, 'months').startOf('date').format(),
                 to: moment().endOf('date').format()
-            },
+            }
         };
 
         this.changeRange = this.changeRange.bind(this);
