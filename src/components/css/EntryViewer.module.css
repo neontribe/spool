@@ -1,3 +1,7 @@
+@value (
+    Red100
+) from '../../css/Colours.module.css';
+
 .wrapper {
 	display: flex;
 	flex: 1;
@@ -45,5 +49,5 @@
 }
 
 .delete {
-	background-color: #ce1d2b;
+	background-color: Red100;
 }
