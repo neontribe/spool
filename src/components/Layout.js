@@ -77,7 +77,7 @@ class Header extends Component {
 
                 <div className={(this.state.hamburgerExpanded) ? styles.headerExpanded : styles.header}>
                     <h1 className={styles.logo}>
-                        <Link to={'/app'}>SPOOL</Link>
+                        <Link to={'/app'}>Day Book</Link>
                     </h1>
 
                     {!this.state.hamburgerExpanded && this.props.children}

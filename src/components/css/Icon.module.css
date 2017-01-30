@@ -10,29 +10,29 @@
 .sad { composes: icon; background-image: url('./assets/compressed/icon-sad.svg'); }
 .sadSmall { composes: icon; background-image: url('./assets/compressed/icon-sad-minimal.svg'); }
 
-.work { composes: icon; background-image: url('./assets/compressed/icon-id-card.svg'); }
-.workSmall { composes: icon; background-image: url('./assets/compressed/icon-id-card-minimal.svg'); }
+.work { composes: icon; background-image: url('./assets/compressed/icon-work.svg'); }
+.workSmall { composes: icon; background-image: url('./assets/compressed/icon-work-minimal.svg'); }
 
-.learning { composes: icon; background-image: url('./assets/compressed/icon-book.svg'); }
-.learningSmall { composes: icon; background-image: url('./assets/compressed/icon-book-minimal.svg'); }
+.learning { composes: icon; background-image: url('./assets/compressed/icon-learning.svg'); }
+.learningSmall { composes: icon; background-image: url('./assets/compressed/icon-learning-minimal.svg'); }
 
 .home { composes: icon; background-image: url('./assets/compressed/icon-house.svg'); }
 .homeSmall { composes: icon; background-image: url('./assets/compressed/icon-house-minimal.svg'); }
 
-.food { composes: icon; background-image: url('./assets/compressed/icon-burger.svg'); }
-.foodSmall { composes: icon; background-image: url('./assets/compressed/icon-burger-minimal.svg'); }
+.food { composes: icon; background-image: url('./assets/compressed/icon-food.svg'); }
+.foodSmall { composes: icon; background-image: url('./assets/compressed/icon-food-minimal.svg'); }
 
-.relationships { composes: icon; background-image: url('./assets/compressed/icon-hug.svg'); }
-.relationshipsSmall { composes: icon; background-image: url('./assets/compressed/icon-hug-minimal.svg'); }
+.relationships { composes: icon; background-image: url('./assets/compressed/icon-people.svg'); }
+.relationshipsSmall { composes: icon; background-image: url('./assets/compressed/icon-people-minimal.svg'); }
 
 .activities { composes: icon; background-image: url('./assets/compressed/icon-activities.svg'); }
 .activitiesSmall { composes: icon; background-image: url('./assets/compressed/icon-activities-minimal.svg'); }
 
-.travel { composes: icon; background-image: url('./assets/compressed/icon-bus.svg'); }
-.travelSmall { composes: icon; background-image: url('./assets/compressed/icon-bus-minimal.svg'); }
+.travel { composes: icon; background-image: url('./assets/compressed/icon-transport.svg'); }
+.travelSmall { composes: icon; background-image: url('./assets/compressed/icon-transport-minimal.svg'); }
 
-.health { composes: icon; background-image: url('./assets/compressed/icon-medical-professional.svg'); }
-.healthSmall { composes: icon; background-image: url('./assets/compressed/icon-medical-professional-minimal.svg'); }
+.health { composes: icon; background-image: url('./assets/compressed/icon-health.svg'); }
+.healthSmall { composes: icon; background-image: url('./assets/compressed/icon-health-minimal.svg'); }
 
 .video { composes: icon; background-image: url('./assets/compressed/icon-video.svg'); }
 .videoSmall { composes: icon; background-image: url('./assets/compressed/icon-video-minimal.svg'); }

@@ -14,11 +14,7 @@ export class Entry extends Component {
         { className: styles.entryVariantB, dark: false },
         { className: styles.entryVariantC, dark: false },
         { className: styles.entryVariantD, dark: true },
-        { className: styles.entryVariantE, dark: false },
-        { className: styles.entryVariantF, dark: false },
-        { className: styles.entryVariantG, dark: true },
-        { className: styles.entryVariantI, dark: false },
-        { className: styles.entryVariantJ, dark: true }
+        { className: styles.entryVariantE, dark: false }
     ];
 
     static propTypes = {
@@ -135,12 +131,6 @@ export class Entry extends Component {
                     </div>
                 )}
 
-                {this.props.thumbnailMode && !!entry.views && (
-                    <div>
-                       {entry.views}
-                    </div>
-                )}
-
                 {this.props.showTopicOverlay && (
                     <ul className={styles.topics}>
                         {entry.topics.map((topic, i) => (
@@ -223,7 +213,6 @@ export const EntryContainer = Relay.createContainer(Entry, {
             sentiment {
                 type
             }
-            views
             created
             updated
         }`

@@ -9,13 +9,13 @@
 	 xml:space="preserve">
 <defs>
 </defs>
-<path fill="#E86565" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M178.336,54.698l-45.533,134.151
+<path fill="#F3705A" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M178.336,54.698l-45.533,134.151
 	c0,0,1.456,6.957,8.091,10.389c6.865,3.551,15.372-1.166,15.372-1.166l58.275-126.451l-18.648-14.553L178.336,54.698z"/>
-<path fill="#E86565" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M170.23,79.518l3.536-12.352l37.02,13.36
+<path fill="#F3705A" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M170.23,79.518l3.536-12.352l37.02,13.36
 	l-6.403,12.993c0,0-11.425,4.814-22.185,0.42C172.761,90.085,170.23,79.518,170.23,79.518z"/>
 <path display="none" fill="#F3797A" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M180.51,46.348l-16.622,55.965
 	l25.245,17.525l25.51-59.093c0,0-8.897,2.694-20.676-1.075C185.771,57.048,180.51,46.348,180.51,46.348z"/>
-<path fill="#E1E1E1" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M150.624,64.87
+<path fill="#CED6E1" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M150.624,64.87
 	c-0.475-27.483-24.853-50.938-41.31-57.094C100.215,3.826,89.51,1.5,78.199,1.5c-29.118,0-66.547,31.084-72.321,52.656
 	C3.087,61.574,1.5,69.681,1.5,77.829c0,0.252,0.012,0.501,0.015,0.753C1.513,78.806,1.5,79.026,1.5,79.25
 	c0,8.029,1.699,15.616,4.71,22.359c5.965,14.117,17.069,24.336,30.217,26.778c3.459,0.926,7.068,1.429,10.785,1.429
@@ -26,17 +26,17 @@
 	64.208,82.777 73.33,80.288 90.77,121.141 81.592,136.2 "/>
 <path fill="#A56352" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M81.33,100.288l-9.122,2.489l30.91,97.031
 	c0,0,1.132,6.796,12.459,1.133c7.098-3.549,4.854-9.871,4.854-9.871L81.33,100.288z"/>
-<path fill="#90C6DE" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M77.207,102.371
+<path fill="#52C2F0" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M77.207,102.371
 	c6.438-1.464,9.21-9.088,8.875-13.386c-0.427-5.479-3.994-10.704-7.656-13.813c-1.809-1.536-6.094-3.813-6.844-7.625
 	c-0.338-1.721,0.352-4.668,2.063-6.469c1.217-1.281,3.494-1.962,3.063-2.625c-0.493-0.758-2.456,0.716-4.406,1.657
 	c-3.931,1.896-8.418,4.132-11.313,7.375c-6.461,7.239-5.07,12.489-5,17.239c0.041,2.781,2.441,10.924,6.136,14.397
 	C67.863,104.516,77.207,102.371,77.207,102.371"/>
-<circle fill="#E1E1E1" stroke="#000000" stroke-width="3" stroke-miterlimit="10" cx="201.351" cy="48.691" r="33.197"/>
-<circle fill="#97D1A6" stroke="#000000" stroke-width="3" stroke-miterlimit="10" cx="72.789" cy="25.494" r="14.18"/>
-<circle fill="#90C6DE" stroke="#000000" stroke-width="3" stroke-miterlimit="10" cx="41.33" cy="42.888" r="13.197"/>
-<circle fill="#F3797A" stroke="#000000" stroke-width="3" stroke-miterlimit="10" cx="29.084" cy="73.773" r="12.951"/>
-<circle fill="#FBE28B" stroke="#000000" stroke-width="3" stroke-miterlimit="10" cx="41.658" cy="108.773" r="14.672"/>
-<circle fill="#E1E1E1" stroke="#000000" stroke-width="3" stroke-miterlimit="10" cx="124.248" cy="83.543" r="9.426"/>
+<circle fill="#CED6E1" stroke="#000000" stroke-width="3" stroke-miterlimit="10" cx="201.351" cy="48.691" r="33.197"/>
+<circle fill="#67C6BA" stroke="#000000" stroke-width="3" stroke-miterlimit="10" cx="72.789" cy="25.494" r="14.18"/>
+<circle fill="#52C2F0" stroke="#000000" stroke-width="3" stroke-miterlimit="10" cx="41.33" cy="42.888" r="13.197"/>
+<circle fill="#F3705A" stroke="#000000" stroke-width="3" stroke-miterlimit="10" cx="29.084" cy="73.773" r="12.951"/>
+<circle fill="#FFD05C" stroke="#000000" stroke-width="3" stroke-miterlimit="10" cx="41.658" cy="108.773" r="14.672"/>
+<circle fill="#CED6E1" stroke="#000000" stroke-width="3" stroke-miterlimit="10" cx="124.248" cy="83.543" r="9.426"/>
 <path fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M171.077,35.109c0,0,4.345,19.132,23.834,25.384
 	c21.625,6.938,37.1,1.017,37.1,1.017s1.305-3.122,1.65-4.37c0.275-0.996,0.887-4.725,0.887-4.725s-22.479,4.467-36.949-1.734
 	c-15.313-6.563-21.854-23.065-21.854-23.065s-2.082,2.571-2.649,3.525C172.535,32.082,171.077,35.109,171.077,35.109z"/>

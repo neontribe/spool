@@ -9,21 +9,21 @@
 	 xml:space="preserve">
 <defs>
 </defs>
-<path fill="#90C6DE" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" d="M238.399,44.081h-42.466L177.911,0.982
+<path fill="#52C2F0" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" d="M238.399,44.081h-42.466L177.911,0.982
 	l-0.26,0.109V0.982H75.029v0.123l-0.293-0.123L56.713,44.081H12.789c-6.648,0-12.039,5.481-12.039,12.242v134.057
 	c0,6.761,5.39,12.242,12.039,12.242h225.611c6.648,0,12.039-5.481,12.039-12.242V56.322
 	C250.438,49.562,245.048,44.081,238.399,44.081z"/>
-<circle fill="#FBE28B" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="221.341" cy="73.506" r="12.869"/>
-<rect x="26.832" y="21.474" fill="#90C6DE" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" width="17.869" height="22.606"/>
+<circle fill="#FFD05C" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="221.341" cy="73.506" r="12.869"/>
+<rect x="26.832" y="21.474" fill="#52C2F0" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" width="17.869" height="22.606"/>
 <circle fill="#E1E1E1" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="126.678" cy="113.031" r="77.459"/>
-<circle fill="#C9C0C1" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="126.767" cy="113.476" r="69.246"/>
+<circle fill="#CED6E1" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="126.767" cy="113.476" r="69.246"/>
 <circle fill="#E1E1E1" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="127.578" cy="112.974" r="51.435"/>
 <circle fill="#C9C0C1" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="127.569" cy="113.802" r="43.803"/>
-<path fill="#A69C9C" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" d="M152.791,149.148
+<path fill="#CED6E1" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" d="M152.791,149.148
 	c0,0-14.123-9.334-14.615-38.486c-0.361-21.413,12.31-33.82,12.31-33.82l0.282-0.191c-6.728-4.21-14.676-6.652-23.197-6.652
 	c-9.599,0-18.469,3.095-25.687,8.331c1.701,2.531,13.197,20.339,11.375,36.895c-2.359,21.435-11.788,30.776-13.567,32.365
 	c7.574,6.256,17.287,10.016,27.879,10.016c9.533,0,18.348-3.056,25.539-8.228L152.791,149.148z"/>
-<circle fill="#97D1A6" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="132.174" cy="97.341" r="15.342"/>
-<circle fill="#F3797A" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="120.93" cy="103.933" r="9.016"/>
+<circle fill="#67C6BA" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="132.174" cy="97.341" r="15.342"/>
+<circle fill="#F3705A" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="120.93" cy="103.933" r="9.016"/>
 <circle fill="#FFFFFF" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="110.788" cy="97.069" r="8.53"/>
 </svg>
