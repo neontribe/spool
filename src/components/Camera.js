@@ -294,6 +294,8 @@ Camera.mediaCheck = function () {
             navigator.mozGetUserMedia ||
             navigator.msGetUserMedia);
 
+        console.log('getUserMedia', getUserMedia);
+
         if (!getUserMedia) {
             reject({ name: 'getUserMediaUnsupported' });
         } else {
