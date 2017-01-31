@@ -102,7 +102,7 @@ class VideoForm extends Component {
                     record: <VideoRecorder save={this.save} onFailure={this.onMediaFailure} />,
                     fallbackPrompt: (
                         <div>
-                            <h4>Oh Snap. We can&apos;t make a video</h4>
+                            <h4>Oh snap. We can&apos;t make a video</h4>
                             <p>{errorMap[this.state.recorderError]}</p>
                             <p>
                                 <Button onClick={this.requestUploadMode}>Try uploading</Button>
