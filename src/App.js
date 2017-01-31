@@ -7,6 +7,14 @@ import hacks from 'viewport-units-buggyfill/viewport-units-buggyfill.hacks';
 import styles from './components/css/App.module.css';
 
 class App extends Component {
+    componentDidMount (props) {
+        viewportUnitsBuggyfill.init({
+            hacks
+        });
+
+        setInterval(viewportUnitsBuggyfill.refresh, 300);
+    }
+
     render () {
         let children = null;
 
@@ -34,12 +42,6 @@ class RoleWrapper extends Component {
         if (!children) {
             this.navigateHome();
         }
-
-        viewportUnitsBuggyfill.init({
-            hacks
-        });
-
-        setInterval(viewportUnitsBuggyfill.refresh, 300);
     }
 
     componentWillReceiveProps ({ children }) {
