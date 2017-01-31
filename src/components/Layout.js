@@ -69,6 +69,11 @@ class Header extends Component {
     }
 
     render () {
+        var getUserMedia = navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia;
+
         return (
             <div>
                 {this.state.hamburgerExpanded && (
@@ -77,7 +82,7 @@ class Header extends Component {
 
                 <div className={(this.state.hamburgerExpanded) ? styles.headerExpanded : styles.header}>
                     <h1 className={styles.logo}>
-                        <Link to={'/app'}>Day Book</Link>
+                        <Link to={'/app'}>Day Book {getUserMedia && getUserMedia.toString()}</Link>
                     </h1>
 
                     {!this.state.hamburgerExpanded && this.props.children}
