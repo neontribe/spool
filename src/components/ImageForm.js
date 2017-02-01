@@ -101,7 +101,7 @@ class ImageForm extends Component {
                     loading: <h2>Loading</h2>,
                     record: <Camera save={this.save} onFailure={this.onMediaFailure} />,
                     fallbackPrompt: (
-                        <div>
+                        <div className={styles.fail}>
                             <h4>Oh snap. We can&apos;t take a picture</h4>
                             <p>{errorMap[this.state.cameraError]}</p>
                             <p>

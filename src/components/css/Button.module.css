@@ -1,5 +1,6 @@
 .wrapper {
 	/* Extends the button surface area beyond its visual boundaries */
+	display: inline-block;
 	padding: .5rem;
 }
 
@@ -52,6 +53,7 @@
 	padding: 1.5rem;
 	font-size: 1.75rem;
     font-weight: 500;
+    line-height: 1.5;
 
 	/* Prevent text selection by holding down on touch devices */
 	user-select: none;
