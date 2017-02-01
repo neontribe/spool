@@ -3,5 +3,10 @@
 	flex: 1;
 	flex-direction: column;
 	justify-content: center;
-	/*align-items: center;*/
+}
+
+.fail {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }

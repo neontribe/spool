@@ -101,7 +101,7 @@ class VideoForm extends Component {
                     loading: <h2>Loading</h2>,
                     record: <VideoRecorder save={this.save} onFailure={this.onMediaFailure} />,
                     fallbackPrompt: (
-                        <div>
+                        <div className={styles.fail}>
                             <h4>Oh snap. We can&apos;t make a video</h4>
                             <p>{errorMap[this.state.recorderError]}</p>
                             <p>
