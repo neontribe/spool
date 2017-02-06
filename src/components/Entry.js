@@ -35,30 +35,31 @@ export class Entry extends Component {
         super(props);
 
         this.state = {
-            showOverlay: true
+            showThumbnail: true
         };
 
         this.showViewer = this.showViewer.bind(this);
         this.hideViewer = this.hideViewer.bind(this);
         this.toggleVideoPlay = this.toggleVideoPlay.bind(this);
+        this.hideThumbnail = this.hideThumbnail.bind(this);
     }
 
-    componentDidMount () {
-        if (this.refs && this.refs.video) {
-            this.refs.video.onplaying = () => {
-                this.setState({
-                    showOverlay: false
-                });
-            };
+    // componentDidMount () {
+    //     if (this.refs && this.refs.video) {
+    //         this.refs.video.onplaying = () => {
+    //             this.setState({
+    //                 showOverlay: false
+    //             });
+    //         };
 
-            // this.refs.video.onpause
-            this.refs.video.onended = () => {
-                this.setState({
-                    showOverlay: true
-                });
-            };
-        }
-    }
+    //         // this.refs.video.onpause
+    //         this.refs.video.onended = () => {
+    //             this.setState({
+    //                 showOverlay: true
+    //             });
+    //         };
+    //     }
+    // }
 
     showViewer (e) {
         e.preventDefault();
@@ -86,6 +87,14 @@ export class Entry extends Component {
         }
     }
 
+    hideThumbnail () {
+        this.setState({
+            showThumbnail: false
+        });
+
+        this.toggleVideoPlay();
+    }
+
     renderEntry (entry, randomisedStyle, isTextEntry, lightIcon) {
         return (
             <div>
@@ -98,13 +107,18 @@ export class Entry extends Component {
 
                 {entry.media.video && (
                     <div className={styles.videoOverlay}>
-                        {this.state.showOverlay && (
-                            <div className={styles.videoOverlayPlay}></div>
+                        {(this.props.thumbnailMode || this.state.showThumbnail) && (
+                            <div
+                                className={styles.videoOverlayPlayWrapper}
+                                onClick={(!this.props.thumbnailMode) ? this.hideThumbnail : Function.prototype}
+                            >
+                                <div className={styles.videoOverlayPlay}></div>
+                            </div>
                         )}
 
                         {!this.props.thumbnailMode && (
                             <video
-                                className={styles.video}
+                                className={(this.state.showThumbnail) ? styles.videoHidden : styles.video}
                                 ref='video'
                                 src={entry.media.video}
                                 controls={true}
@@ -146,12 +160,26 @@ export class Entry extends Component {
         );
     }
 
+    getBackgroundImage (entry) {
+        var isTextEntry = entry.media.text && !entry.media.image && !entry.media.video;
+
+        if (isTextEntry) {
+            return;
+        }
+
+        if (entry.media.imageThumbnail) {
+            return entry.media.imageThumbnail;
+        } else if (entry.media.video) {
+            return entry.media.videoThumbnail;
+        }
+    }
+
     render () {
         var entry = this.props.entry;
         var isTextEntry = entry.media.text && !entry.media.image && !entry.media.video;
         var styleVariant = styles.entry;
         var randomisedStyle;
-        var backgroundImage;
+        var backgroundImage = this.getBackgroundImage(entry);
         var lightIcon = true;
 
         if (isTextEntry) {
@@ -163,17 +191,13 @@ export class Entry extends Component {
             if (randomisedStyle.dark) {
                 lightIcon = false;
             }
-        } else if (entry.media.imageThumbnail) {
-            backgroundImage = entry.media.imageThumbnail;
-        } else if (entry.media.video && this.props.thumbnailMode) {
-            backgroundImage = entry.media.videoThumbnail;
         }
 
         var props = {
             className: styleVariant
         };
 
-        if (backgroundImage) {
+        if (this.state.showThumbnail && backgroundImage) {
             props.style = {
                 backgroundImage: `url(${backgroundImage})`
             };
