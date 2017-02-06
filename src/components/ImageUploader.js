@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import captureVideoFrame from 'capture-video-frame';
 import _ from 'lodash';
 
 import Grid from './Grid';
 import Button from './Button';
 import TouchIcon from './TouchIcon';
 
-import styles from './css/VideoRecorder.module.css';
+import styles from './css/Camera.module.css';
 import headings from '../css/Headings.module.css';
 
-class VideoUploader extends Component {
+class ImageUploader extends Component {
     constructor (props) {
         super(props);
 
@@ -19,16 +18,13 @@ class VideoUploader extends Component {
             lastTakeURL: null,
             lastTakeBlob: null,
             thumbnailBlob: null,
-            text: '',
-            type: 'video/mp4'
+            text: ''
         };
 
         this.save = this.save.bind(this);
         this.reset = this.reset.bind(this);
         this.showDescripton = this.showDescripton.bind(this);
         this.hideDescripton = this.hideDescripton.bind(this);
-        this.playRecording = this.playRecording.bind(this);
-        this.pausePlayback = this.pausePlayback.bind(this);
         this.onTextChange = this.onTextChange.bind(this);
         this.handleFile = this.handleFile.bind(this);
     }
@@ -39,49 +35,26 @@ class VideoUploader extends Component {
         reader.addEventListener('load', () => {
             const data = reader.result;
             this.setState({
-                mimeType: file.type,
+                image: data,
                 capturing: false,
-                lastTakeURL: data,
-                lastTakeBlob: file
+                imageFile: file
             });
         }, false);
         reader.readAsDataURL(file);
     }
 
     save () {
-        // Take a thumb from the replay
-        const thumb =
-            captureVideoFrame(this._player, 'png');
-
         this.props.save({
             text: this.state.text,
-            video: this.state.lastTakeBlob,
-            videoThumbnail: thumb.blob
+            image: this.state.imageFile,
+            imageThumbnail: this.state.imageFile
         });
     }
 
     reset () {
         this.setState({
-            capturing: true,
-            playing: false,
-            lastTakeBlob: null,
-            lastTakeURL: null
-        });
-    }
-
-    pausePlayback () {
-        this._player.pause();
-
-        this.setState({
-            playing: false
-        });
-    }
-
-    playRecording () {
-        this._player.play();
-
-        this.setState({
-            playing: true
+            image: null,
+            capturing: true
         });
     }
 
@@ -130,18 +103,12 @@ class VideoUploader extends Component {
                     <div className={styles.outputWrapper}>
 
                         {this.state.capturing && (
-                            <input type="file" accept="video/mp4" capture="camcorder" onChange={this.handleFile} />
+                            <input type="file" accept="image/*" capture="camera" onChange={this.handleFile} />
                         )}
 
-                        {(this.state.lastTakeURL) && (
-                            <div className={styles.videoContainer}>
-                                <video
-                                    className={styles.video}
-                                    ref={(ref) => { this._player = ref; }}
-                                    controls={true}
-                                >
-                                    <source type={this.state.mimeType} src={this.state.lastTakeURL} />
-                                </video>
+                        {(this.state.image) && (
+                            <div>
+                                <img alt="Your last take" src={this.state.image} />
 
                                 {this.state.text && (
                                     <div className={styles.text}>{this.state.text}</div>
@@ -150,19 +117,7 @@ class VideoUploader extends Component {
                         )}
                     </div>
                     <div className={styles.btnStack}>
-
-                        {(this.state.playing) && (
-                            <Button
-                                key={0}
-                                onClick={this.pausePlayback}
-                            >Pause</Button>
-                        )}
-
-                        {(this.state.lastTakeURL && !this.state.playing) && (
-                            <Button onClick={this.playRecording}>Play</Button>
-                        )}
-
-                        {(this.state.lastTakeURL) && [
+                        {(this.state.image) && [
                             <Button key={0} onClick={this.reset}>Try Again</Button>,
                             <Button key={1} onClick={this.showDescripton}>Add Description</Button>,
                             <Button key={2} onClick={this.save}><TouchIcon />Save</Button>
@@ -174,12 +129,12 @@ class VideoUploader extends Component {
     }
 }
 
-VideoUploader.propTypes = {
+ImageUploader.propTypes = {
     save: React.PropTypes.func.isRequired
 };
 
-VideoUploader.defaultProps = {
+ImageUploader.defaultProps = {
     maxTextLength: 1000
 };
 
-export default VideoUploader;
+export default ImageUploader;

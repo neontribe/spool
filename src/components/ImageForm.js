@@ -3,15 +3,9 @@ import _ from 'lodash';
 
 import uploadToS3 from '../s3';
 import Camera from './Camera';
-import Button from './Button';
-import ButtonLink from './ButtonLink';
+import ImageUploader from './ImageUploader';
 
 import styles from './css/ImageForm.module.css';
-
-const errorMap = {
-    PermissionDeniedError: 'You\'ve sensibly blocked access to your camera.',
-    getUserMediaUnsupported: 'We\'re unable to take pictures on this device.'
-};
 
 class ImageForm extends Component {
     constructor (props) {
@@ -100,17 +94,7 @@ class ImageForm extends Component {
                 {({
                     loading: <h2>Loading</h2>,
                     record: <Camera save={this.save} onFailure={this.onMediaFailure} />,
-                    fallbackPrompt: (
-                        <div className={styles.fail}>
-                            <h4>Oh snap. We can&apos;t take a picture</h4>
-                            <p>{errorMap[this.state.cameraError]}</p>
-                            <p>
-                                <Button onClick={this.requestUploadMode}>Try uploading</Button>
-                                <ButtonLink to='/app/home'>Reset</ButtonLink>
-                            </p>
-                        </div>
-                    ),
-                    upload: <h2>Uploader</h2>
+                    fallbackPrompt: <ImageUploader save={this.save} />
                 })[this.state.mode]}
             </div>
         );
