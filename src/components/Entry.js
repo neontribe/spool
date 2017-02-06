@@ -109,7 +109,7 @@ export class Entry extends Component {
                                 ref='video'
                                 src={entry.media.video}
                                 controls={true}
-                                autoPlay={true}
+                                autoPlay={false}
                                 onClick={!this.props.thumbnailMode && this.toggleVideoPlay}
                             />
                         )}

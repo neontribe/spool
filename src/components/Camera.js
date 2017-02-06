@@ -214,7 +214,7 @@ class Camera extends Component {
                                 <img
                                     className={styles.thumbnail}
                                     src={this.state.thumbnail.dataUri}
-                                    alt='The photo you just took'
+                                    alt='Your most recent take'
                                 />
                                 {this.state.text && (
                                     <div className={styles.text}>{this.state.text}</div>

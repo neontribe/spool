@@ -3,15 +3,9 @@ import _ from 'lodash';
 
 import uploadToS3 from '../s3';
 import VideoRecorder from './VideoRecorder';
-import Button from './Button';
-import ButtonLink from './ButtonLink';
+import VideoUploader from './VideoUploader';
 
 import styles from './css/VideoForm.module.css';
-
-const errorMap = {
-    PermissionDeniedError: 'You\'ve sensibly blocked access to your camera and microphone.',
-    getUserMediaUnsupported: 'We\'re unable to record video on this device.'
-};
 
 class VideoForm extends Component {
     constructor (props) {
@@ -25,6 +19,7 @@ class VideoForm extends Component {
         this.save = this.save.bind(this);
         this.requestUploadMode = this.requestUploadMode.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
+        this.handleFile = this.handleFile.bind(this);
     }
 
     componentDidMount () {
@@ -94,23 +89,17 @@ class VideoForm extends Component {
         });
     }
 
+    handleFile (event) {
+        console.log(event.target.files[0]);
+    }
+
     render () {
         return (
             <div className={styles.wrapper}>
                 {({
                     loading: <h2>Loading</h2>,
                     record: <VideoRecorder save={this.save} onFailure={this.onMediaFailure} />,
-                    fallbackPrompt: (
-                        <div className={styles.fail}>
-                            <h4>Oh snap. We can&apos;t make a video</h4>
-                            <p>{errorMap[this.state.recorderError]}</p>
-                            <p>
-                                <Button onClick={this.requestUploadMode}>Try uploading</Button>
-                                <ButtonLink to='/app/home'>Reset</ButtonLink>
-                            </p>
-                        </div>
-                    ),
-                    upload: <h2>Uploader</h2>
+                    fallbackPrompt: <VideoUploader save={this.save} />
                 })[this.state.mode]}
             </div>
         );
