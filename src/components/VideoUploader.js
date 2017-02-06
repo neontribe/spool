@@ -37,9 +37,9 @@ class VideoUploader extends Component {
         const file = event.target.files[0];
         const reader = new FileReader();
         reader.addEventListener('load', () => {
-            const data = reader.result;
+            var data = reader.result;
+            data = data.replace(/video\/quicktime/, this.state.mimeType);
             this.setState({
-                mimeType: file.type,
                 capturing: false,
                 lastTakeURL: data,
                 lastTakeBlob: file
@@ -130,7 +130,7 @@ class VideoUploader extends Component {
                     <div className={styles.outputWrapper}>
 
                         {this.state.capturing && (
-                            <input type="file" accept="video/mp4" capture="camcorder" onChange={this.handleFile} />
+                            <input type="file" accept="video/*" capture="camcorder" onChange={this.handleFile} />
                         )}
 
                         {(this.state.lastTakeURL) && (
