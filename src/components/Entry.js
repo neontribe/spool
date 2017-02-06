@@ -11,10 +11,9 @@ import styles from './css/Entry.module.css';
 export class Entry extends Component {
     static ColourVariants = [
         { className: styles.entryVariantA, dark: false },
-        { className: styles.entryVariantB, dark: false },
+        { className: styles.entryVariantB, dark: true },
         { className: styles.entryVariantC, dark: false },
-        { className: styles.entryVariantD, dark: true },
-        { className: styles.entryVariantE, dark: false }
+        { className: styles.entryVariantD, dark: true }
     ];
 
     static propTypes = {
