@@ -19,18 +19,18 @@ class VideoUploader extends Component {
             lastTakeURL: null,
             lastTakeBlob: null,
             thumbnailBlob: null,
-            text: ''
+            text: '',
+            type: 'video/mp4'
         };
 
         this.save = this.save.bind(this);
         this.reset = this.reset.bind(this);
         this.showDescripton = this.showDescripton.bind(this);
         this.hideDescripton = this.hideDescripton.bind(this);
+        this.playRecording = this.playRecording.bind(this);
+        this.pausePlayback = this.pausePlayback.bind(this);
         this.onTextChange = this.onTextChange.bind(this);
         this.handleFile = this.handleFile.bind(this);
-    }
-
-    componentDidMount () {
     }
 
     handleFile (event) {
@@ -39,6 +39,7 @@ class VideoUploader extends Component {
         reader.addEventListener('load', () => {
             const data = reader.result;
             this.setState({
+                mimeType: file.type,
                 capturing: false,
                 lastTakeURL: data,
                 lastTakeBlob: file
@@ -137,10 +138,10 @@ class VideoUploader extends Component {
                                 <video
                                     className={styles.video}
                                     ref={(ref) => { this._player = ref; }}
-                                    src={this.state.lastTakeURL}
                                     controls={true}
-                                    autoPlay={true}
-                                />
+                                >
+                                    <source type={this.state.mimeType} src={this.state.lastTakeURL} />
+                                </video>
                                 {this.state.text && (
                                     <div className={styles.text}>{this.state.text}</div>
                                 )}
