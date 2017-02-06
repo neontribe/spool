@@ -86,7 +86,7 @@ export default class EntryViewer extends Component {
                             ))}
                         </ul>
 
-                        <span>{entry.views} view{(entry.views > 1) ? 's' : ''}</span>
+                        <span>{entry.views} views</span>
                     </div>
                 </Header>
                 <Content>

@@ -12,7 +12,7 @@ class App extends Component {
             hacks
         });
 
-        setInterval(viewportUnitsBuggyfill.refresh, 300);
+        // setInterval(viewportUnitsBuggyfill.refresh, 300);
     }
 
     render () {

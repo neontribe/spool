@@ -142,6 +142,7 @@ class VideoUploader extends Component {
                                 >
                                     <source type={this.state.mimeType} src={this.state.lastTakeURL} />
                                 </video>
+
                                 {this.state.text && (
                                     <div className={styles.text}>{this.state.text}</div>
                                 )}

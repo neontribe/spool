@@ -291,7 +291,6 @@ class VideoRecorder extends Component {
                                 ref={(ref) => { this._recorder = ref; }}
                                 src={this.state.streamURL}
                                 muted={true}
-                                autoPlay={true}
                             />
                         )}
 
@@ -302,7 +301,6 @@ class VideoRecorder extends Component {
                                     ref={(ref) => { this._player = ref; }}
                                     src={this.state.lastTakeURL}
                                     controls={true}
-                                    autoPlay={true}
                                     onEnded={this.onPlaybackEnded}
                                 />
                                 {this.state.text && (
