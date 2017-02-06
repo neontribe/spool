@@ -5,25 +5,25 @@
 ]>
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-	 x="0px" y="0px" width="256px" height="256px" viewBox="-2.25 -26.116 256 256" enable-background="new -2.25 -26.116 256 256"
+	 x="0px" y="0px" width="256px" height="256px" viewBox="-2 -25.789 256 256" enable-background="new -2 -25.789 256 256"
 	 xml:space="preserve">
 <defs>
 </defs>
-<path fill="#52C2F0" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" d="M238.399,44.081h-42.466L177.911,0.982
-	l-0.26,0.109V0.982H75.029v0.123l-0.293-0.123L56.713,44.081H12.789c-6.648,0-12.039,5.481-12.039,12.242v134.057
-	c0,6.761,5.39,12.242,12.039,12.242h225.611c6.648,0,12.039-5.481,12.039-12.242V56.322
-	C250.438,49.562,245.048,44.081,238.399,44.081z"/>
-<circle fill="#FFD05C" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="221.341" cy="73.506" r="12.869"/>
-<rect x="26.832" y="21.474" fill="#52C2F0" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" width="17.869" height="22.606"/>
-<circle fill="#E1E1E1" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="126.678" cy="113.031" r="77.459"/>
-<circle fill="#CED6E1" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="126.767" cy="113.476" r="69.246"/>
-<circle fill="#E1E1E1" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="127.578" cy="112.974" r="51.435"/>
-<circle fill="#C9C0C1" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="127.569" cy="113.802" r="43.803"/>
-<path fill="#CED6E1" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" d="M152.791,149.148
-	c0,0-14.123-9.334-14.615-38.486c-0.361-21.413,12.31-33.82,12.31-33.82l0.282-0.191c-6.728-4.21-14.676-6.652-23.197-6.652
-	c-9.599,0-18.469,3.095-25.687,8.331c1.701,2.531,13.197,20.339,11.375,36.895c-2.359,21.435-11.788,30.776-13.567,32.365
-	c7.574,6.256,17.287,10.016,27.879,10.016c9.533,0,18.348-3.056,25.539-8.228L152.791,149.148z"/>
-<circle fill="#67C6BA" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="132.174" cy="97.341" r="15.342"/>
-<circle fill="#F3705A" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="120.93" cy="103.933" r="9.016"/>
-<circle fill="#FFFFFF" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="110.788" cy="97.069" r="8.53"/>
+<path fill="#52C2F0" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M238.649,44.408h-42.466L178.161,1.309
+	l-0.26,0.109V1.309H75.279v0.123l-0.293-0.123L56.963,44.408H13.039C6.39,44.408,1,49.889,1,56.649v134.057
+	c0,6.761,5.39,12.242,12.039,12.242h225.611c6.648,0,12.039-5.481,12.039-12.242V56.649
+	C250.688,49.889,245.298,44.408,238.649,44.408z"/>
+<circle fill="#FFD05C" stroke="#000000" stroke-width="2" stroke-miterlimit="10" cx="221.591" cy="73.833" r="12.869"/>
+<rect x="27.082" y="21.801" fill="#52C2F0" stroke="#000000" stroke-width="2" stroke-miterlimit="10" width="17.869" height="22.606"/>
+<circle fill="#E1E1E1" stroke="#000000" stroke-width="2" stroke-miterlimit="10" cx="126.928" cy="113.358" r="77.459"/>
+<circle fill="#CED6E1" stroke="#000000" stroke-width="2" stroke-miterlimit="10" cx="127.017" cy="113.803" r="69.246"/>
+<circle fill="#E1E1E1" stroke="#000000" stroke-width="2" stroke-miterlimit="10" cx="127.828" cy="113.301" r="51.435"/>
+<circle fill="#C9C0C1" stroke="#000000" stroke-width="2" stroke-miterlimit="10" cx="127.819" cy="114.129" r="43.803"/>
+<path fill="#CED6E1" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M153.041,149.476c0,0-14.123-9.334-14.615-38.486
+	c-0.361-21.413,12.31-33.82,12.31-33.82l0.282-0.191c-6.728-4.21-14.676-6.652-23.197-6.652c-9.599,0-18.469,3.095-25.687,8.331
+	c1.701,2.531,13.197,20.339,11.375,36.895c-2.359,21.435-11.788,30.776-13.567,32.365c7.574,6.256,17.287,10.016,27.879,10.016
+	c9.533,0,18.348-3.056,25.539-8.228L153.041,149.476z"/>
+<circle fill="#67C6BA" stroke="#000000" stroke-width="2" stroke-miterlimit="10" cx="132.424" cy="97.668" r="15.342"/>
+<circle fill="#F3705A" stroke="#000000" stroke-width="2" stroke-miterlimit="10" cx="121.18" cy="104.26" r="9.016"/>
+<circle fill="#FFFFFF" stroke="#000000" stroke-width="2" stroke-miterlimit="10" cx="111.038" cy="97.396" r="8.53"/>
 </svg>

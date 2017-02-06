@@ -5,15 +5,15 @@
 ]>
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-	 x="0px" y="0px" width="256px" height="256px" viewBox="-8.004 -32.086 256 256" enable-background="new -8.004 -32.086 256 256"
+	 x="0px" y="0px" width="256px" height="256px" viewBox="-7.754 -31.836 256 256" enable-background="new -7.754 -31.836 256 256"
 	 xml:space="preserve">
 <defs>
 </defs>
-<path fill="#CDD5E1" stroke="#231F20" stroke-width="1.5" stroke-miterlimit="10" d="M0.75,0.75v188.36h239.216V0.75H0.75z
-	 M42.39,181.324H8.455v-38.033H42.39V181.324z M42.39,136.324H8.455V98.291H42.39V136.324z M42.39,91.324H8.455V53.291H42.39V91.324
-	z M42.39,46.324H8.455V8.291H42.39V46.324z M232.39,181.324h-33.935v-38.033h33.935V181.324z M232.39,136.324h-33.935V98.291h33.935
-	V136.324z M232.39,91.324h-33.935V53.291h33.935V91.324z M232.39,46.324h-33.935V8.291h33.935V46.324z"/>
-<rect x="50.438" y="8.291" fill="#FF7058" stroke="#231F20" stroke-width="1.5" stroke-miterlimit="10" width="139.836" height="173.033"/>
-<polyline fill="#FFFFFF" stroke="#231F20" stroke-width="1.5" stroke-miterlimit="10" points="95.996,131.569 95.996,59.438 
-	159.931,95.504 95.504,131.569 "/>
+<path fill="#CDD5E1" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" d="M1,1v188.36h239.216V1H1z M42.64,181.574H8.705
+	v-38.033H42.64V181.574z M42.64,136.574H8.705V98.541H42.64V136.574z M42.64,91.574H8.705V53.541H42.64V91.574z M42.64,46.574H8.705
+	V8.541H42.64V46.574z M232.64,181.574h-33.935v-38.033h33.935V181.574z M232.64,136.574h-33.935V98.541h33.935V136.574z
+	 M232.64,91.574h-33.935V53.541h33.935V91.574z M232.64,46.574h-33.935V8.541h33.935V46.574z"/>
+<rect x="50.688" y="8.541" fill="#FF7058" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" width="139.836" height="173.033"/>
+<polyline fill="#FFFFFF" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" points="96.246,131.819 96.246,59.688 
+	160.181,95.754 95.754,131.819 "/>
 </svg>
