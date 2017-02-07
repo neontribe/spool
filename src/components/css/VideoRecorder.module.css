@@ -1,3 +1,8 @@
+@value (
+	Green100,
+	Blue300
+) from '../../css/Colours.module.css';
+
 .wrapper {
 	display: flex;
 	flex: 1;
@@ -19,7 +24,7 @@
 	left: 0;
 	height: 100%;
 	width: 100%;
-	background-color: #1e2c37;
+	background-color: Blue300;
 	z-index: 1;
 }
 
@@ -30,7 +35,7 @@
 .textarea {
 	display: flex;
 	flex: 1;
-	border-color: #2fd9b5;
+	border-color: Green100;
 }
 
 .thumbnail {
@@ -119,8 +124,8 @@
 	bottom: 0;
 	padding: .5rem 1rem;
 	border-top-left-radius: 20px;
-	color: #1e2c37;
-	background-color: #2fd9b5;
+	color: Blue300;
+	background-color: Green100;
 }
 
 .uploadWrapper {

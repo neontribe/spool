@@ -1,3 +1,8 @@
+@value (
+	Green100,
+	Blue300
+) from '../../css/Colours.module.css';
+
 .wrapper {
 	display: flex;
 	flex: 1 0 auto;
@@ -18,7 +23,7 @@
 
 .textarea {
 	flex: 1;
-	border-color: #2fd9b5;
+	border-color: Green100;
 }
 
 .charCounter {
@@ -27,6 +32,6 @@
 	bottom: 0;
 	padding: .5rem 1rem;
 	border-top-left-radius: 20px;
-	color: #1e2c37;
-	background-color: #2fd9b5;
+	color: Blue300;
+	background-color: Green100;
 }

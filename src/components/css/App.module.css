@@ -1,4 +1,6 @@
 @value (
+	Blue200,
+	Blue300,
     Red100,
     Yellow100,
     Green100
@@ -27,8 +29,8 @@
 	justify-content: space-between;
 	height: calc((50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024)) + .5rem);
 	width: 100%;
-	border-top: .5rem solid #34404c;
-	background-color: #34404c;
+	border-top: .5rem solid Blue200;
+	background-color: Blue200;
 	z-index: 110;
 
 	/* hack to engage viewport-units-buggyfill */
@@ -79,7 +81,7 @@
 	right: 0;
 	height: calc(100vh - (50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024)) - .5rem); /* .header->height */
 	padding-top: .5rem;
-	background-color: #1e2c37;
+	background-color: Blue300;
 	z-index: 1;
 	overflow: auto;
 	width: 40%;
@@ -144,7 +146,7 @@
 	flex-direction: column;
 	height: calc(100vh - ((50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024)) + .5rem)); /* .header->height */
 	padding: 1rem;
-	background-color: #1e2c37;
+	background-color: Blue300;
 
 	/* hack to engage viewport-units-buggyfill */
   	content: 'viewport-units-buggyfill; height: calc(100vh - ((50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024)) + .5rem));';

@@ -1,3 +1,8 @@
+@value (
+	Green100,
+	Blue300
+) from '../../css/Colours.module.css';
+
 @keyframes pulse {
 	from {
 		height: 15rem;
@@ -19,7 +24,7 @@
 	left: 0;
 	height: 100%;
 	width: 100%;
-	color: #1e2c37;
+	color: Blue300;
 	background-color: rgba(0, 0, 0, .75);
 	z-index: 110;
 	font-weight: 500;
@@ -34,7 +39,7 @@
 	width: 15rem;
 	border-radius: 50%;
 	padding: 1rem;
-	background-color: #2fd9b5;
+	background-color: Green100;
 	animation: pulse 1.5s infinite;
 	animation-direction: alternate;
 }
