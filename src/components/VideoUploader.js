@@ -133,6 +133,7 @@ class VideoUploader extends Component {
                         {(this.state.lastTakeURL) && (
                             <div className={styles.videoContainer}>
                                 <video
+                                    autoPlay={true}
                                     className={styles.video}
                                     ref={(ref) => { this._player = ref; }}
                                     controls={true}
