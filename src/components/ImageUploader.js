@@ -14,10 +14,9 @@ class ImageUploader extends Component {
 
         this.state = {
             playing: false,
-            capturing: true,
-            lastTakeURL: null,
-            lastTakeBlob: null,
-            thumbnailBlob: null,
+            image: null,
+            imageFile: null,
+            thumbnailFile: null,
             text: ''
         };
 
@@ -30,17 +29,15 @@ class ImageUploader extends Component {
     }
 
     handleFile (event) {
+        if (!event.target.files.length) {
+            return;
+        }
+        const URL = window.URL || window.webkitURL;
         const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.addEventListener('load', () => {
-            const data = reader.result;
-            this.setState({
-                image: data,
-                capturing: false,
-                imageFile: file
-            });
-        }, false);
-        reader.readAsDataURL(file);
+        this.setState({
+            image: URL.createObjectURL(file),
+            imageFile: file
+        });
     }
 
     save () {
@@ -53,8 +50,7 @@ class ImageUploader extends Component {
 
     reset () {
         this.setState({
-            image: null,
-            capturing: true
+            image: null
         });
     }
 
@@ -102,9 +98,7 @@ class ImageUploader extends Component {
                 <Grid enforceConsistentSize={true}>
                     <div className={styles.outputWrapper}>
 
-                        {this.state.capturing && (
-                            <input type="file" accept="image/*" capture="camera" onChange={this.handleFile} />
-                        )}
+                        <input type="file" accept="image/*" capture="camera" onChange={this.handleFile} />
 
                         {(this.state.image) && (
                             <div>

@@ -15,7 +15,6 @@ class VideoUploader extends Component {
 
         this.state = {
             playing: false,
-            capturing: true,
             lastTakeURL: null,
             lastTakeBlob: null,
             thumbnailBlob: null,
@@ -34,18 +33,15 @@ class VideoUploader extends Component {
     }
 
     handleFile (event) {
+        if (!event.target.files.length) {
+            return;
+        }
+        const URL = window.URL || window.webkitURL;
         const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.addEventListener('load', () => {
-            var data = reader.result;
-            data = data.replace(/video\/quicktime/, this.state.mimeType);
-            this.setState({
-                capturing: false,
-                lastTakeURL: data,
-                lastTakeBlob: file
-            });
-        }, false);
-        reader.readAsDataURL(file);
+        this.setState({
+            lastTakeURL: URL.createObjectURL(file),
+            lastTakeBlob: file
+        });
     }
 
     save () {
@@ -62,7 +58,6 @@ class VideoUploader extends Component {
 
     reset () {
         this.setState({
-            capturing: true,
             playing: false,
             lastTakeBlob: null,
             lastTakeURL: null
@@ -128,10 +123,7 @@ class VideoUploader extends Component {
 
                 <Grid enforceConsistentSize={true}>
                     <div className={styles.outputWrapper}>
-
-                        {this.state.capturing && (
-                            <input type="file" accept="video/*" capture="camcorder" onChange={this.handleFile} />
-                        )}
+                        <input type="file" accept="video/*" capture="camcorder" onChange={this.handleFile} />
 
                         {(this.state.lastTakeURL) && (
                             <div className={styles.videoContainer}>
@@ -139,9 +131,9 @@ class VideoUploader extends Component {
                                     className={styles.video}
                                     ref={(ref) => { this._player = ref; }}
                                     controls={true}
-                                >
-                                    <source type={this.state.mimeType} src={this.state.lastTakeURL} />
-                                </video>
+                                    autoPlay={true}
+                                    src={this.state.lastTakeURL}
+                                />
 
                                 {this.state.text && (
                                     <div className={styles.text}>{this.state.text}</div>
