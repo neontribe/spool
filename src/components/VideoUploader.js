@@ -123,7 +123,11 @@ class VideoUploader extends Component {
 
                 <Grid enforceConsistentSize={true}>
                     <div className={styles.outputWrapper}>
-                        <input type="file" accept="video/*" capture="camcorder" onChange={this.handleFile} />
+
+                        <label>
+                            <input ref='input' style={{ display: 'none' }} type="file" accept="video/*" capture="camcorder" onChange={this.handleFile} />
+                            <Button onClick={() => { this.refs.input.click(); }}><TouchIcon />Add video</Button>
+                        </label>
 
                         {(this.state.lastTakeURL) && (
                             <div className={styles.videoContainer}>
