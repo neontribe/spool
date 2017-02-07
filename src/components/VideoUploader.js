@@ -8,6 +8,7 @@ import TouchIcon from './TouchIcon';
 
 import styles from './css/VideoRecorder.module.css';
 import headings from '../css/Headings.module.css';
+import button from './css/Button.module.css';
 
 class VideoUploader extends Component {
     constructor (props) {
@@ -130,7 +131,10 @@ class VideoUploader extends Component {
                     <div className={styles.outputWrapper}>
 
                         {this.state.capturing && (
-                            <input type="file" accept="video/*" capture="camcorder" onChange={this.handleFile} />
+                            <label>
+                                <input ref='input' style={{ display: 'none' }} type="file" accept="video/*" capture="camcorder" onChange={this.handleFile} />
+                                <Button onClick={() => { this.refs.input.click(); }}><TouchIcon />Add video</Button>
+                            </label>
                         )}
 
                         {(this.state.lastTakeURL) && (
