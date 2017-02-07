@@ -6,9 +6,6 @@
 }
 
 .outputWrapper {
-	position: relative;
-	height: 100%;
-	width: 100%;
 	text-align: center;
 }
 
@@ -82,8 +79,8 @@
 
 .text {
 	position: absolute;
+	top: 0;
 	left: 0;
-	bottom: 2rem; /* Allow space for video controls */
 	width: 100%;
 	padding: 1rem;
 	white-space: nowrap;
@@ -130,8 +127,18 @@
 }
 
 .uploadWrapper {
+	position: relative;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	height: 100%;
+}
+
+.fileUpload {
+	position: absolute;
+	opacity: 0;
+	z-index: 100;
+	height: 100%;
+	width: 100%;
+	cursor: pointer;
 }
