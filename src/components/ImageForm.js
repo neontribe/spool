@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 
 import uploadToS3 from '../s3';
+import resizer from '../lib/resizer.js';
 import Camera from './Camera';
-import Button from './Button';
-import ButtonLink from './ButtonLink';
+import ImageUploader from './ImageUploader';
+import PageOverlay from './PageOverlay';
 
 import styles from './css/ImageForm.module.css';
-
-const errorMap = {
-    PermissionDeniedError: 'You\'ve sensibly blocked access to your camera.',
-    getUserMediaUnsupported: 'We\'re unable to take pictures on this device.'
-};
 
 class ImageForm extends Component {
     constructor (props) {
@@ -51,34 +47,36 @@ class ImageForm extends Component {
         });
 
         this.props.onSaveStart();
-
-        var savers = _.toPairs(_.pick(data, 'image', 'imageThumbnail', 'video', 'videoThumbnail')).map((item) => {
-            return uploadToS3(item[1])
-                .then((s3Info) => {
-                    return {
-                        [item[0]]: s3Info
-                    };
-                });
-        });
-
-        if (data.text) {
-            savers.push({
-                text: data.text
+        resizer(data.imageThumbnail, 300, 300, (thumb) => {
+            data.imageThumbnail = thumb;
+            var savers = _.toPairs(_.pick(data, 'image', 'imageThumbnail')).map((item) => {
+                return uploadToS3(item[1])
+                    .then((s3Info) => {
+                        return {
+                            [item[0]]: s3Info
+                        };
+                    });
             });
-        }
 
-        Promise.all(savers)
-            .then((results) => {
-                var info = Object.assign.apply(Object, [{}].concat(results));
-
-                this.setState({
-                    uploading: false,
-                    uploaded: true
+            if (data.text) {
+                savers.push({
+                    text: data.text
                 });
+            }
 
-                this.props.onSaveEnd(info);
-            })
-            .catch((e) => console.log('Error during file save: ', e));
+            Promise.all(savers)
+                .then((results) => {
+                    var info = Object.assign.apply(Object, [{}].concat(results));
+
+                    this.setState({
+                        uploading: false,
+                        uploaded: true
+                    });
+
+                    this.props.onSaveEnd(info);
+                })
+                .catch((e) => console.log('Error during file save: ', e));
+        });
     }
 
     requestUploadMode () {
@@ -98,19 +96,9 @@ class ImageForm extends Component {
         return (
             <div className={styles.wrapper}>
                 {({
-                    loading: <h2>Loading</h2>,
+                    loading: <PageOverlay title='Loading' />,
                     record: <Camera save={this.save} onFailure={this.onMediaFailure} />,
-                    fallbackPrompt: (
-                        <div className={styles.fail}>
-                            <h4>Oh snap. We can&apos;t take a picture</h4>
-                            <p>{errorMap[this.state.cameraError]}</p>
-                            <p>
-                                <Button onClick={this.requestUploadMode}>Try uploading</Button>
-                                <ButtonLink to='/app/home'>Reset</ButtonLink>
-                            </p>
-                        </div>
-                    ),
-                    upload: <h2>Uploader</h2>
+                    fallbackPrompt: <ImageUploader save={this.save} />
                 })[this.state.mode]}
             </div>
         );

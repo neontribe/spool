@@ -1,4 +1,4 @@
-const url = require('url')
+const url = require('url');
 const Sequelize = require('sequelize');
 const models = require('./models');
 const winston = require('winston');
@@ -32,7 +32,7 @@ var sequelize = new Sequelize(config.database, config.user, config.password, {
     /* Disabling native postgres */
     //    native: true,
     ssl: config.ssl,
-    logging: sequelizeLog,
+    logging: sequelizeLog
 });
 models.init(sequelize);
 
@@ -40,5 +40,5 @@ const helpers = require('./helpers.js');
 module.exports = {
     sequelize,
     models,
-    helpers,
-}
+    helpers
+};

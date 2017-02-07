@@ -9,5 +9,5 @@ storiesOf('TopicForm', module)
     <TopicForm topics={topics} save={action('Save Value')}/>
   ))
   .add('Edit View', () => (
-    <TopicForm topics={topics} initialValue={["transport"]} save={action('Save Value')}/>
+    <TopicForm topics={topics} initialValue={['transport']} save={action('Save Value')}/>
   ));

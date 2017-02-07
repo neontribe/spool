@@ -1,3 +1,5 @@
+@value Blue300 from '../../css/Colours.module.css';
+
 .wrapper {
 	display: flex;
 	flex: 1;
@@ -17,16 +19,16 @@
 	justify-content: center;
 	padding: 0 1rem;
 	margin-bottom: .5rem;
-	border: 2px solid #1e2c37;
+	border: 2px solid Blue300;
 	border-right: 0;
 }
 
 .header > *:last-child {
-	border-right: 2px solid #1e2c37;
+	border-right: 2px solid Blue300;
 }
 
 .stepComplete {
-	background-color: #1e2c37;
+	background-color: Blue300;
 }
 
 .topics {

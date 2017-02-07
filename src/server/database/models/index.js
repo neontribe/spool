@@ -1,7 +1,7 @@
 var model = {};
 var initialized = false;
 
-function init(sequelize) {
+function init (sequelize) {
     delete module.exports.init; // Destroy itself to prevent repeated calls and clash with a model named 'init'.
     initialized = true;
     // Import model files and assign them to `model` object.

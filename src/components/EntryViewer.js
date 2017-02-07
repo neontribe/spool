@@ -8,6 +8,7 @@ import Layout from './Layout';
 import Grid from './Grid';
 import Icon from './Icon';
 import Button from './Button';
+import TouchIcon from './TouchIcon';
 import DeleteEntryMutation from './mutations/DeleteEntryMutation.js';
 
 import styles from './css/EntryViewer.module.css';
@@ -86,7 +87,7 @@ export default class EntryViewer extends Component {
                             ))}
                         </ul>
 
-                        <span>{entry.views} view{(entry.views > 1) ? 's' : ''}</span>
+                        <span>{entry.views} views</span>
                     </div>
                 </Header>
                 <Content>
@@ -106,7 +107,7 @@ export default class EntryViewer extends Component {
                                 )}
 
                                 <div className={styles.controls}>
-                                    <Button onClick={browserHistory.goBack}>Back</Button>
+                                    <Button onClick={browserHistory.goBack}><TouchIcon />Back</Button>
                                 </div>
                             </div>
                         </Grid>

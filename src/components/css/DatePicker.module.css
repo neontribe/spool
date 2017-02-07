@@ -1,3 +1,8 @@
+@value (
+	Blue200,
+	Green100
+) from '../../css/Colours.module.css';
+
 .wrapper {
 	position: relative;
 	display: inline-block;
@@ -17,7 +22,7 @@
 :global(.date-picker-popover) {
 	position: absolute;
 	padding: .5rem;
-	background-color: #34404c;
+	background-color: Blue200;
 	z-index: 10;
 }
 
@@ -27,8 +32,8 @@
 
 :global(.date-picker-popover .popover-title) {
 	padding: .5rem;
-	color: #34404c;
-	background-color: #2fd9b5;
+	color: Blue200;
+	background-color: Green100;
 }
 
 :global(.date-picker-popover tbody td) {

@@ -13,13 +13,13 @@ storiesOf('IconChooser', module)
   .add('Edit View', () => (
     <IconChooser
       choices={topics}
-      initialValue={["transport"]}
+      initialValue={['transport']}
       onChange={action('onChange')}/>
   ))
   .add('Limit maxSelections', () => (
     <IconChooser
       maxSelections={1}
       choices={topics}
-      initialValue={["public_transport"]}
+      initialValue={['public_transport']}
       onChange={action('onChange')}/>
   ));

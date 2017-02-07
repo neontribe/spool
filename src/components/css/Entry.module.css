@@ -38,8 +38,8 @@
 }
 
 .entryVariantB {
-	composes: entry;
-	background-color: Blue200;
+	composes: entryDark;
+	background-color: Yellow100;
 	border: 4px solid rgba(0, 0, 0, .2);
 }
 
@@ -50,12 +50,6 @@
 }
 
 .entryVariantD {
-	composes: entryDark;
-	background-color: Yellow100;
-	border: 4px solid rgba(0, 0, 0, .2);
-}
-
-.entryVariantE {
 	composes: entryDark;
 	background-color: Grey100;
 	border: 4px solid rgba(0, 0, 0, .2);
@@ -91,6 +85,11 @@
 	object-fit: fill;
 }
 
+.videoHidden {
+	composes: video;
+	visibility: hidden;
+}
+
 .topics {
 	display: flex;
 	flex-wrap: wrap;
@@ -123,6 +122,14 @@
 	border-bottom-right-radius: .7rem;
 }
 
+.videoOverlayPlayWrapper {
+	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .videoOverlay {
     position: absolute;
     top: 0;
@@ -149,6 +156,7 @@
 	border: .5rem solid #000;
 	border-radius: 50%;
 	opacity: 0.75;
+	z-index: 20;
 }
 
 .videoOverlayPlay:before {

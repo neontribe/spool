@@ -1,3 +1,8 @@
+@value (
+	Blue200,
+	Green100
+) from '../../css/Colours.module.css';
+
 .wrapper {
 	/* Extends the button surface area beyond its visual boundaries */
 	display: inline-block;
@@ -15,8 +20,8 @@
 	color: #fff;
 	text-align: center;
 	text-shadow: 0 0 2px #000;
-	border: 4px solid #2fd9b5;
-	background-color: #34404c;
+	border: 4px solid Green100;
+	background-color: Blue200;
 	margin: 0 10px 10px 0;
 	text-shadow: 0 0 1px rgba(0, 0, 0, .6);
 

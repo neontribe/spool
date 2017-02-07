@@ -5,17 +5,17 @@ import { entries, videoEntry, videoEntryWithText } from './fixtures';
 
 storiesOf('EntryViewer', module)
   .add('with text media', () => (
-  	<div>
-    	<EntryViewer entry={entries[0]} />
+    <div>
+      <EntryViewer entry={entries[0]} />
     </div>
   ))
   .add('with video (no text)', () => (
-  	<div>
-    	<EntryViewer entry={videoEntry} />
+    <div>
+      <EntryViewer entry={videoEntry} />
     </div>
   ))
   .add('with video (with text)', () => (
-  	<div>
-    	<EntryViewer entry={videoEntryWithText} />
+    <div>
+      <EntryViewer entry={videoEntryWithText} />
     </div>
   ));

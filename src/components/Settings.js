@@ -6,6 +6,7 @@ import UpdateUserMutation from './mutations/UpdateUserMutation';
 import Layout from './Layout';
 import { SettingsFormContainer } from './SettingsForm';
 
+import styles from './css/Settings.module.css';
 import headings from '../css/Headings.module.css';
 
 const { Content, Header } = Layout;
@@ -50,13 +51,15 @@ export class Settings extends React.Component {
             <Layout>
                 <Header auth={this.props.auth} />
                 <Content>
-                    <h2 className={headings.large}>Getting to know you</h2>
-                    <SettingsFormContainer
-                        user={this.props.user}
-                        meta={this.props.meta}
-                        showPrivacyForm={this.props.user.profile && this.props.user.profile.isIntroduced}
-                        onSubmit={this.handleSubmit}
-                    />
+                    <div className={styles.wrapper}>
+                        <h2 className={headings.large}>Getting to know you</h2>
+                        <SettingsFormContainer
+                            user={this.props.user}
+                            meta={this.props.meta}
+                            showPrivacyForm={this.props.user.profile && this.props.user.profile.isIntroduced}
+                            onSubmit={this.handleSubmit}
+                        />
+                    </div>
                 </Content>
             </Layout>
         );
