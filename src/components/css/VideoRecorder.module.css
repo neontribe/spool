@@ -68,6 +68,8 @@
 
 .videoContainer {
 	position: absolute;
+	top: 0;
+	left: 0;
 	height: 100%;
 	width: 100%;
 }
@@ -125,4 +127,11 @@
 	border-top-left-radius: 20px;
 	color: #1e2c37;
 	background-color: #2fd9b5;
+}
+
+.uploadWrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
 }

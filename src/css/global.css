@@ -104,6 +104,10 @@ legend {
     margin-bottom: .5rem;
 }
 
+label {
+    margin: 0;
+}
+
 input,
 select {
     font-size: 1rem;
