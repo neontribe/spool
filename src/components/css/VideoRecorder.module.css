@@ -6,6 +6,7 @@
 }
 
 .outputWrapper {
+	height: 100%;
 	text-align: center;
 }
 
@@ -57,10 +58,6 @@
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-}
-
-.btnStack > * + * {
-	margin-top: 1rem;
 }
 
 .videoContainer {
