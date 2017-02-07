@@ -4,6 +4,7 @@ import _ from 'lodash';
 import uploadToS3 from '../s3';
 import Camera from './Camera';
 import ImageUploader from './ImageUploader';
+import PageOverlay from './PageOverlay';
 
 import styles from './css/ImageForm.module.css';
 
@@ -92,7 +93,7 @@ class ImageForm extends Component {
         return (
             <div className={styles.wrapper}>
                 {({
-                    loading: <h2>Loading</h2>,
+                    loading: <PageOverlay title='Loading' />,
                     record: <Camera save={this.save} onFailure={this.onMediaFailure} />,
                     fallbackPrompt: <ImageUploader save={this.save} />
                 })[this.state.mode]}

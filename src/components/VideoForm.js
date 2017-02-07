@@ -4,6 +4,7 @@ import _ from 'lodash';
 import uploadToS3 from '../s3';
 import VideoRecorder from './VideoRecorder';
 import VideoUploader from './VideoUploader';
+import PageOverlay from './PageOverlay';
 
 import styles from './css/VideoForm.module.css';
 
@@ -19,7 +20,6 @@ class VideoForm extends Component {
         this.save = this.save.bind(this);
         this.requestUploadMode = this.requestUploadMode.bind(this);
         this.onMediaFailure = this.onMediaFailure.bind(this);
-        this.handleFile = this.handleFile.bind(this);
     }
 
     componentDidMount () {
@@ -89,15 +89,11 @@ class VideoForm extends Component {
         });
     }
 
-    handleFile (event) {
-        console.log(event.target.files[0]);
-    }
-
     render () {
         return (
             <div className={styles.wrapper}>
                 {({
-                    loading: <h2>Loading</h2>,
+                    loading: <PageOverlay title='Loading' />,
                     record: <VideoRecorder save={this.save} onFailure={this.onMediaFailure} />,
                     fallbackPrompt: <VideoUploader save={this.save} />
                 })[this.state.mode]}
