@@ -7,49 +7,49 @@ module.exports = {
             basic: [
                 {
                     model: models.Role,
-                    as: 'Role',
-                }, 
+                    as: 'Role'
+                },
                 {
                     model: models.Region,
-                    as: 'Region',
-                },
+                    as: 'Region'
+                }
             ],
             basicConsumer: [
                 {
                     model: models.Role,
                     as: 'Role',
                     where: {
-                        type: 'consumer',
-                    },
-                }, 
+                        type: 'consumer'
+                    }
+                },
                 {
                     model: models.Region,
-                    as: 'Region',
-                },
+                    as: 'Region'
+                }
             ],
             basicCreator: [
                 {
                     model: models.Role,
                     as: 'Role',
                     where: {
-                        type: 'creator',
-                    },
-                }, 
+                        type: 'creator'
+                    }
+                },
                 {
                     model: models.Region,
-                    as: 'Region',
-                },
+                    as: 'Region'
+                }
             ],
             leftProfile: [
                 {
                     model: models.Role,
                     required: false,
-                    as: 'Role',
-                }, 
+                    as: 'Role'
+                },
                 {
                     model: models.Region,
                     required: false,
-                    as: 'Region',
+                    as: 'Region'
                 },
                 {
                     model: models.Profile,
@@ -66,30 +66,30 @@ module.exports = {
                         }
                     ]
                 }
-            ],
+            ]
         },
         Entry: {
             basic: [
                 {
                     model: models.Medium,
-                    as: 'Medium',
+                    as: 'Medium'
                 },
                 {
                     model: models.Sentiment,
-                    as: 'Sentiment',
+                    as: 'Sentiment'
                 },
                 {
                     model: models.Topic,
-                    as: 'EntryTopicTopics',
+                    as: 'EntryTopicTopics'
                 }
             ],
             sentiment: [
                 {
                     model: models.Sentiment,
-                    as: 'Sentiment',
-                },
-            ],
-        },
+                    as: 'Sentiment'
+                }
+            ]
+        }
     },
     queries: {
         Topic: {
@@ -111,7 +111,7 @@ module.exports = {
                 AND user_account.region_id = ${regionId}
             GROUP BY
                 topic.type, topic.name
-            `.useBind(),
+            `.useBind()
         },
         UserAccount: {
             entryActivity: (from, to, regionId) => SQL`
@@ -139,4 +139,4 @@ module.exports = {
                     entry_id = ANY(${entries})`.useBind()
         }
     }
-}
+};

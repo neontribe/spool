@@ -4,5 +4,5 @@ import VideoForm from '../VideoForm';
 
 storiesOf('VideoForm', module)
   .add('Initial View', () => (
-	<VideoForm save={action('Save Video')} back={action('Back')}/>
+    <VideoForm save={action('Save Video')} back={action('Back')}/>
   ));

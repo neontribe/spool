@@ -20,9 +20,9 @@ app.use(compression());
 // enable ssl redirect when the NODE_ENV is production
 app.use(sslRedirect(['production']));
 
-var useCors = function () { return (req, res, next) => next(); }
+var useCors = function () { return (req, res, next) => next(); };
 var formatErrors;
-if(process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
     useCors = cors;
     formatErrors = error => ({
         message: error.message,
@@ -40,39 +40,39 @@ if(process.env.NODE_ENV !== 'production') {
  * If the user does not, it is a new auth0 signup... we should then create
  * their entry in the database
  */
-function reconcileUser() {
-    var userCreateCache = {}
+function reconcileUser () {
+    var userCreateCache = {};
     return function reconcileUserMiddleware (req, res, next) {
         var userId = req.user.sub;
-        var sha256 = createHash('sha256')
+        var sha256 = createHash('sha256');
         var hash = sha256.update(userId).digest('hex');
-        var p = new Promise(function findUserPromise(resolve, reject) {
+        var p = new Promise(function findUserPromise (resolve, reject) {
             models.UserAccount.findOne({
                 where: {
                     authHash: hash
                 },
-                include: helpers.includes.UserAccount.leftProfile,
-            }).then(function handleFindUser(user) {
+                include: helpers.includes.UserAccount.leftProfile
+            }).then(function handleFindUser (user) {
                 if (user) {
                     resolve(user);
                 } else {
                     userCreateCache[userId] = userCreateCache[userId] || models.UserAccount.create({
                         authHash: hash,
-                        //todo, avoid this hardcoded value
+                        // todo, avoid this hardcoded value
                         roleId: 1
                     });
-                    return userCreateCache[userId].then(function(user) {
+                    return userCreateCache[userId].then(function (user) {
                         return resolve(user);
                     });
                 }
             }).catch((e) => winston.warn(e));
         });
-        p.then(function handleFoundUser(user) {
+        p.then(function handleFoundUser (user) {
             userCreateCache[userId] = undefined;
             req.user = user;
             return next();
         });
-    }
+    };
 };
 
 /* GRAPHQL Endpoint */
@@ -94,17 +94,17 @@ app.use(
 );
 
 app.use('/s3', bodyParser.json(), s3Router({
-  bucket: process.env.S3_BUCKET,
-  ACL: 'private'
+    bucket: process.env.S3_BUCKET,
+    ACL: 'private'
 }));
 
 /* Static Resouces */
 app.use(serveStatic('build', {maxAge: '30 days'}));
 
 /* Drop all routes through to index.html to support browserHistory routing in react */
-app.get('*', function (request, response){
-  response.sendFile(path.resolve('build', 'index.html'))
-})
+app.get('*', function (request, response) {
+    response.sendFile(path.resolve('build', 'index.html'));
+});
 
 module.exports = app;
 

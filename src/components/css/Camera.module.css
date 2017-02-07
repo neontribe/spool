@@ -88,10 +88,6 @@
 	align-items: flex-start;
 }
 
-.btnStack > * + * {
-	margin-top: 1rem;
-}
-
 .video {
 	height: 100%;
 	width: 100%;

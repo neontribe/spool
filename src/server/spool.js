@@ -9,8 +9,8 @@ function getCreatorSentimentCount (sentimentType, userId) {
             ownerId: userId
         },
         include: helpers.includes.Entry.sentiment
-    }).then(function(result) {
-        return result.reduce(function(reduction, entry) {
+    }).then(function (result) {
+        return result.reduce(function (reduction, entry) {
             if (entry.Sentiment.type === sentimentType) {
                 reduction++;
             }
@@ -19,10 +19,10 @@ function getCreatorSentimentCount (sentimentType, userId) {
     }).catch((e) => winston.warn(e));
 }
 
-function makeEntry(userId, mediaData, sentimentData, topicsData) {
+function makeEntry (userId, mediaData, sentimentData, topicsData) {
     return co(function* () {
         var insertMedia = models.Medium.create(mediaData, {
-            returning: true,
+            returning: true
         });
         var findSentiment = models.Sentiment.findAll().then((sentiments) => {
             return _.find(sentiments, { type: sentimentData });
@@ -30,7 +30,7 @@ function makeEntry(userId, mediaData, sentimentData, topicsData) {
         var findTopics = models.Topic.findAll({
             where: {
                 type: topicsData
-            },
+            }
         });
         var [media, sentiment, topics] = yield [insertMedia, findSentiment, findTopics];
         if (sentiment && media && topics.length >= 1) {
@@ -38,24 +38,24 @@ function makeEntry(userId, mediaData, sentimentData, topicsData) {
                 mediaId: media.mediaId,
                 sentimentId: sentiment.sentimentId,
                 ownerId: userId,
-                authorId: userId,
+                authorId: userId
             }, {
-                returning: true,
+                returning: true
             });
             yield newEntry.addEntryTopicTopics(topics);
             return {
                 entry: yield models.Entry.findOne({
                     where: {
-                        entryId: newEntry.entryId,
+                        entryId: newEntry.entryId
                     },
                     include: helpers.includes.Entry.basic
-                }) 
+                })
             };
         }
     }).catch((e) => winston.warn(e));
 }
 
-function updateUser(id, data) {
+function updateUser (id, data) {
     return co(function* () {
         var findRegion = models.Region.findOne({ where: { type: data.region } });
         var findResidence = models.Residence.findOne({ where: { type: data.residence } });
@@ -75,7 +75,7 @@ function updateUser(id, data) {
                 age: data.age,
                 name: data.name,
                 altName: data.nickname,
-                residenceId: residence.residenceId,
+                residenceId: residence.residenceId
             };
             var Profile = user.Profile;
             if (!Profile) {
@@ -99,13 +99,13 @@ function updateUser(id, data) {
             var addProfileServices = Profile.addProfileServiceServices(services);
             var updateUser = models.UserAccount.update({
                 regionId: region.regionId,
-                profileId: Profile.profileId,
+                profileId: Profile.profileId
             }, {
                 where: {
                     userId: id
                 }
             });
-            yield [addProfileServices, updateUser]
+            yield [addProfileServices, updateUser];
         }
         return {};
     }).catch((e) => winston.warn(e));
@@ -114,5 +114,5 @@ function updateUser(id, data) {
 module.exports = {
     getCreatorSentimentCount,
     makeEntry,
-    updateUser,
-}
+    updateUser
+};

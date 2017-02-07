@@ -57,6 +57,8 @@ class VideoUploader extends Component {
     }
 
     reset () {
+        this.refs.input.value = '';
+
         this.setState({
             playing: false,
             lastTakeBlob: null,
@@ -123,20 +125,22 @@ class VideoUploader extends Component {
 
                 <Grid enforceConsistentSize={true}>
                     <div className={styles.outputWrapper}>
-
-                        <label>
-                            <input ref='input' style={{ display: 'none' }} type="file" accept="video/*" capture="camcorder" onChange={this.handleFile} />
-                            <Button onClick={() => { this.refs.input.click(); }}><TouchIcon />Add video</Button>
+                        <label className={styles.uploadWrapper}>
+                            <input className={styles.fileUpload} ref='input' type="file" accept="video/*" capture="camcorder" onChange={this.handleFile} />
+                            <Button onClick={Function.prototype}><TouchIcon />Add video</Button>
                         </label>
 
                         {(this.state.lastTakeURL) && (
                             <div className={styles.videoContainer}>
                                 <video
+                                    autoPlay={true}
                                     className={styles.video}
                                     ref={(ref) => { this._player = ref; }}
                                     controls={true}
-                                    autoPlay={true}
                                     src={this.state.lastTakeURL}
+                                    onPlay={() => { this.setState({ playing: true }); }}
+                                    onPause={() => { this.setState({ playing: false }); }}
+                                    onEnded={() => { this.setState({ playing: false }); }}
                                 />
 
                                 {this.state.text && (
@@ -146,7 +150,6 @@ class VideoUploader extends Component {
                         )}
                     </div>
                     <div className={styles.btnStack}>
-
                         {(this.state.playing) && (
                             <Button
                                 key={0}

@@ -19,29 +19,29 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
         if (type === 'Creator') {
             return models.UserAccount.findOne({
                 where: {
-                    userId: context.userId,
+                    userId: context.userId
                 },
-                include: helpers.includes.UserAccount.basicCreator,
+                include: helpers.includes.UserAccount.basicCreator
             }).then((user) => user ? { creator: true } : null).catch((e) => winston.warn(e));
         }
         if (type === 'Consumer') {
             return models.UserAccount.findOne({
                 where: {
-                    userId: context.userId,
+                    userId: context.userId
                 },
-                include: helpers.includes.UserAccount.basicConsumer,
+                include: helpers.includes.UserAccount.basicConsumer
             }).then((user) => user ? { consumer: true } : null).catch((e) => winston.warn(e));
         }
         if (type === 'User') {
             return models.UserAccount.findOne({
                 where: {
-                    userId: context.userId,
+                    userId: context.userId
                 },
-                include: helpers.includes.UserAccount.leftProfile,
+                include: helpers.includes.UserAccount.leftProfile
             }).catch((e) => winston.warn(e));
         }
         if (type === 'Profile') {
-            if(!context.Role || context.Role.type === 'creator') {
+            if (!context.Role || context.Role.type === 'creator') {
                 return models.Profile.findOne({
                     where: {
                         profileId: id
@@ -57,31 +57,31 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
                     ]
                 }).catch((e) => winston.warn(e));
             }
-            if(context.Role.type === 'consumer') {}
+            if (context.Role.type === 'consumer') {}
         }
         if (type === 'Entry') {
-            if(!context.Role) {
+            if (!context.Role) {
                 winston.info(`Failed to resolve ${type} node due to missing role`);
                 return null;
             }
 
-            if(context.Role.type === 'creator') {
+            if (context.Role.type === 'creator') {
                 // if we are a creator, get the entry directly
                 return models.Entry.findOne({
                     where: {
                         entryId: id,
-                        ownerId: context.userId,
+                        ownerId: context.userId
                     },
                     include: helpers.includes.Entry.basic
                 }).catch((e) => winston.warn(e));
             }
 
-            if(context.Role.type === 'consumer') {
+            if (context.Role.type === 'consumer') {
                 // only give entries to consumers where they are sharing and
                 // the regions match
                 return models.Entry.findOne({
                     where: {
-                        entryId: id,
+                        entryId: id
                     },
                     include: [
                         {
@@ -94,12 +94,12 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
                                 model: models.Profile,
                                 as: 'Profile',
                                 where: {
-                                    sharing: true,
+                                    sharing: true
                                 }
                             }]
                         },
                         ...helpers.includes.Entry.basic
-                    ],
+                    ]
                 }).catch((e) => winston.warn(e));
             }
         }
@@ -112,11 +112,11 @@ var {nodeInterface, nodeField} = relayql.nodeDefinitions(
             // eslint-disable-next-line no-use-before-define
             return EntryType;
         }
-        if (obj instanceof models.UserAccount.Instance){
+        if (obj instanceof models.UserAccount.Instance) {
             // eslint-disable-next-line no-use-before-define
             return UserType;
         }
-        if (obj instanceof models.Profile.Instance){
+        if (obj instanceof models.Profile.Instance) {
             // eslint-disable-next-line no-use-before-define
             return ProfileType;
         }
@@ -140,7 +140,7 @@ const ResidenceType = new ql.GraphQLObjectType({
         name: {
             type: ql.GraphQLString,
             resolve: (root) => root.name
-        },
+        }
     }
 });
 const ProfileType = new ql.GraphQLObjectType({
@@ -162,7 +162,7 @@ const ProfileType = new ql.GraphQLObjectType({
         services: {
             type: new ql.GraphQLList(types.ServiceType),
             resolve: (root) => {
-                return root.ProfileServiceServices
+                return root.ProfileServiceServices;
             }
         },
         residence: {
@@ -195,18 +195,18 @@ const UserType = new ql.GraphQLObjectType({
             type: ql.GraphQLString,
             resolve: (root) => {
                 return root.Role && root.Role.type;
-            },
+            }
         },
         region: {
             type: ql.GraphQLString,
             resolve: (root) => {
                 return root.Region && root.Region.type;
-            },
+            }
         },
         profile: {
             type: ProfileType,
             resolve: (root) => {
-                return root.Profile
+                return root.Profile;
             }
         }
     },
@@ -220,7 +220,7 @@ const EntryOwnerType = new ql.GraphQLObjectType({
             type: ql.GraphQLInt,
             resolve: (root) => {
                 return root.age;
-            },
+            }
         },
         residency: {
             type: ql.GraphQLString,
@@ -253,7 +253,7 @@ const EntryType = new ql.GraphQLObjectType({
                         as: 'Residence'
                     }, {
                         model: models.Service,
-                        as: 'ProfileServiceServices',
+                        as: 'ProfileServiceServices'
                     }]
                 });
             }
@@ -262,37 +262,37 @@ const EntryType = new ql.GraphQLObjectType({
             type: types.MediaType,
             resolve: (root) => {
                 return root.Medium;
-            },
+            }
         },
         sentiment: {
             type: types.SentimentType,
             resolve: (root) => {
                 return root.Sentiment;
-            },
+            }
         },
         topics: {
             type: new ql.GraphQLList(types.TopicType),
             resolve: (root) => {
                 return root.EntryTopicTopics;
-            },
+            }
         },
         views: {
             type: ql.GraphQLInt,
             resolve: (root) => {
-                return root.views
+                return root.views;
             }
         },
         created: {
             type: ql.GraphQLString,
             resolve: (root) => {
                 return moment(root.createdAt).format();
-            },
+            }
         },
         updated: {
             type: ql.GraphQLString,
             resolve: (root) => {
                 return moment(root.updatedAt).format();
-            },
+            }
         }
     },
     interfaces: [nodeInterface]
@@ -307,13 +307,13 @@ const CreatorActivityType = new ql.GraphQLObjectType({
             type: ql.GraphQLInt,
             resolve: (root) => {
                 return root.active;
-            },
+            }
         },
         stale: {
             type: ql.GraphQLInt,
             resolve: (root) => {
                 return root.stale;
-            },
+            }
         }
     }
 });
@@ -325,13 +325,13 @@ const CreatorSentimentType = new ql.GraphQLObjectType({
             type: ql.GraphQLInt,
             resolve: (root) => {
                 return root.happy;
-            },
+            }
         },
         sad: {
             type: ql.GraphQLInt,
             resolve: (root) => {
                 return root.sad;
-            },
+            }
         }
     }
 });
@@ -341,7 +341,7 @@ const DataAccessType = new ql.GraphQLObjectType({
     fields: {
         sentiment: {
             type: CreatorSentimentType,
-            resolve: function({range, regionId}) {
+            resolve: function ({range, regionId}) {
                 var from = moment(range.from);
                 var to = moment(range.to);
                 return models.Entry.findAll({
@@ -353,7 +353,7 @@ const DataAccessType = new ql.GraphQLObjectType({
                     include: [
                         {
                             model: models.Sentiment,
-                            as: 'Sentiment',
+                            as: 'Sentiment'
                         },
                         {
                             model: models.UserAccount,
@@ -362,12 +362,12 @@ const DataAccessType = new ql.GraphQLObjectType({
                                 regionId: regionId,
                                 createdAt: {
                                     $gte: from.format()
-                                },
+                                }
                             }
-                        },
+                        }
                     ]
-                }).then(function(results) {
-                    return results.reduce(function(reduction, row) {
+                }).then(function (results) {
+                    return results.reduce(function (reduction, row) {
                         reduction[row.Sentiment.type]++;
                         return reduction;
                     }, {
@@ -381,27 +381,27 @@ const DataAccessType = new ql.GraphQLObjectType({
             type: new ql.GraphQLList(types.TopicCountType),
             args: {
                 range: {
-                    type: types.DateRangeInputType,
+                    type: types.DateRangeInputType
                 }
             },
-            resolve: function({range, regionId}) {
+            resolve: function ({range, regionId}) {
                 var from = moment(range.from);
                 var to = moment(range.to);
                 return sequelize.query(helpers.queries.Topic.countsByRange(from.format(), to.format(), regionId))
                 .then(([results, metadata]) => results)
                 .catch((e) => winston.warn(e));
-            },
+            }
         },
         activity: {
             type: CreatorActivityType,
-            resolve: function({range, regionId}, args) {
+            resolve: function ({range, regionId}, args) {
                 var from = moment(range.from);
                 var to = moment(range.to);
                 return sequelize.query(helpers.queries.UserAccount.entryActivity(from.format(), to.format(), regionId))
                 .then(([results, metadata]) => results)
-                .then(function(results) {
-                    return results.reduce(function(reduction, row) {
-                        if(row.count >= 1) {
+                .then(function (results) {
+                    return results.reduce(function (reduction, row) {
+                        if (row.count >= 1) {
                             reduction.active++;
                         } else {
                             reduction.stale++;
@@ -412,14 +412,14 @@ const DataAccessType = new ql.GraphQLObjectType({
                         stale: 0
                     });
                 }).catch((e) => winston.warn(e));
-            },
+            }
         },
         entries: {
             type: entryConnectionDefinition.connectionType,
             args: Object.assign({
                 topics: {
-                    type: types.TopicsInputType,
-                },
+                    type: types.TopicsInputType
+                }
             }, relayql.connectionArgs),
             resolve: ({range, regionId}, args) => {
                 const { topics } = args;
@@ -435,20 +435,20 @@ const DataAccessType = new ql.GraphQLObjectType({
                     include: [
                         {
                             model: models.Medium,
-                            as: 'Medium',
+                            as: 'Medium'
                         },
                         {
                             model: models.Sentiment,
-                            as: 'Sentiment',
+                            as: 'Sentiment'
                         },
                         {
                             model: models.Topic,
                             as: 'EntryTopicTopics',
                             where: {
-                                //excluding entries which don't have a matching topic
+                                // excluding entries which don't have a matching topic
                                 type: {
                                     $in: topics
-                                },
+                                }
                             }
                         },
                         {
@@ -461,16 +461,16 @@ const DataAccessType = new ql.GraphQLObjectType({
                                 model: models.Profile,
                                 as: 'Profile',
                                 where: {
-                                    sharing: true,
+                                    sharing: true
                                 }
                             }]
-                        },
+                        }
                     ]
-                }).then(function(entries) {
+                }).then(function (entries) {
                     // we don't need to wait for this to complete
                     const ids = entries.map((entry) => parseInt(entry.entryId, 10));
                     winston.warn(ids);
-                    sequelize.query(helpers.queries.Entry.incrementViews(ids))
+                    sequelize.query(helpers.queries.Entry.incrementViews(ids));
                     return entries;
                 }).catch((e) => winston.warn(e)), args);
             }
@@ -486,17 +486,17 @@ const ConsumerType = new ql.GraphQLObjectType({
             type: new ql.GraphQLList(types.TopicType),
             resolve: () => {
                 return models.Topic.findAll().catch((e) => winston.warn(e));
-            },
+            }
         },
         access: {
             type: DataAccessType,
             args: {
                 range: {
-                    type: types.DateRangeInputType,
-                },
+                    type: types.DateRangeInputType
+                }
             },
             resolve: (root, {range}, {regionId}) => {
-                return {range, regionId}
+                return {range, regionId};
             }
         }
     },
@@ -508,12 +508,12 @@ const consumerField = {
     resolve: (root, args, context) => {
         return models.UserAccount.findOne({
             where: {
-                userId: context.userId,
+                userId: context.userId
             },
-            include: helpers.includes.UserAccount.basicConsumer,
+            include: helpers.includes.UserAccount.basicConsumer
         }).then((user) => user ? { consumer: true } : null).catch((e) => winston.warn(e));
-    },
-}
+    }
+};
 
 const EntryFilterArgsType = new ql.GraphQLInputObjectType({
     name: 'EntryFilterArgs',
@@ -545,13 +545,13 @@ const CreatorType = new ql.GraphQLObjectType({
             type: new ql.GraphQLList(types.TopicType),
             resolve: () => {
                 return models.Topic.findAll().catch((e) => winston.warn(e));
-            },
+            }
         },
         entries: {
             type: entryConnectionDefinition.connectionType,
             args: Object.assign({
                 random: {
-                    type: ql.GraphQLBoolean,
+                    type: ql.GraphQLBoolean
                 },
                 filter: {
                     type: EntryFilterArgsType
@@ -560,18 +560,18 @@ const CreatorType = new ql.GraphQLObjectType({
             resolve: (root, args, context) => {
                 return relayql.connectionFromPromisedArray(models.Entry.findAll({
                     where: {
-                        ownerId: context.userId,
+                        ownerId: context.userId
                     },
                     include: helpers.includes.Entry.basic,
                     order: [
                         ['createdAt', 'DESC']
-                    ],
-                }).then(function(entries) {
-                    if(args.filter && Object.keys(args.filter).length) {
+                    ]
+                }).then(function (entries) {
+                    if (args.filter && Object.keys(args.filter).length) {
                         let filter = new EntryFilter(args.filter);
                         entries = filter.filter(entries);
                     }
-                    if(args.random) {
+                    if (args.random) {
                         let first = entries.shift();
                         let generator = randomSeed.create(context.userId);
                         entries = shuffle(entries, {
@@ -586,15 +586,15 @@ const CreatorType = new ql.GraphQLObjectType({
         happyCount: {
             type: ql.GraphQLInt,
             resolve: (root, args, context) => {
-                return spool.getCreatorSentimentCount("happy", context.userId);
-            },
+                return spool.getCreatorSentimentCount('happy', context.userId);
+            }
         },
         sadCount: {
             type: ql.GraphQLInt,
             resolve: (root, args, context) => {
-                return spool.getCreatorSentimentCount("sad", context.userId);
-            },
-        },
+                return spool.getCreatorSentimentCount('sad', context.userId);
+            }
+        }
     },
     interfaces: [nodeInterface]
 });
@@ -604,24 +604,24 @@ const creatorField = {
     resolve: (root, args, context) => {
         return models.UserAccount.findOne({
             where: {
-                userId: context.userId,
+                userId: context.userId
             },
-            include: helpers.includes.UserAccount.basicCreator,
+            include: helpers.includes.UserAccount.basicCreator
         }).then((user) => user ? { creator: true } : null).catch((e) => winston.warn(e));
-    },
-}
+    }
+};
 
 const userField = {
     type: UserType,
     resolve: (root, args, context) => {
         return models.UserAccount.findOne({
             where: {
-                userId: context.userId,
+                userId: context.userId
             },
-            include: helpers.includes.UserAccount.leftProfile,
+            include: helpers.includes.UserAccount.leftProfile
         }).catch((e) => winston.warn(e));
-    },
-}
+    }
+};
 const MetaType = new ql.GraphQLObjectType({
     name: 'Meta',
     fields: {
@@ -632,17 +632,17 @@ const MetaType = new ql.GraphQLObjectType({
                     include: [
                         {
                             model: models.Service,
-                            as: 'RegionServiceServices',
+                            as: 'RegionServiceServices'
                         }
                     ]
                 }).catch((e) => winston.warn(e));
-            },
+            }
         },
         roles: {
             type: new ql.GraphQLList(types.RoleType),
             resolve: () => {
                 return models.Role.findAll().catch((e) => winston.warn(e));
-            },
+            }
         },
         residences: {
             type: new ql.GraphQLList(ResidenceType),
@@ -650,13 +650,13 @@ const MetaType = new ql.GraphQLObjectType({
                 return models.Residence.findAll().catch((e) => winston.warn(e));
             }
         }
-    },
+    }
 });
 
 const metaField = {
     type: MetaType,
-    resolve: () => true,
-}
+    resolve: () => true
+};
 
 const createEntry = relayql.mutationWithClientMutationId({
     name: 'CreateEntry',
@@ -672,27 +672,27 @@ const createEntry = relayql.mutationWithClientMutationId({
             resolve: ({entry}, args, context) => {
                 return models.Entry.findAll({
                     where: {
-                        ownerId: context.userId,
+                        ownerId: context.userId
                     }
-                }).then(function(entries) {
+                }).then(function (entries) {
                     var indexOfEntry = _.findIndex(entries, { entryId: entry.entryId });
                     return {
                         cursor: relayql.offsetToCursor(indexOfEntry),
-                        node: entry,
+                        node: entry
                     };
                 }).catch((e) => winston.warn(e));
-           },
-        },
+            }
+        }
     },
-    mutateAndGetPayload: function mutateEntryPayload({entry}, context) {
-        if (!context.Role || context.Role.type !== "creator") {
+    mutateAndGetPayload: function mutateEntryPayload ({entry}, context) {
+        if (!context.Role || context.Role.type !== 'creator') {
             winston.info(`Failed createEntry mutation due to role mismatch`);
             return {};
         }
         var media = entry.media;
         var topics = entry.topics;
         var sentiment = entry.sentiment;
-        return spool.makeEntry(context.userId, media, sentiment, topics)
+        return spool.makeEntry(context.userId, media, sentiment, topics);
     }
 });
 
@@ -704,9 +704,9 @@ const updatePrivacy = relayql.mutationWithClientMutationId({
         }
     },
     outputFields: {
-        user: userField,
+        user: userField
     },
-    mutateAndGetPayload: function mutatePrivacyPayload({privacy}, context) {
+    mutateAndGetPayload: function mutatePrivacyPayload ({privacy}, context) {
         if (!context.Profile) {
             return {};
         }
@@ -716,7 +716,7 @@ const updatePrivacy = relayql.mutationWithClientMutationId({
             where: {
                 profileId: context.Profile.profileId
             }
-            //return an empty object to store mutationId
+            // return an empty object to store mutationId
         }).then(() => ({}));
     }
 });
@@ -724,9 +724,9 @@ const updatePrivacy = relayql.mutationWithClientMutationId({
 const hideIntroduction = relayql.mutationWithClientMutationId({
     name: 'HideIntroduction',
     outputFields: {
-        user: userField,
+        user: userField
     },
-    mutateAndGetPayload: function mutateIntroductionPayload({privacy}, context) {
+    mutateAndGetPayload: function mutateIntroductionPayload ({privacy}, context) {
         if (!context.Profile) {
             return {};
         }
@@ -736,7 +736,7 @@ const hideIntroduction = relayql.mutationWithClientMutationId({
             where: {
                 profileId: context.Profile.profileId
             }
-            //return an empty object to store mutationId
+            // return an empty object to store mutationId
         }).then(() => ({}));
     }
 });
@@ -751,36 +751,36 @@ const updateUser = relayql.mutationWithClientMutationId({
     outputFields: {
         user: userField
     },
-    mutateAndGetPayload: function mutateUserPayload({user}, context) {
+    mutateAndGetPayload: function mutateUserPayload ({user}, context) {
         return spool.updateUser(context.userId, user);
     }
-}); 
+});
 
 const deleteEntry = relayql.mutationWithClientMutationId({
     name: 'DeleteEntry',
     inputFields: {
         entryId: {
-            type: ql.GraphQLString,
+            type: ql.GraphQLString
         }
     },
     outputFields: {
         creator: creatorField,
         deletedEntryId: {
             type: ql.GraphQLString,
-            resolve: ({entryId}) => entryId,
+            resolve: ({entryId}) => entryId
         }
     },
-    mutateAndGetPayload: function mutateUserPayload({entryId}, context) {
+    mutateAndGetPayload: function mutateUserPayload ({entryId}, context) {
         const ownerId = context.userId;
         const { id } = relayql.fromGlobalId(entryId);
         return models.Entry.destroy({
             where: {
                 entryId: id,
-                ownerId,
-            },
+                ownerId
+            }
         }).then(() => ({ entryId })).catch((e) => winston.warn(e));
     }
-}); 
+});
 
 module.exports = {
     fields: {
@@ -788,7 +788,7 @@ module.exports = {
         creatorField,
         consumerField,
         userField,
-        metaField,
+        metaField
     },
     mutations: {
         createEntry,
@@ -797,4 +797,4 @@ module.exports = {
         updatePrivacy,
         hideIntroduction
     }
-}
+};
