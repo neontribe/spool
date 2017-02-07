@@ -5,3 +5,4 @@ config/models/*
 config/sequelize-template/*
 seeders/*
 src/server/database/models/definition/*
+src/__tests__

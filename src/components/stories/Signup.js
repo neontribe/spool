@@ -14,7 +14,6 @@ const initial = {
     }
 };
 
-
 storiesOf('Signup', module)
     .add('initial view', () => (
         <Signup meta={initial.meta} viewer={initial.viewer}/>

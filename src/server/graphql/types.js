@@ -6,19 +6,19 @@ const MediaType = new ql.GraphQLObjectType({
         text: { type: ql.GraphQLString },
         video: {
             type: ql.GraphQLString,
-            resolve: (media) => media.video ? '/s3/assets/'+media.video : null
+            resolve: (media) => media.video ? '/s3/assets/' + media.video : null
         },
         videoThumbnail: {
             type: ql.GraphQLString,
-            resolve: (media) => media.videoThumbnail ? '/s3/assets/'+media.videoThumbnail : null
+            resolve: (media) => media.videoThumbnail ? '/s3/assets/' + media.videoThumbnail : null
         },
         image: {
             type: ql.GraphQLString,
-            resolve: (media) => media.image ? '/s3/assets/'+media.image : null
+            resolve: (media) => media.image ? '/s3/assets/' + media.image : null
         },
         imageThumbnail: {
             type: ql.GraphQLString,
-            resolve: (media) => media.imageThumbnail ? '/s3/assets/'+media.imageThumbnail : null
+            resolve: (media) => media.imageThumbnail ? '/s3/assets/' + media.imageThumbnail : null
         }
     }
 });
@@ -62,7 +62,7 @@ const RegionType = new ql.GraphQLObjectType({
         services: {
             type: new ql.GraphQLList(ServiceType),
             resolve: (root) => {
-                return root.RegionServiceServices
+                return root.RegionServiceServices;
             }
         }
     }
@@ -116,7 +116,7 @@ const TopicCountType = new ql.GraphQLObjectType({
             resolve: (obj) => {
                 return {
                     name: obj.name,
-                    type: obj.type,
+                    type: obj.type
                 };
             }
         },
@@ -145,10 +145,10 @@ const UserInputType = new ql.GraphQLInputObjectType({
             type: new ql.GraphQLNonNull(ql.GraphQLString)
         },
         nickname: {
-            type: ql.GraphQLString,
+            type: ql.GraphQLString
         },
         age: {
-            type: ql.GraphQLInt,
+            type: ql.GraphQLInt
         },
         residence: {
             type: new ql.GraphQLNonNull(ql.GraphQLString)
@@ -181,5 +181,5 @@ module.exports = {
     TopicCountType,
     UserInputType,
     PrivacyInputType,
-    TopicsInputType,
+    TopicsInputType
 };
