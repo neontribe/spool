@@ -205,7 +205,6 @@ class Camera extends Component {
                                 ref={(ref) => { this._viewfinder = ref; }}
                                 src={this.state.streamURL}
                                 muted={true}
-                                autoPlay={true}
                             />
                         )}
 
