@@ -36,7 +36,8 @@ class AddEntry extends Component {
         this.state = {
             entry: props.entry,
             form: AddEntry.ABOUT,
-            saving: false
+            saving: false,
+            updating: false
         };
 
         const { ABOUT, SENTIMENT, MEDIA } = AddEntry;
@@ -61,6 +62,20 @@ class AddEntry extends Component {
 
         this.handleMediaTypeChange = this.handleMediaTypeChange.bind(this);
         this.onSaveStart = this.onSaveStart.bind(this);
+        this.onUpdateStart = this.onUpdateStart.bind(this);
+        this.onUpdateEnd = this.onUpdateEnd.bind(this);
+    }
+
+    onUpdateStart () {
+        this.setState({
+            updating: true
+        });
+    }
+
+    onUpdateEnd () {
+        this.setState({
+            updating: false
+        });
     }
 
     onSaveStart () {
@@ -121,7 +136,15 @@ class AddEntry extends Component {
                     return <SentimentForm save={this.transitions[SENTIMENT]} />;
 
                 case MEDIA:
-                    return <MediaForm onSaveStart={this.onSaveStart} onSaveEnd={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange} />;
+                    return (
+                        <MediaForm
+                            onSaveStart={this.onSaveStart}
+                            onSaveEnd={this.transitions[MEDIA]}
+                            onUpdateStart={this.onUpdateStart}
+                            onUpdateEnd={this.onUpdateEnd}
+                            onMediaTypeChange={this.handleMediaTypeChange}
+                        />
+                    );
         }
     }
 
@@ -168,6 +191,7 @@ class AddEntry extends Component {
                 </Header>
                 <Content>
                     {this.state.saving && <PageOverlay title='Saving.' />}
+                    {this.state.updating && <PageOverlay title='Updating.' />}
                     {this.renderForm()}
                 </Content>
             </Layout>

@@ -35,7 +35,6 @@
     "url": "https://github.com/neontribe/spool/issues"
   },
   "devDependencies": {
-    "aspectratio": "^2.2.2",
     "enzyme": "^2.4.1",
     "http-proxy-middleware": "^0.17.3",
     "mocha": "^3.0.1",

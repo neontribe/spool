@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
+import resizer from '../lib/resizer.js';
 import Grid from './Grid';
 import Button from './Button';
 import TouchIcon from './TouchIcon';
@@ -32,11 +33,20 @@ class ImageUploader extends Component {
         if (!event.target.files.length) {
             return;
         }
+
         const URL = window.URL || window.webkitURL;
         const file = event.target.files[0];
-        this.setState({
-            image: URL.createObjectURL(file),
-            imageFile: file
+        const image = URL.createObjectURL(file);
+
+        this.props.onUpdateStart();
+
+        resizer(file, 300, 300, (imageThumbnail) => {
+            this.setState({
+                image,
+                imageFile: file,
+                imageThumbnailFile: imageThumbnail,
+                imageThumbnail: URL.createObjectURL(imageThumbnail)
+            }, this.props.onUpdateEnd);
         });
     }
 
@@ -44,13 +54,14 @@ class ImageUploader extends Component {
         this.props.save({
             text: this.state.text,
             image: this.state.imageFile,
-            imageThumbnail: this.state.imageFile
+            imageThumbnail: this.state.imageThumbnailFile
         });
     }
 
     reset () {
         this.setState({
-            image: null
+            image: null,
+            imageThumbnail: null
         });
     }
 
@@ -97,16 +108,16 @@ class ImageUploader extends Component {
 
                 <Grid enforceConsistentSize={true}>
                     <div className={styles.outputWrapper}>
-                        {(!this.state.image) && (
+                        {(!this.state.imageThumbnail) && (
                             <label className={styles.uploadWrapper}>
                                 <input className={styles.fileUpload} ref='input' type="file" accept="image/*" capture="camera" onChange={this.handleFile} />
-                                <Button onClick={Function.prototype}><TouchIcon />Add photo</Button>
+                                <Button onClick={Function.prototype}><TouchIcon />Add picture</Button>
                             </label>
                         )}
 
-                        {(this.state.image) && (
+                        {(this.state.imageThumbnail) && (
                             <div>
-                                <img alt="Your last take" src={this.state.image} />
+                                <img alt="Your last take" src={this.state.imageThumbnail} />
 
                                 {this.state.text && (
                                     <div className={styles.text}>{this.state.text}</div>
@@ -115,7 +126,7 @@ class ImageUploader extends Component {
                         )}
                     </div>
                     <div className={styles.btnStack}>
-                        {(this.state.image) && [
+                        {(this.state.imageThumbnail) && [
                             <Button key={0} onClick={this.reset}>Try Again</Button>,
                             <Button key={1} onClick={this.showDescripton}>Add Description</Button>,
                             <Button key={2} onClick={this.save}><TouchIcon />Save</Button>
@@ -128,6 +139,8 @@ class ImageUploader extends Component {
 }
 
 ImageUploader.propTypes = {
+    onUpdateStart: React.PropTypes.func,
+    onUpdateEnd: React.PropTypes.func,
     save: React.PropTypes.func.isRequired
 };
 
