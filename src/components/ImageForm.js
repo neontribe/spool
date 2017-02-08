@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 
 import uploadToS3 from '../s3';
-import resizer from '../lib/resizer.js';
 import Camera from './Camera';
 import ImageUploader from './ImageUploader';
 import PageOverlay from './PageOverlay';
@@ -47,36 +46,34 @@ class ImageForm extends Component {
         });
 
         this.props.onSaveStart();
-        resizer(data.imageThumbnail, 300, 300, (thumb) => {
-            data.imageThumbnail = thumb;
-            var savers = _.toPairs(_.pick(data, 'image', 'imageThumbnail')).map((item) => {
-                return uploadToS3(item[1])
-                    .then((s3Info) => {
-                        return {
-                            [item[0]]: s3Info
-                        };
-                    });
-            });
 
-            if (data.text) {
-                savers.push({
-                    text: data.text
+        var savers = _.toPairs(_.pick(data, 'image', 'imageThumbnail', 'video', 'videoThumbnail')).map((item) => {
+            return uploadToS3(item[1])
+                .then((s3Info) => {
+                    return {
+                        [item[0]]: s3Info
+                    };
                 });
-            }
-
-            Promise.all(savers)
-                .then((results) => {
-                    var info = Object.assign.apply(Object, [{}].concat(results));
-
-                    this.setState({
-                        uploading: false,
-                        uploaded: true
-                    });
-
-                    this.props.onSaveEnd(info);
-                })
-                .catch((e) => console.log('Error during file save: ', e));
         });
+
+        if (data.text) {
+            savers.push({
+                text: data.text
+            });
+        }
+
+        Promise.all(savers)
+            .then((results) => {
+                var info = Object.assign.apply(Object, [{}].concat(results));
+
+                this.setState({
+                    uploading: false,
+                    uploaded: true
+                });
+
+                this.props.onSaveEnd(info);
+            })
+            .catch((e) => console.log('Error during file save: ', e));
     }
 
     requestUploadMode () {
