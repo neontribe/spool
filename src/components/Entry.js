@@ -107,24 +107,14 @@ export class Entry extends Component {
 
                 {entry.media.video && (
                     <div className={styles.videoOverlay}>
-                        {(this.props.thumbnailMode || this.state.showThumbnail) && (
-                            <div
-                                className={styles.videoOverlayPlayWrapper}
-                                onClick={(!this.props.thumbnailMode) ? this.hideThumbnail : Function.prototype}
-                            >
-                                <div className={styles.videoOverlayPlay}></div>
-                            </div>
-                        )}
-
-                        {!this.props.thumbnailMode && (
                             <video
-                                className={(this.state.showThumbnail) ? styles.videoHidden : styles.video}
+                                autoPlay={true}
+                                className={styles.video}
                                 ref='video'
                                 src={entry.media.video}
                                 controls={true}
                                 onClick={!this.props.thumbnailMode && this.toggleVideoPlay}
                             />
-                        )}
                     </div>
                 )}
 
@@ -195,12 +185,6 @@ export class Entry extends Component {
         var props = {
             className: styleVariant
         };
-
-        if (this.state.showThumbnail && backgroundImage) {
-            props.style = {
-                backgroundImage: `url(${backgroundImage})`
-            };
-        }
 
         if (this.props.thumbnailMode) {
             return (

@@ -288,7 +288,6 @@ class VideoRecorder extends Component {
                         {(this.state.lastTakeURL && !this.state.countdown) && (
                             <div className={styles.videoContainer}>
                                 <video
-                                    autoPlay={true}
                                     className={styles.video}
                                     ref={(ref) => { this._player = ref; }}
                                     src={this.state.lastTakeURL}
