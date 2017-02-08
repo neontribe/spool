@@ -168,3 +168,16 @@
 	cursor: pointer;
 }
 
+.imageThumbnail {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex: 1;
+	justify-content: center;
+	align-self: stretch;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	border-radius: 1rem;
+}

@@ -117,7 +117,7 @@ class ImageUploader extends Component {
 
                         {(this.state.imageThumbnail) && (
                             <div>
-                                <img alt="Your last take" src={this.state.imageThumbnail} />
+                                <img alt="Your last take" src={this.state.imageThumbnail} className={styles.imageThumbnail} />
 
                                 {this.state.text && (
                                     <div className={styles.text}>{this.state.text}</div>
