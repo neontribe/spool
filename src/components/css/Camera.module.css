@@ -150,3 +150,21 @@
 	color: Blue300;
 	background-color: Green100;
 }
+
+.uploadWrapper {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+.fileUpload {
+	position: absolute;
+	opacity: 0;
+	z-index: 100;
+	height: 100%;
+	width: 100%;
+	cursor: pointer;
+}
+
