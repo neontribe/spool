@@ -4,5 +4,5 @@ import SimpleLogin from '../SimpleLogin';
 
 storiesOf('SimpleLogin', module)
   .add('SimpleLogin', () => (
-  	<SimpleLogin />
+    <SimpleLogin />
   ));

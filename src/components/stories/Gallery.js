@@ -7,17 +7,17 @@ const initialData = {
     role: {
         entries: {
             edges: []
-        },
+        }
     }
-}
+};
 
 const entriesData = {
     role: {
         entries: {
-            edges: entries.map((e) => {return {node:e}})
-        },
+            edges: entries.map((e) => { return {node: e}; })
+        }
     }
-}
+};
 
 storiesOf('Gallery', module)
   .add('Initial View', () => (

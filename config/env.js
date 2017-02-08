@@ -11,11 +11,11 @@ module.exports = Object
   .keys(process.env)
   .filter(key => REACT_APP.test(key))
   .reduce((env, key) => {
-    env['process.env.' + key] = JSON.stringify(process.env[key]);
-    return env;
+      env['process.env.' + key] = JSON.stringify(process.env[key]);
+      return env;
   }, {
-    'process.env.NODE_ENV': NODE_ENV,
-    'process.env.AUTH0_CLIENT_ID': AUTH0_CLIENT_ID,
-    'process.env.AUTH0_DOMAIN': AUTH0_DOMAIN,
-    'process.env.VERSION': VERSION
+      'process.env.NODE_ENV': NODE_ENV,
+      'process.env.AUTH0_CLIENT_ID': AUTH0_CLIENT_ID,
+      'process.env.AUTH0_DOMAIN': AUTH0_DOMAIN,
+      'process.env.VERSION': VERSION
   });

@@ -1,3 +1,8 @@
+@value (
+	Blue200,
+	Blue300
+) from '../../css/Colours.module.css';
+
 .field {
 	composes: vh from '../../css/A11y.module.css';
 }
@@ -8,8 +13,8 @@
 	margin: 0;
 	margin-bottom: 2px;
 	margin-right: 2px;
-	border: 2px solid #34404c;
-	background-color: #1e2c37;
+	border: 2px solid Blue200;
+	background-color: Blue300;
 }
 
 .option {
@@ -24,7 +29,7 @@
 
 .field:checked + .option,
 .field:checked + .option .message {
-	background-color: #34404c;
+	background-color: Blue200;
 }
 
 .message {

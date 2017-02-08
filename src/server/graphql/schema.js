@@ -8,8 +8,8 @@ const QueryType = new ql.GraphQLObjectType({
         creator: relay.fields.creatorField,
         consumer: relay.fields.consumerField,
         user: relay.fields.userField,
-        meta: relay.fields.metaField,
-    },
+        meta: relay.fields.metaField
+    }
 });
 
 const { createEntry, updateUser, deleteEntry, updatePrivacy, hideIntroduction } = relay.mutations;
@@ -21,10 +21,10 @@ const MutationType = new ql.GraphQLObjectType({
         deleteEntry,
         updatePrivacy,
         hideIntroduction
-    },
+    }
 });
 
 module.exports = new ql.GraphQLSchema({
     query: QueryType,
-    mutation: MutationType,
+    mutation: MutationType
 });

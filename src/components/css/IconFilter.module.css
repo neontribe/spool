@@ -1,3 +1,5 @@
+@value Blue200 from '../../css/Colours.module.css';
+
 .filterHeader {
 	margin-top: 1rem;
 	padding: 0 .5rem;
@@ -14,7 +16,7 @@
 
 .filterActive {
 	composes: filter;
-	background-color: #34404c;
+	background-color: Blue200;
 }
 
 .filterNewRow {
@@ -37,14 +39,14 @@
 	align-items: center;
 	justify-content: center;
 	padding: 1rem;
-	border: 1px solid #34404c;
+	border: 1px solid Blue200;
 	color: #fff;
 	font-weight: 500;
 }
 
 .filterControlOn {
 	composes: filterControl;
-	background-color: #34404c;
+	background-color: Blue200;
 }
 
 .filterText {

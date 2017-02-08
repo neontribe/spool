@@ -1,3 +1,5 @@
+@value Blue300 from '../../css/Colours.module.css';
+
 .text {
 	padding-right: 1rem;
 	color: #fff;
@@ -99,5 +101,5 @@
 
 .wrapper {
 	color: #fff;
-	background-color: #1e2c37;
+	background-color: Blue300;
 }

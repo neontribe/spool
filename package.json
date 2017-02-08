@@ -43,6 +43,7 @@
     "supertest": "^2.0.0"
   },
   "dependencies": {
+    "aspectratio": "^2.2.2",
     "@neontribe/react-scripts": "^0.8.0",
     "auth0-js": "^7.1.0",
     "aws-sdk": "^2.5.2",

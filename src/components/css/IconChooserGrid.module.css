@@ -1,3 +1,9 @@
+@value (
+	Blue200,
+	Blue300,
+	Green100
+) from '../../css/Colours.module.css';
+
 .field {
 	composes: vh from '../../css/A11y.module.css';
 }
@@ -16,7 +22,7 @@
 	align-self: stretch;
 	flex: 1;
 	margin: 0;
-	background-color: #34404c;
+	background-color: Blue200;
 	border-radius: 1rem;
 
 	box-shadow:
@@ -35,9 +41,9 @@
 }
 
 .field:checked + .option .message {
-	color: #1e2c37;
-	border-color: #2fd9b5;
-	background-color: #2fd9b5;
+	color: Blue300;
+	border-color: Green100;
+	background-color: Green100;
 }
 
 .message {
