@@ -100,7 +100,7 @@ class ImageUploader extends Component {
                         {(!this.state.image) && (
                             <label className={styles.uploadWrapper}>
                                 <input className={styles.fileUpload} ref='input' type="file" accept="image/*" capture="camera" onChange={this.handleFile} />
-                                <Button onClick={Function.prototype}><TouchIcon />Add video</Button>
+                                <Button onClick={Function.prototype}><TouchIcon />Add photo</Button>
                             </label>
                         )}
 
