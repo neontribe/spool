@@ -130,20 +130,24 @@ class VideoUploader extends Component {
                         </label>
 
                         <div>
-                            <video
-                                autoPlay={true}
-                                className={styles.video}
-                                ref={(ref) => { this._player = ref; }}
-                                controls={true}
-                                src={this.state.lastTakeURL}
-                                onPlay={() => { this.setState({ playing: true }); }}
-                                onPause={() => { this.setState({ playing: false }); }}
-                                onEnded={() => { this.setState({ playing: false }); }}
-                            />
+                        {(this.state.lastTakeURL) && (
+                            <div>
+                                <video
+                                    autoPlay={true}
+                                    className={styles.video}
+                                    ref={(ref) => { this._player = ref; }}
+                                    controls={true}
+                                    src={this.state.lastTakeURL}
+                                    onPlay={() => { this.setState({ playing: true }); }}
+                                    onPause={() => { this.setState({ playing: false }); }}
+                                    onEnded={() => { this.setState({ playing: false }); }}
+                                />
 
-                            {this.state.text && (
-                                <div className={styles.text}>{this.state.text}</div>
-                            )}
+                                {this.state.text && (
+                                    <div className={styles.text}>{this.state.text}</div>
+                                )}
+                            </div>
+                        )}
                         </div>
                     </div>
                     <div className={styles.btnStack}>
