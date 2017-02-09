@@ -125,29 +125,26 @@ class VideoUploader extends Component {
 
                 <Grid enforceConsistentSize={true}>
                     <div className={styles.outputWrapper}>
-                        <label className={(!this.state.lastTakeURL) ? styles.uploadWrapper : styles.uploadWrapperHidden}>
-                            <input className={styles.fileUpload} ref='input' type="file" accept="video/*" capture="camcorder" onChange={this.handleFile} />
-                            <Button onClick={Function.prototype}><TouchIcon />Add video</Button>
+                        <label className={styles.uploadWrapper}>
+                            <input ref='input' type="file" accept="video/*" capture="camcorder" onChange={this.handleFile} />
                         </label>
 
-                        {(this.state.lastTakeURL) && (
-                            <div className={styles.videoContainer}>
-                                <video
-                                    autoPlay={true}
-                                    className={styles.video}
-                                    ref={(ref) => { this._player = ref; }}
-                                    controls={true}
-                                    src={this.state.lastTakeURL}
-                                    onPlay={() => { this.setState({ playing: true }); }}
-                                    onPause={() => { this.setState({ playing: false }); }}
-                                    onEnded={() => { this.setState({ playing: false }); }}
-                                />
+                        <div>
+                            <video
+                                autoPlay={true}
+                                className={styles.video}
+                                ref={(ref) => { this._player = ref; }}
+                                controls={true}
+                                src={this.state.lastTakeURL}
+                                onPlay={() => { this.setState({ playing: true }); }}
+                                onPause={() => { this.setState({ playing: false }); }}
+                                onEnded={() => { this.setState({ playing: false }); }}
+                            />
 
-                                {this.state.text && (
-                                    <div className={styles.text}>{this.state.text}</div>
-                                )}
-                            </div>
-                        )}
+                            {this.state.text && (
+                                <div className={styles.text}>{this.state.text}</div>
+                            )}
+                        </div>
                     </div>
                     <div className={styles.btnStack}>
                         {(this.state.playing) && (
