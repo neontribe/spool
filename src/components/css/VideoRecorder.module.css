@@ -137,6 +137,13 @@
 	height: 100%;
 }
 
+.uploadWrapperHidden {
+	composes: uploadWrapper;
+	position: absolute;
+	top: -100vh;
+	left: -100vh;
+}
+
 .fileUpload {
 	position: absolute;
 	opacity: 0;

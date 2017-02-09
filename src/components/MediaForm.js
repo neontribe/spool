@@ -31,6 +31,8 @@ class MediaForm extends Component {
     static TEXT = 'MEDIAFORM/TEXT';
 
     static propTypes = {
+        onUpdateStart: React.PropTypes.func,
+        onUpdateEnd: React.PropTypes.func,
         onSaveEnd: React.PropTypes.func,
         onSaveStart: React.PropTypes.func,
         saveKey: React.PropTypes.string
@@ -87,7 +89,14 @@ class MediaForm extends Component {
                     return <VideoForm onSaveStart={this.props.onSaveStart} onSaveEnd={this.onSaveEnd} />;
 
                 case PHOTO:
-                    return <ImageForm onSaveStart={this.props.onSaveStart} onSaveEnd={this.onSaveEnd} />;
+                    return (
+                        <ImageForm
+                            onUpdateStart={this.props.onUpdateStart}
+                            onUpdateEnd={this.props.onUpdateEnd}
+                            onSaveStart={this.props.onSaveStart}
+                            onSaveEnd={this.onSaveEnd}
+                        />
+                    );
 
                 case TEXT:
                 default:

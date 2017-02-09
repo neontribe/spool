@@ -48,6 +48,7 @@ class ImageForm extends Component {
         this.props.onSaveStart();
 
         var savers = _.toPairs(_.pick(data, 'image', 'imageThumbnail', 'video', 'videoThumbnail')).map((item) => {
+            console.log('item', item);
             return uploadToS3(item[1])
                 .then((s3Info) => {
                     return {
@@ -95,7 +96,7 @@ class ImageForm extends Component {
                 {({
                     loading: <PageOverlay title='Loading' />,
                     record: <Camera save={this.save} onFailure={this.onMediaFailure} />,
-                    fallbackPrompt: <ImageUploader save={this.save} />
+                    fallbackPrompt: <ImageUploader onUpdateStart={this.props.onUpdateStart} onUpdateEnd={this.props.onUpdateEnd} save={this.save} />
                 })[this.state.mode]}
             </div>
         );
@@ -103,6 +104,8 @@ class ImageForm extends Component {
 }
 
 ImageForm.propTypes = {
+    onUpdateStart: React.PropTypes.func,
+    onUpdateEnd: React.PropTypes.func,
     onSaveStart: React.PropTypes.func,
     onSaveEnd: React.PropTypes.func,
     back: React.PropTypes.func,

@@ -27,14 +27,14 @@
 	display: flex;
 	align-items: stretch;
 	justify-content: space-between;
-	height: calc((50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024)) + .5rem);
+	min-height: calc((50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024)) + .5rem);
 	width: 100%;
 	border-top: .5rem solid Blue200;
 	background-color: Blue200;
 	z-index: 110;
 
 	/* hack to engage viewport-units-buggyfill */
-	content: 'viewport-units-buggyfill; height: calc((50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024)) + .5rem);';
+	content: 'viewport-units-buggyfill; min-height: calc((50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024)) + .5rem);';
 }
 
 .headerExpanded {
