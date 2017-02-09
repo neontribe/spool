@@ -97,12 +97,17 @@ class ImageUploader extends Component {
 
                 <Grid enforceConsistentSize={true}>
                     <div className={styles.outputWrapper}>
-
-                        <input type="file" accept="image/*" capture="camera" onChange={this.handleFile} />
+                        {(!this.state.image) && (
+                            <label className={styles.uploadWrapper}>
+                                <input className={styles.fileUpload} ref='input' type='file' accept='image/*' capture='camera' onChange={this.handleFile} />
+                                <Button onClick={Function.prototype}><TouchIcon />Add picture</Button>
+                            </label>
+                        )}
 
                         {(this.state.image) && (
                             <div>
-                                <img alt="Your last take" src={this.state.image} />
+                                <div className={styles.uploadedImage} style={{ backgroundImage: `url(${this.state.image})` }}></div>
+                                <img className={styles.uploadedImage} src={this.state.image} />
 
                                 {this.state.text && (
                                     <div className={styles.text}>{this.state.text}</div>
