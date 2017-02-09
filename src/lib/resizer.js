@@ -183,9 +183,9 @@ export default function resize (file, maxWidth, maxHeight, cb) {
         source.height = img.height;
         var sctx = source.getContext('2d');
         sctx.drawImage(img, 0, 0, img.width, img.height);
-        _resize(source, dest, function () {
+        // _resize(source, dest, function () {
             dest.toBlob(cb, 'image/jpeg', 0.8);
-        });
+        // });
     };
     img.src = URL.createObjectURL(file);
 };

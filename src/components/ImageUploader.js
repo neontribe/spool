@@ -36,16 +36,14 @@ class ImageUploader extends Component {
 
         const URL = window.URL || window.webkitURL;
         const file = event.target.files[0];
-        const image = URL.createObjectURL(file);
 
         this.props.onUpdateStart();
 
-        resizer(file, 300, 300, (imageThumbnail) => {
+        resizer(file, 800, 800, (image) => {
             this.setState({
                 image,
-                imageFile: file,
-                imageThumbnailFile: imageThumbnail,
-                imageThumbnail: URL.createObjectURL(imageThumbnail)
+                imageThumbnail: image,
+                imageURL: URL.createObjectURL(image)
             }, this.props.onUpdateEnd);
         });
     }
@@ -53,8 +51,8 @@ class ImageUploader extends Component {
     save () {
         this.props.save({
             text: this.state.text,
-            image: this.state.imageFile,
-            imageThumbnail: this.state.imageThumbnailFile
+            image: this.state.image,
+            imageThumbnail: this.state.imageThumbnail
         });
     }
 
@@ -108,16 +106,16 @@ class ImageUploader extends Component {
 
                 <Grid enforceConsistentSize={true}>
                     <div className={styles.outputWrapper}>
-                        {(!this.state.imageThumbnail) && (
+                        {(!this.state.imageURL) && (
                             <label className={styles.uploadWrapper}>
                                 <input className={styles.fileUpload} ref='input' type="file" accept="image/*" capture="camera" onChange={this.handleFile} />
                                 <Button onClick={Function.prototype}><TouchIcon />Add picture</Button>
                             </label>
                         )}
 
-                        {(this.state.imageThumbnail) && (
+                        {(this.state.imageURL) && (
                             <div>
-                                <img className={styles.imageThumbnail} src={this.state.imageThumbnail} />
+                                <img className={styles.imageThumbnail} src={this.state.imageURL} />
 
                                 {this.state.text && (
                                     <div className={styles.text}>{this.state.text}</div>
@@ -126,7 +124,7 @@ class ImageUploader extends Component {
                         )}
                     </div>
                     <div className={styles.btnStack}>
-                        {(this.state.imageThumbnail) && [
+                        {(this.state.imageURL) && [
                             <Button key={0} onClick={this.reset}>Try Again</Button>,
                             <Button key={1} onClick={this.showDescripton}>Add Description</Button>,
                             <Button key={2} onClick={this.save}><TouchIcon />Save</Button>
