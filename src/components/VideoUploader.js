@@ -125,12 +125,10 @@ class VideoUploader extends Component {
 
                 <Grid enforceConsistentSize={true}>
                     <div className={styles.outputWrapper}>
-                        {(!this.state.lastTakeURL) && (
-                            <label className={styles.uploadWrapper}>
-                                <input className={styles.fileUpload} ref='input' type="file" accept="video/*" capture="camcorder" onChange={this.handleFile} />
-                                <Button onClick={Function.prototype}><TouchIcon />Add video</Button>
-                            </label>
-                        )}
+                        <label className={(!this.state.lastTakeURL) ? styles.uploadWrapper : styles.uploadWrapperHidden}>
+                            <input className={styles.fileUpload} ref='input' type="file" accept="video/*" capture="camcorder" onChange={this.handleFile} />
+                            <Button onClick={Function.prototype}><TouchIcon />Add video</Button>
+                        </label>
 
                         {(this.state.lastTakeURL) && (
                             <div className={styles.videoContainer}>

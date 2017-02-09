@@ -1,4 +1,5 @@
 import aspect from 'aspectratio';
+import './canvas-to-blob';
 
 /*
  * MIT License
