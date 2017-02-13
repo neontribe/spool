@@ -8,3 +8,9 @@
 	background: url('./assets/compressed/icon-hand.svg') no-repeat;
 	background-size: cover;
 }
+
+@media all and (max-width: 667px) and (orientation: landscape) {
+	.icon {
+		display: none;
+	}
+}

@@ -163,6 +163,12 @@
 	}
 }
 
+@media all and (max-width: 667px) and (orientation: landscape) {
+	.header > * {
+		overflow-x: auto;
+	}
+}
+
 .overlay {
 	position: fixed;
 	top: 0;

@@ -63,3 +63,14 @@
 	/* Prevent text selection by holding down on touch devices */
 	user-select: none;
 }
+
+@media all and (max-width: 667px) and (orientation: landscape) {
+	.button {
+		font-size: 1.25rem;
+		padding: .5rem 1rem;
+	}
+
+	.raised {
+		margin: 0 5px 5px 0;
+	}
+}
