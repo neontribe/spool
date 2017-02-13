@@ -167,6 +167,10 @@
 	.header > * {
 		overflow-x: auto;
 	}
+
+	.contextMenuContent {
+		width: 60%;
+	}
 }
 
 .overlay {
