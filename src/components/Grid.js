@@ -170,6 +170,10 @@ export default class Grid extends Component {
                 case 5: {
                     length = calculateMaxCellSize(6);
 
+                    if (width <= 667) {
+                        length = calculateMaxCellSize(4);
+                    }
+
                     for (; i < children.length; i++) {
                         itemStyle[i] = {
                             height: length,
@@ -191,6 +195,10 @@ export default class Grid extends Component {
                 case 6: {
                     length = calculateMaxCellSize(6);
 
+                    if (width <= 667) {
+                        length = calculateMaxCellSize(3);
+                    }
+
                     for (; i < children.length; i++) {
                         itemStyle[i] = {
                             height: length,
@@ -208,6 +216,11 @@ export default class Grid extends Component {
 
                 case 8: {
                     length = calculateMaxCellSize(8);
+                    var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+                    if (width <= 667) {
+                        length = calculateMaxCellSize(4);
+                    }
 
                     for (; i < children.length; i++) {
                         itemStyle[i] = {

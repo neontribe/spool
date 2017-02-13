@@ -98,14 +98,6 @@ with CSSModules but can't find an alternative.
 
 @media all and (max-width: 667px) and (orientation: landscape) {
 	.message {
-		height: auto;
 		font-size: 1rem;
-		word-break: break-word;
-	}
-
-	.icon > div {
-		height: calc(100% - 2rem) !important;
-		width: calc(100% - 2rem) !important;
-		margin: .5rem auto 0;
 	}
 }
