@@ -66,8 +66,9 @@
 
 @media all and (max-width: 667px) and (orientation: landscape) {
 	.button {
+		min-width: 0px;
 		font-size: 1.25rem;
-		padding: 1rem;
+		padding: .6rem;
 	}
 
 	.raised {
