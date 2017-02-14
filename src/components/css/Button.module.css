@@ -6,7 +6,7 @@
 .wrapper {
 	/* Extends the button surface area beyond its visual boundaries */
 	display: inline-block;
-	padding: .5rem;
+	padding: 1rem;
 }
 
 .raised {
@@ -34,7 +34,16 @@
 	margin-left: 1rem;
 }
 
-.raised:active {
+.wrapper:active .raised {
+	box-shadow: none;
+	top: 10px;
+	left: 10px;
+}
+
+.raisedActive {
+	composes: raised;
+
+	/* .wrapper:active .raised */
 	box-shadow: none;
 	top: 10px;
 	left: 10px;
