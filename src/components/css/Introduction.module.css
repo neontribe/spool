@@ -100,7 +100,8 @@
 
 @media all and (max-width: 667px) and (orientation: landscape) {
 	.message {
-		padding: 1rem;
-		font-size: 1.25rem;
+		padding: .5rem;
+		font-size: 1rem;
+		border-width: 2px;
 	}
 }
