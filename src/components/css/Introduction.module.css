@@ -97,3 +97,10 @@
 .field:checked + .message {
 	background-color: Blue200;
 }
+
+@media all and (max-width: 667px) and (orientation: landscape) {
+	.message {
+		padding: 1rem;
+		font-size: 1.25rem;
+	}
+}

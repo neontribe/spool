@@ -222,3 +222,28 @@
 	border-width: 2px;
 	border-radius: 50%;
 }
+
+@media all and (max-width: 667px) and (orientation: landscape) {
+	.sentiment > div {
+		height: 2rem !important;
+		width: 2rem !important;
+	}
+
+	.topics,
+	.date {
+		display: none;
+	}
+
+	.text {
+		font-size: 1.5rem;
+	}
+
+	.videoOverlayPlay {
+		height: 5rem;
+		width: 5rem;
+	}
+
+	:global(.carousel .carousel-indicators) {
+		display: none;
+	}
+}

@@ -7,3 +7,14 @@
 	font-size: 2rem;
 	margin-bottom: 1rem;
 }
+
+@media all and (max-width: 667px) and (orientation: landscape) {
+	.regular,
+	.large {
+		margin-bottom: .5rem;
+	}
+
+	.large {
+		font-size: 1.5rem;
+	}
+}

@@ -7,10 +7,9 @@
 ) from '../../css/Colours.module.css';
 
 .app {
-	height: 100vh;
 	max-width: 1920px;
 	display: flex;
-	flex: 1;
+	flex: 1 0 auto;
 	flex-direction: column;
 	justify-content: center;
 	margin: 0 auto;
@@ -142,7 +141,7 @@
 
 .content {
 	display: flex;
-	flex: 1;
+	flex: 1 0 auto;
 	flex-direction: column;
 	height: calc(100vh - ((50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024)) + .5rem)); /* .header->height */
 	padding: 1rem;
@@ -160,6 +159,16 @@
 
 		/* hack to engage viewport-units-buggyfill */
   		content: 'viewport-units-buggyfill; height: calc(100vw - (50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024)) + .5rem);';
+	}
+}
+
+@media all and (max-width: 667px) and (orientation: landscape) {
+	.header > * {
+		overflow-x: auto;
+	}
+
+	.contextMenuContent {
+		width: 60%;
 	}
 }
 

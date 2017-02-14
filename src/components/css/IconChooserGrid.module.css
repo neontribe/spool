@@ -95,3 +95,9 @@ with CSSModules but can't find an alternative.
 	/* hack to engage viewport-units-buggyfill */
 	content: 'viewport-units-buggyfill; height: calc(100% - 5rem) !important; width: calc(100% - 5rem) !important;';
 }
+
+@media all and (max-width: 667px) and (orientation: landscape) {
+	.message {
+		font-size: 1rem;
+	}
+}
