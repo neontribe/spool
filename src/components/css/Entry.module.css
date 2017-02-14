@@ -21,7 +21,6 @@
 	text-align: center;
 	color: #fff;
 	text-shadow: 0 0 1px rgba(0, 0, 0, .6);
-	background-size: cover;
 	border-radius: 1rem;
 }
 
@@ -173,6 +172,24 @@
 	width: 75%;
 	padding: 1rem;
 	margin: auto;
+}
+
+.imageWrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 1rem;
+	background-color: rgba(0, 0, 0, .5);
+}
+
+.image {
+	height: 100%;
 }
 
 /* react-bootstrap Carousel */

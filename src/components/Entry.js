@@ -44,23 +44,6 @@ export class Entry extends Component {
         this.hideThumbnail = this.hideThumbnail.bind(this);
     }
 
-    // componentDidMount () {
-    //     if (this.refs && this.refs.video) {
-    //         this.refs.video.onplaying = () => {
-    //             this.setState({
-    //                 showOverlay: false
-    //             });
-    //         };
-
-    //         // this.refs.video.onpause
-    //         this.refs.video.onended = () => {
-    //             this.setState({
-    //                 showOverlay: true
-    //             });
-    //         };
-    //     }
-    // }
-
     showViewer (e) {
         e.preventDefault();
 
@@ -167,7 +150,7 @@ export class Entry extends Component {
         }
 
         if (entry.media.imageThumbnail) {
-            return entry.media.imageThumbnail;
+            return (this.props.thumbnailMode) ? entry.media.imageThumbnail : entry.media.image;
         } else if (entry.media.video) {
             return entry.media.videoThumbnail;
         }
@@ -192,27 +175,22 @@ export class Entry extends Component {
             }
         }
 
-        var props = {
-            className: styleVariant
-        };
-
-        if (this.state.showThumbnail && backgroundImage) {
-            props.style = {
-                backgroundImage: `url(${backgroundImage})`
-            };
-        }
-
-        if (this.props.thumbnailMode) {
-            return (
-                <Link
-                    {...props}
-                    to={`/app/entry/${entry.id}`}
-                >{this.renderEntry(entry, randomisedStyle, isTextEntry, lightIcon)}</Link>
-            );
-        }
-
         return (
-            <div {...props}>{this.renderEntry(entry, randomisedStyle, isTextEntry, lightIcon)}</div>
+            <Link
+                className={styleVariant}
+                to={`/app/entry/${entry.id}`}
+            >
+                {(this.state.showThumbnail && backgroundImage) && (
+                    <div className={styles.imageWrapper}>
+                        <img
+                            className={styles.image}
+                            src={backgroundImage}
+                            alt='The picture you took'
+                        />
+                    </div>
+                )}
+                {this.renderEntry(entry, randomisedStyle, isTextEntry, lightIcon)}
+            </Link>
         );
     }
 }
