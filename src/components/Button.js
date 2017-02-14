@@ -16,12 +16,22 @@ export default class Button extends Component {
             leading: true,
             trailing: false
         });
+
+        this.state = {
+            active: false
+        };
     }
 
     render () {
         return (
-            <button onClick={this.onClick} className={styles.wrapper} disabled={this.props.disabled}>
-                <span className={styles.raised}>
+            <button
+                onTouchStart={() => { this.setState({ active: true }); }}
+                onTouchEnd={() => { this.setState({ active: false }, this.onClick); }}
+                onClick={this.onClick}
+                className={styles.wrapper}
+                disabled={this.props.disabled}
+            >
+                <span className={(this.state.active) ? styles.raisedActive : styles.raised}>
                     <span className={styles.button}>{this.props.children}</span>
                 </span>
             </button>
