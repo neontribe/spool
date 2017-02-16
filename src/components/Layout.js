@@ -98,7 +98,7 @@ class Header extends Component {
                                     </li>
                                 )}
 
-                                {(this.state.profile && this.props.auth.loggedIn()) && (
+                                {(this.state.profile && this.props.auth.loggedIn() && this.props.user.role === 'creator') && (
                                     <li className={styles.contextMenuItemSettings}>
                                         <Link to={'/app/settings/' + this.props.user.id}>Settings</Link>
                                     </li>
@@ -142,6 +142,7 @@ export default class Layout extends Component {
             user: () => Relay.QL`
                 fragment on User {
                     id
+                    role
                 }
             `
         }
