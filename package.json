@@ -10,7 +10,7 @@
   "private": true,
   "proxy": "http://localhost:3001",
   "scripts": {
-    "build": "react-scripts build",
+    "build": "react-scripts build && sw-precache --config=sw-precache-config.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint .",
@@ -40,7 +40,8 @@
     "mocha": "^3.0.1",
     "pg-generator": "^3.4.2",
     "react-addons-test-utils": "^15.3.0",
-    "supertest": "^2.0.0"
+    "supertest": "^2.0.0",
+    "sw-precache": "^4.3.0"
   },
   "dependencies": {
     "aspectratio": "^2.2.2",
