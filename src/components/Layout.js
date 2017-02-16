@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Relay from 'react-relay';
 import { withRouter, Link } from 'react-router';
 import _ from 'lodash';
 
@@ -99,7 +100,7 @@ class Header extends Component {
 
                                 {(this.state.profile && this.props.auth.loggedIn()) && (
                                     <li className={styles.contextMenuItemSettings}>
-                                        <Link to='/app/settings'>Settings</Link>
+                                        <Link to={'/app/settings/' + this.props.user.id}>Settings</Link>
                                     </li>
                                 )}
 
@@ -136,7 +137,15 @@ class Content extends Component {
 }
 
 export default class Layout extends Component {
-    static Header = withRouter(Header);
+    static Header = withRouter(Relay.createContainer(Header, {
+        fragments: {
+            user: () => Relay.QL`
+                fragment on User {
+                    id
+                }
+            `
+        }
+    }));
     static Content = Content;
 
     render () {

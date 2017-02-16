@@ -47,7 +47,7 @@ export class Dashboard extends Component {
 
         return (
             <Layout>
-                <Header auth={this.props.auth} />
+                <Header auth={this.props.auth} user={this.props.user}/>
                 <Content>
                     <div>
                         <div className={styles.controls}>
@@ -106,6 +106,7 @@ export const DashboardContainer = Relay.createContainer(withRoles(Dashboard, ['c
         user: () => Relay.QL`
             fragment on User {
                 ${userFragment}
+                ${Header.getFragment('user')}
             }
         `,
         consumer: () => Relay.QL`

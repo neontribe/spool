@@ -201,6 +201,7 @@ export class Gallery extends Component {
                 <Header
                     auth={this.props.auth}
                     menuContent={this.renderMenuContent()}
+                    user={this.props.user}
                 />
                 <Content>
                     <div className={styles.wrapper}>
@@ -234,6 +235,7 @@ export const GalleryContainer = Relay.createContainer(WrappedGallery, {
         user: () => Relay.QL`
             fragment on User {
                 ${userFragment}
+                ${Header.getFragment('user')}
             }
         `,
         creator: () => Relay.QL`

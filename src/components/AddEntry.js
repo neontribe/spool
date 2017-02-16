@@ -128,7 +128,7 @@ class AddEntry extends Component {
     render () {
         return (
             <Layout className={styles.wrapper}>
-                <Header auth={this.props.auth}>
+                <Header auth={this.props.auth} user={this.props.user}>
                     {this.state.entry && (
                         <div className={styles.header}>
                             <div className={styles.stepComplete}>
@@ -184,6 +184,7 @@ export const AddEntryContainer = Relay.createContainer(withRoles(withRouter(AddE
         user: () => Relay.QL`
         fragment on User {
                 ${userFragment}
+                ${Header.getFragment('user')}
         }`,
         creator: () => Relay.QL`
             fragment on Creator {

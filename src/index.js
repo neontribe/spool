@@ -95,7 +95,7 @@ ReactDOM.render(
             </Route>
             <Route path="callback" component={Login} onEnter={auth.parseAuthOnEnter} />
             <Route path='app' component={RoleWrapperContainer} queries={UserQueries} onEnter={auth.requireAuthOnEnter} auth={auth}>
-                <Route path='settings' component={SettingsContainer} queries={SettingsQueries} onEnter={auth.requireAuthOnEnter} />
+                <Route path='settings/:id' component={SettingsContainer} queries={SettingsQueries} onEnter={auth.requireAuthOnEnter} />
                 <Route path='introduction' component={IntroductionContainer} queries={UserQueries} onEnter={auth.requireAuthOnEnter} />
                 <Route path='home' component={GalleryContainer} queries={CreatorQueries} onEnter={auth.requireAuthOnEnter} />
                 <Route path='add' component={AddEntryContainer} queries={CreatorQueries} />

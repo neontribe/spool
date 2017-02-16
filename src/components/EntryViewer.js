@@ -68,6 +68,7 @@ export default class EntryViewer extends Component {
                     menuItems={[
                         <a role='button' className={styles.delete} onClick={this.handleOnClick}>Delete</a>
                     ]}
+                    user={this.props.user}
                 >
                     <div className={styles.header}>
                         <div>Created {moment(entry.created).format('Do MMMM')}</div>
@@ -135,8 +136,11 @@ export const EntryViewerContainer = Relay.createContainer(EntryViewer, {
             views
             ${EntryContainer.getFragment('entry')}
             ${DeleteEntryMutation.getFragment('entry')}
-        }
-        `,
+        }`,
+        user: () => Relay.QL`
+        fragment on User {
+            ${Header.getFragment('user')}
+        }`,
         creator: () => Relay.QL`
         fragment on Creator {
             id
