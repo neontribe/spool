@@ -132,6 +132,7 @@ export class Timeline extends Component {
                 <Header
                     auth={this.props.auth}
                     menuContent={this.renderMenuContent()}
+                    user={this.props.user}
                 />
                 <Content>
                     {!Object.keys(entries).length && (
@@ -197,6 +198,7 @@ export const TimelineContainer = Relay.createContainer(withRoles(Timeline, ['cre
         user: () => Relay.QL`
             fragment on User {
                 role
+                ${Header.getFragment('user')}
             }
         `,
         creator: () => Relay.QL`

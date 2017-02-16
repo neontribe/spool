@@ -97,7 +97,7 @@ export default class Introduction extends Component {
     render () {
         return (
             <Layout>
-                <Header auth={this.props.auth}>
+                <Header auth={this.props.auth} user={this.props.user}>
                     <ol className={styles.header}>
                         <li className={(this.state.step >= 0) && styles.stepComplete}>1. About</li>
                         <li className={(this.state.step >= 1) && styles.stepComplete}>2. Entries</li>
@@ -175,6 +175,7 @@ export const IntroductionContainer = Relay.createContainer(Introduction, {
         user: () => Relay.QL`
             fragment on User {
                 id
+                ${Header.getFragment('user')}
                 ${UpdatePrivacyMutation.getFragment('user')}
                 ${HideIntroductionMutation.getFragment('user')}
                 profile {

@@ -49,7 +49,7 @@ export class Settings extends React.Component {
     render () {
         return (
             <Layout>
-                <Header auth={this.props.auth} />
+                <Header auth={this.props.auth} user={this.props.user} />
                 <Content>
                     <div className={styles.wrapper}>
                         <h2 className={headings.large}>Getting to know you</h2>
@@ -84,6 +84,7 @@ export const SettingsContainer = Relay.createContainer(withRouter(Settings), {
             profile {
                 isIntroduced
             }
+            ${Header.getFragment('user')}
             ${SettingsFormContainer.getFragment('user')}
             ${UpdateUserMutation.getFragment('user')}
         }`

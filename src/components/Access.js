@@ -113,7 +113,7 @@ export default class Access extends Component {
     render () {
         return (
             <Layout>
-                <Header auth={this.props.auth} />
+                <Header auth={this.props.auth} user={this.props.user}/>
                 <Content>
                     <AccessFormContainer
                         onSuccess={this.handleFormSuccess}
@@ -132,8 +132,8 @@ export const AccessContainer = Relay.createContainer(withRoles(Access, ['consume
         first: 100,
         ready: false,
         range: {
-            from: moment(),
-            to: moment()
+            from: moment().startOf('date'),
+            to: moment().endOf('date')
         },
         topics: []
     },
@@ -141,6 +141,7 @@ export const AccessContainer = Relay.createContainer(withRoles(Access, ['consume
         user: () => Relay.QL`
             fragment on User {
                 ${userFragment}
+                ${Header.getFragment('user')}
             }
         `,
         consumer: () => Relay.QL`

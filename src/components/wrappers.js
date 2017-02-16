@@ -50,7 +50,7 @@ export function withRequiredSetup (Component) {
     return withRouter(class WrappedWithRequiredSetup extends React.Component {
         componentWillMount () {
             if (!this.valid()) {
-                this.props.router.push('/app/settings');
+                this.props.router.push('/app/settings/' + this.props.user.id);
             }
         }
 
@@ -70,6 +70,7 @@ export function withRequiredSetup (Component) {
 
 export const userFragment = Relay.QL`
     fragment on User {
+        id
         role
         profile {
             isIntroduced
