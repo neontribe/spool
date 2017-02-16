@@ -125,6 +125,8 @@ module.exports = {
                 user_account.created_at >= ${from}
             AND
                 user_account.region_id = ${regionId}
+            AND
+                user_account.role_id = ( SELECT role_id FROM role WHERE role.type = 'creator' )
             GROUP BY
                 user_account.user_id
             `.useBind()
