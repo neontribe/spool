@@ -19,8 +19,8 @@ export class AccessForm extends Component {
         super(props);
 
         this.state = {
-            from: moment().add(-1, 'months').toISOString(),
-            to: moment().add(1, 'months').toISOString(),
+            from: moment().add(-1, 'months').startOf('date').toISOString(),
+            to: moment().add(1, 'months').endOf('date').toISOString(),
             topics: []
         };
 
@@ -40,11 +40,11 @@ export class AccessForm extends Component {
     }
 
     handleFromChange (value) {
-        this.handleChange('from', value);
+        this.handleChange('from', moment(value).startOf('date'));
     }
 
     handleToChange (value) {
-        this.handleChange('to', value);
+        this.handleChange('to', moment(value).endOf('date'));
     }
 
     handleChange (key, value) {

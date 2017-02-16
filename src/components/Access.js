@@ -132,8 +132,8 @@ export const AccessContainer = Relay.createContainer(withRoles(Access, ['consume
         first: 100,
         ready: false,
         range: {
-            from: moment(),
-            to: moment()
+            from: moment().startOf('date'),
+            to: moment().endOf('date')
         },
         topics: []
     },

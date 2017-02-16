@@ -31,7 +31,7 @@ export class Dashboard extends Component {
         var [qty, step] = evt.target.value.split(',');
         const range = {
             from: moment().add(qty, step).startOf('date').format(),
-            to: moment().startOf('date').format()
+            to: moment().endOf('date').format()
         };
         this.setState({
             rangeFrom: evt.target.value,
