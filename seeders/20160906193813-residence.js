@@ -14,16 +14,16 @@ module.exports = {
       */
       return queryInterface.bulkInsert('residence', [
           {
-              type: 'residence_a',
-              name: 'Residence A'
+              type: 'family',
+              name: 'With Family'
           },
           {
-              type: 'residence_b',
-              name: 'Residence B'
+              type: 'independent',
+              name: 'Independent'
           },
           {
-              type: 'residence_c',
-              name: 'Residence C'
+              type: 'supported',
+              name: 'Supported Living'
           },
       ]);
   },
