@@ -10,7 +10,7 @@
   "private": true,
   "proxy": "http://localhost:3001",
   "scripts": {
-    "build": "react-scripts build",
+    "build": "react-scripts build && sw-precache --config=sw-precache-config.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint .",
@@ -91,6 +91,7 @@
     "sha.js": "^2.4.5",
     "shuffle-array": "^1.0.0",
     "sql-template-strings": "^2.2.0",
+	"sw-precache": "^4.3.0",
     "viewport-units-buggyfill": "^0.6.0",
     "winston": "^2.2.0"
   },
