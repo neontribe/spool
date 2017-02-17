@@ -50,7 +50,7 @@ export default class Access extends Component {
             form
         });
 
-        this.props.relay.setVariables(form);
+        this.props.relay.forceFetch(form);
     }
 
     handleCSVClick () {
