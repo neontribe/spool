@@ -111,7 +111,7 @@ export default class Introduction extends Component {
                         <Step>
                             <div>
                                 <h1 className={headings.large}>Get Started</h1>
-                                <p>Watch the video below to learn what Daybook is all about</p>
+                                <p>Welcome! Watch the video below to find out more about Daybook</p>
                             </div>
                             <div className={styles.controls}>
                                 <Button onClick={this.handleNextStep}>Next</Button>
@@ -121,7 +121,7 @@ export default class Introduction extends Component {
                         <Step>
                             <div>
                                 <h1 className={headings.large}>Adding an Entry</h1>
-                                <p>Watch the video below to learn how to add a new entry to your Daybook</p>
+                                <p>Great, you’re all set up! Watch the video below to find out to get started with adding an entry.</p>
                             </div>
                             <div className={styles.controls}>
                                 <Button onClick={this.handleBackStep}>Back</Button>
