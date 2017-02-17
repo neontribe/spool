@@ -14,7 +14,7 @@ export default class EmailLogin extends Component {
 
     static defaultProps = {
         email: '',
-        password: ''
+        password: '',
     }
 
     constructor (props) {
@@ -90,7 +90,7 @@ export default class EmailLogin extends Component {
     }
 
     render () {
-        const { email, password } = this.state;
+        const { email, password, confirm } = this.state;
         const { confirmPassword } = this.props;
         const errors = this.errors();
 
@@ -132,7 +132,10 @@ export default class EmailLogin extends Component {
                         </label>
                     )}
 
-                    {(email.value && password.value && confirmPassword && !errors) && (
+                    {(email.value &&
+                        password.value &&
+                        ((confirmPassword && confirm.value) || !confirmPassword) &&
+                        !errors) && (
                         <Button onClick={this.handleSubmit}>{this.props.submitText}</Button>
                     )}
                 </form>

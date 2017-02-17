@@ -14,12 +14,12 @@ module.exports = {
     */
       return queryInterface.bulkInsert('service', [
           {
-              type: 'foo',
-              name: 'Foo',
+              type: 'service_a',
+              name: 'Service A',
           },
           {
-              type: 'bar',
-              name: 'Bar',
+              type: 'service_b',
+              name: 'Service B',
           }
       ]);
   },

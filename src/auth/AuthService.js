@@ -65,6 +65,9 @@ export default class AuthService extends EventEmitter {
     }
 
     setToken (idToken) {
+        if (!idToken) {
+            return
+        }
         // Saves user token to localStorage
         localStorage.setItem('id_token', idToken);
     }
@@ -75,20 +78,34 @@ export default class AuthService extends EventEmitter {
     }
 
     setProfile (profile) {
+        if (!profile) {
+            return
+        }
         // Saves profile data to localStorage
         localStorage.setItem('profile', JSON.stringify(profile));
 
         // Triggers profile_updated event to update the UI
         this.emit('profile_updated', profile);
+    }
 
-        console.log(profile);
+    clearAuth () {
+        // if we have no profile best case is to force another login
+        localStorage.removeItem('id_token');
+        localStorage.removeItem('profile');
     }
 
     getProfile () {
         // Retrieves the profile data from localStorage
         const profile = localStorage.getItem('profile');
+        if (!profile) {
+            return this.clearAuth();
+        }
 
-        return profile ? JSON.parse(localStorage.profile) : null;
+        try { 
+            return JSON.parse(profile);
+        } catch (e) {
+            return this.clearAuth();
+        }
     }
 
     // onEnter callback to parse the authToken on login
