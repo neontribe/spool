@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 import Relay from 'react-relay';
 import moment from 'moment';
 import Papa from 'papaparse';
@@ -30,6 +31,8 @@ export default class Access extends Component {
         this.state = {
             form: {}
         };
+
+        this.handleBackToDashboard = this.handleBackToDashboard.bind(this);
     }
 
     handleFormSuccess ({ from, to, topics }) {
@@ -80,10 +83,18 @@ export default class Access extends Component {
         }
     }
 
+    handleBackToDashboard () {
+        this.props.router.push('/dashboard');
+    }
+
     renderAccessList () {
         const { access } = this.props.consumer;
 
-        if (access && access.entries.edges.length) {
+        if (!access) {
+            return null;
+        }
+
+        if (access.entries.edges.length) {
             return (
                 <div>
                     {access.entries.edges.map((entry, i) => (
@@ -94,19 +105,18 @@ export default class Access extends Component {
                 </div>
             );
         }
-
-        return null;
+        return (<p>0 Results found.</p>);
     }
 
     renderCSVButton () {
-        if (this.state.form.ready) {
+        const { access } = this.props.consumer;
+        if (this.state.form.ready && access && access.entries.edges.length) {
             return (
                 <div>
                     <Button onClick={this.handleCSVClick}>Download as CSV</Button>
                 </div>
             );
         }
-
         return null;
     }
 
@@ -121,13 +131,14 @@ export default class Access extends Component {
                     />
                     {this.renderCSVButton()}
                     {this.renderAccessList()}
+                    <Button onClick={this.handleBackToDashboard}>Back</Button>
                 </Content>
             </Layout>
         );
     }
 }
 
-export const AccessContainer = Relay.createContainer(withRoles(Access, ['consumer']), {
+export const AccessContainer = Relay.createContainer(withRoles(withRouter(Access), ['consumer']), {
     initialVariables: {
         first: 100,
         ready: false,
