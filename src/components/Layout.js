@@ -6,6 +6,7 @@ import _ from 'lodash';
 import Hamburger from './Hamburger';
 
 import styles from './css/App.module.css';
+import logo from './css/assets/compressed/logo-white.svg';
 
 class Header extends Component {
     static propTypes = {
@@ -78,7 +79,9 @@ class Header extends Component {
 
                 <div className={(this.state.hamburgerExpanded) ? styles.headerExpanded : styles.header}>
                     <h1 className={styles.logo}>
-                        <Link to={'/app'}>Daybook</Link>
+                        <Link to={'/app'}>
+                            <img src={logo} />
+                        </Link>
                     </h1>
 
                     {!this.state.hamburgerExpanded && this.props.children}
