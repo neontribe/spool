@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 import _ from 'lodash';
 
 import AuthService from '../auth/AuthService';
@@ -22,6 +23,7 @@ class Signup extends Component {
         this.handleUseEmail = this.handleUseEmail.bind(this);
         this.hideLogin = this.hideLogin.bind(this);
         this.handleEmailLoginSubmit = this.handleEmailLoginSubmit.bind(this);
+        this.handleBackToWelcome = this.handleBackToWelcome.bind(this);
     }
 
     emailSignup ({ email, password }) {
@@ -40,6 +42,10 @@ class Signup extends Component {
         this.setState({
             emailLogin: true
         });
+    }
+
+    handleBackToWelcome () {
+        this.props.router.push('/login');
     }
 
     hideLogin () {
@@ -79,6 +85,9 @@ class Signup extends Component {
                 <div>
                     <Button onClick={this.handleUseEmail}>Signup using Email</Button>
                 </div>
+                <div>
+                    <Button onClick={this.handleBackToWelcome}>Back</Button>
+                </div>
             </div>
         );
     }
@@ -101,4 +110,4 @@ Signup.propTypes = {
     auth: React.PropTypes.instanceOf(AuthService)
 };
 
-export default Signup;
+export default withRouter(Signup);
