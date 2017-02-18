@@ -26,7 +26,10 @@ export default class Button extends Component {
         return (
             <button
                 onTouchStart={() => { this.setState({ active: true }); }}
-                onTouchEnd={() => { this.setState({ active: false }, this.onClick); }}
+                onTouchEnd={() => {
+                    this.onClick();
+                    this.setState({ active: false });
+                }}
                 onClick={this.onClick}
                 className={styles.wrapper}
                 disabled={this.props.disabled}
