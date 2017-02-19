@@ -93,7 +93,7 @@
     "sha.js": "^2.4.5",
     "shuffle-array": "^1.0.0",
     "sql-template-strings": "^2.2.0",
-	"sw-precache": "^4.3.0",
+	"sw-precache": "^5.0.0",
     "viewport-units-buggyfill": "^0.6.0",
     "winston": "^2.2.0"
   },
