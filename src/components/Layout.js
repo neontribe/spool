@@ -71,6 +71,7 @@ class Header extends Component {
     }
 
     render () {
+        let displayName = (this.props.user && this.props.user.profile && this.props.user.profile.nickname) || (this.props.profile && this.props.profile.name);
         return (
             <div>
                 {this.state.hamburgerExpanded && (
@@ -88,7 +89,7 @@ class Header extends Component {
 
                     {this.props.showHamburger && (
                         <Hamburger
-                            text={this.state.profile && this.state.profile.name}
+                            text={displayName}
                             toggleClassName={styles.contextMenuToggle}
                             contentClassName={styles.contextMenuContent}
                             onExpand={this.onHamburgerExpand}
@@ -146,6 +147,9 @@ export default class Layout extends Component {
                 fragment on User {
                     id
                     role
+                    profile {
+                        nickname
+                    }
                 }
             `
         }
