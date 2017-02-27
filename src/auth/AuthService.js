@@ -1,42 +1,85 @@
 import { EventEmitter } from 'events';
-import Auth0 from 'auth0-js';
+import auth0 from 'auth0-js';
 import { isTokenExpired } from './jwtHelper';
+import { browserHistory } from 'react-router';
 
 export default class AuthService extends EventEmitter {
-    constructor (clientId, domain, urls) {
+    constructor (clientId, domain) {
         super();
 
         // Configure Auth0
-        this.auth0 = new Auth0({
+        this.auth0 = new auth0.WebAuth({
             clientID: clientId,
             domain: domain,
-            callbackOnLocationHash: true,
-            callbackURL: urls.callbackURL
+            responseType: 'token id_token',
+            redirectUri: window.location.origin + '/callback'
         });
-
-        this.urls = urls;
+        this.domain = domain;
         this.login = this.login.bind(this);
-        this.signup = this.signup.bind(this);
+        this.emailSignup = this.emailSignup.bind(this);
         this.parseAuthOnEnter = this.parseAuthOnEnter.bind(this);
         this.requireAuthOnEnter = this.requireAuthOnEnter.bind(this);
     }
 
     login (params, onError) {
         // Redirects the call to auth0 instance
-        this.auth0.login(params, onError);
+        this.auth0.client.login(params, (err, authResult) => {
+            if (err) {
+                alert('Wrong username or password');
+            }
+            if (authResult && authResult.idToken && authResult.accessToken) {
+                this.setToken(authResult.accessToken, authResult.idToken);
+                this.auth0.client.userInfo(authResult.accessToken, (error, profile) => {
+                    if (error) {
+                        console.log('Error loading the Profile', error);
+                    } else {
+                        this.setProfile(profile);
+                        browserHistory.push('/app');
+                    }
+                });
+            }
+        });
     }
 
-    signup (params, onError) {
+    authorize (params) {
+        this.auth0.authorize(params);
+    }
+
+    emailSignup (params, onError) {
         // Redirects the call to auth0 instance
-        this.auth0.signup(params, onError);
+        this.auth0.redirect.signupAndLogin(params, onError);
     }
 
     logout () {
-        // Clear user token and profile data from localStorage
-        localStorage.removeItem('id_token');
-        localStorage.removeItem('profile');
+        let accessToken = localStorage.getItem('access_token');
+        let profile = this.getProfile();
+        let provider;
+        try {
+            provider = profile.identities[0].provider;
+        } catch (e) {
+            provider = 'email';
+        }
+        let returnTo = window.location.origin;
 
+        // Clear id, access and profile data from localStorage
+        localStorage.removeItem('id_token');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('profile');
         this.emit('profile_updated', null);
+
+        switch (provider) {
+                case 'facebook':
+                    this.auth0.logout({
+                        returnTo: `https://www.facebook.com/logout.php?next=${encodeURI(returnTo)}&access_token=${accessToken}`,
+                        access_token: accessToken
+                    }, { version: 'v2' });
+                    break;
+                default:
+                    this.auth0.logout({
+                        returnTo: returnTo,
+                        federated: true
+                    }, { version: 'v2' });
+        }
     }
 
     loggedIn () {
@@ -46,29 +89,34 @@ export default class AuthService extends EventEmitter {
         return !!token && !isTokenExpired(token);
     }
 
-    parseHash (hash) {
-        // Uses auth0 parseHash method to extract data from url hash
-        const authResult = this.auth0.parseHash(hash);
-
-        if (authResult && authResult.idToken) {
-            this.setToken(authResult.idToken);
-            this.auth0.getProfile(authResult.idToken, (err, profile) => {
-                if (err) {
-                    console.log(err);
-                }
-
-                this.setProfile(profile);
-            });
-
-            return !isTokenExpired(authResult.idToken);
-        }
+    parseHash (hash, success) {
+        this.auth0.parseHash({ hash }, (err, authResult) => {
+            if (err) {
+                console.log(err);
+            }
+            if (authResult && authResult.accessToken && authResult.idToken) {
+                this.setToken(authResult.accessToken, authResult.idToken);
+                this.auth0.client.userInfo(authResult.accessToken, (error, profile) => {
+                    if (error) {
+                        console.log('Error loading the Profile', error);
+                    } else {
+                        this.setProfile(profile);
+                    }
+                    // All seems good. Run our success handler.
+                    success && success();
+                });
+            } else if (authResult && authResult.error) {
+                alert('Error: ' + authResult.error);
+            }
+        });
     }
 
-    setToken (idToken) {
+    setToken (accessToken, idToken) {
         if (!idToken) {
-            return
+            return;
         }
-        // Saves user token to localStorage
+        // Saves user access token and ID token into local storage
+        localStorage.setItem('access_token', accessToken);
         localStorage.setItem('id_token', idToken);
     }
 
@@ -79,7 +127,7 @@ export default class AuthService extends EventEmitter {
 
     setProfile (profile) {
         if (!profile) {
-            return
+            return;
         }
         // Saves profile data to localStorage
         localStorage.setItem('profile', JSON.stringify(profile));
@@ -101,7 +149,7 @@ export default class AuthService extends EventEmitter {
             return this.clearAuth();
         }
 
-        try { 
+        try {
             return JSON.parse(profile);
         } catch (e) {
             return this.clearAuth();
@@ -113,12 +161,11 @@ export default class AuthService extends EventEmitter {
         // Because the page can't set the id token fast enough, check the nextState to see if the hash exists
         // if it does exist then grab the id token from the hash and then set it to local storage
         if (nextState.location.hash) {
-            this.parseHash(nextState.location.hash);
-        }
-
-        if (this.loggedIn()) {
-            replace({ pathname: this.urls.loggedIn });
-            return true;
+            this.parseHash(nextState.location.hash, () => {
+                if (this.loggedIn()) {
+                    browserHistory.push('/app');
+                }
+            });
         }
     }
 
@@ -129,7 +176,7 @@ export default class AuthService extends EventEmitter {
         }
 
         if (!this.loggedIn()) {
-            replace({ pathname: this.urls.login });
+            replace({ pathname: '/login' });
             callback(new Error('User is not logged in'));
         }
 

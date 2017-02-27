@@ -27,12 +27,7 @@ import './css/bootstrap.css';
 
 const auth = new AuthService(
     process.env.REACT_APP_AUTH0_CLIENT_ID,
-    process.env.REACT_APP_AUTH0_DOMAIN,
-    {
-        callbackURL: window.location.origin + '/callback',
-        login: '/login',
-        loggedIn: '/app'
-    }
+    process.env.REACT_APP_AUTH0_DOMAIN
 );
 
 function setupRelayNetworkLayer () {
@@ -72,7 +67,7 @@ const SettingsQueries = {
 const EntryViewerQueries = {
     node: () => Relay.QL`query { node(id: $id) }`,
     creator: () => Relay.QL`query { creator }`,
-    ...UserQueries,
+    ...UserQueries
 };
 
 setupRelayNetworkLayer();

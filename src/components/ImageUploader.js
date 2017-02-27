@@ -104,7 +104,7 @@ class ImageUploader extends Component {
 
                         {(this.state.image) && (
                             <div className={styles.uploadedImageWrapper}>
-                                <img className={styles.uploadedImage} src={this.state.image} />
+                                <img className={styles.uploadedImage} src={this.state.image} alt="Last take"/>
 
                                 {this.state.text && (
                                     <div className={styles.text}>{this.state.text}</div>
