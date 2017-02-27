@@ -6,7 +6,7 @@ import AuthService from '../auth/AuthService';
 import Layout from './Layout';
 import Button from './Button';
 import EmailLogin from './EmailLogin.js';
-import { GoogleLogin, TwitterLogin } from './Login.js';
+import { GoogleLogin, FacebookLogin } from './Login.js';
 
 import styles from './css/Login.module.css';
 
@@ -27,9 +27,9 @@ class Signup extends Component {
     }
 
     emailSignup ({ email, password }) {
-        this.props.auth.signup({
+        this.props.auth.emailSignup({
             connection: 'Username-Password-Authentication',
-            username: email,
+            email,
             password
         }, function (err) {
             if (err) {
@@ -80,7 +80,7 @@ class Signup extends Component {
                     <GoogleLogin auth={this.props.auth}>Signup using Google</GoogleLogin>
                 </div>
                 <div>
-                    <TwitterLogin auth={this.props.auth}>Signup using Twitter</TwitterLogin>
+                    <FacebookLogin auth={this.props.auth}>Signup using Facebook</FacebookLogin>
                 </div>
                 <div>
                     <Button onClick={this.handleUseEmail}>Signup using Email</Button>

@@ -18,12 +18,8 @@ class Auth0Login extends Component {
     }
 
     handleLogin () {
-        this.props.auth.login({
+        this.props.auth.authorize({
             connection: this.connection
-        }, function (err) {
-            if (err) {
-                alert('something went wrong: ' + err.message);
-            }
         });
     }
 
@@ -44,9 +40,9 @@ export class GoogleLogin extends Auth0Login {
     }
 }
 
-export class TwitterLogin extends Auth0Login {
+export class FacebookLogin extends Auth0Login {
     get connection () {
-        return 'twitter';
+        return 'facebook';
     }
 }
 
@@ -65,7 +61,7 @@ class Login extends Component {
     }
 
     emailLogin ({ email, password }) {
-        this.props.auth.login({
+        this.props.auth.client.login({
             connection: 'Username-Password-Authentication',
             username: email,
             password
@@ -117,7 +113,7 @@ class Login extends Component {
                     <GoogleLogin auth={this.props.auth}>Login using Google</GoogleLogin>
                 </div>
                 <div>
-                    <TwitterLogin auth={this.props.auth}>Login using Twitter</TwitterLogin>
+                    <FacebookLogin auth={this.props.auth}>Login using Facebook</FacebookLogin>
                 </div>
                 <div>
                     <Button onClick={this.handleUseEmail}>Login using Email</Button>

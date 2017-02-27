@@ -14,7 +14,7 @@ export default class EmailLogin extends Component {
 
     static defaultProps = {
         email: '',
-        password: '',
+        password: ''
     }
 
     constructor (props) {

@@ -81,7 +81,7 @@ class Header extends Component {
                 <div className={(this.state.hamburgerExpanded) ? styles.headerExpanded : styles.header}>
                     <h1 className={styles.logo}>
                         <Link to={'/app'}>
-                            <img src={logo} />
+                            <img src={logo} alt="Daybook"/>
                         </Link>
                     </h1>
 

@@ -185,7 +185,7 @@ export class Entry extends Component {
                         <img
                             className={styles.image}
                             src={backgroundImage}
-                            alt='The picture you took'
+                            alt='Your last take'
                         />
                     </div>
                 )}

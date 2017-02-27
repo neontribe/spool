@@ -5,6 +5,7 @@ const cors = require('cors');
 const s3Router = require('./s3Router');
 const bodyParser = require('body-parser');
 const jwt = require('express-jwt');
+const jwksRsa = require('jwks-rsa');
 const {models, helpers} = require('./database');
 const createHash = require('sha.js');
 const sslRedirect = require('heroku-ssl-redirect');
@@ -80,8 +81,16 @@ app.use(
     '/graphql',
     useCors(),
     jwt({
-        secret: new Buffer(process.env.AUTH0_CLIENT_SECRET, 'base64'),
-        audience: process.env.AUTH0_CLIENT_ID
+        // Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
+        secret: jwksRsa.expressJwtSecret({
+            cache: true,
+            rateLimit: true,
+            jwksRequestsPerMinute: 5,
+            jwksUri: 'https://' + process.env.AUTH0_DOMAIN + '/.well-known/jwks.json'
+        }),
+        audience: process.env.AUTH0_CLIENT_ID,
+        issuer: 'https://' + process.env.AUTH0_DOMAIN + '/',
+        algorithms: [ 'RS256' ]
     }),
     reconcileUser(),
     graphqlHTTP(request => ({
