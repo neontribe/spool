@@ -53,7 +53,7 @@ export default class AuthService extends EventEmitter {
         this.emit('profile_updated', null);
 
         this.auth0.logout({
-            returnTo: encodeURI(`https://${this.domain}?returnTo=${window.location.origin}/login`),
+            returnTo: encodeURI(`https://${this.domain}?returnTo=${window.location.origin}`),
             access_token: accessToken,
             federated: true
         }, { version: 'v2' });
