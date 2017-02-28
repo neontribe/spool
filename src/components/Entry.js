@@ -45,7 +45,7 @@ export class Entry extends Component {
     }
 
     showViewer (e) {
-        e.preventDefault();
+        e && e.preventDefault();
 
         if (this.props.withViewer) {
             this.setState({

@@ -55,7 +55,7 @@ class Header extends Component {
     }
 
     logout (e) {
-        e.preventDefault();
+        e && e.preventDefault();
 
         // Destroys the session data
         this.props.auth.logout();

@@ -48,7 +48,7 @@ export default class EmailLogin extends Component {
     }
 
     handleSubmit (evt) {
-        evt.preventDefault();
+        evt && evt.preventDefault();
 
         const { email, password } = this.state;
 

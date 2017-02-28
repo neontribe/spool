@@ -87,7 +87,7 @@ export class SettingsForm extends Component {
     }
 
     handleSubmit (event) {
-        event.preventDefault();
+        event && event.preventDefault();
 
         const { name, nickname, region, age, residence, services } = this.state;
 

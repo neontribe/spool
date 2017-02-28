@@ -20,7 +20,7 @@ class TextForm extends Component {
     }
 
     continue (evt) {
-        evt.preventDefault();
+        evt && evt.preventDefault();
 
         this.props.save({
             text: this.state.value
