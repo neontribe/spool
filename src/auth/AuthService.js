@@ -45,18 +45,28 @@ export default class AuthService extends EventEmitter {
 
     logout () {
         let accessToken = localStorage.getItem('access_token');
+        let provider = this.getProfile().identities[0].provider;
+        let returnTo = window.location.origin;
+
         // Clear id, access and profile data from localStorage
         localStorage.removeItem('id_token');
         localStorage.removeItem('access_token');
         localStorage.removeItem('profile');
-
         this.emit('profile_updated', null);
 
-        this.auth0.logout({
-            returnTo: encodeURI(`https://${this.domain}?returnTo=${window.location.origin}`),
-            access_token: accessToken,
-            federated: true
-        }, { version: 'v2' });
+        switch (provider) {
+                case 'facebook':
+                    this.auth0.logout({
+                        returnTo: `https://www.facebook.com/logout.php?next=${encodeURI(returnTo)}&access_token=${accessToken}`,
+                        access_token: accessToken
+                    }, { version: 'v2' });
+                    break;
+                default:
+                    this.auth0.logout({
+                        returnTo: returnTo,
+                        federated: true
+                    }, { version: 'v2' });
+        }
     }
 
     loggedIn () {
