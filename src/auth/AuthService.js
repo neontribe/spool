@@ -74,7 +74,7 @@ export default class AuthService extends EventEmitter {
                         access_token: accessToken
                     }, { version: 'v2' });
                     break;
-                case 'google':
+                case 'google-oauth2':
                     this.auth0.logout({
                         returnTo: returnTo,
                         federated: true
@@ -82,6 +82,7 @@ export default class AuthService extends EventEmitter {
                     break;
                 default:
                     this.auth0.logout();
+                    browserHistory.push('/login');
         }
     }
 
