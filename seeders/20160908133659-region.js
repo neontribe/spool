@@ -24,6 +24,9 @@ module.exports = {
           },
           {
               type: 'Gloucestershire',
+          },
+          {
+              type: 'Elfrida',
           }
       ]);
   },
