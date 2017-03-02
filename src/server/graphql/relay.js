@@ -341,7 +341,7 @@ const DataAccessType = new ql.GraphQLObjectType({
     fields: {
         sentiment: {
             type: CreatorSentimentType,
-            resolve: function ({range, regionId}) {
+            resolve: function ({range, regionId, serviceIds}) {
                 var from = moment(range.from);
                 var to = moment(range.to);
                 return models.Entry.findAll({
@@ -363,7 +363,24 @@ const DataAccessType = new ql.GraphQLObjectType({
                                 createdAt: {
                                     $gte: from.format()
                                 }
-                            }
+                            },
+                            include: [
+                                {
+                                    model: models.Profile,
+                                    as: 'Profile',
+                                    include: [
+                                        {
+                                            model: models.Service,
+                                            as: 'ProfileServiceServices',
+                                            where: {
+                                                serviceId: {
+                                                    $in: serviceIds
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 }).then(function (results) {
@@ -384,20 +401,20 @@ const DataAccessType = new ql.GraphQLObjectType({
                     type: types.DateRangeInputType
                 }
             },
-            resolve: function ({range, regionId}) {
+            resolve: function ({range, regionId, serviceIds}) {
                 var from = moment(range.from);
                 var to = moment(range.to);
-                return sequelize.query(helpers.queries.Topic.countsByRange(from.format(), to.format(), regionId))
+                return sequelize.query(helpers.queries.Topic.countsByRange(from.format(), to.format(), regionId, serviceIds))
                 .then(([results, metadata]) => results)
                 .catch((e) => winston.warn(e));
             }
         },
         activity: {
             type: CreatorActivityType,
-            resolve: function ({range, regionId}, args) {
+            resolve: function ({range, regionId, serviceIds}, args) {
                 var from = moment(range.from);
                 var to = moment(range.to);
-                return sequelize.query(helpers.queries.UserAccount.entryActivity(from.format(), to.format(), regionId))
+                return sequelize.query(helpers.queries.UserAccount.entryActivity(from.format(), to.format(), regionId, serviceIds))
                 .then(([results, metadata]) => results)
                 .then(function (results) {
                     return results.reduce(function (reduction, row) {
@@ -421,7 +438,7 @@ const DataAccessType = new ql.GraphQLObjectType({
                     type: types.TopicsInputType
                 }
             }, relayql.connectionArgs),
-            resolve: ({range, regionId}, args) => {
+            resolve: ({range, regionId, serviceIds}, args) => {
                 const { topics } = args;
                 var from = moment(range.from);
                 var to = moment(range.to);
@@ -462,7 +479,18 @@ const DataAccessType = new ql.GraphQLObjectType({
                                 as: 'Profile',
                                 where: {
                                     sharing: true
-                                }
+                                },
+                                include: [
+                                    {
+                                        model: models.Service,
+                                        as: 'ProfileServiceServices',
+                                        where: {
+                                            serviceId: {
+                                                $in: serviceIds
+                                            }
+                                        }
+                                    }
+                                ]
                             }]
                         }
                     ]
@@ -495,8 +523,10 @@ const ConsumerType = new ql.GraphQLObjectType({
                     type: types.DateRangeInputType
                 }
             },
-            resolve: (root, {range}, {regionId}) => {
-                return {range, regionId};
+            resolve: (root, {range}, context) => {
+                const { regionId } = context;
+                const serviceIds = context.Profile.ProfileServiceServices.map((({serviceId}) => serviceId));
+                return {range, regionId, serviceIds};
             }
         }
     },

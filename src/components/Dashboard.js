@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import moment from 'moment';
+import _ from 'lodash';
 
 import TopicsOverview from './TopicsOverview';
 import { withRoles, userFragment } from './wrappers.js';
@@ -42,8 +43,20 @@ export class Dashboard extends Component {
         });
     }
 
+    buildTopics (topics, data) {
+        // this sucks, but it's easier this way
+        return topics.map((topic) => {
+            const matchingData = _.find(data, (dataTopic) => dataTopic.topic.type === topic.type);
+            return {
+                topic,
+                entryCount: (matchingData && matchingData.entryCount) || 0,
+                creatorCount: (matchingData && matchingData.creatorCount) || 0
+            }
+        });
+    }
+
     render () {
-        const { access } = this.props.consumer;
+        const { access, topics } = this.props.consumer;
 
         return (
             <Layout>
@@ -88,7 +101,7 @@ export class Dashboard extends Component {
                         </tbody>
                     </table>
 
-                    <TopicsOverview topics={access.topics} dataRange={this.state.range}/>
+                    <TopicsOverview topics={this.buildTopics(topics, access.topics)} dataRange={this.state.range}/>
                </Content>
             </Layout>
         );
@@ -111,6 +124,10 @@ export const DashboardContainer = Relay.createContainer(withRoles(Dashboard, ['c
         `,
         consumer: () => Relay.QL`
             fragment on Consumer {
+                topics {
+                    type
+                    name
+                }
                 access(range: $range) {
                     activity {
                         active
