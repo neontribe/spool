@@ -1,10 +1,13 @@
 @value Blue300 from '../../css/Colours.module.css';
 
 .text {
+	float: left;
 	padding-right: 1rem;
 	color: #fff;
 	font-weight: 500;
-	align-self: center;
+	max-width: 12rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 /*!
@@ -31,7 +34,7 @@
 }
 
 .hamburgerBox {
-	height: 24px;
+	float: right;
 	min-width: 2rem;
 }
 

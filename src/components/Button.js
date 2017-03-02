@@ -12,10 +12,15 @@ export default class Button extends Component {
     constructor (props) {
         super(props);
 
-        this.onClick = _.debounce(this.props.onClick, 500, {
-            leading: true,
-            trailing: false
-        });
+        this.onClick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            _.debounce(this.props.onClick, 500, {
+                leading: true,
+                trailing: false
+            })();
+        };
 
         this.state = {
             active: false
@@ -26,6 +31,12 @@ export default class Button extends Component {
         return (
             <button
                 onClick={this.onClick}
+                onTouchEnd={(e) => {
+                    this.onClick(e);
+                    this.setState({
+                        active: true
+                    });
+                }}
                 className={styles.wrapper}
                 disabled={this.props.disabled}
             >
