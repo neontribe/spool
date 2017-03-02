@@ -111,7 +111,7 @@ export default class Introduction extends Component {
                         <Step>
                             <div>
                                 <h1 className={headings.large}>Get Started</h1>
-                                <p>Blabla bla</p>
+                                <p>Welcome! Watch the video below to find out more about Daybook</p>
                             </div>
                             <div className={styles.controls}>
                                 <Button onClick={this.handleNextStep}>Next</Button>
@@ -121,7 +121,7 @@ export default class Introduction extends Component {
                         <Step>
                             <div>
                                 <h1 className={headings.large}>Adding an Entry</h1>
-                                <p>Blabla bla</p>
+                                <p>Great, you’re all set up! Watch the video below to find out to get started with adding an entry.</p>
                             </div>
                             <div className={styles.controls}>
                                 <Button onClick={this.handleBackStep}>Back</Button>
@@ -132,7 +132,7 @@ export default class Introduction extends Component {
                         <Step>
                             <div>
                                 <h1 className={headings.large}>Privacy</h1>
-                                <p>Blabla bla</p>
+                                <p>Watch the video below to learn how you can help share your experiences on Daybook</p>
                             </div>
                             <div className={styles.controls}>
                                 <Button onClick={this.handleBackStep}>Back</Button>
@@ -142,8 +142,10 @@ export default class Introduction extends Component {
 
                         <Step>
                             <div>
-                                <h1 className={headings.large}>Do you want to share?</h1>
-                                <p>Blabla bla</p>
+                                <h1 className={headings.large}>Do you want to share your Daybook?</h1>
+                                <p>If you click <strong>Yes</strong> to share your Daybook people at the council or your service provider will be able to look at what you have put in it. This is so that the Council or service provider can use your views to help them make plans and choices.</p>
+
+                                <p>If you choose <strong>No</strong> to sharing the council or service provider will not be able to see your diary entries but it will still get information about what you and other people are making entries about.</p>
                                 <PrivacyForm onChange={this.handlePrivacyChange} />
                             </div>
                             <div className={styles.controls}>

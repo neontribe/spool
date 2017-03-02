@@ -14,7 +14,7 @@ module.exports = {
     */
       return queryInterface.bulkInsert('region', [
           {
-              type: 'Test',
+              type: 'Demo',
           },
           {
               type: 'South Shields',

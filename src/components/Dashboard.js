@@ -37,7 +37,7 @@ export class Dashboard extends Component {
             rangeFrom: evt.target.value,
             range
         });
-        this.props.relay.setVariables({
+        this.props.relay.forceFetch({
             range
         });
     }

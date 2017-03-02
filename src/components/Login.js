@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import { withRouter } from 'react-router';
 
 import AuthService from '../auth/AuthService';
 import Layout from './Layout';
@@ -17,12 +18,8 @@ class Auth0Login extends Component {
     }
 
     handleLogin () {
-        this.props.auth.login({
+        this.props.auth.authorize({
             connection: this.connection
-        }, function (err) {
-            if (err) {
-                alert('something went wrong: ' + err.message);
-            }
         });
     }
 
@@ -43,9 +40,9 @@ export class GoogleLogin extends Auth0Login {
     }
 }
 
-export class TwitterLogin extends Auth0Login {
+export class FacebookLogin extends Auth0Login {
     get connection () {
-        return 'twitter';
+        return 'facebook';
     }
 }
 
@@ -60,11 +57,12 @@ class Login extends Component {
         this.handleUseEmail = this.handleUseEmail.bind(this);
         this.hideLogin = this.hideLogin.bind(this);
         this.handleEmailLoginFormSubmit = this.handleEmailLoginFormSubmit.bind(this);
+        this.handleBackToWelcome = this.handleBackToWelcome.bind(this);
     }
 
     emailLogin ({ email, password }) {
         this.props.auth.login({
-            connection: 'Username-Password-Authentication',
+            realm: 'Username-Password-Authentication',
             username: email,
             password
         }, function (err) {
@@ -84,6 +82,10 @@ class Login extends Component {
         this.setState({
             showEmailLogin: false
         });
+    }
+
+    handleBackToWelcome () {
+        this.props.router.push('/login');
     }
 
     handleEmailLoginFormSubmit (payload) {
@@ -111,10 +113,13 @@ class Login extends Component {
                     <GoogleLogin auth={this.props.auth}>Login using Google</GoogleLogin>
                 </div>
                 <div>
-                    <TwitterLogin auth={this.props.auth}>Login using Twitter</TwitterLogin>
+                    <FacebookLogin auth={this.props.auth}>Login using Facebook</FacebookLogin>
                 </div>
                 <div>
                     <Button onClick={this.handleUseEmail}>Login using Email</Button>
+                </div>
+                <div>
+                    <Button onClick={this.handleBackToWelcome}>Back</Button>
                 </div>
             </div>
         );
@@ -138,4 +143,4 @@ Login.propTypes = {
     auth: React.PropTypes.instanceOf(AuthService)
 };
 
-export default Login;
+export default withRouter(Login);

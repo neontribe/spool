@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 import _ from 'lodash';
 
 import AuthService from '../auth/AuthService';
 import Layout from './Layout';
 import Button from './Button';
 import EmailLogin from './EmailLogin.js';
-import { GoogleLogin, TwitterLogin } from './Login.js';
+import { GoogleLogin, FacebookLogin } from './Login.js';
 
 import styles from './css/Login.module.css';
 
@@ -22,12 +23,13 @@ class Signup extends Component {
         this.handleUseEmail = this.handleUseEmail.bind(this);
         this.hideLogin = this.hideLogin.bind(this);
         this.handleEmailLoginSubmit = this.handleEmailLoginSubmit.bind(this);
+        this.handleBackToWelcome = this.handleBackToWelcome.bind(this);
     }
 
     emailSignup ({ email, password }) {
-        this.props.auth.signup({
+        this.props.auth.emailSignup({
             connection: 'Username-Password-Authentication',
-            username: email,
+            email,
             password
         }, function (err) {
             if (err) {
@@ -40,6 +42,10 @@ class Signup extends Component {
         this.setState({
             emailLogin: true
         });
+    }
+
+    handleBackToWelcome () {
+        this.props.router.push('/login');
     }
 
     hideLogin () {
@@ -74,10 +80,13 @@ class Signup extends Component {
                     <GoogleLogin auth={this.props.auth}>Signup using Google</GoogleLogin>
                 </div>
                 <div>
-                    <TwitterLogin auth={this.props.auth}>Signup using Twitter</TwitterLogin>
+                    <FacebookLogin auth={this.props.auth}>Signup using Facebook</FacebookLogin>
                 </div>
                 <div>
                     <Button onClick={this.handleUseEmail}>Signup using Email</Button>
+                </div>
+                <div>
+                    <Button onClick={this.handleBackToWelcome}>Back</Button>
                 </div>
             </div>
         );
@@ -101,4 +110,4 @@ Signup.propTypes = {
     auth: React.PropTypes.instanceOf(AuthService)
 };
 
-export default Signup;
+export default withRouter(Signup);
