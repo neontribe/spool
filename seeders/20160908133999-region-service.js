@@ -21,6 +21,10 @@ module.exports = {
               region_id: 1,
               service_id: 2,
           },
+          {
+              region_id: 5,
+              service_id: 3
+          }
       ]);
   },
 

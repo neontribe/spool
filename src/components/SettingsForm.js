@@ -77,13 +77,18 @@ export class SettingsForm extends Component {
 
     handleChange (key, event) {
         const { value } = event.target;
-
-        this.setState({
+        const state = {
             [key]: {
                 value,
                 changed: true
             }
-        });
+        };
+
+        if (key === 'region') {
+            state.services = { value: [], changed: true };
+        }
+
+        this.setState(state);
     }
 
     handleSubmit (event) {

@@ -90,22 +90,24 @@ function updateUser (id, data) {
                 });
             }
 
-            yield models.ProfileService.destroy({
-                where: {
-                    profileId: Profile.profileId
-                }
-            });
+            const accountData = { profileId: Profile.profileId };
 
-            var addProfileServices = Profile.addProfileServiceServices(services);
-            var updateUser = models.UserAccount.update({
-                regionId: region.regionId,
-                profileId: Profile.profileId
-            }, {
+            /* This is a nasty hack to prevent consumers from changing their services and regions */
+            if (user.Role.type === 'creator') {
+                yield models.ProfileService.destroy({
+                    where: {
+                        profileId: Profile.profileId
+                    }
+                });
+                yield Profile.addProfileServiceServices(services);
+                accountData.regionId = region.regionId;
+            }
+
+            yield models.UserAccount.update(accountData, {
                 where: {
                     userId: id
                 }
             });
-            yield [addProfileServices, updateUser];
         }
         return {};
     }).catch((e) => winston.warn(e));

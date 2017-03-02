@@ -20,6 +20,10 @@ module.exports = {
           {
               type: 'service_b',
               name: 'Service B',
+          },
+          {
+              type: 'elfrida',
+              name: 'Elfrida'
           }
       ]);
   },
