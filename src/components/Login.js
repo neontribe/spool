@@ -61,8 +61,8 @@ class Login extends Component {
     }
 
     emailLogin ({ email, password }) {
-        this.props.auth.client.login({
-            connection: 'Username-Password-Authentication',
+        this.props.auth.login({
+            realm: 'Username-Password-Authentication',
             username: email,
             password
         }, function (err) {

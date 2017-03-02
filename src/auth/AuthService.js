@@ -25,11 +25,18 @@ export default class AuthService extends EventEmitter {
         // Redirects the call to auth0 instance
         this.auth0.client.login(params, (err, authResult) => {
             if (err) {
-                onError(err);
+                alert('Wrong username or password');
             }
             if (authResult && authResult.idToken && authResult.accessToken) {
                 this.setToken(authResult.accessToken, authResult.idToken);
-                alert('navigate');
+                this.auth0.client.userInfo(authResult.accessToken, (error, profile) => {
+                    if (error) {
+                        console.log('Error loading the Profile', error);
+                    } else {
+                        this.setProfile(profile);
+                        browserHistory.push('/app');
+                    }
+                });
             }
         });
     }
@@ -45,7 +52,13 @@ export default class AuthService extends EventEmitter {
 
     logout () {
         let accessToken = localStorage.getItem('access_token');
-        let provider = this.getProfile().identities[0].provider;
+        let profile = this.getProfile();
+        let provider;
+        try {
+            provider = profile.identities[0].provider;
+        } catch (e) {
+            provider = 'email';
+        }
         let returnTo = window.location.origin;
 
         // Clear id, access and profile data from localStorage
@@ -150,7 +163,7 @@ export default class AuthService extends EventEmitter {
         if (nextState.location.hash) {
             this.parseHash(nextState.location.hash, () => {
                 if (this.loggedIn()) {
-                    browserHistory.replace('/app');
+                    browserHistory.push('/app');
                 }
             });
         }
