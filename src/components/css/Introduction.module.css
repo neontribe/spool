@@ -98,8 +98,16 @@
 	background-color: Blue200;
 }
 
+.videoWrapper {
+	display: flex;
+	flex: 1;
+	justify-content: center;
+	align-items: center;
+}
+
 .video {
 	width: 100%;
+	max-width: 1000px;
 }
 
 @media all and (max-width: 667px) and (orientation: landscape) {

@@ -112,6 +112,8 @@ export default class Introduction extends Component {
                             <div>
                                 <h1 className={headings.large}>Get Started</h1>
                                 <p>Welcome! Watch the video below to find out more about Daybook</p>
+                            </div>
+                            <div className={styles.videoWrapper}>
                                 <video
                                     src='/video/intro.m4v'
                                     controls={true}
@@ -127,6 +129,8 @@ export default class Introduction extends Component {
                             <div>
                                 <h1 className={headings.large}>Adding an Entry</h1>
                                 <p>Great, you’re all set up! Watch the video below to find out to get started with adding an entry.</p>
+                            </div>
+                            <div className={styles.videoWrapper}>
                                 <video
                                     src='/video/adding.m4v'
                                     controls={true}
@@ -143,6 +147,8 @@ export default class Introduction extends Component {
                             <div>
                                 <h1 className={headings.large}>Privacy</h1>
                                 <p>Watch the video below to learn how you can help share your experiences on Daybook</p>
+                            </div>
+                            <div className={styles.videoWrapper}>
                                 <video
                                     src='/video/privacy.m4v'
                                     controls={true}
