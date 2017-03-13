@@ -98,6 +98,10 @@
 	background-color: Blue200;
 }
 
+.video {
+	width: 100%;
+}
+
 @media all and (max-width: 667px) and (orientation: landscape) {
 	.message {
 		padding: .5rem;
