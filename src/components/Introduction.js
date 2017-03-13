@@ -112,6 +112,11 @@ export default class Introduction extends Component {
                             <div>
                                 <h1 className={headings.large}>Get Started</h1>
                                 <p>Welcome! Watch the video below to find out more about Daybook</p>
+                                <video
+                                    src='/video/intro.m4v'
+                                    controls={true}
+                                    className={styles.video}
+                                />
                             </div>
                             <div className={styles.controls}>
                                 <Button onClick={this.handleNextStep}>Next</Button>
@@ -122,6 +127,11 @@ export default class Introduction extends Component {
                             <div>
                                 <h1 className={headings.large}>Adding an Entry</h1>
                                 <p>Great, you’re all set up! Watch the video below to find out to get started with adding an entry.</p>
+                                <video
+                                    src='/video/adding.m4v'
+                                    controls={true}
+                                    className={styles.video}
+                                />
                             </div>
                             <div className={styles.controls}>
                                 <Button onClick={this.handleBackStep}>Back</Button>
@@ -133,6 +143,11 @@ export default class Introduction extends Component {
                             <div>
                                 <h1 className={headings.large}>Privacy</h1>
                                 <p>Watch the video below to learn how you can help share your experiences on Daybook</p>
+                                <video
+                                    src='/video/privacy.m4v'
+                                    controls={true}
+                                    className={styles.video}
+                                />
                             </div>
                             <div className={styles.controls}>
                                 <Button onClick={this.handleBackStep}>Back</Button>
