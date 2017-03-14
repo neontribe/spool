@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 import auth0 from 'auth0-js';
 import { isTokenExpired } from './jwtHelper';
 import { browserHistory } from 'react-router';
+import _ from 'lodash';
 
 export default class AuthService extends EventEmitter {
     constructor (clientId, domain) {
@@ -25,7 +26,12 @@ export default class AuthService extends EventEmitter {
         // Redirects the call to auth0 instance
         this.auth0.client.login(params, (err, authResult) => {
             if (err) {
+                // we could do some UI here
+                // alert(err);
                 alert('Wrong username or password');
+                if (_.isFunction(onError)) {
+                    onError(err);
+                }
             }
             if (authResult && authResult.idToken && authResult.accessToken) {
                 this.setToken(authResult.accessToken, authResult.idToken);
@@ -43,6 +49,18 @@ export default class AuthService extends EventEmitter {
 
     authorize (params) {
         this.auth0.authorize(params);
+    }
+
+    changePassword (email, callback) {
+        console.log(this.auth0.redirect);
+        this.auth0.changePassword({
+            connection: 'Username-Password-Authentication',
+            email: email
+        }, (err, resp) => {
+            if (_.isFunction(callback)) {
+                callback(err, resp);
+            }
+        });
     }
 
     emailSignup (params, onError) {
