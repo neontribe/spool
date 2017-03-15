@@ -24,7 +24,6 @@ export class Dashboard extends Component {
                 to: moment().endOf('date').format()
             }
         };
-
         this.changeRange = this.changeRange.bind(this);
     }
 
@@ -60,7 +59,10 @@ export class Dashboard extends Component {
 
         return (
             <Layout>
-                <Header auth={this.props.auth} user={this.props.user}/>
+                <Header
+                    auth={this.props.auth}
+                    user={this.props.user}
+                    showPasswordReset />
                 <Content>
                     <div>
                         <div className={styles.controls}>

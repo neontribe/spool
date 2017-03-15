@@ -55,6 +55,7 @@ class Login extends Component {
         };
 
         this.handleUseEmail = this.handleUseEmail.bind(this);
+        this.handleResetPassword = this.handleResetPassword.bind(this);
         this.hideLogin = this.hideLogin.bind(this);
         this.handleEmailLoginFormSubmit = this.handleEmailLoginFormSubmit.bind(this);
         this.handleBackToWelcome = this.handleBackToWelcome.bind(this);
@@ -65,10 +66,11 @@ class Login extends Component {
             realm: 'Username-Password-Authentication',
             username: email,
             password
-        }, function (err) {
-            if (err) {
-                alert('something went wrong: ' + err.message);
-            }
+        }, (err) => {
+            this.setState({
+                emailLoginFailed: err,
+                lastEmail: email
+            });
         });
     }
 
@@ -92,6 +94,14 @@ class Login extends Component {
         this.emailLogin(payload);
     }
 
+    handleResetPassword () {
+        this.props.auth.changePassword(this.state.lastEmail, (err, response) => {
+            if (!err) {
+                alert(response);
+            }
+        });
+    }
+
     renderEmailLogin () {
         return (
             <div className={styles.emailLoginWrapper}>
@@ -100,7 +110,10 @@ class Login extends Component {
                     <EmailLogin
                         submitText='Login'
                         onSubmit={this.handleEmailLoginFormSubmit}
-                    />
+                        />
+                    { this.state.emailLoginFailed && (
+                        <Button onClick={this.handleResetPassword}>Send me a password reset email</Button>
+                    ) }
                 </div>
             </div>
         );

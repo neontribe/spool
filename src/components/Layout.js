@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { withRouter, Link } from 'react-router';
 import _ from 'lodash';
+import Button from './Button';
 
 import Hamburger from './Hamburger';
 
@@ -11,7 +12,8 @@ import logo from './css/assets/compressed/logo-white.svg';
 class Header extends Component {
     static propTypes = {
         showHamburger: React.PropTypes.bool,
-        menuItems: React.PropTypes.arrayOf(React.PropTypes.element)
+        menuItems: React.PropTypes.arrayOf(React.PropTypes.element),
+        showPasswordReset: React.PropTypes.bool
     }
 
     static defaultProps = {
@@ -38,6 +40,7 @@ class Header extends Component {
         this.onHamburgerExpand = _.partial(this.onHamburgerToggle.bind(this), 'expanded');
         this.onHamburgerCollapse = _.partial(this.onHamburgerToggle.bind(this), 'collapsed');
         this.handleProfileUpdated = this.handleProfileUpdated.bind(this);
+        this.handleResetPassword = this.handleResetPassword.bind(this);
     }
 
     handleProfileUpdated (profile) {
@@ -62,6 +65,14 @@ class Header extends Component {
     onHamburgerToggle (state) {
         this.setState({
             hamburgerExpanded: state === 'expanded'
+        });
+    }
+
+    handleResetPassword () {
+        this.props.auth.changePassword(this.state.profile.email, (err, response) => {
+            if (!err) {
+                alert(response);
+            }
         });
     }
 
@@ -117,7 +128,10 @@ class Header extends Component {
                             </ul>
 
                             {this.state.profile && (
-                                <div className={styles.contextMenuContentWrapper}>{this.props.menuContent}</div>
+                                <div className={styles.contextMenuContentWrapper}>
+                                    {this.props.menuContent}
+                                    {this.props.showPasswordReset && this.state.profile.email && <Button onClick={this.handleResetPassword}>Send me a password reset email</Button>}
+                                </div>
                             )}
                         </Hamburger>
                     )}
