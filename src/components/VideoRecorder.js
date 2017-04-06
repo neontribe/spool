@@ -32,7 +32,8 @@ class VideoRecorder extends Component {
             thumbnailBlob: null,
             text: '',
             devices: [],
-            activeDevice: null
+            activeDevice: null,
+            timer: 0
         };
 
         this.startMediaStream = this.startMediaStream.bind(this);
@@ -59,10 +60,18 @@ class VideoRecorder extends Component {
 
     componentDidMount () {
         this.startMediaStream();
+
+        this.timer = setInterval(() => {
+            this.setState({
+                timer: this.state.timer + 1
+            });
+        }, 1000 / 30);
     }
 
     componentWillUnmount () {
         this.stopMediaStream();
+
+        clearInterval(this.timer);
     }
 
     startMediaStream () {
@@ -312,6 +321,7 @@ class VideoRecorder extends Component {
                     </div>
 
                     <div className={styles.btnStack}>
+                        <div style={{ visibility: 'hidden' }}>{this.state.timer}</div>
                         {((this.state.devices.length > 1) && !this.state.countdown) && (
                             <Button onClick={this.switchVideoDevices}>Switch Camera</Button>
                         )}
