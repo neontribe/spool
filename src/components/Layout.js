@@ -91,8 +91,6 @@ class Header extends Component {
                         </Link>
                     </h1>
 
-                    <a href="https://www.daybookuk.org/" target="_blank">About</a>
-
                     {!this.state.hamburgerExpanded && this.props.children}
 
                     {this.props.showHamburger && (
@@ -109,6 +107,14 @@ class Header extends Component {
                                         <Link to='/app/home'>Home</Link>
                                     </li>
                                 )}
+
+                                <li className={styles.contextMenuItemAbout}>
+                                    <a href="https://www.daybookuk.org/" target="_blank">About</a>
+                                </li>
+
+                                <li className={styles.contextMenuItemIntro}>
+                                    <Link to="/app/introduction">Introduction</Link>
+                                </li>
 
                                 {(this.state.profile && this.props.auth.loggedIn() && this.props.user.role === 'creator') && (
                                     <li className={styles.contextMenuItemSettings}>
