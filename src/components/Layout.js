@@ -91,6 +91,8 @@ class Header extends Component {
                         </Link>
                     </h1>
 
+                    <a href="https://www.daybookuk.org/" target="_blank">About</a>
+
                     {!this.state.hamburgerExpanded && this.props.children}
 
                     {this.props.showHamburger && (

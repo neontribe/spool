@@ -26,12 +26,15 @@ class Welcome extends Component {
     render () {
         return (
             <Layout>
-                <Header auth={this.props.auth} showHamburger={false} user={null}/>
+                <Header auth={this.props.auth} showHamburger={false} user={null} />
                 <Content>
                     <div className={styles.wrapper}>
                         <div className={styles.btnWrapper}>
                             <Button onClick={this.handleRedirectToLogin}>Login</Button>
                             <Button onClick={this.handleRedirectToSignup}>Signup</Button>
+                            <div className={styles.linkWrapper}>
+                                <a href="https://www.daybookuk.org/" target="_blank">Learn more about Daybook</a>
+                            </div>
                         </div>
                     </div>
                 </Content>

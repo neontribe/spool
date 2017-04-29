@@ -50,7 +50,7 @@ export class Dashboard extends Component {
                 topic,
                 entryCount: (matchingData && matchingData.entryCount) || 0,
                 creatorCount: (matchingData && matchingData.creatorCount) || 0
-            }
+            };
         });
     }
 
