@@ -132,6 +132,8 @@
 
 .contextMenuItemHome,
 .contextMenuItemLogout,
+.contextMenuItemIntro,
+.contextMenuItemAbout,
 .contextMenuItemSettings {
 	composes: contextMenuItem;
 }
