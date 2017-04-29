@@ -1,6 +1,8 @@
 SPOOL
 ======
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/neontribe/spool.svg)](https://greenkeeper.io/)
+
 Hipster BadgeZone
 -----------------
 [![Code Climate](https://codeclimate.com/github/neontribe/spool/badges/gpa.svg)](https://codeclimate.com/github/neontribe/spool)
