@@ -69,6 +69,7 @@ export default class Grid extends Component {
         var containerWidth = this.state.width;
         var itemStyle = [];
         var length;
+        var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
         var i = 0;
 
         var children = _.filter(React.Children.toArray(this.props.children), (child) => {
@@ -216,7 +217,6 @@ export default class Grid extends Component {
 
                 case 8: {
                     length = calculateMaxCellSize(8);
-                    var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
                     if (width <= 667) {
                         length = calculateMaxCellSize(4);

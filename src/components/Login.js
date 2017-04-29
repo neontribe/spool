@@ -141,7 +141,7 @@ class Login extends Component {
     render () {
         return (
             <Layout>
-                <Header auth={this.props.auth} showHamburger={false} user={null}/>
+                <Header auth={this.props.auth} showHamburger={false} user={null} />
                 <Content>
                     <div className={styles.wrapper}>
                         {this.state.showEmailLogin ? this.renderEmailLogin() : this.renderButtonForm()}

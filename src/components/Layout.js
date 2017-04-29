@@ -108,6 +108,14 @@ class Header extends Component {
                                     </li>
                                 )}
 
+                                <li className={styles.contextMenuItemAbout}>
+                                    <a href="https://www.daybookuk.org/" target="_blank">About</a>
+                                </li>
+
+                                <li className={styles.contextMenuItemIntro}>
+                                    <Link to="/app/introduction">Introduction</Link>
+                                </li>
+
                                 {(this.state.profile && this.props.auth.loggedIn() && this.props.user.role === 'creator') && (
                                     <li className={styles.contextMenuItemSettings}>
                                         <Link to={'/app/settings/' + this.props.user.id}>Settings</Link>

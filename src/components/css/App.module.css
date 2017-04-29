@@ -1,6 +1,7 @@
 @value (
 	Blue200,
 	Blue300,
+    Blue100,
     Red100,
     Yellow100,
     Green100
@@ -131,6 +132,8 @@
 
 .contextMenuItemHome,
 .contextMenuItemLogout,
+.contextMenuItemIntro,
+.contextMenuItemAbout,
 .contextMenuItemSettings {
 	composes: contextMenuItem;
 }
@@ -141,6 +144,14 @@
 
 .contextMenuItemHome > a:before {
 	background-color: Yellow100;
+}
+
+.contextMenuItemIntro > a:before {
+	background-color: Blue100;
+}
+
+.contextMenuItemAbout > a:before {
+	background-color: Blue100;
 }
 
 .contextMenuItemLogout > a:before {
