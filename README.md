@@ -57,3 +57,58 @@ Sprint Zero
     * dependencies.io
     * Code Climate
     * Coveralls
+
+Temporary/Stopgap Support Information
+============
+
+Adding new Regions/Services directly to production
+------------
+
+1. Retrieve the postgres connection environment variable from Heroku
+```
+psql postgres://foo:bar@foobar.com
+```
+2. View existing Regions:
+```
+SELECT * FROM region;
+```
+3. View existing Services:
+```
+SELECT * FROM service;
+```
+4. View connections between Regions and Services:
+```
+SELECT * FROM region_service;
+```
+5. Lazy?:
+```
+SELECT
+  region.region_id,
+  region.type AS region_type,
+  service.type AS service_type,
+  service.name AS service_name
+FROM
+  region
+JOIN
+  region_service ON region_service.region_id = region.region_id
+JOIN
+  service ON service.service_id = region_service.service_id;
+  ```
+6. Create a new region(s):
+```
+INSERT INTO region ("type") VALUES ('A'), ('B'), ('C') RETURNING *;
+```
+7. Create a new service(s):
+```
+INSERT INTO service ("type", "name") VALUES ('foo_bar', 'Foo Bar'), ('baz', 'Baz') RETURNING *;
+```
+8. Connect a service(s) to a region:
+```
+INSERT INTO region_service ("region_id", "service_id") VALUES (1, 2), (1, 3), (1, 4);
+```
+
+Don't forget
+-------------
+
+- Semicolon after SQL statement, otherwise the prompt will go onto the next line
+- Update the spreadsheet as the changes will need the appropriate code update at some point in the future
