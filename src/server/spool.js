@@ -92,8 +92,8 @@ function updateUser (id, data) {
 
             const accountData = { profileId: Profile.profileId };
 
-            /* This is a nasty hack to prevent consumers from changing their services and regions */
-            if (user.Role.type === 'creator') {
+            /* Prevent consumers and supporters from changing their services and regions */
+            if (user.Role.type === 'creator' && !Profile.supporter) {
                 yield models.ProfileService.destroy({
                     where: {
                         profileId: Profile.profileId
