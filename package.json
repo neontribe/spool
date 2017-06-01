@@ -23,6 +23,7 @@
     "setup-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && sequelize --config config/database.js --env spool db:seed:all",
     "build-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && sequelize --config config/database.js --env spool db:migrate && npm run setup-database",
     "reset-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && npm run reset-seeds && sequelize --config config/database.js --env spool db:migrate:undo:all",
+    "undo-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && sequelize --config config/database.js --env spool db:migrate:undo",
     "reset-seeds": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && for f in seeders/*; do sequelize --config config/database.js --env spool --seed \"$f\" db:seed:undo; done",
     "postinstall": "npm run build && npm run build-database",
     "generate-database": "pgen exec ./config/sequelize-template -t src/server/database/models"
