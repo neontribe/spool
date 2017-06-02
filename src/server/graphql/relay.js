@@ -171,6 +171,12 @@ const ProfileType = new ql.GraphQLObjectType({
                 return root.Residence;
             }
         },
+        isSupporter: {
+            type: ql.GraphQLBoolean,
+            resolve: (root) => {
+                return root.supporter;
+            }
+        },
         isSharing: {
             type: ql.GraphQLBoolean,
             resolve: (root) => {
@@ -208,7 +214,7 @@ const UserType = new ql.GraphQLObjectType({
             resolve: (root) => {
                 return root.Profile;
             }
-        }
+        },
     },
     interfaces: [nodeInterface]
 });
@@ -567,6 +573,24 @@ const EntryFilterArgsType = new ql.GraphQLInputObjectType({
     }
 });
 
+const ServiceUserType = new ql.GraphQLObjectType({
+    name: 'ServiceUser',
+    fields: {
+        nickname: {
+            type: ql.GraphQLString,
+            resolve: () => {
+                return 'example';
+            }
+        },
+        userId: {
+            type: new ql.GraphQLNonNull(ql.GraphQLInt),
+            resolve: () => {
+                return 1;
+            }
+        }
+    }
+});
+
 const CreatorType = new ql.GraphQLObjectType({
     name: 'Creator',
     fields: {
@@ -623,6 +647,15 @@ const CreatorType = new ql.GraphQLObjectType({
             type: ql.GraphQLInt,
             resolve: (root, args, context) => {
                 return spool.getCreatorSentimentCount('sad', context.userId);
+            }
+        },
+        serviceUsers: {
+            type: new ql.GraphQLList(ServiceUserType),
+            resolve: (root, args, context) => {
+                if (!context.Profile || !context.Profile.supporter) {
+                    return null;
+                }
+                return [{}]
             }
         }
     },

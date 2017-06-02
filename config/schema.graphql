@@ -28,6 +28,7 @@ type Creator implements Node {
   entries(random: Boolean, filter: EntryFilterArgs, after: String, first: Int, before: String, last: Int): EntryConnection
   happyCount: Int
   sadCount: Int
+  serviceUsers: [ServiceUser]
 }
 
 type CreatorActivity {
@@ -189,6 +190,7 @@ type Profile implements Node {
   nickname: String
   services: [Service]
   residence: Residence
+  isSupporter: Boolean
   isSharing: Boolean
   isIntroduced: Boolean
 }
@@ -228,6 +230,11 @@ type Sentiment {
 type Service {
   type: String
   name: String
+}
+
+type ServiceUser {
+  nickname: String
+  userId: Int!
 }
 
 type Topic {
