@@ -18,6 +18,8 @@ export default class AddEntryMutation extends Relay.Mutation {
         var entry = this.props.entry;
         var media = this.props.entry.media;
         var mediaInput = {};
+        const tags = entry.tags.map((id) => parseInt(id, 10));
+        delete entry.tags;
 
         if (media.video) {
             mediaInput.video = media.video.key;
@@ -36,7 +38,8 @@ export default class AddEntryMutation extends Relay.Mutation {
                 media: mediaInput,
                 sentiment: entry.sentiment,
                 topics: entry.topics
-            }
+            },
+            tags
         };
     }
 

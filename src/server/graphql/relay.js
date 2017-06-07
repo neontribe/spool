@@ -1,5 +1,6 @@
 const ql = require('graphql');
 const relayql = require('graphql-relay');
+const co = require('co');
 const types = require('./types.js');
 const {sequelize, models, helpers} = require('../database');
 const moment = require('moment');
@@ -171,6 +172,12 @@ const ProfileType = new ql.GraphQLObjectType({
                 return root.Residence;
             }
         },
+        isSupporter: {
+            type: ql.GraphQLBoolean,
+            resolve: (root) => {
+                return root.supporter;
+            }
+        },
         isSharing: {
             type: ql.GraphQLBoolean,
             resolve: (root) => {
@@ -208,7 +215,7 @@ const UserType = new ql.GraphQLObjectType({
             resolve: (root) => {
                 return root.Profile;
             }
-        }
+        },
     },
     interfaces: [nodeInterface]
 });
@@ -256,6 +263,31 @@ const EntryType = new ql.GraphQLObjectType({
                         as: 'ProfileServiceServices'
                     }]
                 });
+            }
+        },
+        authorName: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                if (root.ownerId === root.authorId) {
+                    return null
+                }
+                return models.UserAccount.findOne({
+                    where: {
+                        userId: root.authorId
+                    },
+                    include: [{
+                        model: models.Profile,
+                        as: 'Profile'
+                    }]
+                }).then((author) => {
+                    return author.Profile.name
+                }).catch((e) => winston.warn(e));
+            }
+        },
+        tags: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return root.tags
             }
         },
         media: {
@@ -567,6 +599,24 @@ const EntryFilterArgsType = new ql.GraphQLInputObjectType({
     }
 });
 
+const ServiceUserType = new ql.GraphQLObjectType({
+    name: 'ServiceUser',
+    fields: {
+        nickname: {
+            type: ql.GraphQLString,
+            resolve: (root) => {
+                return root.Profile.altName;
+            }
+        },
+        userId: {
+            type: new ql.GraphQLNonNull(ql.GraphQLInt),
+            resolve: (root) => {
+                return root.userId;
+            }
+        }
+    }
+});
+
 const CreatorType = new ql.GraphQLObjectType({
     name: 'Creator',
     fields: {
@@ -623,6 +673,38 @@ const CreatorType = new ql.GraphQLObjectType({
             type: ql.GraphQLInt,
             resolve: (root, args, context) => {
                 return spool.getCreatorSentimentCount('sad', context.userId);
+            }
+        },
+        serviceUsers: {
+            type: new ql.GraphQLList(ServiceUserType),
+            resolve: (root, args, context) => {
+                if (!context.Profile 
+                    || !context.Profile.supporter
+                    || (context.Profile.ProfileServiceServices.length === 0)) {
+                    return null;
+                }
+
+                const service = context.Profile.ProfileServiceServices[0];
+                return models.UserAccount.findAll({
+                    where: {
+                        userId: {
+                            $not: context.userId
+                        }
+                    },
+                    include:[{
+                        model: models.Profile,
+                        as: 'Profile',
+                        include: [
+                            {
+                                model: models.Service,
+                                as: 'ProfileServiceServices',
+                                where: {
+                                    serviceId: service.serviceId
+                                }
+                            }
+                        ]
+                    }]
+                }).catch((e) => winston.warn(e));
             }
         }
     },
@@ -693,6 +775,9 @@ const createEntry = relayql.mutationWithClientMutationId({
     inputFields: {
         entry: {
             type: types.EntryInputType
+        },
+        tags: {
+            type: new ql.GraphQLList(ql.GraphQLInt)
         }
     },
     outputFields: {
@@ -714,7 +799,7 @@ const createEntry = relayql.mutationWithClientMutationId({
             }
         }
     },
-    mutateAndGetPayload: function mutateEntryPayload ({entry}, context) {
+    mutateAndGetPayload: function mutateEntryPayload ({entry, tags}, context) {
         if (!context.Role || context.Role.type !== 'creator') {
             winston.info(`Failed createEntry mutation due to role mismatch`);
             return {};
@@ -722,7 +807,27 @@ const createEntry = relayql.mutationWithClientMutationId({
         var media = entry.media;
         var topics = entry.topics;
         var sentiment = entry.sentiment;
-        return spool.makeEntry(context.userId, media, sentiment, topics);
+
+        return co(function * () {
+            var entryTags;
+            if (context.Profile.supporter && tags.length) {
+                // make an entry for each of the tags, set the current user as the author
+                // don't bother to wait for this to be done
+                const taggedUsers = yield models.UserAccount.findAll({
+                    where: {
+                        userId: {
+                            $in: tags
+                        }
+                    },
+                    include: helpers.includes.UserAccount.leftProfile
+                });
+
+                entryTags = taggedUsers.map((user) => user.Profile.altName).join(', ');
+                tags.forEach((id) => spool.makeEntry(id, media, sentiment, topics, context.userId));
+            }
+            const entry = yield spool.makeEntry(context.userId, media, sentiment, topics, false, entryTags);
+            return entry;
+        }).catch((e) => winston.warn(e));
     }
 });
 

@@ -12,6 +12,7 @@ import TopicForm from './TopicForm';
 import SentimentForm from './SentimentForm';
 import MediaForm from './MediaForm';
 import PageOverlay from './PageOverlay';
+import TagForm from './TagForm';
 
 import styles from './css/AddEntry.module.css';
 
@@ -21,6 +22,7 @@ class AddEntry extends Component {
     static ABOUT = 'ENTRY/ABOUT';
     static SENTIMENT = 'ENTRY/SENTIMENT';
     static MEDIA = 'ENTRY/MEDIA';
+    static TAG = 'ENTRY/TAG';
 
     static propTypes = {
         entry: React.PropTypes.object
@@ -33,13 +35,17 @@ class AddEntry extends Component {
     constructor (props) {
         super(props);
 
+        console.log('constructor', props);
+
         this.state = {
             entry: props.entry,
             form: AddEntry.ABOUT,
             saving: false
         };
 
-        const { ABOUT, SENTIMENT, MEDIA } = AddEntry;
+        const { isSupporter } = props.user.profile;
+
+        const { ABOUT, SENTIMENT, MEDIA, TAG } = AddEntry;
 
         this.transitions = {
             [ABOUT]: (key, value) => {
@@ -55,9 +61,23 @@ class AddEntry extends Component {
                 });
             },
             [MEDIA]: (key, value) => {
-                this.setEntryData(key, value, true);
+                this.setEntryData(key, value, !isSupporter);
+                if (isSupporter) {
+                    this.setState({
+                        form: TAG
+                    });
+                }
             }
         };
+
+        if (isSupporter) {
+            this.transitions[TAG] = (key, value) => {
+                this.setState({
+                    saving: true
+                });
+                this.setEntryData(key, value, true);
+            }
+        }
 
         this.handleMediaTypeChange = this.handleMediaTypeChange.bind(this);
         this.onSaveStart = this.onSaveStart.bind(this);
@@ -110,8 +130,8 @@ class AddEntry extends Component {
     }
 
     renderForm () {
-        const { ABOUT, SENTIMENT, MEDIA } = AddEntry;
-
+        const { ABOUT, SENTIMENT, MEDIA, TAG } = AddEntry;
+        const onSaveStart = this.props.user.profile.isSupporter ? Function.prototype : this.onSaveStart;
         switch (this.state.form) {
                 default:
                 case ABOUT:
@@ -121,11 +141,14 @@ class AddEntry extends Component {
                     return <SentimentForm save={this.transitions[SENTIMENT]} />;
 
                 case MEDIA:
-                    return <MediaForm onSaveStart={this.onSaveStart} onSaveEnd={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange} />;
+                    return <MediaForm onSaveStart={onSaveStart} onSaveEnd={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange} />;
+                case TAG: 
+                    return <TagForm serviceUsers={this.props.creator.serviceUsers} save={this.transitions[TAG]}/>;
         }
     }
 
     render () {
+        const { isSupporter } = this.props.user.profile;
         return (
             <Layout className={styles.wrapper}>
                 <Header auth={this.props.auth} user={this.props.user}>
@@ -163,6 +186,8 @@ class AddEntry extends Component {
                                     />
                                 ) : '3. Explain'}
                             </div>
+
+                            { isSupporter && <div className={(this.state.tags && styles.stepComplete) || undefined}>4. Tag</div> }
                         </div>
                     )}
                 </Header>
@@ -183,6 +208,9 @@ export const AddEntryContainer = Relay.createContainer(withRoles(withRouter(AddE
     fragments: {
         user: () => Relay.QL`
         fragment on User {
+                profile {
+                    isSupporter
+                }
                 ${userFragment}
                 ${Header.getFragment('user')}
         }`,
@@ -192,6 +220,10 @@ export const AddEntryContainer = Relay.createContainer(withRoles(withRouter(AddE
                 topics {
                     type,
                     name
+                }
+                serviceUsers {
+                    nickname
+                    userId
                 }
                 ${AddEntryMutation.getFragment('creator')}
             }

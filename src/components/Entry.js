@@ -126,6 +126,12 @@ export class Entry extends Component {
                     </div>
                 )}
 
+                {this.props.thumbnailMode && entry.authorName && (
+                    <div className={styles.author}>
+                        Made by { entry.authorName }
+                    </div>
+                )}
+
                 {this.props.showTopicOverlay && (
                     <ul className={styles.topics}>
                         {entry.topics.map((topic, i) => (
@@ -215,6 +221,7 @@ export const EntryContainer = Relay.createContainer(Entry, {
             }
             created
             updated
+            authorName
         }`
     }
 });

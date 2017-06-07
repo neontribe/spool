@@ -19,7 +19,7 @@ function getCreatorSentimentCount (sentimentType, userId) {
     }).catch((e) => winston.warn(e));
 }
 
-function makeEntry (userId, mediaData, sentimentData, topicsData) {
+function makeEntry (userId, mediaData, sentimentData, topicsData, authorId, tags) {
     return co(function* () {
         var insertMedia = models.Medium.create(mediaData, {
             returning: true
@@ -38,7 +38,8 @@ function makeEntry (userId, mediaData, sentimentData, topicsData) {
                 mediaId: media.mediaId,
                 sentimentId: sentiment.sentimentId,
                 ownerId: userId,
-                authorId: userId
+                authorId: authorId || userId,
+                tags
             }, {
                 returning: true
             });
