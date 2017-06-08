@@ -35,8 +35,6 @@ class AddEntry extends Component {
     constructor (props) {
         super(props);
 
-        console.log('constructor', props);
-
         this.state = {
             entry: props.entry,
             form: AddEntry.ABOUT,
@@ -76,7 +74,7 @@ class AddEntry extends Component {
                     saving: true
                 });
                 this.setEntryData(key, value, true);
-            }
+            };
         }
 
         this.handleMediaTypeChange = this.handleMediaTypeChange.bind(this);
@@ -142,7 +140,7 @@ class AddEntry extends Component {
 
                 case MEDIA:
                     return <MediaForm onSaveStart={onSaveStart} onSaveEnd={this.transitions[MEDIA]} onMediaTypeChange={this.handleMediaTypeChange} />;
-                case TAG: 
+                case TAG:
                     return <TagForm serviceUsers={this.props.creator.serviceUsers} save={this.transitions[TAG]}/>;
         }
     }

@@ -215,7 +215,7 @@ const UserType = new ql.GraphQLObjectType({
             resolve: (root) => {
                 return root.Profile;
             }
-        },
+        }
     },
     interfaces: [nodeInterface]
 });
@@ -269,7 +269,7 @@ const EntryType = new ql.GraphQLObjectType({
             type: ql.GraphQLString,
             resolve: (root) => {
                 if (root.ownerId === root.authorId) {
-                    return null
+                    return null;
                 }
                 return models.UserAccount.findOne({
                     where: {
@@ -280,14 +280,14 @@ const EntryType = new ql.GraphQLObjectType({
                         as: 'Profile'
                     }]
                 }).then((author) => {
-                    return author.Profile.name
+                    return author.Profile.name;
                 }).catch((e) => winston.warn(e));
             }
         },
         tags: {
             type: ql.GraphQLString,
             resolve: (root) => {
-                return root.tags
+                return root.tags;
             }
         },
         media: {
@@ -557,7 +557,7 @@ const ConsumerType = new ql.GraphQLObjectType({
             },
             resolve: (root, {range}, context) => {
                 const { regionId } = context;
-                const serviceIds = context.Profile.ProfileServiceServices.map((({serviceId}) => serviceId));
+                const serviceIds = context.Profile.ProfileServiceServices.map(({serviceId}) => serviceId);
                 return {range, regionId, serviceIds};
             }
         }
@@ -678,9 +678,9 @@ const CreatorType = new ql.GraphQLObjectType({
         serviceUsers: {
             type: new ql.GraphQLList(ServiceUserType),
             resolve: (root, args, context) => {
-                if (!context.Profile 
-                    || !context.Profile.supporter
-                    || (context.Profile.ProfileServiceServices.length === 0)) {
+                if (!context.Profile ||
+                    !context.Profile.supporter ||
+                    (context.Profile.ProfileServiceServices.length === 0)) {
                     return null;
                 }
 
@@ -691,7 +691,7 @@ const CreatorType = new ql.GraphQLObjectType({
                             $not: context.userId
                         }
                     },
-                    include:[{
+                    include: [{
                         model: models.Profile,
                         as: 'Profile',
                         include: [

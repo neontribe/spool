@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import Button from './Button';
-import IconChooserGrid from './IconChooserGrid';
 import TouchIcon from './TouchIcon';
 
 import styles from './css/TagForm.module.css';
@@ -68,10 +67,10 @@ class TagForm extends Component {
 }
 
 TagForm.propTypes = {
-    save: React.PropTypes.func,
+    save: React.PropTypes.func
 };
 
-TagForm.defaultProps = { 
+TagForm.defaultProps = {
     save: Function.prototype,
     saveKey: 'tags'
 };
