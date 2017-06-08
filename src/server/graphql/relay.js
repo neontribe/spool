@@ -605,7 +605,7 @@ const ServiceUserType = new ql.GraphQLObjectType({
         nickname: {
             type: ql.GraphQLString,
             resolve: (root) => {
-                return root.Profile.altName;
+                return root.Profile.altName || root.Profile.name;
             }
         },
         userId: {
