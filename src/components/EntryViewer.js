@@ -107,6 +107,7 @@ export default class EntryViewer extends Component {
                                     </div>
                                 )}
 
+                                {entry.tags && <span>Tagged Users: {entry.tags}</span>}
                                 <div className={styles.controls}>
                                     <Button onClick={browserHistory.goBack}><TouchIcon />Back</Button>
                                 </div>
@@ -134,6 +135,7 @@ export const EntryViewerContainer = Relay.createContainer(EntryViewer, {
                 type
             }
             views
+            tags
             ${EntryContainer.getFragment('entry')}
             ${DeleteEntryMutation.getFragment('entry')}
         }`,

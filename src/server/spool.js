@@ -19,7 +19,7 @@ function getCreatorSentimentCount (sentimentType, userId) {
     }).catch((e) => winston.warn(e));
 }
 
-function makeEntry (userId, mediaData, sentimentData, topicsData) {
+function makeEntry (userId, mediaData, sentimentData, topicsData, authorId, tags) {
     return co(function* () {
         var insertMedia = models.Medium.create(mediaData, {
             returning: true
@@ -38,7 +38,8 @@ function makeEntry (userId, mediaData, sentimentData, topicsData) {
                 mediaId: media.mediaId,
                 sentimentId: sentiment.sentimentId,
                 ownerId: userId,
-                authorId: userId
+                authorId: authorId || userId,
+                tags
             }, {
                 returning: true
             });
@@ -92,8 +93,8 @@ function updateUser (id, data) {
 
             const accountData = { profileId: Profile.profileId };
 
-            /* This is a nasty hack to prevent consumers from changing their services and regions */
-            if (user.Role.type === 'creator') {
+            /* Prevent consumers and supporters from changing their services and regions */
+            if (user.Role.type === 'creator' && !Profile.supporter) {
                 yield models.ProfileService.destroy({
                     where: {
                         profileId: Profile.profileId

@@ -45,6 +45,12 @@ module.exports = function(sequelize, DataTypes) {
             field: 'sharing',
             allowNull: false,
         },
+        supporter: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            field: 'supporter',
+            allowNull: false,
+        },
         createdAt: {
             type: DataTypes.DATE,
             field: 'created_at',
