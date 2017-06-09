@@ -18,6 +18,7 @@ export default class AddEntryMutation extends Relay.Mutation {
         var entry = this.props.entry;
         var media = this.props.entry.media;
         var mediaInput = {};
+        entry.tags = entry.tags || [];
         const tags = entry.tags.map((id) => parseInt(id, 10));
         delete entry.tags;
 

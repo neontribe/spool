@@ -122,21 +122,35 @@
 }
 
 .author {
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	width: 100%;
-	padding: .75rem .5rem;
-	padding-top: 2rem;
-	text-align: right;
-	font-weight: 500;
-	font-size: 0.8rem;
-	background-image: linear-gradient(transparent, rgba(0, 0, 0, .2));
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	border-bottom-left-radius: .7rem;
-	border-bottom-right-radius: .7rem;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: .5rem;
+    text-align: right;
+    font-weight: 500;
+    font-size: 0.8rem;
+    color: white;
+    border-radius: .7rem;
+}
+
+.authorVariantA {
+    background-color: Blue100;
+    composes: author;
+}
+
+.authorVariantB {
+    background-color: Yellow100;
+    composes: author;
+}
+
+.authorVariantC {
+    background-color: Red100;
+    composes: author;
+}
+
+.authorVariantD {
+    background-color: Grey100;
+    composes: author;
 }
 
 .videoOverlayPlayWrapper {
@@ -240,7 +254,7 @@
 
 :global(.carousel .carousel-indicators) {
 	right: calc(.5rem + 3px);
-	bottom: 1rem;
+	top: 3rem;
 	left: auto;
 	width: auto;
 	margin: 0;
