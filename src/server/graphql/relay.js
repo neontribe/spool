@@ -822,7 +822,7 @@ const createEntry = relayql.mutationWithClientMutationId({
                     include: helpers.includes.UserAccount.leftProfile
                 });
 
-                entryTags = taggedUsers.map((user) => user.Profile.altName).join(', ');
+                entryTags = taggedUsers.map((user) => user.Profile.altName || user.Profile.name).join(', ');
                 tags.forEach((id) => spool.makeEntry(id, media, sentiment, topics, context.userId));
             }
             const entry = yield spool.makeEntry(context.userId, media, sentiment, topics, false, entryTags);
