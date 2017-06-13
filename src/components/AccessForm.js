@@ -19,8 +19,8 @@ export class AccessForm extends Component {
         super(props);
 
         this.state = {
-            from: moment().add(-1, 'months').startOf('date').toISOString(),
-            to: moment().add(1, 'months').endOf('date').toISOString(),
+            from: moment().add(-1, 'months').startOf('day'),
+            to: moment().add(1, 'months').endOf('day'),
             topics: []
         };
 
@@ -40,11 +40,11 @@ export class AccessForm extends Component {
     }
 
     handleFromChange (value) {
-        this.handleChange('from', moment(value).startOf('date'));
+        this.handleChange('from', moment(value).startOf('day'));
     }
 
     handleToChange (value) {
-        this.handleChange('to', moment(value).endOf('date'));
+        this.handleChange('to', moment(value).endOf('day'));
     }
 
     handleChange (key, value) {
@@ -65,7 +65,6 @@ export class AccessForm extends Component {
         if (this.state.from && this.state.to && this.state.topics.length > 0) {
             valid = true;
         }
-
         return (
             <div>
                 <h1>Access Form</h1>
@@ -77,11 +76,11 @@ export class AccessForm extends Component {
                         onChange={this.handleTopics}
                     />
                     <DatePicker
-                        value={this.state.from}
+                        value={moment(this.state.from).format()}
                         onChange={this.handleFromChange}
                     />
                     <DatePicker
-                        value={this.state.to}
+                        value={moment(this.state.to).format()}
                         onChange={this.handleToChange}
                     />
                 </div>
