@@ -12,6 +12,7 @@ type Consumer implements Node {
 
 input CreateEntryInput {
   entry: EntryInput
+  tags: [Int]
   clientMutationId: String
 }
 
@@ -28,6 +29,7 @@ type Creator implements Node {
   entries(random: Boolean, filter: EntryFilterArgs, after: String, first: Int, before: String, last: Int): EntryConnection
   happyCount: Int
   sadCount: Int
+  serviceUsers: [ServiceUser]
 }
 
 type CreatorActivity {
@@ -67,6 +69,8 @@ type Entry implements Node {
   # The ID of an object
   id: ID!
   owner: EntryOwner
+  authorName: String
+  tags: String
   media: Media
   sentiment: Sentiment
   topics: [Topic]
@@ -189,6 +193,7 @@ type Profile implements Node {
   nickname: String
   services: [Service]
   residence: Residence
+  isSupporter: Boolean
   isSharing: Boolean
   isIntroduced: Boolean
 }
@@ -228,6 +233,11 @@ type Sentiment {
 type Service {
   type: String
   name: String
+}
+
+type ServiceUser {
+  nickname: String
+  userId: Int!
 }
 
 type Topic {

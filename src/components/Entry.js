@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { Link } from 'react-router';
 import moment from 'moment';
-import rand from 'random-seed';
+import Rand from 'random-seed';
 
 import Icon from './Icon';
 
@@ -10,10 +10,42 @@ import styles from './css/Entry.module.css';
 
 export class Entry extends Component {
     static ColourVariants = [
-        { className: styles.entryVariantA, dark: false },
-        { className: styles.entryVariantB, dark: true },
-        { className: styles.entryVariantC, dark: false },
-        { className: styles.entryVariantD, dark: true }
+        {
+            className: styles.entryVariantA,
+            dark: false,
+            authorVariants: [
+                { className: styles.authorVariantB },
+                { className: styles.authorVariantC },
+                { className: styles.authorVariantD }
+            ]
+        },
+        {
+            className: styles.entryVariantB,
+            dark: true,
+            authorVariants: [
+                { className: styles.authorVariantA },
+                { className: styles.authorVariantC },
+                { className: styles.authorVariantD }
+            ]
+        },
+        {
+            className: styles.entryVariantC,
+            dark: false,
+            authorVariants: [
+                { className: styles.authorVariantA },
+                { className: styles.authorVariantB },
+                { className: styles.authorVariantD }
+            ]
+        },
+        {
+            className: styles.entryVariantD,
+            dark: true,
+            authorVariants: [
+                { className: styles.authorVariantA },
+                { className: styles.authorVariantB },
+                { className: styles.authorVariantC },
+            ]
+        }
     ];
 
     static propTypes = {
@@ -79,6 +111,7 @@ export class Entry extends Component {
     }
 
     renderEntry (entry, randomisedStyle, isTextEntry, lightIcon) {
+        const authorStyle = randomisedStyle.authorVariants[(new Rand(entry.id)).range(randomisedStyle.authorVariants.length - 1)];
         return (
             <div>
                 {isTextEntry && (
@@ -126,6 +159,12 @@ export class Entry extends Component {
                     </div>
                 )}
 
+                {this.props.thumbnailMode && entry.authorName && (
+                    <div className={authorStyle.className}>
+                        Made by { entry.authorName }
+                    </div>
+                )}
+
                 {this.props.showTopicOverlay && (
                     <ul className={styles.topics}>
                         {entry.topics.map((topic, i) => (
@@ -164,10 +203,10 @@ export class Entry extends Component {
         var backgroundImage = this.getBackgroundImage(entry);
         var lightIcon = true;
 
-        if (isTextEntry) {
-            // eslint-disable-next-line new-cap
-            randomisedStyle = this.constructor.ColourVariants[(new rand(entry.id)).range(this.constructor.ColourVariants.length - 1)];
+        // eslint-disable-next-line new-cap
+        randomisedStyle = this.constructor.ColourVariants[(new Rand(entry.id)).range(this.constructor.ColourVariants.length - 1)];
 
+        if (isTextEntry) {
             styleVariant = randomisedStyle.className;
 
             if (randomisedStyle.dark) {
@@ -215,6 +254,7 @@ export const EntryContainer = Relay.createContainer(Entry, {
             }
             created
             updated
+            authorName
         }`
     }
 });

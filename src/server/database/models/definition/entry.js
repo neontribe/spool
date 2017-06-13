@@ -57,6 +57,11 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             defaultValue: 0
         },
+        tags: {
+            type: DataTypes.TEXT,
+            field: 'tags',
+            allowNull: true
+        },
         createdAt: {
             type: DataTypes.DATE,
             field: 'created_at',

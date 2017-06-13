@@ -27,6 +27,9 @@ module.exports = {
           },
           {
               type: 'Camden',
+          },
+          {
+              type: 'Worcestershire',
           }
       ]);
   },
