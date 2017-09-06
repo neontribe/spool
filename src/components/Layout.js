@@ -85,6 +85,10 @@ class Header extends Component {
                 )}
 
                 <div className={(this.state.hamburgerExpanded) ? styles.headerExpanded : styles.header}>
+                    <div className={styles.mothball}>
+                        <p>Daybook is just a demo right now. Anything you add will be deleted regularly.</p>
+                    </div>
+
                     <h1 className={styles.logo}>
                         <Link to={'/app'}>
                             <img src={logo} alt="Daybook"/>
