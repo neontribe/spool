@@ -43,7 +43,7 @@ export class Entry extends Component {
             authorVariants: [
                 { className: styles.authorVariantA },
                 { className: styles.authorVariantB },
-                { className: styles.authorVariantC },
+                { className: styles.authorVariantC }
             ]
         }
     ];

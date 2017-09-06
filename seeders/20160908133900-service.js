@@ -20,58 +20,6 @@ module.exports = {
           {
               type: 'service_b',
               name: 'Service B',
-          },
-          {
-              type: 'elfrida',
-              name: 'Elfrida'
-          },
-          {
-              type: 'shared_lives',   
-              name: 'Shared Lives'
-          },
-          {
-              type: 'wallace_mews',
-              name: 'Wallace Mews'
-          },
-          {
-              type: 'mowll',
-              name: 'MOWLL'
-          },
-          {
-              type: 'blue_room',
-              name: 'Blue Room'
-          },
-          {
-              type: 'transitions',
-              name: 'Transitions'
-          },
-          {
-              type: 'longhouse',
-              name: 'Longhouse'
-          },
-          {
-              type: 'the_beeches',
-              name: 'The Beeches'
-          },
-          {
-              type: 'st_roses',
-              name: 'St Roses'
-          },
-          {
-              type: 'speakeasy_now',
-              name: 'Speakeasy Now'
-          },
-          {
-              type: 'where_next',
-              name: 'Where Next'
-          },
-          {
-              type: 'samuel_place',
-              name: 'Samuel Place'
-          },
-          {
-              type: 'made',
-              name: 'MADE'
           }
       ]);
   },

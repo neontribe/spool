@@ -26,11 +26,11 @@
 	top: 0;
 	left: 0;
 	display: flex;
+    flex-flow: row wrap;
 	align-items: stretch;
 	justify-content: space-between;
 	min-height: calc((50px + (80 - 50) * (100vw - 1024px) / (1920 - 1024)) + .5rem);
 	width: 100%;
-	border-top: .5rem solid Blue200;
 	background-color: Blue200;
 	z-index: 110;
 
@@ -50,6 +50,12 @@
 	padding: 0 1rem;
 	white-space: nowrap;
 	font-weight: 500;
+}
+
+.header > .mothball {
+	display: flex;
+    flex: 1 100%;
+	background-color: red;
 }
 
 .logo {
