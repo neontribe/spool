@@ -103,4 +103,5 @@
 .wrapper {
 	color: #fff;
 	background-color: Blue300;
+	position: relative;	
 }
