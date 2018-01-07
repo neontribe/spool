@@ -90,7 +90,7 @@
     "react-router": "^2.6.1",
     "react-router-relay": "^0.13.4",
     "sequelize": "^3.24.1",
-    "sequelize-cli": "^2.4.0",
+    "sequelize-cli": "^3.0.0",
     "serve-static": "1.12.0",
     "sha.js": "^2.4.5",
     "shuffle-array": "^1.0.0",
