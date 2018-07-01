@@ -26,7 +26,9 @@
     "undo-database": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && sequelize --config config/database.js --env spool db:migrate:undo",
     "reset-seeds": "if [ -f .env ] ; then export $(cat .env | xargs) ; fi && for f in seeders/*; do sequelize --config config/database.js --env spool --seed \"$f\" db:seed:undo; done",
     "postinstall": "npm run build && npm run build-database",
-    "generate-database": "pgen exec ./config/sequelize-template -t src/server/database/models"
+    "generate-database": "pgen exec ./config/sequelize-template -t src/server/database/models",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -91,15 +93,17 @@
     "react-router-relay": "^0.13.4",
     "sequelize": "^3.24.1",
     "sequelize-cli": "^2.4.0",
-    "serve-static": "1.12.0",
+    "serve-static": "1.13.0",
     "sha.js": "^2.4.5",
     "shuffle-array": "^1.0.0",
     "sql-template-strings": "^2.2.0",
     "sw-precache": "5.0.0",
     "viewport-units-buggyfill": "^0.6.0",
-    "winston": "^2.2.0"
+    "winston": "^2.2.0",
+    "snyk": "^1.88.0"
   },
   "eslintConfig": {
     "extends": "@neontribe/eslint-config-react-app"
-  }
+  },
+  "snyk": true
 }
