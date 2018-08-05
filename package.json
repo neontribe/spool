@@ -82,7 +82,7 @@
     "react": "^15.2.1",
     "react-bootstrap": "^0.30.2",
     "react-bootstrap-date-picker": "^4.0.0",
-    "react-dom": "^15.2.1",
+    "react-dom": "^16.0.1",
     "react-ga": "^2.1.2",
     "react-keydown": "1.6.9",
     "react-relay": "^0.9.2",
